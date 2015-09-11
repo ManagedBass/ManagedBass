@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ManagedBass</RootNamespace>
+    <AssemblyName>ManagedBass</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <ProjectGuid>{D03D63BB-9333-462B-987E-167FF2F32DFF}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Devices\RecordingDevice.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Delegates.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Enums.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Structs.cs" />
+    <Compile Include="Dynamics\Bass\Bass.cs" />
+    <Compile Include="Dynamics\BassCd.cs" />
+    <Compile Include="Dynamics\BassEnc.cs" />
+    <Compile Include="Dynamics\BassFx.cs" />
+    <Compile Include="Dynamics\BassMidi.cs" />
+    <Compile Include="Dynamics\BassMix.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\BassWasapi.cs" />
+    <Compile Include="Dynamics\BassWma.cs" />
+    <Compile Include="Devices\WasapiDevice.cs" />
+    <Compile Include="Dynamics\Bass\Delegates.cs" />
+    <Compile Include="Dynamics\Bass\Enums.cs" />
+    <Compile Include="Dynamics\Bass\Structs.cs" />
+    <Compile Include="IO\Decoders\FileDecoder.cs" />
+    <Compile Include="IO\Decoders\FXDecoders.cs" />
+    <Compile Include="IO\Decoders\MemoryDecoder.cs" />
+    <Compile Include="IO\Players\FilePlayer.cs" />
+    <Compile Include="IO\Players\FXPlayers.cs" />
+    <Compile Include="IO\Players\MemoryPlayer.cs" />
+    <Compile Include="IO\Players\NetworkPlayer.cs" />
+    <Compile Include="IO\Recording.cs" />
+    <Compile Include="IO\Midi.cs" />
+    <Compile Include="IO\MixerStream.cs" />
+    <Compile Include="IO\Decoders\SplitDecoder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Writers\WaveFormat.cs" />
+    <Compile Include="Writers\WaveFileWriter.cs" />
+    <Compile Include="Effects\AutoWah.cs" />
+    <Compile Include="Effects\Chorus.cs" />
+    <Compile Include="Effects\Compressor.cs" />
+    <Compile Include="Effects\Damp.cs" />
+    <Compile Include="Effects\Distortion.cs" />
+    <Compile Include="Effects\DSP Base.cs" />
+    <Compile Include="Effects\Echo.cs" />
+    <Compile Include="Effects\Peak EQ.cs" />
+    <Compile Include="Effects\Phaser.cs" />
+    <Compile Include="Effects\Reverb.cs" />
+    <Compile Include="Errors.cs" />
+    <Compile Include="IO\AudioSample.cs" />
+    <Compile Include="Effects\BQF.cs" />
+    <Compile Include="Effects\Rotate.cs" />
+    <Compile Include="IO\AdvancedPlayable.cs" />
+    <Compile Include="IO\Channel.cs" />
+    <Compile Include="Effects\IEffectAssignable.cs" />
+    <Compile Include="IO\MusicModule.cs" />
+    <Compile Include="IO\Decoders\NetworkDecoder.cs" />
+    <Compile Include="IO\Playable.cs" />
+    <Compile Include="IO\PushStream.cs" />
+    <Compile Include="IO\SineWave.cs" />
+    <Compile Include="IO\UserStream.cs" />
+    <Compile Include="BufferProvider.cs" />
+    <Compile Include="IO\Silence.cs" />
+    <Compile Include="Devices\PlaybackDevice.cs" />
+    <Compile Include="Effects\Effect Base.cs" />
+    <Compile Include="IO\Decoders\Decoder.cs" />
+    <Compile Include="Writers\WmaFileWriter.cs" />
+    <Compile Include="Tags.cs" />
+    <Compile Include="Devices\CDDrive.cs" />
+    <Compile Include="Manager.cs" />
+    <Compile Include="Writers\AudioFileWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\System.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
