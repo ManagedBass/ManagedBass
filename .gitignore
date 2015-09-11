@@ -1,0 +1,5 @@
+bin/
+obj/
+publish/
+TestResults/
+*.suo

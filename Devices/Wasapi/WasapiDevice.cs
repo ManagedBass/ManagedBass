@@ -1,0 +1,220 @@
+﻿using ManagedBass.Dynamics;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
+namespace ManagedBass
+{
+    /// <summary>
+    /// Wraps a WASAPI Device
+    /// </summary>
+    public abstract class WasapiDevice : IDisposable
+    {
+        protected static Dictionary<int, WasapiDevice> Singleton = new Dictionary<int, WasapiDevice>();
+
+        #region Notify
+        static WasapiNotifyProcedure notifyproc = new WasapiNotifyProcedure(OnNotify);
+
+        static void OnNotify(WasapiNotificationType notify, int device, IntPtr User)
+        {
+            var handler = Singleton[device]._StateChanged;
+
+            if (handler != null)
+                handler(notify);
+        }
+
+        bool notifyRegistered = false;
+        event Action<WasapiNotificationType> _StateChanged;
+
+        public event Action<WasapiNotificationType> StateChanged
+        {
+            add
+            {
+                if (!notifyRegistered)
+                {
+                    BassWasapi.CurrentDevice = DeviceIndex;
+                    notifyRegistered = BassWasapi.SetNotify(notifyproc);
+                }
+
+                _StateChanged += value;
+            }
+            remove
+            {
+                _StateChanged -= value;
+
+                if (_StateChanged == null
+                    && notifyRegistered)
+                {
+                    BassWasapi.CurrentDevice = DeviceIndex;
+                    notifyRegistered = !BassWasapi.SetNotify(null);
+                }
+            }
+        }
+        #endregion
+
+        protected WasapiDevice(int Index)
+        {
+            proc = new WasapiProcedure(OnProc);
+            DeviceIndex = Index;
+        }
+
+        #region Device Info
+        public int DeviceIndex { get; protected set; }
+
+        public WasapiDeviceInfo DeviceInfo { get { return BassWasapi.GetDeviceInfo(DeviceIndex); } }
+        #endregion
+
+        #region Callback
+        WasapiProcedure proc;
+
+        public virtual int OnProc(IntPtr Buffer, int Length, IntPtr User)
+        {
+            if (Callback != null) Callback.Invoke(new BufferProvider(Buffer, Length));
+            return Length;
+        }
+
+        public virtual event Action<BufferProvider> Callback;
+        #endregion
+
+        public void Dispose()
+        {
+            BassWasapi.CurrentDevice = DeviceIndex;
+            BassWasapi.Free();
+        }
+
+        #region Read
+        public int Read(IntPtr Buffer, int Length) { return BassWasapi.Read(Buffer, Length); }
+        
+        int ReadObj(object Buffer, int Length)
+        {
+            BassWasapi.CurrentDevice = DeviceIndex;
+
+            GCHandle gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
+
+            int Return = BassWasapi.Read(gch.AddrOfPinnedObject(), Length);
+
+            gch.Free();
+
+            return Return;
+        }
+
+        public int Read(byte[] Buffer, int Length) { return ReadObj(Buffer, Length); }
+
+        public int Read(float[] Buffer, int Length) { return ReadObj(Buffer, Length); }
+
+        public int Read(short[] Buffer, int Length) { return ReadObj(Buffer, Length); }
+
+        public int Read(int[] Buffer, int Length) { return ReadObj(Buffer, Length); }
+        #endregion
+
+        #region Write
+        public void Write(IntPtr Buffer, int Length) { BassWasapi.Write(Buffer, Length); }
+
+        void WriteObj(object Buffer, int Length)
+        {
+            BassWasapi.CurrentDevice = DeviceIndex;
+
+            GCHandle gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
+
+            BassWasapi.Write(gch.AddrOfPinnedObject(), Length);
+            gch.Free();
+        }
+
+        public void Write(byte[] Buffer, int Length) { WriteObj(Buffer, Length); }
+
+        public void Write(float[] Buffer, int Length) { WriteObj(Buffer, Length); }
+
+        public void Write(short[] Buffer, int Length) { WriteObj(Buffer, Length); }
+
+        public void Write(int[] Buffer, int Length) { WriteObj(Buffer, Length); }
+        #endregion
+
+        public bool Lock(bool Lock = true)
+        {
+            BassWasapi.CurrentDevice = DeviceIndex;
+            return BassWasapi.Lock(Lock);
+        }
+
+        public bool Mute
+        {
+            get
+            {
+                BassWasapi.CurrentDevice = DeviceIndex;
+                return BassWasapi.GetMute();
+            }
+            set
+            {
+                BassWasapi.CurrentDevice = DeviceIndex;
+                BassWasapi.SetMute(WasapiVolumeTypes.Device, value);
+            }
+        }
+
+        public double Level { get { return BassWasapi.GetDeviceLevel(DeviceIndex); } }
+
+        public double Volume
+        {
+            get
+            {
+                BassWasapi.CurrentDevice = DeviceIndex;
+                return BassWasapi.GetVolume(WasapiVolumeTypes.Device | WasapiVolumeTypes.LinearCurve);
+            }
+            set
+            {
+                BassWasapi.CurrentDevice = DeviceIndex;
+                BassWasapi.SetVolume(WasapiVolumeTypes.Device | WasapiVolumeTypes.LinearCurve, (float)value);
+            }
+        }
+
+        protected bool _Init(int Frequency, int Channels, bool Shared, bool UseEventSync, int Buffer, int Period)
+        {
+            if (DeviceInfo.IsInitialized) return true;
+
+            var flags = Shared ? WasapiInitFlags.Shared : WasapiInitFlags.Exclusive;
+            if (UseEventSync) flags |= WasapiInitFlags.EventDriven;
+
+            bool Result = BassWasapi.Init(DeviceIndex,
+                                          Frequency,
+                                          Channels,
+                                          flags,
+                                          Buffer,
+                                          Period,
+                                          proc);
+
+            return Result;
+        }
+
+        public bool IsStarted
+        {
+            get
+            {
+                BassWasapi.CurrentDevice = DeviceIndex;
+                return BassWasapi.IsStarted;
+            }
+        }
+
+        public bool Start()
+        {
+            BassWasapi.CurrentDevice = DeviceIndex;
+            return BassWasapi.Start();
+        }
+
+        public bool Stop(bool Reset = true)
+        {
+            BassWasapi.CurrentDevice = DeviceIndex;
+            return BassWasapi.Stop(Reset);
+        }
+
+        #region Overrides
+        public override bool Equals(object obj) { return (obj is WasapiDevice) && (DeviceIndex == ((WasapiDevice)obj).DeviceIndex); }
+
+        public override string ToString()
+        {
+            return DeviceInfo.Name
+                + (DeviceInfo.IsLoopback ? " (Loopback)" : string.Empty)
+                + (DeviceInfo.IsDefault ? " (Default)" : string.Empty);
+        }
+
+        public override int GetHashCode() { return DeviceIndex; }
+        #endregion
+    }
+}

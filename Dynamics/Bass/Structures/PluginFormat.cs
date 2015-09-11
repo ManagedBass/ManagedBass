@@ -1,0 +1,42 @@
+﻿using System;
+using System.Runtime.InteropServices;
+
+namespace ManagedBass.Dynamics
+{
+    /// <summary>
+    /// Used with <see cref="Bass.GetPluginInfo" /> to retrieve information on the supported plugin formats.
+    /// </summary>
+    /// <remarks>
+    /// The plugin information does not change, so the returned pointer remains valid for as long as the plugin is loaded.
+    /// <para>
+    /// The extension filter is for information only. 
+    /// A plugin will check the file contents rather than file extension, to verify that it is a supported format.
+    /// </para>
+    /// </remarks>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PluginFormat
+    {
+        ChannelType ctype;
+        IntPtr name;
+        IntPtr exts;
+
+        /// <summary>
+        /// The channel Type, as would appear in the <see cref="ChannelInfo" /> structure.
+        /// </summary>
+        public ChannelType ChannelType { get { return ctype; } }
+
+        /// <summary>
+        /// The Format description or name.
+        /// </summary>
+        public string Name { get { return Marshal.PtrToStringAnsi(name); } }
+
+        /// <summary>
+        /// File extension filter, in the form of "*.ext1;*.ext2;etc...".
+        /// </summary>
+        /// <remarks>
+        /// The extension filter is for information only. 
+        /// A plugin will check the file contents rather than file extension, to verify that it is a supported format.
+        /// </remarks>
+        public string FileExtensions { get { return Marshal.PtrToStringAnsi(exts); } }
+    }
+}

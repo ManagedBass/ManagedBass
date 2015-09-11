@@ -1,0 +1,29 @@
+﻿using System;
+
+namespace ManagedBass.Dynamics
+{
+    /// <summary>
+    /// The mode to use with <see cref="BassCd.GetTOC"/>.
+    /// </summary>
+    [Flags]
+    public enum TOCMode
+    {
+        /// <summary>
+        /// Get the track start address in LBA form.
+        /// </summary>
+        LBA = 0,
+
+        /// <summary>
+        /// Get the track start address in time form (hour, minute, second, frame).
+        /// </summary>
+        Time = 256,
+        
+        /// <summary>
+        /// + track#, Get the position of indexes (instead of tracks)
+        /// <para>When this option is used, the 'first' and 'last' members of the TOC structure are index numbers, 
+        /// and the 'track' member of the TOCTrack structure is also an index number and the "lba" or "hmsf" member 
+        /// (depending on whether TOCMode.Time is used) is an offset from the start of the track</para>
+        /// </summary>
+        Index = 512
+    }
+}
