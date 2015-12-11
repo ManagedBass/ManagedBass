@@ -32,7 +32,7 @@ namespace ManagedBass.Dynamics
         //
         // Summary:
         //     The drive is capable of analog playback.
-        ANALOG = 65536,
+        Analog = 65536,
         //
         // Summary:
         //     The drive can read in "mode 2 form 1" format.
@@ -44,7 +44,7 @@ namespace ManagedBass.Dynamics
         //
         // Summary:
         //     The drive can read multi-session discs.
-        MULTI = 4194304,
+        MultiSession = 4194304,
         //
         // Summary:
         //     The drive can read CD audio.
@@ -56,11 +56,11 @@ namespace ManagedBass.Dynamics
         //
         // Summary:
         //     The drive can read sub-channel data.
-        SUBCHAN = 67108864,
+        SubChannel = 67108864,
         //
         // Summary:
         //     The drive can read sub-channel data, and de-interleave it.
-        SUBCHANDI = 134217728,
+        SubChannelDeInterleave = 134217728,
         //
         // Summary:
         //     The drive can provide C2 error info.

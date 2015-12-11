@@ -19,7 +19,7 @@ namespace ManagedBass
 
                 // Media Failed
                 Fail_Delegate = new SyncProcedure(OnMediaFailed);
-                Bass.ChannelSetSync(Handle, SyncFlags.BASS_SYNC_STOP, 0, Fail_Delegate);
+                Bass.ChannelSetSync(Handle, SyncFlags.Stop, 0, Fail_Delegate);
             }
         }
 
@@ -85,7 +85,7 @@ namespace ManagedBass
 
         public double Duration { get { return Bytes2Seconds(Bass.ChannelGetLength(Handle)); } }
 
-        public long Length { get { return Bass.StreamGetFilePosition(Handle, FileStreamPosition.End); } }
+        public virtual long Length { get { return Bass.StreamGetFilePosition(Handle, FileStreamPosition.End); } }
 
         public int Bitrate { get { return (int)(Length / (125 * Duration) + 0.5d); } }
 

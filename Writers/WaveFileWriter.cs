@@ -81,7 +81,6 @@ namespace ManagedBass
         /// Writes bytes to the WaveFile
         /// </summary>
         /// <param name="data">the buffer containing the wave data</param>
-        /// <param name="offset">the offset from which to start writing</param>
         /// <param name="count">the number of bytes to write</param>
         public void Write(byte[] data, int count)
         {
@@ -93,7 +92,6 @@ namespace ManagedBass
         /// Writes 16 bit samples to the Wave file
         /// </summary>
         /// <param name="data">The buffer containing the wave data</param>
-        /// <param name="offset">The offset from which to start writing</param>
         /// <param name="count">The number of 16 bit samples to write</param>
         public void Write(short[] data, int count)
         {
@@ -106,7 +104,6 @@ namespace ManagedBass
         /// Writes 16 bit samples to the Wave file
         /// </summary>
         /// <param name="data">The buffer containing the wave data</param>
-        /// <param name="offset">The offset from which to start writing</param>
         /// <param name="count">The number of 16 bit samples to write</param>
         public override void Write(float[] data, int count)
         {

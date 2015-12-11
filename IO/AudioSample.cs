@@ -32,7 +32,7 @@ namespace ManagedBass
             Handle = Bass.SampleGetChannel(Sample, true);
         }
 
-        public long Length { get { return Bass.SampleGetInfo(Sample).Length; } }
+        public override long Length { get { return Bass.SampleGetInfo(Sample).Length; } }
 
         public void Read(byte[] Buffer)
         {

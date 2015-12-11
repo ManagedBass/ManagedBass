@@ -6,6 +6,7 @@ namespace ManagedBass
     /// <summary>
     /// Managed Wrapper around BassCd
     /// </summary>
+    /// <remarks>Requires basscd.dll</remarks>
     public class CDDrive : IDisposable
     {
         /// <summary>
@@ -13,8 +14,14 @@ namespace ManagedBass
         /// </summary>
         public static int DriveCount { get { return BassCd.DriveCount; } }
 
+        /// <summary>
+        /// The Drive Index used by Bass to identify a Drive
+        /// </summary>
         int DriveIndex = -1;
 
+        /// <summary>
+        /// Gets Information about a Drive
+        /// </summary>
         CDInfo DriveInfo { get { return BassCd.DriveInfo(DriveIndex); } }
 
         /// <summary>
@@ -24,8 +31,14 @@ namespace ManagedBass
         /// <remarks>No need to check IndexOutOfRange since this constructor is handled internally</remarks>
         CDDrive(int Index) { DriveIndex = Index; }
 
+        /// <summary>
+        /// Gets the Product Name of the Drive
+        /// </summary>
         public string Name { get { return DriveInfo.Name; } }
 
+        /// <summary>
+        /// Gets the Drive Manufacturer's Name
+        /// </summary>
         public string Manufacturer { get { return DriveInfo.Manufacturer; } }
 
         public int SpeedMultiplier { get { return DriveInfo.SpeedMultiplier; } }

@@ -2,10 +2,20 @@
 
 namespace ManagedBass
 {
+    /// <summary>
+    /// Wraps a Bass Playback Device
+    /// </summary>
+    /// <remarks>All Devices except NoSound and Default need to initialized before use</remarks>
     public class PlaybackDevice
     {
+        /// <summary>
+        /// Number of available Playback Devices
+        /// </summary>
         public static int DeviceCount { get { return Bass.DeviceCount; } }
 
+        /// <summary>
+        /// Gets an array of Playback Devices
+        /// </summary>
         public static PlaybackDevice[] Devices
         {
             get

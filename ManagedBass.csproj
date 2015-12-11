@@ -24,13 +24,22 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Debug\ManagedBass.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Devices\RecordingDevice.cs" />
+    <Compile Include="Devices\Wasapi\WasapiLoopbackDevice.cs" />
+    <Compile Include="Devices\Wasapi\WasapiRecordingDevice.cs" />
+    <Compile Include="Devices\Wasapi\WasapiPlaybackDevice.cs" />
     <Compile Include="Dynamics\Bass Wasapi\Delegates.cs" />
     <Compile Include="Dynamics\Bass Wasapi\Enums.cs" />
     <Compile Include="Dynamics\Bass Wasapi\Structs.cs" />
-    <Compile Include="Dynamics\Bass\Bass.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\SyncProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\StreamProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\DSPProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\DownloadProcedure.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Bass.cs" />
     <Compile Include="Dynamics\BassCd.cs" />
     <Compile Include="Dynamics\BassEnc.cs" />
     <Compile Include="Dynamics\BassFx.cs" />
@@ -38,15 +47,41 @@
     <Compile Include="Dynamics\BassMix.cs" />
     <Compile Include="Dynamics\Bass Wasapi\BassWasapi.cs" />
     <Compile Include="Dynamics\BassWma.cs" />
-    <Compile Include="Devices\WasapiDevice.cs" />
-    <Compile Include="Dynamics\Bass\Delegates.cs" />
-    <Compile Include="Dynamics\Bass\Enums.cs" />
-    <Compile Include="Dynamics\Bass\Structs.cs" />
+    <Compile Include="Devices\Wasapi\WasapiDevice.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\RecordProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\InputFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\DeviceInitFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\ChannelTypeFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\EffectType.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\DeviceInfoFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\BassFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\SyncFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\InputTypeFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\RecordFormatFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\Configuration.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\TagType.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\StreamProcedureType.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\Bass3DMode.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\BassVam.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\LevelRetrievalFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\FileStreamPosition.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\ChannelAttribute.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\PositionFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\RecordInfoFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\PlaybackState.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\BassInfoFlags.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Record.cs" />
+    <Compile Include="Dynamics\Bass\Structures\DeviceInfo.cs" />
+    <Compile Include="Dynamics\Bass\Structures\ChannelInfo.cs" />
+    <Compile Include="Dynamics\Bass\Structures\SampleInfo.cs" />
+    <Compile Include="Dynamics\Bass\Structures\BassInfo.cs" />
+    <Compile Include="IO\Decoders\ReverseDecoder.cs" />
     <Compile Include="IO\Decoders\FileDecoder.cs" />
-    <Compile Include="IO\Decoders\FXDecoders.cs" />
+    <Compile Include="IO\Decoders\TempoDecoder.cs" />
     <Compile Include="IO\Decoders\MemoryDecoder.cs" />
+    <Compile Include="IO\Players\TempoPlayer.cs" />
     <Compile Include="IO\Players\FilePlayer.cs" />
-    <Compile Include="IO\Players\FXPlayers.cs" />
+    <Compile Include="IO\Players\ReversePlayer.cs" />
     <Compile Include="IO\Players\MemoryPlayer.cs" />
     <Compile Include="IO\Players\NetworkPlayer.cs" />
     <Compile Include="IO\Recording.cs" />

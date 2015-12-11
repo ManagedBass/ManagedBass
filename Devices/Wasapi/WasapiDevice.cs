@@ -1,98 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ManagedBass.Dynamics;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
-    public partial class WasapiDevice : IDisposable
+    public abstract class WasapiDevice : IDisposable
     {
-        internal static Dictionary<int, WasapiDevice> Singleton = new Dictionary<int, WasapiDevice>();
-
-        static WasapiDevice Create(int Device)
-        {
-            if (Singleton.ContainsKey(Device)) return Singleton[Device];
-            else
-            {
-                WasapiDevice Dev = new WasapiDevice() { DeviceIndex = Device, Mute = false };
-                Singleton.Add(Device, Dev);
-
-                return Dev;
-            }
-        }
-
-        #region Devices
-        public static WasapiDevice[] Devices
-        {
-            get
-            {
-                List<WasapiDevice> Result = new List<WasapiDevice>();
-
-                for (int i = 0; i < DeviceCount; ++i) Result.Add(Create(i));
-
-                return Result.ToArray();
-            }
-        }
-
-        public static int DeviceCount { get { return BassWasapi.DeviceCount; } }
-
-        public static WasapiDevice DefaultDevice { get { return Devices[0]; } }
-        #endregion
-
-        #region Output Devices
-        public static WasapiDevice[] OutputDevices
-        {
-            get
-            {
-                List<WasapiDevice> Result = new List<WasapiDevice>();
-
-                foreach (WasapiDevice dev in Devices) if (!dev.IsInput) Result.Add(dev);
-
-                return Result.ToArray();
-            }
-        }
-
-        public static WasapiDevice DefaultOutputDevice { get { return OutputDevices[0]; } }
-
-        public static int OutputDeviceCount { get { return OutputDevices.Length; } }
-        #endregion
-
-        #region Loopback Devices
-        public static WasapiDevice[] LoopbackDevices
-        {
-            get
-            {
-                List<WasapiDevice> Result = new List<WasapiDevice>();
-
-                foreach (WasapiDevice dev in Devices) if (dev.IsLoopback) Result.Add(dev);
-
-                return Result.ToArray();
-            }
-        }
-
-        public static WasapiDevice DefaultLoopbackDevice { get { return LoopbackDevices[0]; } }
-
-        public static int LoopbackDeviceCount { get { return LoopbackDevices.Length; } }
-        #endregion
-
-        #region Recording Devices
-        public static WasapiDevice[] RecordingDevices
-        {
-            get
-            {
-                List<WasapiDevice> Result = new List<WasapiDevice>();
-
-                foreach (WasapiDevice dev in Devices) if (dev.IsInput && !dev.IsLoopback) Result.Add(dev);
-
-                return Result.ToArray();
-            }
-        }
-
-        public static WasapiDevice DefaultRecordingDevice { get { return RecordingDevices[0]; } }
-
-        public static int RecordingDeviceCount { get { return RecordingDevices.Length; } }
-        #endregion
-
         #region Notifier Statics
         static Dictionary<int, WasapiNotifier> notifyprocs = new Dictionary<int, WasapiNotifier>();
 
@@ -139,7 +54,7 @@ namespace ManagedBass
         protected WasapiDevice() { proc = new WasapiProcedure(OnProc); }
 
         #region Device Info
-        public int DeviceIndex { get; private set; }
+        public int DeviceIndex { get; protected set; }
 
         WasapiDeviceInfo DeviceInfo { get { return BassWasapi.DeviceInfo(DeviceIndex); } }
 
@@ -247,11 +162,19 @@ namespace ManagedBass
         }
         #endregion
 
-        public bool Lock(bool State)
+        #region Lock
+        public bool Lock()
         {
             BassWasapi.CurrentDevice = DeviceIndex;
-            return BassWasapi.Lock(State);
+            return BassWasapi.Lock(true);
         }
+
+        public bool Unlock()
+        {
+            BassWasapi.CurrentDevice = DeviceIndex;
+            return BassWasapi.Lock(false);
+        }
+        #endregion
 
         public bool Mute
         {

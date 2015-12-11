@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Dynamics
 {
-    static class BassMidi
+    public static class BassMidi
     {
         const string DllName = "bassmidi.dll";
 

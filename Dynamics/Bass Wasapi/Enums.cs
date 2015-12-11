@@ -15,31 +15,37 @@ namespace ManagedBass.Dynamics
         Disabled = 64,
     }
 
+    // TODO: Check with the new Definition
     public enum WasapiNotificationType
     {
-        // Summary:
-        //     The device's status has changed, eg. it has been enabled or disabled. The
-        //     new status is available from Un4seen.BassWasapi.BassWasapi.BASS_WASAPI_GetDeviceInfo(System.Int32,Un4seen.BassWasapi.BASS_WASAPI_DEVICEINFO).
+        /// <summary>
+        /// The device's status has changed, eg. it has been enabled or disabled. 
+        /// The new status is available from BassWasapi.GetDeviceInfo().
+        /// </summary>
         Change = 0,
-        //
-        // Summary:
-        //     The device is now the default input device.
-        BASS_WASAPI_NOTIFY_DEFOUTPUT = 1,
-        //
-        // Summary:
-        //     The device is now the default output device.
-        BASS_WASAPI_NOTIFY_DEFINPUT = 2,
+        
+        /// <summary>
+        /// The device is now the default input device.
+        /// </summary>
+        DefaultOutput = 1,
+        
+        /// <summary>
+        /// The device is now the default output device.
+        /// </summary>
+        DefaultInput = 2,
     }
 
     [Flags]
     public enum WasapiInitFlags
     {
-        // Summary:
-        //     Init the device (endpoint) in shared mode.
+        /// <summary>
+        /// Init the device (endpoint) in shared mode.
+        /// </summary>
         Shared = 0,
-        //
-        // Summary:
-        //     Init the device (endpoint) in exclusive mode.
+        
+        /// <summary>
+        /// Init the device (endpoint) in exclusive mode.
+        /// </summary>
         Exclusive = 1,
         //
         // Summary:
@@ -69,96 +75,117 @@ namespace ManagedBass.Dynamics
     public enum WasapiFormat
     {
         Unknown = -1,
-        //
-        // Summary:
-        //     32-bit floating-point.
+        
+        /// <summary>
+        /// 32-bit floating-point.
+        /// </summary>
         Float = 0,
-        //
-        // Summary:
-        //     8-bit integer.
+        
+        /// <summary>
+        /// 8-bit integer.
+        /// </summary>
         Bit8 = 1,
-        //
-        // Summary:
-        //     16-bit integer.
+        
+        /// <summary>
+        /// 16-bit integer.
+        /// </summary>
         Bit16 = 2,
-        //
-        // Summary:
-        //     24-bit integer.
+        
+        /// <summary>
+        /// 24-bit integer.
+        /// </summary>
         Bit24 = 3,
-        //
-        // Summary:
-        //     32-bit integer.
+        
+        /// <summary>
+        /// 32-bit integer.
+        /// </summary>
         Bit32 = 4,
     }
 
     public enum WasapiVolumeTypes
     {
-        // Summary:
-        //     Use the device volume.
+        /// <summary>
+        /// Use the device volume.
+        /// </summary>
         Device = 0,
-        //
-        // Summary:
-        //     Logarithmic curve.
+        
+        /// <summary>
+        /// Logarithmic curve.
+        /// </summary>
         LogaritmicCurve = 0,
-        //
-        // Summary:
-        //     Linear curve.
+        
+        /// <summary>
+        /// Linear curve.
+        /// </summary>
         LinearCurve = 1,
-        //
-        // Summary:
-        //     Windows' hybrid curve.
+        
+        /// <summary>
+        /// Windows' hybrid curve.
+        /// </summary>
         WindowsHybridCurve = 2,
-        //
-        // Summary:
-        //     Use the session volume.
+        
+        /// <summary>
+        /// Use the session volume.
+        /// </summary>
         Session = 8,
     }
 
     [Flags]
     public enum WasapiDeviceType
     {
-        // Summary:
-        //     A network device.
-        BASS_WASAPI_TYPE_NETWORKDEVICE = 0,
-        //
-        // Summary:
-        //     A speakers device.
-        BASS_WASAPI_TYPE_SPEAKERS = 1,
-        //
-        // Summary:
-        //     A line level device.
-        BASS_WASAPI_TYPE_LINELEVEL = 2,
-        //
-        // Summary:
-        //     A headphone device.
-        BASS_WASAPI_TYPE_HEADPHONES = 3,
-        //
-        // Summary:
-        //     A microphone device.
-        BASS_WASAPI_TYPE_MICROPHONE = 4,
-        //
-        // Summary:
-        //     A headset device.
-        BASS_WASAPI_TYPE_HEADSET = 5,
-        //
-        // Summary:
-        //     A handset device.
-        BASS_WASAPI_TYPE_HANDSET = 6,
-        //
-        // Summary:
-        //     A digital device.
-        BASS_WASAPI_TYPE_DIGITAL = 7,
-        //
-        // Summary:
-        //     A S/PDIF device.
-        BASS_WASAPI_TYPE_SPDIF = 8,
-        //
-        // Summary:
-        //     A HDMI device.
-        BASS_WASAPI_TYPE_HDMI = 9,
-        //
-        // Summary:
-        //     An unknown device.
-        BASS_WASAPI_TYPE_UNKNOWN = 10,
+        /// <summary>
+        /// A network device.
+        /// </summary>
+        NetworkDevice = 0,
+        
+        /// <summary>
+        /// A speakers device.
+        /// </summary>
+        Speakers = 1,
+        
+        /// <summary>
+        /// A line level device.
+        /// </summary>
+        LineLevel = 2,
+        
+        /// <summary>
+        /// A headphone device.
+        /// </summary>
+        Headphones = 3,
+        
+        /// <summary>
+        /// A microphone device.
+        /// </summary>
+        Microphone = 4,
+        
+        /// <summary>
+        /// A headset device.
+        /// </summary>
+        Headset = 5,
+        
+        /// <summary>
+        /// A handset device.
+        /// </summary>
+        Handset = 6,
+        
+        /// <summary>
+        /// A digital device.
+        /// </summary>
+        Digital = 7,
+        
+        /// <summary>
+        /// A S/PDIF device.
+        /// </summary>
+        SPDIF = 8,
+        
+        /// <summary>
+        /// A HDMI device.
+        /// </summary>
+        HDMI = 9,
+        
+        /// <summary>
+        /// An unknown device.
+        /// </summary>
+        Unknown = 10,
     }
 }

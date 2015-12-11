@@ -8,51 +8,51 @@ namespace ManagedBass.Dynamics
     {
         // Summary:
         //     Cmdline is Unicode (16-bit characters).
-        BASS_UNICODE = -2147483648,
+        Unicode = -2147483648,
         //
         // Summary:
         //     Default option, incl. wave header, little-endian and no FP conversion.
-        BASS_ENCODE_DEFAULT = 0,
+        Default = 0,
         //
         // Summary:
         //     Do NOT send a WAV header to the encoder.
-        BASS_ENCODE_NOHEAD = 1,
+        NoHeader = 1,
         //
         // Summary:
         //     Convert floating-point sample data to 8-bit integer.
-        BASS_ENCODE_FP_8BIT = 2,
+        ConvertFloatTo8BitInt = 2,
         //
         // Summary:
         //     Convert floating-point sample data to 16-bit integer.
-        BASS_ENCODE_FP_16BIT = 4,
+        ConvertFloatTo16BitInt = 4,
         //
         // Summary:
         //     Convert floating-point sample data to 24-bit integer.
-        BASS_ENCODE_FP_24BIT = 6,
+        ConvertFloatTo24Bit = 6,
         //
         // Summary:
         //     Convert floating-point sample data to 32-bit integer.
-        BASS_ENCODE_FP_32BIT = 8,
+        ConvertFloatTo32Bit = 8,
         //
         // Summary:
         //     Big-Endian sample data.
-        BASS_ENCODE_BIGEND = 16,
+        BigEndian = 16,
         //
         // Summary:
         //     Start the encoder paused.
-        BASS_ENCODE_PAUSE = 32,
+        Pause = 32,
         //
         // Summary:
         //     Write PCM sample data (no encoder).
-        BASS_ENCODE_PCM = 64,
+        PCM = 64,
         //
         // Summary:
         //     Write RF64 WAV header (no encoder).
-        BASS_ENCODE_RF64 = 128,
+        RF64 = 128,
         //
         // Summary:
         //     Convert to mono (if not already).
-        BASS_ENCODE_MONO = 256,
+        Mono = 256,
         //
         // Summary:
         //     Queue data to feed encoder asynchronously.
@@ -61,20 +61,20 @@ namespace ManagedBass.Dynamics
         //     (0 = no limit); the default is 10000ms.  If the queue reaches the size limit
         //     and data is lost, the Un4seen.Bass.AddOn.Enc.BASSEncodeNotify.BASS_ENCODE_NOTIFY_QUEUE_FULL
         //     notification will be triggered.
-        BASS_ENCODE_QUEUE = 512,
+        Queue = 512,
         //
         // Summary:
         //     Send the sample format information to the encoder in WAVEFORMATEXTENSIBLE
         //     form instead of WAVEFORMATEX form.
         //     This flag is ignored if the BASS_ENCODE_NOHEAD flag is used.
-        BASS_ENCODE_WFEXT = 1024,
+        WaveFormatExtensible = 1024,
         //
         // Summary:
         //     Don't limit the data rate (to real-time speed) when sending to a Shoutcast
         //     or Icecast server.
         //     With this option you might disable the rate limiting during casting (as it'll
         //     be limited by the playback rate anyway if the source channel is being played).
-        BASS_ENCODE_CAST_NOLIMIT = 4096,
+        UnlimitedCastDataRate = 4096,
         //
         // Summary:
         //     Limit data rate to real-time.
@@ -85,56 +85,61 @@ namespace ManagedBass.Dynamics
         //     to avoid possibly causing playback buffer underruns.  Except for in those
         //     instances, this flag is applied automatically when the encoder is feeding
         //     a Shoutcast or Icecast server.
-        BASS_ENCODE_LIMIT = 8192,
+        Limit = 8192,
         //
         // Summary:
         //     Send an AIFF header to the encoder instead of a WAVE header.
-        BASS_ENCODE_AIFF = 16384,
+        AIFF = 16384,
         //
         // Summary:
         //     Free the encoder when the channel is freed.
-        BASS_ENCODE_AUTOFREE = 262144,
+        AutoFree = 262144,
     }
 
     [Flags]
     public enum BASSACMFormat
     {
-        // Summary:
-        //     Unicode (16-bit characters) option.
-        BASS_UNICODE = -2147483648,
-        //
-        // Summary:
-        //     No ACM.
-        BASS_ACM_NONE = 0,
-        //
-        // Summary:
-        //     Use the format as default selection.
-        BASS_ACM_DEFAULT = 1,
-        //
-        // Summary:
-        //     Only list formats with same sample rate as the source channel.
-        BASS_ACM_RATE = 2,
-        //
-        // Summary:
-        //     Only list formats with same number of channels (eg. mono/stereo).
-        BASS_ACM_CHANS = 4,
-        //
-        // Summary:
-        //     Suggest a format (HIWORD=format tag - use one of the Un4seen.Bass.WAVEFormatTag
-        //     flags).
-        BASS_ACM_SUGGEST = 8,
+        /// <summary>
+        /// Unicode (16-bit characters) option.
+        /// </summary>
+        Unicode = -2147483648,
+        
+        /// <summary>
+        /// No ACM.
+        /// </summary>
+        NoACM = 0,
+        
+        /// <summary>
+        /// Use the format as default selection.
+        /// </summary>
+        Default = 1,
+        
+        /// <summary>
+        /// Only list formats with same sample rate as the source channel.
+        /// </summary>
+        SameSampleRate = 2,
+        
+        /// <summary>
+        /// Only list formats with same number of channels (eg. mono/stereo).
+        /// </summary>
+        SameChannels = 4,
+        
+        /// <summary>
+        /// Suggest a format (HIWORD=format tag - use one of the WAVEFormatTag flags).
+        /// </summary>
+        Suggest = 8,
     }
 
-    // See the MMREG.H file for more codec numbers.
+    /// <remarks>See the MMREG.H file for more codec numbers.</remarks>
     public enum WAVEFormatTag
     {
         // Summary:
         //     Extensible Format (user defined)
-        EXTENSIBLE = -2,
+        Extensible = -2,
         //
         // Summary:
         //     Unknown Format
-        UNKNOWN = 0,
+        Unknown = 0,
         //
         // Summary:
         //     PCM format (8 or 16 bit), Microsoft Corporation
@@ -146,11 +151,11 @@ namespace ManagedBass.Dynamics
         //
         // Summary:
         //     IEEE PCM Float format (32 bit)
-        IEEE_FLOAT = 3,
+        IEEE_Float = 3,
         //
         // Summary:
         //     AC2, Dolby Laboratories
-        DOLBY_AC2 = 48,
+        Dolby_AC2 = 48,
         //
         // Summary:
         //     GSM 6.10, Microsoft Corporation
@@ -158,7 +163,7 @@ namespace ManagedBass.Dynamics
         //
         // Summary:
         //     MSN Audio, Microsoft Corporation
-        MSNAUDIO = 50,
+        MSNAudio = 50,
         //
         // Summary:
         //     MPEG format
@@ -214,7 +219,7 @@ namespace ManagedBass.Dynamics
         MPEG_HEAAC = 5648,
     }
 
-    static class BassEnc
+    public static class BassEnc
     {
         const string DllName = "bassenc.dll";
 

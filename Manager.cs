@@ -24,7 +24,6 @@ namespace ManagedBass
 
         public static void Load(string DllName)
         {
-            // Add the loaded DLL/assembly into dictionary
             //LoadLibrary(DllName);
         }
 

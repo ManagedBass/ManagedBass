@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ManagedBass.Dynamics
 {
@@ -48,60 +47,5 @@ namespace ManagedBass.Dynamics
         // Summary:
         //     Stereo samples are supported by hardware mixing.
         public bool SupportsStereoSamples { get { return Flags.HasFlag(BASSInfoFlags.Stereo); } }
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SampleInfo
-    {
-        public int Frequency;
-        public float Volume;
-        public float Pan;
-        public BassFlags Flags;
-        public int Length;
-        public int Max;
-        public int OriginalResolution;
-        public int Channels;
-        public int MinGap;
-        public BASS3DMode Mode3D;
-        public float MinDistance;
-        public float MaxDistance;
-        public int iAngle;
-        public int oAngle;
-        public float OutVolume;
-        public BASSVam VAM;
-        public int Priority;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DeviceInfo
-    {
-        IntPtr name;
-        IntPtr driver;
-        public DeviceInfoFlags Flags;
-
-        public string Name { get { return Marshal.PtrToStringAnsi(name); } }
-
-        public string Driver { get { return Marshal.PtrToStringAnsi(driver); } }
-
-        public bool IsDefault { get { return Flags.HasFlag(DeviceInfoFlags.Enabled); } }
-
-        public bool IsEnabled { get { return Flags.HasFlag(DeviceInfoFlags.Default); } }
-
-        public bool IsInitialized { get { return Flags.HasFlag(DeviceInfoFlags.Initialized); } }
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct ChannelInfo
-    {
-        public int Frequency;
-        public int Channels;
-        public BassFlags Flags;
-        public ChannelTypeFlags ChannelType;
-        public int OriginalResolution;
-        public int Plugin;
-        public int Sample;
-        IntPtr filename;
-
-        public string FileName { get { return Marshal.PtrToStringAnsi(filename); } }
     }
 }

@@ -39,6 +39,8 @@ namespace ManagedBass
         public int FloatLength { get { return ByteLength / 4; } }
 
         public int ShortLength { get { return ByteLength / 2; } }
+
+        public int IntLength { get { return ByteLength / 4; } }
         #endregion
 
         public BufferProvider(IntPtr Buffer, int ByteLength, BufferKind BufferKind = BufferKind.Short)
@@ -102,6 +104,24 @@ namespace ManagedBass
 
             Marshal.Copy(Pointer, Data, Offset, Length);
         }
+
+        public int[] ReadInt(int Offset = 0, int Length = 0)
+        {
+            if (Length == 0) Length = IntLength;
+
+            int[] temp = new int[Length];
+
+            Read(temp, Offset, Length);
+
+            return temp;
+        }
+
+        public void Read(int[] Data, int Offset = 0, int Length = 0)
+        {
+            if (Length == 0) Length = IntLength;
+
+            Marshal.Copy(Pointer, Data, Offset, Length);
+        }
         #endregion
 
         #region Write
@@ -120,6 +140,12 @@ namespace ManagedBass
         public void Write(short[] Data, int Offset = 0, int Length = 0)
         {
             if (Length == 0) Length = ShortLength;
+            Marshal.Copy(Data, 0, Pointer, Length);
+        }
+
+        public void Write(int[] Data, int Offset = 0, int Length = 0)
+        {
+            if (Length == 0) Length = IntLength;
             Marshal.Copy(Data, 0, Pointer, Length);
         }
         #endregion

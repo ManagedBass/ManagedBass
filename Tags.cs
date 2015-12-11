@@ -137,16 +137,16 @@ namespace ManagedBass
                     break;
                 case TagType.WaveFormat:
                     break;
-                case TagType.RIFFInfo:
+                case TagType.RiffInfo:
                     break;
-                case TagType.BASS_TAG_RIFF_BEXT:
+                case TagType.RiffBext:
                     break;
-                case TagType.BASS_TAG_RIFF_CART:
+                case TagType.RiffCart:
                     break;
-                case TagType.BASS_TAG_RIFF_DISP:
-                    tags.Comment = Marshal.PtrToStringAnsi(Bass.GetChannelTags(handle, TagType.BASS_TAG_RIFF_DISP));
+                case TagType.RiffDISP:
+                    tags.Comment = Marshal.PtrToStringAnsi(Bass.GetChannelTags(handle, TagType.RiffDISP));
                     break;
-                case TagType.BASS_TAG_APE_BINARY:
+                case TagType.ApeBinary:
                     break;
                 case TagType.MusicOrders:
                     break;

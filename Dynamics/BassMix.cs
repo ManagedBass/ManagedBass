@@ -58,8 +58,8 @@ namespace ManagedBass.Dynamics
 
         public static int MixerBufferLength
         {
-            get { return Bass.GetConfig(Configuration.BASS_CONFIG_MIXER_BUFFER); }
-            set { Bass.Configure(Configuration.BASS_CONFIG_MIXER_BUFFER, value); }
+            get { return Bass.GetConfig(Configuration.MixerBuffer); }
+            set { Bass.Configure(Configuration.MixerBuffer, value); }
         }
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetData")]

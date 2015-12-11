@@ -22,7 +22,7 @@ namespace ManagedBass.Effects
 
         /// <summary>
         /// Amplification level (0...1...n, linear). 
-        /// </remarks>
+        /// </summary>
         public double Gain
         {
             get { return Parameters.fGain; }
@@ -47,7 +47,7 @@ namespace ManagedBass.Effects
         }
 
         /// <summary>
-        /// Target volume level (0<...1, linear).
+        /// Target volume level (0&lt;...1, linear).
         /// </summary>
         public double Target
         {
@@ -61,7 +61,7 @@ namespace ManagedBass.Effects
 
         /// <summary>
         /// Quiet volume level (0...1, linear). 
-        /// </remarks>
+        /// </summary>
         public double Quiet
         {
             get { return Parameters.fQuiet; }

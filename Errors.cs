@@ -19,184 +19,231 @@ namespace ManagedBass
         /// </summary>
         Memory = 1,
 
-        //
-        // Summary:
-        //     Can't open the file
+        /// <summary>
+        /// Can't open the file
+        /// </summary>
         FileOpen = 2,
-        //
-        // Summary:
-        //     Can't find a free/valid driver
+
+        /// <summary>
+        /// Can't find a free/valid driver
+        /// </summary>
         DriverNotFound = 3,
-        //
-        // Summary:
-        //     The sample buffer was lost
+
+        /// <summary>
+        /// The sample buffer was lost
+        /// </summary>
         BufferLost = 4,
-        //
-        // Summary:
-        //     Invalid handle
+
+        /// <summary>
+        /// Invalid handle
+        /// </summary>
         InvalidHandle = 5,
-        //
-        // Summary:
-        //     Unsupported sample format
+
+        /// <summary>
+        /// Unsupported sample format
+        /// </summary>
         UnsupportedSampleFormat = 6,
-        //
-        // Summary:
-        //     Invalid playback position
+
+        /// <summary>
+        /// Invalid playback position
+        /// </summary>
         InvalidPlaybackPosition = 7,
-        //
-        // Summary:
-        //     BASS_Init has not been successfully called
+
+        /// <summary>
+        /// BASS_Init has not been successfully called
+        /// </summary>
         NotInitialised = 8,
-        //
-        // Summary:
-        //     BASS_Start has not been successfully called
+
+        /// <summary>
+        /// BASS_Start has not been successfully called
+        /// </summary>
         OutputNotStarted = 9,
-        //
-        // Summary:
-        //     No CD in drive
+
+        /// <summary>
+        /// No CD in drive
+        /// </summary>
         NoCDinDrive = 12,
-        //
-        // Summary:
-        //     Invalid track number
+
+        /// <summary>
+        /// Invalid track number
+        /// </summary>
         InvalidCDTrack = 13,
-        //
-        // Summary:
-        //     Already initialized/paused/whatever
+
+        /// <summary>
+        /// Already initialized/paused/whatever
+        /// </summary>
         Already = 14,
-        //
-        // Summary:
-        //     Not paused
+
+        /// <summary>
+        /// Not paused
+        /// </summary>
         NotPaused = 16,
-        //
-        // Summary:
-        //     Not an audio track
+
+        /// <summary>
+        /// Not an audio track
+        /// </summary>
         NotAudioTrack = 17,
-        //
-        // Summary:
-        //     Can't get a free channel
+
+        /// <summary>
+        /// Can't get a free channel
+        /// </summary>
         NoFreeChannelAvailable = 18,
-        //
-        // Summary:
-        //     An illegal type was specified
+
+        /// <summary>
+        /// An illegal type was specified
+        /// </summary>
         IllegalType = 19,
-        //
-        // Summary:
-        //     An illegal parameter was specified
+
+        /// <summary>
+        /// An illegal parameter was specified
+        /// </summary>
         IllegalParameter = 20,
-        //
-        // Summary:
-        //     No 3D support
+
+        /// <summary>
+        /// No 3D support
+        /// </summary>
         No3D = 21,
-        //
-        // Summary:
-        //     No EAX support
+
+        /// <summary>
+        /// No EAX support
+        /// </summary>
         NoEAX = 22,
-        //
-        // Summary:
-        //     Illegal device number
+
+        /// <summary>
+        /// Illegal device number
+        /// </summary>
         IllegalDevice = 23,
-        //
-        // Summary:
-        //     Not playing
+
+        /// <summary>
+        /// Not playing
+        /// </summary>
         NotPlaying = 24,
-        //
-        // Summary:
-        //     Illegal sample rate
+
+        /// <summary>
+        /// Illegal sample rate
+        /// </summary>
         IllegalSampleRate = 25,
-        //
-        // Summary:
-        //     The stream is not a file stream
+
+        /// <summary>
+        /// The stream is not a file stream
+        /// </summary>
         NotFileStream = 27,
-        //
-        // Summary:
-        //     No hardware voices available
+
+        /// <summary>
+        /// No hardware voices available
+        /// </summary>
         NoHardwareVoicesAvailable = 29,
-        //
-        // Summary:
-        //     The MOD music has no sequence data
+
+        /// <summary>
+        /// The MOD music has no sequence data
+        /// </summary>
         NoSequenceData = 31,
-        //
-        // Summary:
-        //     No internet connection could be opened
+
+        /// <summary>
+        /// No internet connection could be opened
+        /// </summary>
         NoInternetConnection = 32,
-        //
-        // Summary:
-        //     Couldn't create the file
+
+        /// <summary>
+        /// Couldn't create the file
+        /// </summary>
         FileCreate = 33,
-        //
-        // Summary:
-        //     Effects are not available
+
+        /// <summary>
+        /// Effects are not available
+        /// </summary>
         EffectsNotAvailable = 34,
-        //
-        // Summary:
-        //     The channel is playing
+
+        /// <summary>
+        /// The channel is playing
+        /// </summary>
         Playing = 35,
-        //
-        // Summary:
-        //     Requested data is not available
+
+        /// <summary>
+        /// Requested data is not available
+        /// </summary>
         DataNotAvailable = 37,
-        //
-        // Summary:
-        //     The channel is a 'decoding channel'
+
+        /// <summary>
+        /// The channel is a 'decoding channel'
+        /// </summary>
         DecodingChannel = 38,
-        //
-        // Summary:
-        //     A sufficient DirectX version is not installed
+
+        /// <summary>
+        /// A sufficient DirectX version is not installed
+        /// </summary>
         DirectX = 39,
-        //
-        // Summary:
-        //     Connection timedout
+
+        /// <summary>
+        /// Connection timedout
+        /// </summary>
         ConnectionTimedout = 40,
-        //
-        // Summary:
-        //     Unsupported file format
+
+        /// <summary>
+        /// Unsupported file format
+        /// </summary>
         UnsupportedFileFormat = 41,
-        //
-        // Summary:
-        //     Unavailable speaker
+
+        /// <summary>
+        /// Unavailable speaker
+        /// </summary>
         SpeakerUnavailable = 42,
-        //
-        // Summary:
-        //     Invalid BASS version (used by add-ons)
+
+        /// <summary>
+        /// Invalid BASS version (used by add-ons)
+        /// </summary>
         InvalidVersion = 43,
-        //
-        // Summary:
-        //     Codec is not available/supported
+
+        /// <summary>
+        /// Codec is not available/supported
+        /// </summary>
         CodecNotAvailable = 44,
-        //
-        // Summary:
-        //     The channel/file has ended
+
+        /// <summary>
+        /// The channel/file has ended
+        /// </summary>
         Ended = 45,
-        //
-        // Summary:
-        //     The device is busy (eg. in "exclusive" use by another process)
+
+        /// <summary>
+        /// The device is busy (eg. in "exclusive" use by another process)
+        /// </summary>
         DeviceBusy = 46,
-        //
-        // Summary:
-        //     BassWma: the file is protected
+
+        /// <summary>
+        /// BassWma: the file is protected
+        /// </summary>
         WmaLicense = 1000,
-        //
-        // Summary:
-        //     BassWma: WM9 is required
+
+        /// <summary>
+        /// BassWma: WM9 is required
+        /// </summary>
         WM9 = 1001,
-        //
-        // Summary:
-        //     BassWma: access denied (user/pass is invalid)
+
+        /// <summary>
+        /// BassWma: access denied (user/pass is invalid)
+        /// </summary>
         WmaAccesDenied = 1002,
-        //
-        // Summary:
-        //     BassWma: no appropriate codec is installed
+
+        /// <summary>
+        /// BassWma: no appropriate codec is installed
+        /// </summary>
         WmaCodecNotInstalled = 1003,
-        //
-        // Summary:
-        //     BassWma: individualization is needed
+
+        /// <summary>
+        /// BassWma: individualization is needed
+        /// </summary>
         WmaIndividualisationNeeded = 1004,
-        //
-        // Summary:
-        //     BASSWASAPI: no WASAPI available
+
+        /// <summary>
+        /// BASSWASAPI: no WASAPI available
+        /// </summary>
         WasapiNotAvailable = 5000
     }
 
+    /// <summary>
+    /// Wraps a Bass Error in a function return value
+    /// </summary>
+    /// <typeparam name="T">The Type of the function return value</typeparam>
     public class Return<T>
     {
         public Errors ErrorCode { get; set; }
@@ -209,10 +256,11 @@ namespace ManagedBass
 
         public static implicit operator Return<T>(T e)
         {
-            Return<T> New = new Return<T>();
-            New.ErrorCode = Bass.LastError;
-            New.Value = e;
-            return New;
+            return new Return<T>()
+            {
+                ErrorCode = Bass.LastError,
+                Value = e
+            };
         }
 
         public bool Success { get { return ErrorCode == Errors.OK; } }

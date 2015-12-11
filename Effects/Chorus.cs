@@ -72,7 +72,7 @@ namespace ManagedBass.Effects
         }
 
         /// <summary>
-        /// Maximum delay in ms (0<...6000).
+        /// Maximum delay in ms (0&lt;...6000).
         /// </summary>
         public double MaxSweep
         {
@@ -85,7 +85,7 @@ namespace ManagedBass.Effects
         }
 
         /// <summary>
-        /// Minimum delay in ms (0<...6000).
+        /// Minimum delay in ms (0&lt;...6000).
         /// </summary>
         public double MinSweep
         {
@@ -98,7 +98,7 @@ namespace ManagedBass.Effects
         }
 
         /// <summary>
-        /// Rate in ms/s (0<...1000).
+        /// Rate in ms/s (0&lt;...1000).
         /// </summary>
         public double Rate
         {
