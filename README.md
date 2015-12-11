@@ -3,6 +3,10 @@
 (c) 2015 Mathew Sachin. All Rights Reserved.  
 An Alternative to the Bass.Net Managed Wrapper around Un4seen Bass.dll
 
+Available as a NuGet Package  
+Bass and its AddOns can be downloaded at http://un4seen.com/bass  
+ManagedBass is targeted for AnyCPU, but bass dlls are separate for x86 and x64. Download the versions you need
+
 AddOns
 -----------------------------------------
 * Open Source
