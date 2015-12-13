@@ -22,7 +22,7 @@ namespace ManagedBass
         /// <summary>
         /// Gets Information about a Drive
         /// </summary>
-        CDInfo DriveInfo { get { return BassCd.DriveInfo(DriveIndex); } }
+        CDInfo DriveInfo { get { return BassCd.GetDriveInfo(DriveIndex); } }
 
         /// <summary>
         /// Private Constructor to Init a CD Drive

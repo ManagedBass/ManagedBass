@@ -75,6 +75,14 @@ namespace ManagedBass.Dynamics
         UPC = 1073741824,
     }
 
+    public enum CDDoorAction
+    {
+        Close,
+        Open,
+        Lock,
+        Unlock
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     public struct CDInfo
     {
@@ -98,6 +106,35 @@ namespace ManagedBass.Dynamics
         public char DriveLetter { get { return char.ToUpper((char)(letter + 63)); } }
     }
 
+    [StructLayout(LayoutKind.Explicit)]
+    public struct TOCTrack
+    {
+        [FieldOffset(0)]
+        byte res1;
+        [FieldOffset(1)]
+        byte adrcon;
+        [FieldOffset(2)]
+        byte track;
+        [FieldOffset(3)]
+        byte res2;
+        [FieldOffset(4)]
+        int lba;
+        [FieldOffset(4), MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        byte[] hmsf;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct TOC
+    {
+        short size;
+        byte first;
+        byte last;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 100)]
+        TOCTrack[] tracks;
+    }
+
+    public delegate void CDDataProcedure(int handle, int pos, int type, IntPtr buffer, int length, IntPtr user);
+
     public static class BassCd
     {
         const string DllName = "basscd.dll";
@@ -111,7 +148,7 @@ namespace ManagedBass.Dynamics
                 int Count = 0;
                 CDInfo info = new CDInfo();
 
-                for (int i = 0; DriveInfo(i, ref info); i++) ++Count;
+                for (int i = 0; GetDriveInfo(i, ref info); i++) ++Count;
 
                 return Count;
             }
@@ -184,19 +221,76 @@ namespace ManagedBass.Dynamics
         public static extern bool IsReady(int Drive);
 
         [DllImport(DllName, EntryPoint = "BASS_CD_GetInfo")]
-        public static extern bool DriveInfo(int Drive, ref CDInfo Info);
+        public static extern bool GetDriveInfo(int Drive, ref CDInfo Info);
 
-        public static CDInfo DriveInfo(int Drive)
+        public static CDInfo GetDriveInfo(int Drive)
         {
             CDInfo temp = new CDInfo();
-            DriveInfo(Drive, ref temp);
+            GetDriveInfo(Drive, ref temp);
             return temp;
         }
 
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreate")]
         public static extern int CreateStream(int Drive, int Track, BassFlags Flags);
 
+        [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreateEx")]
+        public static extern int CreateStream(int Drive, int Track, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr));
+
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreateFile")]
         public static extern int CreateStream(string File, BassFlags Flags);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreateFileEx")]
+        public static extern int CreateStream(string File, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr));
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_StreamGetTrack")]
+        public static extern int GetStreamTrack(int handle);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_StreamSetTrack")]
+        public static extern bool SetStreamTrack(int handle, int track);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_Door")]
+        public static extern bool Door(int drive, CDDoorAction action);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_DoorIsLocked")]
+        public static extern bool DoorIsLocked(int drive);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_DoorIsOpen")]
+        public static extern bool DoorIsOpen(int drive);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_SetInterface")]
+        public static extern int SetInterface(int iface);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_SetOffset")]
+        public static extern bool SetOffset(int Drive, int offset);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_GetID")]
+        public static extern string GetID(int Drive, int id);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_GetTOC")]
+        public static extern bool GetTOC(int Drive, int mode, out TOC toc);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_GetTracks")]
+        public static extern int GetTracks(int Drive);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_GetTrackLength")]
+        public static extern int GetTrackLength(int Drive, int Track);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_GetTrackPregap")]
+        public static extern int GetTrackPregap(int Drive, int Track);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_Analog_GetPosition")]
+        public static extern int AnalogGetPosition(int drive);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_Analog_IsActive")]
+        public static extern bool AnalogIsActive(int drive);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_Analog_Play")]
+        public static extern bool AnalogPlay(int drive, int track, int pos);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_Analog_PlayFile")]
+        public static extern bool AnalogPlay(string file, int pos);
+
+        [DllImport(DllName, EntryPoint = "BASS_CD_Analog_Stop")]
+        public static extern bool AnalogStop(int drive);
     }
 }

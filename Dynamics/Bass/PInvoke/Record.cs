@@ -79,7 +79,6 @@ namespace ManagedBass.Dynamics
         public extern static int RecordGetInput(int input, ref float volume);
 
         [DllImport(DllName, EntryPoint = "BASS_RecordGetInputName")]
-        [return: MarshalAs(UnmanagedType.LPWStr)]
         public extern static string RecordGetInputName(int input);
 
         [DllImport(DllName, EntryPoint = "BASS_RecordSetInput")]
