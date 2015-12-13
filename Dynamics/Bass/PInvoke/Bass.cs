@@ -27,7 +27,6 @@ namespace ManagedBass.Dynamics
          * BASS_FXReset
          * BASS_GetEAXParameters
          * BASS_PluginLoadDirectory
-         * BASS_SampleSetInfo
          * BASS_SetEAXParameters
          */
 
@@ -495,6 +494,9 @@ namespace ManagedBass.Dynamics
             SampleGetInfo(Handle, ref temp);
             return temp;
         }
+
+        [DllImport(DllName, EntryPoint = "BASS_SampleSetInfo")]
+        public static extern bool SampleSetInfo(int Handle, SampleInfo info);
 
         #region Sample Load
         [DllImport(DllName)]
