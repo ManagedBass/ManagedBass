@@ -1,5 +1,5 @@
 # ManagedBass
-[![Build status](https://ci.appveyor.com/api/projects/status/0xjpk9r156tn6reu?svg=true)](https://ci.appveyor.com/project/MathewSachin/managedbass)  
+[![Build status](https://ci.appveyor.com/api/projects/status/89jfnv0ghwyotm06?svg=true)](https://ci.appveyor.com/project/MathewSachin/managedbass)
 (c) 2015 Mathew Sachin. All Rights Reserved.  
 An Alternative to the Bass.Net Managed Wrapper around Un4seen Bass.dll
 
