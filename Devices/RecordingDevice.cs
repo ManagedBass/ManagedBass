@@ -21,7 +21,7 @@ namespace ManagedBass
 
         public static int Count { get { return Bass.RecordingDeviceCount; } }
 
-        DeviceInfo DeviceInfo { get { return Bass.RecordingDeviceInfo(DeviceId); } }
+        DeviceInfo DeviceInfo { get { return Bass.GetRecordingDeviceInfo(DeviceId); } }
 
         public int DeviceId { get; protected set; }
 

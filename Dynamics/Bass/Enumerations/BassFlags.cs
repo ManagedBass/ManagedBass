@@ -5,113 +5,98 @@ namespace ManagedBass.Dynamics
     [Flags]
     public enum BassFlags
     {
-        // Summary:
-        //     File is a Unicode (16-bit characters) filename
+        /// <summary>
+        /// File is a Unicode (16-bit characters) filename
+        /// </summary>
         Unicode = -2147483648,
-        //
-        // Summary:
-        //     0 = default create stream: 16 Bit, stereo, no Float, hardware mixing, no
-        //     Loop, no 3D, no speaker assignments...
+        
+        /// <summary>
+        /// 0 = default create stream: 16 Bit, stereo, no Float, hardware mixing, no Loop, no 3D, no speaker assignments...
+        /// </summary>
         Default = 0,
-        //
-        // Summary:
-        //     BASS_FX add-on: If in use, then you can do other stuff while detection's
-        //     in process.
+        
+        /// <summary>
+        /// BASS_FX add-on: If in use, then you can do other stuff while detection's in process.
+        /// </summary>
         FxBpmBackground = 1,
-        //
-        // Summary:
-        //     BASSMIDI add-on: Don't send a WAVE header to the encoder. If this flag is
-        //     used then the sample format (mono 16-bit) must be passed to the encoder some
-        //     other way, eg. via the command-line.
+        
+        /// <summary>
+        /// BASSMIDI add-on: Don't send a WAVE header to the encoder. 
+        /// If this flag is used then the sample format (mono 16-bit) 
+        /// must be passed to the encoder some other way, eg. via the command-line.
+        /// </summary>
         MidiNoHeader = 1,
-        //
-        // Summary:
-        //     Use 8-bit resolution. If neither this or the BASS_SAMPLE_FLOAT flags are
-        //     specified, then the stream is 16-bit.
+        
+        /// <summary>
+        /// Use 8-bit resolution. If neither this or the BASS_SAMPLE_FLOAT flags are specified, then the stream is 16-bit.
+        /// </summary>
         Byte = 1,
-        //
-        // Summary:
-        //     BASSMIDI add-on: Reduce 24-bit sample data to 16-bit before encoding.
+        
+        /// <summary>
+        /// BASSMIDI add-on: Reduce 24-bit sample data to 16-bit before encoding.
+        /// </summary>
         Midi16Bit = 2,
-        //
-        // Summary:
-        //     Decode/play the stream (MP3/MP2/MP1 only) in mono, reducing the CPU usage
-        //     (if it was originally stereo).
-        //     This flag is automatically applied if BASS_DEVICE_MONO was specified when
-        //     calling Un4seen.Bass.Bass.BASS_Init(System.Int32,System.Int32,Un4seen.Bass.BASSInit,System.IntPtr).
-        //
-        // Summary:
-        //     Music: Decode/play the mod music in mono, reducing the CPU usage (if it was
-        //     originally stereo).  This flag is automatically applied if BASS_DEVICE_MONO
-        //     was specified when calling Un4seen.Bass.Bass.BASS_Init(System.Int32,System.Int32,Un4seen.Bass.BASSInit,System.IntPtr).
+        
+        /// <summary>
+        /// Decode/play the stream (MP3/MP2/MP1 only) in mono, reducing the CPU usage (if it was originally stereo).
+        /// This flag is automatically applied if BASS_DEVICE_MONO was specified when calling Bass.Init().
+        /// </summary>
         Mono = 2,
-        //
-        // Summary:
-        //     BASS_FX add-on: If in use, then will auto multiply bpm by 2 (if BPM < MinBPM*2)
+        
+        /// <summary>
+        /// BASS_FX add-on: If in use, then will auto multiply bpm by 2 (if BPM &lt; MinBPM*2)
+        /// </summary>
         FXBpmMult2 = 2,
-        //
-        // Summary:
-        //     Music: Loop the music. This flag can be toggled at any time using Un4seen.Bass.Bass.BASS_ChannelFlags(System.Int32,Un4seen.Bass.BASSFlag,Un4seen.Bass.BASSFlag).
-        //
-        // Summary:
-        //     Loop the file. This flag can be toggled at any time using Un4seen.Bass.Bass.BASS_ChannelFlags(System.Int32,Un4seen.Bass.BASSFlag,Un4seen.Bass.BASSFlag).
+        
+        /// <summary>
+        /// Loop the file. This flag can be toggled at any time using Bass.ChannelFlags().
+        /// </summary>
         Loop = 4,
-        //
-        // Summary:
-        //     Use 3D functionality. This is ignored if BASS_DEVICE_3D wasn't specified
-        //     when calling Un4seen.Bass.Bass.BASS_Init(System.Int32,System.Int32,Un4seen.Bass.BASSInit,System.IntPtr).
-        //     3D streams must be mono (chans=1). The SPEAKER flags can not be used together
-        //     with this flag.
-        //
-        // Summary:
-        //     Music: Use 3D functionality. This is ignored if BASS_DEVICE_3D wasn't specified
-        //     when calling Un4seen.Bass.Bass.BASS_Init(System.Int32,System.Int32,Un4seen.Bass.BASSInit,System.IntPtr).
-        //     3D streams must be mono (chans=1). The SPEAKER flags can not be used together
-        //     with this flag.
+        
+        /// <summary>
+        /// Use 3D functionality. This is ignored if BASS_DEVICE_3D wasn't specified when calling Bass.Init().
+        /// 3D streams must be mono (chans=1). 
+        /// The SPEAKER flags can not be used together with this flag.
+        /// </summary>
         Bass3D = 8,
-        //
-        // Summary:
-        //     Force the stream to not use hardware mixing.
+        
+        /// <summary>
+        /// Force the stream to not use hardware mixing.
+        /// </summary>
         SoftwareMixing = 16,
-        //
-        // Summary:
-        //     Sample: muted at max distance (3D only)
+        
+        /// <summary>
+        /// Sample: muted at max distance (3D only)
+        /// </summary>
         MuteMax = 32,
-        //
-        // Summary:
-        //     Sample: uses the DX7 voice allocation & management
+        
+        /// <summary>
+        /// Sample: uses the DX7 voice allocation & management
+        /// </summary>
         VAM = 64,
-        //
-        // Summary:
-        //     Enable the old implementation of DirectX 8 effects. See the DX8 effect implementations
-        //     section for details.
-        //     Use Un4seen.Bass.Bass.BASS_ChannelSetFX(System.Int32,Un4seen.Bass.BASSFXType,System.Int32)
-        //     to add effects to the stream. Requires DirectX 8 or above.
-        //
-        // Summary:
-        //     Music: Enable the old implementation of DirectX 8 effects. See the DX8 effect
-        //     implementations section for details.
-        //     Use Un4seen.Bass.Bass.BASS_ChannelSetFX(System.Int32,Un4seen.Bass.BASSFXType,System.Int32)
-        //     to add effects to the stream. Requires DirectX 8 or above.
+        
+        /// <summary>
+        /// Enable the old implementation of DirectX 8 effects. 
+        /// See the DX8 effect implementations section for details.
+        /// Use Bass.ChannelSetFX() to add effects to the stream. 
+        /// Requires DirectX 8 or above.
+        /// </summary>
         FX = 128,
-        //
-        // Summary:
-        //     Music: Use 32-bit floating-point sample data (see Floating-Point Channels
-        //     for details). WDM drivers or the BASS_STREAM_DECODE flag are required to
-        //     use this flag.
-        //
-        // Summary:
-        //     Use 32-bit floating-point sample data (see Floating-Point Channels for details).
-        //     WDM drivers or the BASS_STREAM_DECODE flag are required to use this flag.
+        
+        /// <summary>
+        /// Use 32-bit floating-point sample data (see Floating-Point Channels for details). 
+        /// WDM drivers or the BASS_STREAM_DECODE flag are required to use this flag.
+        /// </summary>
         Float = 256,
-        //
-        // Summary:
-        //     Music: Use "normal" ramping (as used in FastTracker 2).
+        
+        /// <summary>
+        /// Music: Use "normal" ramping (as used in FastTracker 2).
+        /// </summary>
         MusicRamp = 512,
-        //
-        // Summary:
-        //     BASS_FX add-on (AddOn.Fx.BassFx.BASS_FX_TempoCreate): Uses a linear interpolation
-        //     mode (simple).
+        
+        /// <summary>
+        /// BASS_FX add-on (AddOn.Fx.BassFx.BASS_FX_TempoCreate): Uses a linear interpolation mode (simple).
+        /// </summary>
         FxTempoAlgorithmLinear = 512,
         //
         // Summary:
@@ -127,28 +112,32 @@ namespace ManagedBass.Dynamics
         //     is always performed by BASSCD even if the drive is apparently capable of
         //     de-interleaving itself.
         CDSubchannelNoHW = 1024,
-        //
-        // Summary:
-        //     BASS_FX add-on (AddOn.Fx.BassFx.BASS_FX_TempoCreate): Uses a cubic interpolation
-        //     mode (recommended, default).
+        
+        /// <summary>
+        /// BASS_FX add-on (AddOn.Fx.BassFx.BASS_FX_TempoCreate): Uses a cubic interpolation mode (recommended, default).
+        /// </summary>
         FxTempoAlgorithmCubic = 1024,
-        //
-        // Summary:
-        //     Music: Use "sensitive" ramping.
+        
+        /// <summary>
+        /// Music: Use "sensitive" ramping.
+        /// </summary>
         MuicSensitiveRamping = 1024,
-        //
-        // Summary:
-        //     BASSMIDI add-on: Ignore system reset events (MIDI_EVENT_SYSTEM) when the
-        //     system mode is unchanged. This flag can be toggled at any time using Un4seen.Bass.Bass.BASS_ChannelFlags(System.Int32,Un4seen.Bass.BASSFlag,Un4seen.Bass.BASSFlag).
+        
+        /// <summary>
+        /// BASSMIDI add-on: Ignore system reset events (MIDI_EVENT_SYSTEM) when the system mode is unchanged.
+        /// This flag can be toggled at any time using Bass.ChannelFlags().
+        /// </summary>
         MidiNoSystemReset = 2048,
-        //
-        // Summary:
-        //     BASS_FX add-on (AddOn.Fx.BassFx.BASS_FX_TempoCreate): Uses a 8-tap band-limited
-        //     Shannon interpolation (complex, but not much better than cubic).
+        
+        /// <summary>
+        /// BASS_FX add-on (AddOn.Fx.BassFx.BASS_FX_TempoCreate): 
+        /// Uses a 8-tap band-limited Shannon interpolation (complex, but not much better than cubic).
+        /// </summary>
         FxTempoAlgorithmShannon = 2048,
-        //
-        // Summary:
-        //     Music: Apply XMPlay's surround sound to the music (ignored in mono).
+        
+        /// <summary>
+        /// Music: Apply XMPlay's surround sound to the music (ignored in mono).
+        /// </summary>
         MusicSurround = 2048,
         //
         // Summary:
@@ -163,18 +152,15 @@ namespace ManagedBass.Dynamics
         //     Note that if you request both sub-channel data and C2 error info, the C2
         //     info will come before the sub-channel data!
         CdC2Errors = 2048,
-        //
-        // Summary:
-        //     BASSmix add-on: filter the sample data when resampling (only available/used
-        //     in pre BASSmix v2.4.7).
-        MixerFilter = 4096,
-        //
-        // Summary:
-        //     BASSmix add-on: only read buffered data.
+                
+        /// <summary>
+        /// BASSmix add-on: only read buffered data.
+        /// </summary>
         SplitSlave = 4096,
-        //
-        // Summary:
-        //     Music: Apply XMPlay's surround sound mode 2 to the music (ignored in mono).
+        
+        /// <summary>
+        /// Music: Apply XMPlay's surround sound mode 2 to the music (ignored in mono).
+        /// </summary>
         MusicSurround2 = 4096,
         //
         // Summary:
@@ -182,28 +168,31 @@ namespace ManagedBass.Dynamics
         //     of stopping it abruptly at the end of the file. This flag can be toggled
         //     at any time using Un4seen.Bass.Bass.BASS_ChannelFlags(System.Int32,Un4seen.Bass.BASSFlag,Un4seen.Bass.BASSFlag).
         MidiDecayEnd = 4096,
-        //
-        // Summary:
-        //     BASSmix add-on: resume a stalled mixer immediately upon new/unpaused source
+        
+        /// <summary>
+        /// BASSmix add-on: resume a stalled mixer immediately upon new/unpaused source
+        /// </summary>
         MixerResume = 4096,
-        //
-        // Summary:
-        //     BASSmix add-on: enable Un4seen.Bass.AddOn.Mix.BassMix.BASS_Mixer_ChannelGetPositionEx(System.Int32,Un4seen.Bass.BASSMode,System.Int32)
-        //     support.
+        
+        /// <summary>
+        /// BASSmix add-on: enable BassMix.ChannelGetPositionEx() support.
+        /// </summary>
         MixerPositionEx = 8192,
-        //
-        // Summary:
-        //     Music: Play .MOD file as FastTracker 2 would.
+        
+        /// <summary>
+        /// Music: Play .MOD file as FastTracker 2 would.
+        /// </summary>
         MusicFT2Mod = 8192,
-        //
-        // Summary:
-        //     BASSMIDI add-on: Disable the MIDI reverb/chorus processing. This flag can
-        //     be toggled at any time using Un4seen.Bass.Bass.BASS_ChannelFlags(System.Int32,Un4seen.Bass.BASSFlag,Un4seen.Bass.BASSFlag).
+        
+        /// <summary>
+        /// BASSMIDI add-on: Disable the MIDI reverb/chorus processing. 
+        /// This flag can be toggled at any time using Bass.ChannelFlags().
+        /// </summary>
         MidiNoFx = 8192,
-        //
-        // Summary:
-        //     BASSmix add-on: buffer source data for Un4seen.Bass.AddOn.Mix.BassMix.BASS_Mixer_ChannelGetData(System.Int32,System.IntPtr,System.Int32)
-        //     and Un4seen.Bass.AddOn.Mix.BassMix.BASS_Mixer_ChannelGetLevel(System.Int32).
+        
+        /// <summary>
+        /// BASSmix add-on: buffer source data for BassMix.ChannelGetData() and BassMix.ChannelGetLevel().
+        /// </summary>
         MixerBuffer = 8192,
         //
         // Summary:
@@ -213,33 +202,36 @@ namespace ManagedBass.Dynamics
         //     and can also be used in Un4seen.Bass.Bass.BASS_ChannelSetPosition(System.Int32,System.Int64,Un4seen.Bass.BASSMode)
         //     calls to have it apply to particular position changes.
         MidiDecaySeek = 16384,
-        //
-        // Summary:
-        //     Music: Play .MOD file as ProTracker 1 would.
+        
+        /// <summary>
+        /// Music: Play .MOD file as ProTracker 1 would.
+        /// </summary>
         MusicPT1Mod = 16384,
-        //
-        // Summary:
-        //     BASSmix add-on: Limit mixer processing to the amount available from this
-        //     source.
+        
+        /// <summary>
+        /// BASSmix add-on: Limit mixer processing to the amount available from this source.
+        /// </summary>
         MixerLimit = 16384,
-        //
-        // Summary:
-        //     Music: Stop all notes when seeking (using Un4seen.Bass.Bass.BASS_ChannelSetPosition(System.Int32,System.Int64,Un4seen.Bass.BASSMode)).
+        
+        /// <summary>
+        /// Music: Stop all notes when seeking (using Bass.ChannelSetPosition()).
+        /// </summary>
         MusicPositionReset = 32768,
-        //
-        // Summary:
-        //     Recording: Start the recording paused. Use Un4seen.Bass.Bass.BASS_ChannelPlay(System.Int32,System.Boolean)
-        //     to start it.
+        
+        /// <summary>
+        /// Recording: Start the recording paused. Use Bass.ChannelPlay() to start it.
+        /// </summary>
         RecordPause = 32768,
-        //
-        // Summary:
-        //     BASSMIDI add-on: Do not remove empty space (containing no events) from the
-        //     end of the file.
+        
+        /// <summary>
+        /// BASSMIDI add-on: Do not remove empty space (containing no events) from the end of the file.
+        /// </summary>
         MidiNoCrop = 32768,
-        //
-        // Summary:
-        //     Music: Use non-interpolated mixing. This generally reduces the sound quality,
-        //     but can be good for chip-tunes.
+        
+        /// <summary>
+        /// Music: Use non-interpolated mixing.
+        /// This generally reduces the sound quality, but can be good for chip-tunes.
+        /// </summary>
         MusicNonInterpolated = 65536,
         //
         // Summary:
@@ -247,21 +239,25 @@ namespace ManagedBass.Dynamics
         //     with velocity=0) when there are overlapping instances of the note. Otherwise
         //     all instances are released. This flag can be toggled at any time using Un4seen.Bass.Bass.BASS_ChannelFlags(System.Int32,Un4seen.Bass.BASSFlag,Un4seen.Bass.BASSFlag).
         MidiNoteOff1 = 65536,
-        //
-        // Summary:
-        //     BASS_FX add-on: Free the source handle as well?
+        
+        /// <summary>
+        /// BASS_FX add-on: Free the source handle as well?
+        /// </summary>
         FxFreeSource = 65536,
-        //
-        // Summary:
-        //     Sample: override lowest volume
+        
+        /// <summary>
+        /// Sample: override lowest volume
+        /// </summary>
         SampleOverrideLowestVolume = 65536,
-        //
-        // Summary:
-        //     BASSmix add-on: end the stream when there are no sources
+        
+        /// <summary>
+        /// BASSmix add-on: end the stream when there are no sources
+        /// </summary>
         MixerEnd = 65536,
-        //
-        // Summary:
-        //     BASSmix add-on: Matrix mixing
+        
+        /// <summary>
+        /// BASSmix add-on: Matrix mixing
+        /// </summary>
         MixerMatrix = 65536,
         //
         // Summary:
@@ -286,21 +282,25 @@ namespace ManagedBass.Dynamics
         //     needs to be decoded. This flag is also ignored if the file is too large to
         //     be mapped into memory.
         MidiFontMemoryMap = 131072,
-        //
-        // Summary:
-        //     BASSmix add-on: don't stall when there are no sources
+        
+        /// <summary>
+        /// BASSmix add-on: don't stall when there are no sources
+        /// </summary>
         MixerNonStop = 131072,
-        //
-        // Summary:
-        //     Sample: override longest playing
+        
+        /// <summary>
+        /// Sample: override longest playing
+        /// </summary>
         SampleOverrideLongestPlaying = 131072,
-        //
-        // Summary:
-        //     BASSmix add-on: don't process the source
+        
+        /// <summary>
+        /// BASSmix add-on: don't process the source
+        /// </summary>
         MixerPause = 131072,
-        //
-        // Summary:
-        //     Sample: override furthest from listener (3D only)
+        
+        /// <summary>
+        /// Sample: override furthest from listener (3D only)
+        /// </summary>
         SampleOverrideDistance = 196608,
         //
         // Summary:
@@ -313,8 +313,7 @@ namespace ManagedBass.Dynamics
         //     a music and forget about it, as BASS will automatically free the music's
         //     resources when it has reached the end or when Un4seen.Bass.Bass.BASS_ChannelStop(System.Int32)
         //     (or Un4seen.Bass.Bass.BASS_Stop()) is called.
-        //     Note that some musics never actually end on their own (ie. without you stopping
-        //     them).
+        //     Note that some musics never actually end on their own (ie. without you stopping them).
         AutoFree = 262144,
         //
         // Summary:
@@ -359,13 +358,15 @@ namespace ManagedBass.Dynamics
         //     to retrieve decoded sample data. BASS_SAMPLE_SOFTWARE/3D/FX/AUTOFREE are
         //     ignored when using this flag, as are the SPEAKER flags.
         Decode = 2097152,
-        //
-        // Summary:
-        //     Music: Stop all notes and reset bpm/etc when seeking.
+        
+        /// <summary>
+        /// Music: Stop all notes and reset bpm/etc when seeking.
+        /// </summary>
         MusicPositionResetEx = 4194304,
-        //
-        // Summary:
-        //     BASSmix add-on: downmix to stereo (or mono if mixer is mono)
+        
+        /// <summary>
+        /// BASSmix add-on: downmix to stereo (or mono if mixer is mono)
+        /// </summary>
         MixerDownMix = 4194304,
         //
         // Summary:
@@ -378,9 +379,10 @@ namespace ManagedBass.Dynamics
         //     but also requires quite a bit more processing. If neither this or the BASS_MUSIC_NONINTER
         //     flag is specified, linear interpolation is used.
         SincInterpolation = 8388608,
-        //
-        // Summary:
-        //     BASSmix add-on: don't ramp-in the start
+        
+        /// <summary>
+        /// BASSmix add-on: don't ramp-in the start
+        /// </summary>
         MixerNoRampin = 8388608,
         //
         // Summary:
@@ -388,49 +390,60 @@ namespace ManagedBass.Dynamics
         //     during connection.
         //     This can be useful to determine the reason for a failure.
         StreamStatus = 8388608,
-        //
-        // Summary:
-        //     Front speakers (channel 1/2)
+        
+        /// <summary>
+        /// Front speakers (channel 1/2)
+        /// </summary>
         SpeakerFront = 16777216,
-        //
-        // Summary:
-        //     speakers Pair 1
+        
+        /// <summary>
+        /// Speakers Pair 1
+        /// </summary>
         SpeakerPair1 = 16777216,
-        //
-        // Summary:
-        //     speakers Pair 2
+        
+        /// <summary>
+        /// Speakers Pair 2
+        /// </summary>
         SpeakerPair2 = 33554432,
-        //
-        // Summary:
-        //     Rear/Side speakers (channel 3/4)
+        
+        /// <summary>
+        /// Rear/Side speakers (channel 3/4)
+        /// </summary>
         SpeakerRear = 33554432,
-        //
-        // Summary:
-        //     speakers Pair 3
+        
+        /// <summary>
+        /// Speakers Pair 3
+        /// </summary>
         SpeakerPair3 = 50331648,
-        //
-        // Summary:
-        //     Center & LFE speakers (5.1, channel 5/6)
+        
+        /// <summary>
+        /// Center & LFE speakers (5.1, channel 5/6)
+        /// </summary>
         SpeakerCenterLFE = 50331648,
-        //
-        // Summary:
-        //     speakers Pair 4
+        
+        /// <summary>
+        /// Speakers Pair 4
+        /// </summary>
         SpeakerPair4 = 67108864,
-        //
-        // Summary:
-        //     Rear Center speakers (7.1, channel 7/8)
+        
+        /// <summary>
+        /// Rear Center speakers (7.1, channel 7/8)
+        /// </summary>
         SpeakerRearCenter = 67108864,
-        //
-        // Summary:
-        //     speakers Pair 5
+        
+        /// <summary>
+        /// Speakers Pair 5
+        /// </summary>
         SpeakerPair5 = 83886080,
-        //
-        // Summary:
-        //     Speakers Pair 6
+        
+        /// <summary>
+        /// Speakers Pair 6
+        /// </summary>
         SpeakerPair6 = 100663296,
-        //
-        // Summary:
-        //     Speakers Pair 7
+        
+        /// <summary>
+        /// Speakers Pair 7
+        /// </summary>
         SpeakerPair7 = 117440512,
         //
         // Summary:

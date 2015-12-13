@@ -34,7 +34,7 @@ namespace ManagedBass
 
         public static PlaybackDevice DefaultDevice { get { return new PlaybackDevice(1); } }
 
-        DeviceInfo DeviceInfo { get { return Bass.DeviceInfo(DeviceId); } }
+        DeviceInfo DeviceInfo { get { return Bass.GetDeviceInfo(DeviceId); } }
 
         public int DeviceId { get; protected set; }
 

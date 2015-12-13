@@ -30,13 +30,28 @@ namespace ManagedBass.Dynamics
 
         #region Record Get Device Info
         [DllImport(DllName, EntryPoint = "BASS_RecordGetDeviceInfo")]
-        public static extern bool RecordingDeviceInfo(int Device, out DeviceInfo info);
+        public static extern bool GetRecordingDeviceInfo(int Device, out DeviceInfo info);
 
-        public static DeviceInfo RecordingDeviceInfo(int Device)
+        public static DeviceInfo GetRecordingDeviceInfo(int Device)
         {
             DeviceInfo temp;
-            RecordingDeviceInfo(Device, out temp);
+            GetRecordingDeviceInfo(Device, out temp);
             return temp;
+        }
+        #endregion
+
+        #region Record Get Info
+        [DllImport(DllName, EntryPoint = "BASS_RecordGetInfo")]
+        public static extern bool GetRecordingInfo(out RecordInfo info);
+
+        public static RecordInfo RecordingInfo
+        {
+            get
+            {
+                RecordInfo temp;
+                GetRecordingInfo(out temp);
+                return temp;
+            }
         }
         #endregion
 
@@ -53,7 +68,7 @@ namespace ManagedBass.Dynamics
                 int Count = 0;
                 DeviceInfo info;
 
-                for (int i = 0; RecordingDeviceInfo(i, out info); i++)
+                for (int i = 0; GetRecordingDeviceInfo(i, out info); i++)
                     if (info.IsEnabled) ++Count;
 
                 return Count;
@@ -62,6 +77,10 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_RecordGetInput")]
         public extern static int RecordGetInput(int input, ref float volume);
+
+        [DllImport(DllName, EntryPoint = "BASS_RecordGetInputName")]
+        [return: MarshalAs(UnmanagedType.LPWStr)]
+        public extern static string RecordGetInputName(int input);
 
         [DllImport(DllName, EntryPoint = "BASS_RecordSetInput")]
         public extern static bool RecordSetInput(int input, InputFlags setting, float volume);

@@ -655,22 +655,6 @@
         MidiInputPorts = 66564,
         //
         // Summary:
-        //     BASSmix add-on: The order of filter used to reduce aliasing (only available/used
-        //     pre BASSmix 2.4.7, where BASS_CONFIG_SRC is used).
-        //     order (int): The filter order... 2 (min) to 50 (max), and even. If the value
-        //     specified is outside this range, it is automatically capped.
-        //     The filter order determines how abruptly the level drops at the cutoff frequency,
-        //     or the roll-off. The levels rolls off at 6 dB per octave for each order.
-        //     For example, a 4th order filter will roll-off at 24 dB per octave. A low
-        //     order filter may result in some aliasing persisting, and sounds close to
-        //     the cutoff frequency being attenuated. Higher orders reduce those things,
-        //     but require more processing.
-        //     By default, a 4th order filter is used. Changes only affect channels that
-        //     are subsequently plugged into a mixer, not those that are already plugged
-        //     in.
-        MixerFilter = 67072,
-        //
-        // Summary:
         //     BASSmix add-on: The source channel buffer size multiplier.
         //     multiple (int): The buffer size multiplier... 1 (min) to 5 (max). If the
         //     value specified is outside this range, it is automatically capped.

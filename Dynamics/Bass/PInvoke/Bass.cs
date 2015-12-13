@@ -16,7 +16,6 @@ namespace ManagedBass.Dynamics
         /* To Wrap:
          * 
          * 3D * 
-         * BASS_Apply3D
          * BASS_ChannelGet3DAttributes
          * BASS_ChannelGet3DPosition
          * BASS_ChannelSet3DAttributes
@@ -27,26 +26,60 @@ namespace ManagedBass.Dynamics
          * BASS_ChannelUpdate
          * BASS_FXReset
          * BASS_GetEAXParameters
-         * BASS_GetInfo
-         * BASS_GetVersion
-         * BASS_Pause
-         * BASS_PluginFree
-         * BASS_PluginGetInfo
-         * BASS_PluginLoad
          * BASS_PluginLoadDirectory
-         * BASS_RecordGetInfo
          * BASS_SampleSetInfo
          * BASS_SetEAXParameters
-         * BASS_Start
-         * BASS_Stop
-         * BASS_Update
          */
+
+        [DllImport(DllName, EntryPoint = "BASS_Start")]
+        public static extern bool Start();
+
+        [DllImport(DllName, EntryPoint = "BASS_Pause")]
+        public static extern bool Pause();
+
+        [DllImport(DllName, EntryPoint = "BASS_Stop")]
+        public static extern bool Stop();
+
+        [DllImport(DllName, EntryPoint = "BASS_Update")]
+        public static extern bool Update(int Length);
+
+        [DllImport(DllName)]
+        static extern int BASS_GetVersion();
+
+        public static int Version { get { return BASS_GetVersion(); } }
+
+        [DllImport(DllName, EntryPoint = "BASS_GetInfo")]
+        public static extern bool GetInfo(out BassInfo Info);
+
+        public static BassInfo Info
+        {
+            get
+            {
+                BassInfo temp;
+                GetInfo(out temp);
+                return temp;
+            }
+        }
+
+        [DllImport(DllName, EntryPoint = "BASS_Apply3D")]
+        public static extern void Apply3D();
+
+        #region Plugin
+        [DllImport(DllName, EntryPoint = "BASS_PluginGetInfo")]
+        public static extern PluginInfo GetPluginInfo(int Handle);
+
+        [DllImport(DllName, EntryPoint = "BASS_PluginLoad")]
+        public static extern int LoadPlugin([MarshalAs(UnmanagedType.LPWStr)]string FileName, BassFlags Flags);
+
+        [DllImport(DllName, EntryPoint = "BASS_PluginFree")]
+        public static extern bool FreePlugin(int Handle);
+        #endregion
 
         #region Devices
         [DllImport(DllName)]
         static extern bool BASS_Init(int Device, int Frequency, DeviceInitFlags Flags, IntPtr hParent = default(IntPtr), IntPtr ClsID = default(IntPtr));
 
-        public static Return<bool> Initialize(int Device, int Frequency = 44100, DeviceInitFlags Flags = DeviceInitFlags.Default)
+        public static Return<bool> Initialize(int Device = DefaultDevice, int Frequency = 44100, DeviceInitFlags Flags = DeviceInitFlags.Default)
         {
             return BASS_Init(Device, Frequency, Flags);
         }
@@ -71,7 +104,7 @@ namespace ManagedBass.Dynamics
                 int Count = 0;
                 DeviceInfo info;
 
-                for (int i = 0; DeviceInfo(i, out info); i++)
+                for (int i = 0; GetDeviceInfo(i, out info); i++)
                     if (info.IsEnabled) ++Count;
 
                 return Count;
@@ -108,12 +141,12 @@ namespace ManagedBass.Dynamics
 
         #region Get Device Info
         [DllImport(DllName, EntryPoint = "BASS_GetDeviceInfo")]
-        public static extern bool DeviceInfo(int Device, out DeviceInfo Info);
+        public static extern bool GetDeviceInfo(int Device, out DeviceInfo Info);
 
-        public static DeviceInfo DeviceInfo(int Device)
+        public static DeviceInfo GetDeviceInfo(int Device)
         {
             DeviceInfo temp;
-            DeviceInfo(Device, out temp);
+            GetDeviceInfo(Device, out temp);
             return temp;
         }
         #endregion
@@ -166,7 +199,7 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_StreamPutData")]
         public extern static int StreamPutData(int Handle, IntPtr Buffer, int Length);
-        
+
         [DllImport(DllName, EntryPoint = "BASS_StreamFree")]
         public static extern bool StreamFree(int Handle);
         #endregion
@@ -452,7 +485,7 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_SampleGetData")]
         public static extern bool SampleGetData(int Handle, IntPtr Buffer);
-        
+
         [DllImport(DllName, EntryPoint = "BASS_SampleGetInfo")]
         public static extern bool SampleGetInfo(int Handle, ref SampleInfo info);
 
