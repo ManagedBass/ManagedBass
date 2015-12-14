@@ -13,22 +13,17 @@ namespace ManagedBass.Dynamics
 
         static Bass() { BassManager.LoadBass(); }
 
-        /* To Wrap:
-         * 
-         * 3D * 
-         * BASS_ChannelGet3DAttributes
-         * BASS_ChannelGet3DPosition
-         * BASS_ChannelSet3DAttributes
-         * BASS_ChannelSet3DPosition
-         * BASS_Get3DFactors
-         * BASS_Get3DPosition
-         * 
-         * BASS_ChannelUpdate
-         * BASS_FXReset
-         * BASS_GetEAXParameters
-         * BASS_PluginLoadDirectory
-         * BASS_SetEAXParameters
-         */
+        // TODO: BASS_ChannelGet3DAttributes
+        // TODO: BASS_ChannelGet3DPosition
+        // TODO: BASS_ChannelSet3DAttributes
+        // TODO: BASS_ChannelSet3DPosition
+        // TODO: BASS_Get3DFactors
+        // TODO: BASS_Get3DPosition
+        // TODO: BASS_ChannelUpdate
+        // TODO: BASS_FXReset
+        // TODO: BASS_GetEAXParameters
+        // TODO: BASS_PluginLoadDirectory
+        // TODO: BASS_SetEAXParameters
 
         [DllImport(DllName, EntryPoint = "BASS_Start")]
         public static extern bool Start();
