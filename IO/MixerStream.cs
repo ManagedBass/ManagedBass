@@ -18,7 +18,7 @@ namespace ManagedBass
         {
             GCHandle gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
 
-            BassMix.GetData(Handle, gch.AddrOfPinnedObject(), Length);
+            BassMix.MixerChannelGetData(Handle, gch.AddrOfPinnedObject(), Length);
 
             gch.Free();
         }

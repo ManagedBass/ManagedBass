@@ -5,6 +5,8 @@ namespace ManagedBass.Dynamics
 {
     public static class BassWasapi
     {
+        // TODO: BASS_WASAPI_GetLevelEx
+
         const string DllName = "basswasapi.dll";
 
         static BassWasapi() { BassManager.Load(DllName); }
@@ -115,9 +117,6 @@ namespace ManagedBass.Dynamics
         
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetLevel")]
         public extern static int GetLevel();
-
-        [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetLevelEx")]
-        public extern static int GetLevelEx([MarshalAs(UnmanagedType.LPArray)]float[] levels, float length, int flags);
 
         [DllImport(DllName)]
         extern static int BASS_WASAPI_GetVersion();
