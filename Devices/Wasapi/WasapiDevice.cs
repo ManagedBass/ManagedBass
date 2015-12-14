@@ -56,7 +56,7 @@ namespace ManagedBass
         #region Device Info
         public int DeviceIndex { get; protected set; }
 
-        WasapiDeviceInfo DeviceInfo { get { return BassWasapi.DeviceInfo(DeviceIndex); } }
+        WasapiDeviceInfo DeviceInfo { get { return BassWasapi.GetDeviceInfo(DeviceIndex); } }
 
         public int Frequency { get { return DeviceInfo.mixfreq; } }
 
@@ -182,7 +182,7 @@ namespace ManagedBass
             set { BassWasapi.SetMute(WasapiVolumeTypes.Device, value); }
         }
 
-        public double Level { get { return BassWasapi.DeviceLevel(DeviceIndex); } }
+        public double Level { get { return BassWasapi.GetDeviceLevel(DeviceIndex); } }
 
         public double Volume
         {
@@ -193,7 +193,7 @@ namespace ManagedBass
         public bool Init(int Frequency = 44100, int Channels = 2, bool Shared = true)
         {
             if (IsInitialized) return true;
-            return BassWasapi.Initialize(DeviceIndex, Frequency, Channels, Shared ? WasapiInitFlags.Shared : WasapiInitFlags.Exclusive, proc: proc);
+            return BassWasapi.Init(DeviceIndex, Frequency, Channels, Shared ? WasapiInitFlags.Shared : WasapiInitFlags.Exclusive, proc: proc);
         }
 
         public bool IsStarted

@@ -31,15 +31,15 @@ namespace ManagedBass.Dynamics
         #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetDeviceInfo")]
-        public extern static bool DeviceInfo(int device, out WasapiDeviceInfo info);
+        public extern static bool GetDeviceInfo(int device, out WasapiDeviceInfo info);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_SetNotify")]
         public extern static bool SetNotify(WasapiNotifyProcedure proc, IntPtr User = default(IntPtr));
 
-        public static WasapiDeviceInfo DeviceInfo(int Device)
+        public static WasapiDeviceInfo GetDeviceInfo(int Device)
         {
             WasapiDeviceInfo Temp;
-            DeviceInfo(Device, out Temp);
+            GetDeviceInfo(Device, out Temp);
             return Temp;
         }
 
@@ -50,7 +50,7 @@ namespace ManagedBass.Dynamics
                 int Count = 0;
                 WasapiDeviceInfo info = new WasapiDeviceInfo();
 
-                for (int i = 0; DeviceInfo(i, out info); i++)
+                for (int i = 0; GetDeviceInfo(i, out info); i++)
                     if (info.IsEnabled) Count++;
 
                 return Count;
@@ -61,7 +61,7 @@ namespace ManagedBass.Dynamics
         public extern static WasapiFormat CheckFormat(int device, int freq, int chans, WasapiInitFlags flags);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetInfo")]
-        public extern static bool WasapiInfo(ref WasapiInfo info);
+        public extern static bool GetInfo(out WasapiInfo info);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_Free")]
         public extern static bool Free();
@@ -82,7 +82,7 @@ namespace ManagedBass.Dynamics
         public extern static bool SetMute(WasapiVolumeTypes mode, bool mute);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetDeviceLevel")]
-        public extern static float DeviceLevel(int device, int chan = -1);
+        public extern static float GetDeviceLevel(int device, int chan = -1);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetVolume")]
         public extern static float GetVolume(WasapiVolumeTypes curve = WasapiVolumeTypes.Device);
@@ -91,8 +91,14 @@ namespace ManagedBass.Dynamics
         public extern static bool SetVolume(WasapiVolumeTypes curve, float volume);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_Init")]
-        public extern static bool Initialize(int device, int freq, int chans, WasapiInitFlags flags
-            , float buffer = 0, float period = 0, WasapiProcedure proc = null, IntPtr User = default(IntPtr));
+        public extern static bool Init(int device,
+                                        int freq,
+                                        int chans,
+                                        WasapiInitFlags flags,
+                                        float buffer = 0,
+                                        float period = 0,
+                                        WasapiProcedure proc = null,
+                                        IntPtr User = default(IntPtr));
 
         #region IsStarted
         [DllImport(DllName)]
@@ -105,6 +111,17 @@ namespace ManagedBass.Dynamics
         public extern static bool Start();
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_Stop")]
-        public extern static bool Stop(bool Reset);
+        public extern static bool Stop(bool Reset = true);
+        
+        [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetLevel")]
+        public extern static int GetLevel();
+
+        [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetLevelEx")]
+        public extern static int GetLevelEx([MarshalAs(UnmanagedType.LPArray)]float[] levels, float length, int flags);
+
+        [DllImport(DllName)]
+        extern static int BASS_WASAPI_GetVersion();
+
+        public static int Version { get { return BASS_WASAPI_GetVersion(); } }
     }
 }
