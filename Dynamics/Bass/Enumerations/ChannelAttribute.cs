@@ -65,54 +65,45 @@
         /// EAX is only supported on Windows.
         /// </summary>
         EaxMix = 4,
-        //
-        // Summary:
-        //     Non-Windows: Disable playback buffering?
-        //     nobuffer: Disable playback buffering... 0 = no, else yes..
-        //     A playing channel is normally asked to render data to its playback buffer
-        //     in advance, via automatic buffer updates or the Un4seen.Bass.Bass.BASS_Update(System.Int32)
-        //     and Un4seen.Bass.Bass.BASS_ChannelUpdate(System.Int32,System.Int32) functions,
-        //     ready for mixing with other channels to produce the final mix that is given
-        //     to the output device.  When this attribute is switched on (the default is
-        //     off), that buffering is skipped and the channel will only be asked to produce
-        //     data as it is needed during the generation of the final mix. This allows
-        //     the lowest latency to be achieved, but also imposes tighter timing requirements
-        //     on the channel to produce its data and apply any DSP/FX (and run mixtime
-        //     syncs) that are set on it; if too long is taken, there will be a break in
-        //     the output, affecting all channels that are playing on the same device.
-        //     The channel's data is still placed in its playback buffer when this attribute
-        //     is on, which allows Un4seen.Bass.Bass.BASS_ChannelGetData(System.Int32,System.IntPtr,System.Int32)
-        //     and Un4seen.Bass.Bass.BASS_ChannelGetLevel(System.Int32) to be used, although
-        //     there is likely to be less data available to them due to the buffer being
-        //     less full.
-        //     This attribute can be changed mid-playback. If switched on, any already buffered
-        //     data will still be played, so that there is no break in sound.
-        //     This attribute is not available on Windows, as BASS does not generate the
-        //     final mix.
+        
+        /// <summary>
+        /// Non-Windows: Disable playback buffering?
+        /// nobuffer: Disable playback buffering... 0 = no, else yes..
+        /// A playing channel is normally asked to render data to its playback buffer in advance, 
+        /// via automatic buffer updates or the Bass.Update() and Bass.ChannelUpdate() functions,
+        /// ready for mixing with other channels to produce the final mix that is given to the output device.
+        /// When this attribute is switched on (the default is off), that buffering is skipped and 
+        /// the channel will only be asked to produce data as it is needed during the generation of the final mix. 
+        /// This allows the lowest latency to be achieved, but also imposes tighter timing requirements
+        /// on the channel to produce its data and apply any DSP/FX (and run mixtime syncs) that are set on it; 
+        /// if too long is taken, there will be a break in the output, affecting all channels that are playing on the same device.
+        /// The channel's data is still placed in its playback buffer when this attribute is on,
+        /// which allows Bass.ChannelGetData() and Bass.ChannelGetLevel() to be used, although there is 
+        /// likely to be less data available to them due to the buffer being less full.
+        /// This attribute can be changed mid-playback. 
+        /// If switched on, any already buffered data will still be played, so that there is no break in sound.
+        /// This attribute is not available on Windows, as BASS does not generate the final mix.
+        /// </summary>
         NoBuffer = 5,
-        //
-        // Summary:
-        //     The CPU usage of a channel.
-        //     cpu: The CPU usage (in percentage).
-        //     This attribute gives the percentage of CPU that the channel is using, including
-        //     the time taken by decoding and DSP processing, and any FX that are not using
-        //     the "with FX flag" DX8 effect implementation. It does not include the time
-        //     taken to add the channel's data to the final output mix during playback.
-        //     The processing of some add-on stream formats may also not be entirely included,
-        //     if they use additional decoding threads; see the add-on documentation for
-        //     details.
-        //     Like Un4seen.Bass.Bass.BASS_GetCPU(), this function does not strictly tell
-        //     the CPU usage, but rather how timely the processing is. For example, if it
-        //     takes 10ms to generate 100ms of data, that would be 10%. If the reported
-        //     usage exceeds 100%, that means the channel's data is taking longer to generate
-        //     than to play. The duration of the data is based on the channel's current
-        //     sample rate (Un4seen.Bass.BASSAttribute.BASS_ATTRIB_FREQ).
-        //     A channel's CPU usage is updated whenever it generates data. That could be
-        //     during a playback buffer update cycle, or a Un4seen.Bass.Bass.BASS_Update(System.Int32)
-        //     call, or a Un4seen.Bass.Bass.BASS_ChannelUpdate(System.Int32,System.Int32)
-        //     call. For a decoding channel, it would be in a Un4seen.Bass.Bass.BASS_ChannelGetData(System.Int32,System.IntPtr,System.Int32)
-        //     or Un4seen.Bass.Bass.BASS_ChannelGetLevel(System.Int32) call.
-        //     This attribute is read-only, so cannot be modified via Un4seen.Bass.Bass.BASS_ChannelSetAttribute(System.Int32,Un4seen.Bass.BASSAttribute,System.Single).
+
+        /// <summary>
+        /// The CPU usage of a channel.
+        /// cpu: The CPU usage (in percentage).
+        /// This attribute gives the percentage of CPU that the channel is using, 
+        /// including the time taken by decoding and DSP processing, and any FX that are 
+        /// not using the "with FX flag" DX8 effect implementation. 
+        /// It does not include the time taken to add the channel's data to the final output mix during playback.
+        /// The processing of some add-on stream formats may also not be entirely included,
+        /// if they use additional decoding threads; see the add-on documentation for details.
+        /// Like Bass.GetCPU(), this function does not strictly tell the CPU usage, but rather how timely the processing is.
+        /// For example, if it takes 10ms to generate 100ms of data, that would be 10%.
+        /// If the reported usage exceeds 100%, that means the channel's data is taking longer to generate than to play. 
+        /// The duration of the data is based on the channel's current sample rate (BASSAttribute.Frequency).
+        /// A channel's CPU usage is updated whenever it generates data. 
+        /// That could be during a playback buffer update cycle, or a Bass.Update() call, or a Bass.ChannelUpdate() call.
+        /// For a decoding channel, it would be in a Bass.ChannelGetData() or Bass.ChannelGetLevel() call.
+        /// This attribute is read-only, so cannot be modified via Bass.ChannelSetAttribute().
+        /// </summary>
         CPUUsage = 7,
         //
         // Summary:

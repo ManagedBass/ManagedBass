@@ -14,7 +14,7 @@ namespace ManagedBass.Dynamics
         public int OriginalResolution;
         public int Channels;
         public int MinGap;
-        public BASS3DMode Mode3D;
+        public Mode3D Mode3D;
         public float MinDistance;
         public float MaxDistance;
         public int iAngle;

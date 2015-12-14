@@ -13,6 +13,7 @@ namespace ManagedBass.Dynamics
 
         static Bass() { BassManager.LoadBass(); }
 
+        // TODO: BASS_StreamCreateFileUser
         // TODO: BASS_ChannelGet3DAttributes
         // TODO: BASS_ChannelGet3DPosition
         // TODO: BASS_ChannelSet3DAttributes
@@ -54,9 +55,6 @@ namespace ManagedBass.Dynamics
                 return temp;
             }
         }
-
-        [DllImport(DllName, EntryPoint = "BASS_Apply3D")]
-        public static extern void Apply3D();
 
         #region Plugin
         [DllImport(DllName, EntryPoint = "BASS_PluginGetInfo")]
@@ -198,123 +196,6 @@ namespace ManagedBass.Dynamics
         public static extern bool StreamFree(int Handle);
         #endregion
 
-        #region Channels
-        [DllImport(DllName, EntryPoint = "BASS_ChannelGetInfo")]
-        public static extern bool ChannelInfo(int Device, out ChannelInfo Info);
-
-        public static ChannelInfo ChannelInfo(int Device)
-        {
-            ChannelInfo temp;
-            ChannelInfo(Device, out temp);
-            return temp;
-        }
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSetDSP")]
-        public static extern int ChannelSetDSP(int Handle, DSPProcedure Procedure, IntPtr User = default(IntPtr), int Priority = 0);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelPlay")]
-        public static extern bool PlayChannel(int Handle, bool Restart = false);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelPause")]
-        public static extern bool PauseChannel(int Handle);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelStop")]
-        public static extern bool StopChannel(int Handle);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelLock")]
-        public extern static bool LockChannel(int Handle, bool Lock);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelIsActive")]
-        public extern static PlaybackState IsChannelActive(int Handle);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSetLink")]
-        public extern static bool LinkChannels(int Handle, int Channel);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelRemoveLink")]
-        public extern static bool ChannelRemoveLink(int Handle, int Channel);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelRemoveDSP")]
-        public extern static bool ChannelRemoveDSP(int Handle, int DSP);
-
-        #region Channel Flags
-        [DllImport(DllName)]
-        extern static BassFlags BASS_ChannelFlags(int Handle, BassFlags Flags, BassFlags Mask);
-
-        public static bool ChannelHasFlag(int Handle, BassFlags Flag) { return BASS_ChannelFlags(Handle, 0, 0).HasFlag(Flag); }
-
-        public static bool ChannelAddFlag(int Handle, BassFlags Flag) { return BASS_ChannelFlags(Handle, Flag, Flag).HasFlag(Flag); }
-
-        public static bool ChannelRemoveFlag(int Handle, BassFlags Flag) { return !(BASS_ChannelFlags(Handle, 0, Flag).HasFlag(Flag)); }
-        #endregion
-
-        #region Channel Attributes
-        [DllImport(DllName)]
-        extern static bool BASS_ChannelGetAttribute(int Handle, ChannelAttribute attrib, ref float value);
-
-        public static double GetChannelAttribute(int Handle, ChannelAttribute attrib)
-        {
-            float temp = 0;
-            BASS_ChannelGetAttribute(Handle, attrib, ref temp);
-            return temp;
-        }
-
-        [DllImport(DllName)]
-        extern static bool BASS_ChannelSetAttribute(int Handle, ChannelAttribute attrib, float value);
-
-        public static bool SetChannelAttribute(int Handle, ChannelAttribute attrib, double value)
-        {
-            return BASS_ChannelSetAttribute(Handle, attrib, (float)value);
-        }
-        #endregion
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelGetTags")]
-        public extern static IntPtr GetChannelTags(int Handle, TagType Tags);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelRemoveFX")]
-        public extern static bool ChannelRemoveFX(int Handle, int FX);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelGetLength")]
-        public extern static long ChannelGetLength(int Handle, PositionFlags Mode = PositionFlags.Bytes);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSetFX")]
-        public extern static int ChannelSetFX(int Handle, EffectType Type, int Priority);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSetSync")]
-        public static extern int ChannelSetSync(int Handle, SyncFlags Type, long Param, SyncProcedure Procedure, IntPtr User = default(IntPtr));
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelBytes2Seconds")]
-        public extern static double ChannelBytes2Seconds(int Handle, long Position);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSeconds2Bytes")]
-        public extern static long ChannelSeconds2Bytes(int Handle, double Position);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelGetPosition")]
-        public extern static long GetChannelPosition(int Handle, PositionFlags mode = PositionFlags.Bytes);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSetPosition")]
-        public extern static bool SetChannelPosition(int Handle, long pos, PositionFlags mode = PositionFlags.Bytes);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelIsSliding")]
-        public extern static bool IsChannelSliding(int Handle, ChannelAttribute attrib);
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSlideAttribute")]
-        public extern static bool SlideChannelAttribute(int Handle, ChannelAttribute attrib, float value, int time);
-
-        #region Channel Get Level
-        [DllImport(DllName)]
-        static extern int BASS_ChannelGetLevel(int Handle);
-
-        public static double GetChannelLevel(int Channel)
-        {
-            int Temp = BASS_ChannelGetLevel(Channel);
-            return (Temp.LoWord() + Temp.HiWord()) / (2.0 * 32768);
-        }
-        #endregion
-
-        [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
-        public static extern int ChannelGetData(int Handle, IntPtr Buffer, int Length);
-        #endregion
-
         #region FX Parameters
         [DllImport(DllName)]
         static extern bool BASS_FXSetParameters(int Handle, [MarshalAs(UnmanagedType.Struct)] IEffectParameter param);
@@ -333,128 +214,6 @@ namespace ManagedBass.Dynamics
             try { return BASS_FXGetParameters(Handle, Param); }
             catch { return true; }
         }
-        #endregion
-
-        #region Config
-        [DllImport(DllName, EntryPoint = "BASS_SetConfig")]
-        public extern static bool Configure(Configuration option, bool newvalue);
-
-        [DllImport(DllName, EntryPoint = "BASS_SetConfig")]
-        public extern static bool Configure(Configuration option, int newvalue);
-
-        [DllImport(DllName, EntryPoint = "BASS_GetConfig")]
-        public extern static int GetConfig(Configuration option);
-
-        public static bool GetConfigBool(Configuration option) { return GetConfig(option) == 1; }
-
-        /// <summary>
-        /// The buffer length in milliseconds. The minimum length is 1ms
-        /// above the update period (See <see cref="UpdatePeriod"/>),
-        /// the maximum is 5000 milliseconds. If the length specified is outside this
-        /// range, it is automatically capped.
-        /// The default buffer length is 500 milliseconds. Increasing the length, decreases
-        /// the chance of the sound possibly breaking-up on slower computers, but also
-        /// increases the latency for DSP/FX.
-        /// Small buffer lengths are only required if the sound is going to be changing
-        /// in real-time, for example, in a soft-synth. If you need to use a small buffer,
-        /// then the minbuf member of BASS_INFO should be used to get the recommended
-        /// minimum buffer length supported by the device and it's drivers. Even at this
-        /// default length, it's still possible that the sound could break up on some
-        /// systems, it's also possible that smaller buffers may be fine. So when using
-        /// small buffers, you should have an option in your software for the user to
-        /// finetune the length used, for optimal performance.
-        /// Using this config option only affects the HMUSIC/HSTREAM channels that you
-        /// create afterwards, not the ones that have already been created. So you can
-        /// have channels with differing buffer lengths by using this config option each
-        /// time before creating them.
-        /// If automatic updating is disabled, make sure you call Bass.BASS_Update(System.Int32)
-        /// frequently enough to keep the buffers updated.
-        /// </summary>
-        public static int PlaybackBufferLength
-        {
-            get { return GetConfig(Configuration.PlaybackBufferLength); }
-            set { Configure(Configuration.PlaybackBufferLength, value); }
-        }
-
-        /// <summary>
-        /// The update period of HSTREAM and HMUSIC channel playback buffers in milliseconds.
-        /// 0 = disable automatic updating. The minimum period is 5ms, the maximum is 100ms. If the period
-        /// specified is outside this range, it is automatically capped.
-        /// The update period is the amount of time between updates of the playback buffers
-        /// of HSTREAM/HMUSIC channels. Shorter update periods allow smaller buffers
-        /// to be set with the Un4seen.Bass.BASSConfig.BASS_CONFIG_BUFFER option, but
-        /// as the rate of updates increases, so the overhead of setting up the updates
-        /// becomes a greater part of the CPU usage. The update period only affects HSTREAM
-        /// and HMUSIC channels, it does not affect samples. Nor does it have any effect
-        /// on decoding channels, as they are not played.
-        /// BASS creates one or more threads (determined by Un4seen.Bass.BASSConfig.BASS_CONFIG_UPDATETHREADS)
-        /// specifically to perform the updating, except when automatic updating is disabled
-        /// (period=0) - then you must regularly call Un4seen.Bass.Bass.BASS_Update(System.Int32)
-        /// or Un4seen.Bass.Bass.BASS_ChannelUpdate(System.Int32,System.Int32)instead.
-        /// This allows you to synchronize BASS's CPU usage with your program's. For
-        /// example, in a game loop you could call Un4seen.Bass.Bass.BASS_Update(System.Int32)
-        /// once per frame, which keeps all the processing in sync so that the frame
-        /// rate is as smooth as possible. BASS_Update should be called at least around
-        /// 8 times per second, even more often if the Un4seen.Bass.BASSConfig.BASS_CONFIG_BUFFER
-        /// option is used to set smaller buffers.
-        /// The update period can be altered at any time, including during playback.
-        /// The default period is 100ms.
-        /// </summary>
-        public static int UpdatePeriod
-        {
-            get { return GetConfig(Configuration.UpdatePeriod); }
-            set { Configure(Configuration.UpdatePeriod, value); }
-        }
-
-        public static int GlobalSampleVolume
-        {
-            get { return GetConfig(Configuration.GlobalSampleVolume); }
-            set { Configure(Configuration.GlobalSampleVolume, value); }
-        }
-
-        public static int GlobalStreamVolume
-        {
-            get { return GetConfig(Configuration.GlobalStreamVolume); }
-            set { Configure(Configuration.GlobalStreamVolume, value); }
-        }
-
-        public static int GlobalMusicVolume
-        {
-            get { return GetConfig(Configuration.GlobalMusicVolume); }
-            set { Configure(Configuration.GlobalMusicVolume, value); }
-        }
-
-        public static bool LogarithmicVolumeCurve
-        {
-            get { return GetConfigBool(Configuration.VolumeCurve); }
-            set { Configure(Configuration.VolumeCurve, value); }
-        }
-
-        public static bool LogarithmicPanningCurve
-        {
-            get { return GetConfigBool(Configuration.PanCurve); }
-            set { Configure(Configuration.PanCurve, value); }
-        }
-
-        public static bool FloatingPointDSP
-        {
-            get { return GetConfigBool(Configuration.FloatDSP); }
-            set { Configure(Configuration.FloatDSP, value); }
-        }
-
-        public static int UpdateThreads
-        {
-            get { return GetConfig(Configuration.UpdateThreads); }
-            set { Configure(Configuration.UpdateThreads, value); }
-        }
-
-        public static int AsyncFileBufferLength
-        {
-            get { return GetConfig(Configuration.AsyncFileBufferLength); }
-            set { Configure(Configuration.AsyncFileBufferLength, value); }
-        }
-
-        public static int HandleCount { get { return GetConfig(Configuration.HandleCount); } }
         #endregion
 
         #region Error Code

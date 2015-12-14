@@ -28,6 +28,7 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Devices\BassDevice.cs" />
     <Compile Include="Devices\RecordingDevice.cs" />
     <Compile Include="Devices\Wasapi\WasapiLoopbackDevice.cs" />
     <Compile Include="Devices\Wasapi\WasapiRecordingDevice.cs" />
@@ -35,6 +36,11 @@
     <Compile Include="Dynamics\Bass Wasapi\Delegates.cs" />
     <Compile Include="Dynamics\Bass Wasapi\Enums.cs" />
     <Compile Include="Dynamics\Bass Wasapi\Structs.cs" />
+    <Compile Include="Dynamics\BassAac.cs" />
+    <Compile Include="Dynamics\BassAc3.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\Algorithm3D.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\3D.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Channels.cs" />
     <Compile Include="Dynamics\Bass\Delegates\SyncProcedure.cs" />
     <Compile Include="Dynamics\Bass\Delegates\StreamProcedure.cs" />
     <Compile Include="Dynamics\Bass\Delegates\DSPProcedure.cs" />
@@ -61,7 +67,7 @@
     <Compile Include="Dynamics\Bass\Enumerations\Configuration.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\TagType.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\StreamProcedureType.cs" />
-    <Compile Include="Dynamics\Bass\Enumerations\Bass3DMode.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\Mode3D.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\BassVam.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\LevelRetrievalFlags.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\FileStreamPosition.cs" />
@@ -70,6 +76,7 @@
     <Compile Include="Dynamics\Bass\Enumerations\RecordInfoFlags.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\PlaybackState.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\BassInfoFlags.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Config.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\Record.cs" />
     <Compile Include="Dynamics\Bass\Structures\DeviceInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\ChannelInfo.cs" />

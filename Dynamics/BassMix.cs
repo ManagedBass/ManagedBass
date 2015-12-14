@@ -69,10 +69,45 @@ namespace ManagedBass.Dynamics
             set { Bass.Configure(Configuration.SplitBufferLength, value); }
         }
 
+        /// <summary>
+        /// The source channel buffer size multiplier.
+        /// multiple (int): The buffer size multiplier... 1 (min) to 5 (max). 
+        /// If the value specified is outside this range, it is automatically capped.
+        /// When a source channel has buffering enabled, the mixer will buffer the decoded data,
+        /// so that it is available to the BassMix.MixerChannelGetData() and BassMix.MixerChannelGetLevel() functions.
+        /// To reach the source channel's buffer size, the multiplier (multiple) is applied to the BASS_CONFIG_BUFFER 
+        /// setting at the time of the mixer's creation.
+        /// If the source is played at it's default rate, then the buffer only need to be as big as the mixer's buffer.
+        /// But if it's played at a faster rate, then the buffer needs to be bigger for it to contain the data that 
+        /// is currently being heard from the mixer. 
+        /// For example, playing a channel at 2x its normal speed would require the buffer to be 2x the normal size (multiple = 2).
+        /// Larger buffers obviously require more memory, so the multiplier should not be set higher than necessary.
+        /// The default multiplier is 2x. 
+        /// Changes only affect subsequently setup channel buffers.
+        /// An existing channel can have its buffer reinitilized by disabling and then re-enabling 
+        /// the BASS_MIXER_BUFFER flag using BassMix.MixerChannelFlags().
+        /// </summary>
         public static int MixerBufferLength
         {
-            get { return Bass.GetConfig(Configuration.MixerBuffer); }
-            set { Bass.Configure(Configuration.MixerBuffer, value); }
+            get { return Bass.GetConfig(Configuration.MixerBufferLength); }
+            set { Bass.Configure(Configuration.MixerBufferLength, value); }
+        }
+
+        /// <summary>
+        /// BASSmix add-on: How far back to keep record of source positions
+        /// to make available for BassMix.MixerChannelGetPositionEx().
+        /// length (int): The length of time to back, in milliseconds.
+        /// If a mixer is not a decoding channel (not using the BassFlag.Decode flag),
+        /// this config setting will just be a minimum and the mixer will 
+        /// always have a position record at least equal to its playback buffer length, 
+        /// as determined by the BASSConfig.BASS_CONFIG_BUFFER config option.
+        /// The default setting is 2000ms.
+        /// Changes only affect newly created mixers, not any that already exist.
+        /// </summary>
+        public static int MixerPositionEx
+        {
+            get { return Bass.GetConfig(Configuration.MixerPositionEx); }
+            set { Bass.Configure(Configuration.MixerPositionEx, value); }
         }
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetData")]

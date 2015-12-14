@@ -138,6 +138,7 @@ namespace ManagedBass.Dynamics
     public static class BassCd
     {
         const string DllName = "basscd.dll";
+        static IntPtr _cddbServer;
 
         static BassCd() { BassManager.Load(DllName); }
 
@@ -206,6 +207,32 @@ namespace ManagedBass.Dynamics
         {
             get { return Bass.GetConfigBool(Configuration.CDSkipError); }
             set { Bass.Configure(Configuration.CDSkipError, value); }
+        }
+
+        /// <summary>
+        /// The server to use in CDDB requests.
+        /// server (string): The CDDB server address, in the form of "user:pass@server:port/path".
+        /// The "user:pass@", ":port" and "/path" parts are optional; only the "server" part is required.
+        /// If not provided, the port and path default to 80 and "/~cddb/cddb.cgi", respectively.
+        /// A copy is made of the provided server string, so it need not persist beyond the Bass.Configure(IntPtr) call.
+        /// The default setting is "freedb.freedb.org". 
+        /// The proxy server, as configured via the Bass.NetProxy option, is used when connecting to the CDDB server.
+        /// </summary>
+        public static string CDDBServer
+        {
+            get { return Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.CDDBServer)); }
+            set
+            {
+                if (_cddbServer != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(_cddbServer);
+                    _cddbServer = IntPtr.Zero;
+                }
+
+                _cddbServer = Marshal.StringToHGlobalAnsi(value);
+
+                Bass.Configure(Configuration.CDDBServer, _cddbServer);
+            }
         }
 
         [DllImport(DllName, EntryPoint = "BASS_CD_Release")]

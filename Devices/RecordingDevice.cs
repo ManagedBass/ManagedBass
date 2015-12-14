@@ -3,7 +3,7 @@ using System;
 
 namespace ManagedBass
 {
-    public class RecordingDevice : IDisposable
+    public class RecordingDevice : BassDevice
     {
         public static RecordingDevice[] Devices
         {
@@ -21,23 +21,13 @@ namespace ManagedBass
 
         public static int Count { get { return Bass.RecordingDeviceCount; } }
 
-        DeviceInfo DeviceInfo { get { return Bass.GetRecordingDeviceInfo(DeviceId); } }
+        protected override DeviceInfo DeviceInfo { get { return Bass.GetRecordingDeviceInfo(DeviceId); } }
 
-        public int DeviceId { get; protected set; }
-
-        public string Name { get { return DeviceInfo.Name; } }
-
-        public bool IsEnabled { get { return DeviceInfo.IsEnabled; } }
-
-        public bool IsDefault { get { return DeviceInfo.IsDefault; } }
-
-        public bool IsInitialized { get { return DeviceInfo.IsInitialized; } }
-
-        RecordingDevice(int DeviceId) { this.DeviceId = DeviceId; }
+        RecordingDevice(int DeviceId) : base(DeviceId) { }
 
         public Return<bool> Initialize() { return Bass.RecordInit(DeviceId); }
 
-        public void Dispose()
+        public override void Dispose()
         {
             Bass.CurrentRecordingDevice = DeviceId;
             Bass.RecordFree();

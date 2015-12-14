@@ -1,4 +1,5 @@
 ﻿using ManagedBass.Dynamics;
+using System;
 
 namespace ManagedBass
 {
@@ -6,12 +7,12 @@ namespace ManagedBass
     /// Wraps a Bass Playback Device
     /// </summary>
     /// <remarks>All Devices except NoSound and Default need to initialized before use</remarks>
-    public class PlaybackDevice
+    public class PlaybackDevice : BassDevice
     {
         /// <summary>
         /// Number of available Playback Devices
         /// </summary>
-        public static int DeviceCount { get { return Bass.DeviceCount; } }
+        public static int Count { get { return Bass.DeviceCount; } }
 
         /// <summary>
         /// Gets an array of Playback Devices
@@ -20,7 +21,7 @@ namespace ManagedBass
         {
             get
             {
-                int NoOfDevices = DeviceCount;
+                int NoOfDevices = Count;
 
                 PlaybackDevice[] Devices = new PlaybackDevice[NoOfDevices];
 
@@ -34,23 +35,13 @@ namespace ManagedBass
 
         public static PlaybackDevice DefaultDevice { get { return new PlaybackDevice(1); } }
 
-        DeviceInfo DeviceInfo { get { return Bass.GetDeviceInfo(DeviceId); } }
+        protected override DeviceInfo DeviceInfo { get { return Bass.GetDeviceInfo(DeviceId); } }
 
-        public int DeviceId { get; protected set; }
-
-        public string Name { get { return DeviceInfo.Name; } }
-
-        public bool IsEnabled { get { return DeviceInfo.IsEnabled; } }
-
-        public bool IsDefault { get { return DeviceInfo.IsDefault; } }
-
-        public bool IsInitialized { get { return DeviceInfo.IsInitialized; } }
-
-        internal PlaybackDevice(int DeviceId) { this.DeviceId = DeviceId; }
+        internal PlaybackDevice(int DeviceId) : base(DeviceId) { }
 
         public Return<bool> Initialize(int Frequency = 44100) { return Bass.Initialize(DeviceId, Frequency, DeviceInitFlags.Default); }
 
-        public Return<bool> Free() { return Bass.Free(DeviceId); }
+        public override void Dispose() { Bass.Free(DeviceId); }
 
         public double Volume
         {

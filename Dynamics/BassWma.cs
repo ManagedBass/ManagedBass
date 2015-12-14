@@ -104,30 +104,71 @@ namespace ManagedBass.Dynamics
         #endregion
 
         #region Configuration
+        /// <summary>
+        /// Enable network seeking?
+        /// seek (bool): If true seeking in network files/streams is enabled (default is false).
+        /// If true, it allows seeking before the entire file has been downloaded/cached.
+        /// Seeking is slow that way, so it's disabled by default.
+        /// </summary>
         public static bool CanSeekNetworkStreams
         {
             get { return Bass.GetConfigBool(Configuration.WmaNetSeek); }
             set { Bass.Configure(Configuration.WmaNetSeek, value); }
         }
 
+        /// <summary>
+        /// Play audio from WMV (video) files?
+        /// playwmv (bool): If true (default) BASSWMA will play the audio from WMV video files. 
+        /// If false WMV files will not be played.
+        /// </summary>
         public static bool PlayWMVAudio
         {
             get { return Bass.GetConfigBool(Configuration.WmaVideo); }
             set { Bass.Configure(Configuration.WmaVideo, value); }
         }
 
+        /// <summary>
+        /// Prebuffer internet streams on creation, before returning from BassWma.StreamCreateFile()?
+        /// prebuf (bool): The Windows Media modules must prebuffer a stream before starting decoding/playback of it.
+        /// This option determines when/where to wait for that to be completed.
+        /// The Windows Media modules must prebuffer a stream before starting decoding/playback of it. 
+        /// This option determines whether the stream creation function (eg. BassWma.CreateStream())
+        /// will wait for the prebuffering to complete before returning. 
+        /// If playback of a stream is attempted before it has prebuffered,
+        /// it will stall and then resume once it has finished prebuffering.
+        /// The prebuffering progress can be monitored via Bass.StreamGetFilePosition() (FileStreamPosition.WmaBuffer).
+        /// This option is enabled by default.
+        /// </summary>
         public static bool PrebufferInternetStreams
         {
             get { return Bass.GetConfigBool(Configuration.WmaNetPreBuffer); }
             set { Bass.Configure(Configuration.WmaNetPreBuffer, value); }
         }
 
+        /// <summary>
+        /// Use BASS file handling.
+        /// bassfile (bool): Default is disabled (false).
+        /// When enabled (true) BASSWMA uses BASS's file routines when playing local files.
+        /// It uses the IStream interface to do that. 
+        /// This would also allow to support the "offset" parameter for WMA files with Bass.CreateStream().
+        /// The downside of enabling this feature is, that it stops playback while encoding from working.
+        /// </summary>
         public static bool UseBassFileHandling
         {
             get { return Bass.GetConfigBool(Configuration.WmaBassFileHandling); }
             set { Bass.Configure(Configuration.WmaBassFileHandling, value); }
         }
 
+        /// <summary>
+        /// Use a seperate thread to decode the data?
+        /// async (bool): If true BASSWMA will decode the data in a seperate thread.
+        /// If false (default) the normal file system will be used.
+        /// The WM decoder can by synchronous (decodes data on demand) or asynchronous (decodes in the background).  
+        /// With the background decoding, BASSWMA buffers the data that it receives from the decoder for the STREAMPROC to access.
+        /// The start of playback/seeking may well be slightly delayed due to there being no data available immediately. 
+        /// Internet streams are only supported by the asynchronous system,
+        /// but local files can use either, and BASSWMA uses the synchronous system by default.
+        /// </summary>
         public static bool AsyncDecoding
         {
             get { return Bass.GetConfigBool(Configuration.WmaAsync); }

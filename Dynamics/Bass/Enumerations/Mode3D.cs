@@ -1,6 +1,6 @@
 ﻿namespace ManagedBass.Dynamics
 {
-    public enum BASS3DMode
+    public enum Mode3D
     {
         /// <summary>
         /// To be used with Bass.ChannelSet3DAttributes()

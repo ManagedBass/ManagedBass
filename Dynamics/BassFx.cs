@@ -181,6 +181,9 @@ namespace ManagedBass.Dynamics
 
     public delegate void BPMBeatProcedure(int chan, double beatpos, IntPtr user);
 
+    /// <summary>
+    /// Wraps BassFx: bassfx.dll
+    /// </summary>
     public static class BassFx
     {
         const string DllName = "bass_fx.dll";
