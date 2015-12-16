@@ -33,11 +33,30 @@
     <Compile Include="Devices\Wasapi\WasapiLoopbackDevice.cs" />
     <Compile Include="Devices\Wasapi\WasapiRecordingDevice.cs" />
     <Compile Include="Devices\Wasapi\WasapiPlaybackDevice.cs" />
-    <Compile Include="Dynamics\Bass Wasapi\Delegates.cs" />
-    <Compile Include="Dynamics\Bass Wasapi\Enums.cs" />
-    <Compile Include="Dynamics\Bass Wasapi\Structs.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Delegates\WasapiNotifyProcedure.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Delegates\WasapiProcedure.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Enumerations\WasapiDeviceType.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Enumerations\WasapiDeviceInfoFlags.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Enumerations\WasapiFormat.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Enumerations\WasapiInitFlags.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Enumerations\WasapiNotificationType.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Enumerations\WasapiVolumeTypes.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Structures\WasapiDeviceInfo.cs" />
+    <Compile Include="Dynamics\Bass Wasapi\Structures\WasapiInfo.cs" />
     <Compile Include="Dynamics\BassAac.cs" />
     <Compile Include="Dynamics\BassAc3.cs" />
+    <Compile Include="Dynamics\BassCd\Delegates.cs" />
+    <Compile Include="Dynamics\BassCd\Enums.cs" />
+    <Compile Include="Dynamics\BassCd\Structs.cs" />
+    <Compile Include="Dynamics\BassEnc\Enumerations\ACMFormatFlags.cs" />
+    <Compile Include="Dynamics\BassEnc\Enumerations\EncodeCount.cs" />
+    <Compile Include="Dynamics\BassEnc\Enumerations\EncodeFlags.cs" />
+    <Compile Include="Dynamics\BassEnc\Enumerations\WaveFormatTag.cs" />
+    <Compile Include="Dynamics\BassFx\Delegates\BPMProcedure.cs" />
+    <Compile Include="Dynamics\BassFx\Delegates\BPMProgressProcedure.cs" />
+    <Compile Include="Dynamics\BassFx\Delegates\BPMBeatProcedure.cs" />
+    <Compile Include="Dynamics\BassFx\Enumerations\BQFType.cs" />
+    <Compile Include="Dynamics\BassFx\Enumerations\FXChannelFlags.cs" />
     <Compile Include="Dynamics\Bass\Delegates\FileCloseProcedure.cs" />
     <Compile Include="Dynamics\Bass\Delegates\FileLengthProcedure.cs" />
     <Compile Include="Dynamics\Bass\Delegates\FileReadProcedure.cs" />
@@ -50,9 +69,9 @@
     <Compile Include="Dynamics\Bass\Delegates\DSPProcedure.cs" />
     <Compile Include="Dynamics\Bass\Delegates\DownloadProcedure.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\Bass.cs" />
-    <Compile Include="Dynamics\BassCd.cs" />
-    <Compile Include="Dynamics\BassEnc.cs" />
-    <Compile Include="Dynamics\BassFx.cs" />
+    <Compile Include="Dynamics\BassCd\BassCd.cs" />
+    <Compile Include="Dynamics\BassEnc\BassEnc.cs" />
+    <Compile Include="Dynamics\BassFx\BassFx.cs" />
     <Compile Include="Dynamics\BassMidi.cs" />
     <Compile Include="Dynamics\BassMix.cs" />
     <Compile Include="Dynamics\Bass Wasapi\BassWasapi.cs" />
@@ -138,7 +157,7 @@
     <Compile Include="Writers\WmaFileWriter.cs" />
     <Compile Include="Tags.cs" />
     <Compile Include="Devices\CDDrive.cs" />
-    <Compile Include="Manager.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Writers\AudioFileWriter.cs" />
   </ItemGroup>
   <ItemGroup>

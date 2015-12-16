@@ -10,7 +10,7 @@ namespace ManagedBass.Dynamics
     {
         const string DllName = "bassmidi.dll";
 
-        static BassMidi() { BassManager.Load(DllName); }
+        public static void Load(string folder = null) { Extensions.Load(DllName, folder); }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreateFile")]
         public static extern int CreateStream(bool mem, string file, long offset, long length, BassFlags flags, int freq);

@@ -4,7 +4,7 @@
     {
         const string DllName = "bassaac.dll";
 
-        static BassAac() { BassManager.Load(DllName); }
+        public static void Load(string folder = null) { Extensions.Load(DllName, folder); }
 
         /// <summary>
         /// Play audio from mp4 (video) files?

@@ -4,7 +4,7 @@
     {
         const string DllName = "bassac3.dll";
 
-        static BassAc3() { BassManager.Load(DllName); }
+        public static void Load(string folder = null) { Extensions.Load(DllName, folder); }
 
         /// <summary>
         /// Dynamic range compression option

@@ -26,7 +26,7 @@ namespace ManagedBass.Dynamics
 
         const string DllName = "basswma.dll";
 
-        static BassWma() { BassManager.Load(DllName); }
+        public static void Load(string folder = null) { Extensions.Load(DllName, folder); }
 
         #region Streams
         [DllImport(DllName, EntryPoint = "BASS_WMA_GetWMObject")]

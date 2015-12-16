@@ -11,12 +11,30 @@ namespace ManagedBass.Dynamics
 
         const string DllName = "bass.dll";
 
-        static Bass() { BassManager.LoadBass(); }
+        static Bass()
+        {
+            if (File.Exists(Path.Combine(Environment.CurrentDirectory, DllName)))
+            {
+                PlaybackDevice.NoSoundDevice.Initialize();
+                PlaybackDevice.DefaultDevice.Initialize();
+
+                Bass.FloatingPointDSP = true;
+            }
+        }
+
+        public static void Load(string folder = null)
+        {
+            Extensions.Load(DllName, folder);
+
+            PlaybackDevice.NoSoundDevice.Initialize();
+            PlaybackDevice.DefaultDevice.Initialize();
+
+            Bass.FloatingPointDSP = true;
+        }
 
         // TODO: BASS_ChannelGetAttributeEx
         // TODO: BASS_ChannelSetAttributeEx
         // TODO: BASS_ChannelGetLevelEx
-        // TODO: BASS_PluginLoadDirectory
 
         [DllImport(DllName, EntryPoint = "BASS_Start")]
         public static extern bool Start();
@@ -55,11 +73,27 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_PluginGetInfo")]
         public static extern PluginInfo GetPluginInfo(int Handle);
 
-        [DllImport(DllName, EntryPoint = "BASS_PluginLoad")]
-        public static extern int LoadPlugin([MarshalAs(UnmanagedType.LPWStr)]string FileName, BassFlags Flags);
+        [DllImport(DllName)]
+        static extern int BASS_PluginLoad([MarshalAs(UnmanagedType.LPWStr)]string FileName, BassFlags Flags = BassFlags.Unicode);
+
+        public static int LoadPlugin(string FileName) { return BASS_PluginLoad(FileName); }
 
         [DllImport(DllName, EntryPoint = "BASS_PluginFree")]
         public static extern bool FreePlugin(int Handle);
+
+        public static int LoadPluginsFromDirectory(string directory)
+        {
+            int Count = 0;
+
+            if (Directory.Exists(directory))
+            {
+                foreach (var lib in Directory.EnumerateFiles(directory, "bass*.dll"))
+                    if (BASS_PluginLoad(lib) != 0) 
+                        Count++;
+            }
+
+            return Count;
+        }
         #endregion
 
         #region Devices

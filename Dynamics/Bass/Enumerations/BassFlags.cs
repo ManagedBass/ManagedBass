@@ -71,7 +71,7 @@ namespace ManagedBass.Dynamics
         MuteMax = 32,
         
         /// <summary>
-        /// Sample: uses the DX7 voice allocation & management
+        /// Sample: uses the DX7 voice allocation and management
         /// </summary>
         VAM = 64,
         
@@ -417,7 +417,7 @@ namespace ManagedBass.Dynamics
         SpeakerPair3 = 50331648,
         
         /// <summary>
-        /// Center & LFE speakers (5.1, channel 5/6)
+        /// Center and LFE speakers (5.1, channel 5/6)
         /// </summary>
         SpeakerCenterLFE = 50331648,
         

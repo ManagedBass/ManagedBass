@@ -12,7 +12,7 @@ namespace ManagedBass.Dynamics
 
         const string DllName = "bassmix.dll";
 
-        static BassMix() { BassManager.Load(DllName); }
+        public static void Load(string folder = null) { Extensions.Load(DllName, folder); }
 
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamCreate")]
         public static extern int CreateSplitStream(int channel, BassFlags Flags, [MarshalAs(UnmanagedType.LPArray)] int[] chanmap);

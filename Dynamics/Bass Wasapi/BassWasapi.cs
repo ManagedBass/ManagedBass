@@ -9,7 +9,7 @@ namespace ManagedBass.Dynamics
 
         const string DllName = "basswasapi.dll";
 
-        static BassWasapi() { BassManager.Load(DllName); }
+        public static void Load(string folder = null) { Extensions.Load(DllName, folder); }
 
         #region CPU
         [DllImport(DllName)]

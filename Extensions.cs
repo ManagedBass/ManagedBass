@@ -1,10 +1,11 @@
 ﻿using ManagedBass.Dynamics;
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
-    static class BassManager
+    public static class Extensions
     {
         [DllImport("kernel32.dll")]
         static extern IntPtr LoadLibrary(string dllToLoad);
@@ -22,27 +23,14 @@ namespace ManagedBass
             }
         }
 
-        public static void Load(string DllName)
+        internal static void Load(string DllName, string Folder)
         {
-            //LoadLibrary(DllName);
+            if (!string.IsNullOrWhiteSpace(Folder))
+                LoadLibrary(Path.Combine(Folder, DllName));
         }
 
         public static short HiWord(this int pDWord) { return ((short)(((pDWord) >> 16) & 0xFFFF)); }
 
         public static short LoWord(this int pDWord) { return ((short)pDWord); }
-
-        static BassManager() { LoadBass(); }
-
-        public static void LoadBass()
-        {
-            Load("bass.dll");
-
-            //Bass.BASS_PluginLoadDirectory(Bin);
-
-            PlaybackDevice.NoSoundDevice.Initialize();
-            PlaybackDevice.DefaultDevice.Initialize();
-
-            Bass.FloatingPointDSP = true;
-        }
     }
 }
