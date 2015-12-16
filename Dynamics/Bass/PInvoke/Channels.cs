@@ -88,6 +88,9 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_ChannelSetSync")]
         public static extern int ChannelSetSync(int Handle, SyncFlags Type, long Param, SyncProcedure Procedure, IntPtr User = default(IntPtr));
 
+        [DllImport(DllName, EntryPoint = "BASS_ChannelRemoveSync")]
+        public static extern bool ChannelRemoveSync(int handle, int sync);
+
         [DllImport(DllName, EntryPoint = "BASS_ChannelBytes2Seconds")]
         public extern static double ChannelBytes2Seconds(int Handle, long Position);
 
@@ -119,5 +122,8 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
         public static extern int ChannelGetData(int Handle, IntPtr Buffer, int Length);
+
+        [DllImport(DllName, EntryPoint = "BASS_ChannelUpdate")]
+        public static extern bool ChannelUpdate(int handdle, int length);
     }
 }

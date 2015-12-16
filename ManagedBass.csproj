@@ -38,6 +38,10 @@
     <Compile Include="Dynamics\Bass Wasapi\Structs.cs" />
     <Compile Include="Dynamics\BassAac.cs" />
     <Compile Include="Dynamics\BassAc3.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\FileCloseProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\FileLengthProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\FileReadProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\FileSeekProcedure.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\Algorithm3D.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\3D.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\Channels.cs" />
@@ -80,11 +84,13 @@
     <Compile Include="Dynamics\Bass\PInvoke\Record.cs" />
     <Compile Include="Dynamics\Bass\Structures\DeviceInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\ChannelInfo.cs" />
+    <Compile Include="Dynamics\Bass\Structures\FileProcedures.cs" />
     <Compile Include="Dynamics\Bass\Structures\PluginFormat.cs" />
     <Compile Include="Dynamics\Bass\Structures\PluginInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\RecordInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\SampleInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\BassInfo.cs" />
+    <Compile Include="Dynamics\Bass\Structures\Vector3D.cs" />
     <Compile Include="IO\Decoders\ReverseDecoder.cs" />
     <Compile Include="IO\Decoders\FileDecoder.cs" />
     <Compile Include="IO\Decoders\TempoDecoder.cs" />

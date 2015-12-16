@@ -1,4 +1,5 @@
 ﻿using ManagedBass.Dynamics;
+using System;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass
@@ -31,5 +32,7 @@ namespace ManagedBass
 
         public bool Push(int[] data, int Length) { return Push(data as object, Length); }
         #endregion
+
+        public void End() { Bass.StreamPutData(Handle, IntPtr.Zero, (int)StreamProcedureType.End); }
     }
 }

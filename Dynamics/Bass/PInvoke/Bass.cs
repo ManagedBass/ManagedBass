@@ -13,18 +13,10 @@ namespace ManagedBass.Dynamics
 
         static Bass() { BassManager.LoadBass(); }
 
-        // TODO: BASS_StreamCreateFileUser
-        // TODO: BASS_ChannelGet3DAttributes
-        // TODO: BASS_ChannelGet3DPosition
-        // TODO: BASS_ChannelSet3DAttributes
-        // TODO: BASS_ChannelSet3DPosition
-        // TODO: BASS_Get3DFactors
-        // TODO: BASS_Get3DPosition
-        // TODO: BASS_ChannelUpdate
-        // TODO: BASS_FXReset
-        // TODO: BASS_GetEAXParameters
+        // TODO: BASS_ChannelGetAttributeEx
+        // TODO: BASS_ChannelSetAttributeEx
+        // TODO: BASS_ChannelGetLevelEx
         // TODO: BASS_PluginLoadDirectory
-        // TODO: BASS_SetEAXParameters
 
         [DllImport(DllName, EntryPoint = "BASS_Start")]
         public static extern bool Start();
@@ -55,6 +47,9 @@ namespace ManagedBass.Dynamics
                 return temp;
             }
         }
+
+        [DllImport(DllName, EntryPoint = "BASS_GetDSoundObject")]
+        public static extern IntPtr GetDSoundObject(int obj);
 
         #region Plugin
         [DllImport(DllName, EntryPoint = "BASS_PluginGetInfo")]
@@ -154,6 +149,9 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         static extern int BASS_StreamCreateFile(bool Memory, IntPtr File, long Offset, long Length, BassFlags Flags);
 
+        [DllImport(DllName, EntryPoint = "BASS_StreamCreateFileUser")]
+        public static extern int CreateStream(int system, BassFlags flags, FileProcedures procs, IntPtr user);
+
         public static int CreateStream(string File, long Offset, long Length, BassFlags Flags)
         {
             return BASS_StreamCreateFile(false, File, Offset, Length, Flags);
@@ -192,6 +190,9 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_StreamPutData")]
         public extern static int StreamPutData(int Handle, IntPtr Buffer, int Length);
 
+        [DllImport(DllName, EntryPoint = "BASS_StreamPutFileData")]
+        public extern static int StreamPutFileData(int Handle, IntPtr Buffer, int Length);
+
         [DllImport(DllName, EntryPoint = "BASS_StreamFree")]
         public static extern bool StreamFree(int Handle);
         #endregion
@@ -214,6 +215,9 @@ namespace ManagedBass.Dynamics
             try { return BASS_FXGetParameters(Handle, Param); }
             catch { return true; }
         }
+
+        [DllImport(DllName, EntryPoint = "BASS_FXReset")]
+        public static extern bool FXReset(int handle);
         #endregion
 
         #region Error Code
@@ -251,6 +255,21 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_SampleSetInfo")]
         public static extern bool SampleSetInfo(int Handle, SampleInfo info);
+
+        [DllImport(DllName)]
+        static extern int BASS_SampleGetChannels(int handle, [MarshalAs(UnmanagedType.LPArray)] int[] channels);
+
+        public static int[] SampleGetChannels(int handle)
+        {
+            var channels = new int[SampleGetInfo(handle).Max];
+
+            BASS_SampleGetChannels(handle, channels);
+
+            return channels;
+        }
+
+        [DllImport(DllName, EntryPoint = "BASS_SampleStop")]
+        public static extern bool SampleStop(int handle);
 
         #region Sample Load
         [DllImport(DllName)]
