@@ -38,7 +38,7 @@ namespace ManagedBass
 
             while (HasData) Writer.Write(ReadFloat(BlockLength), BlockLength);
 
-            Writer.Close();
+            Writer.Dispose();
 
             Position = InitialPosition;
         }
