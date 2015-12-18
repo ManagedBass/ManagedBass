@@ -1,21 +1,20 @@
 ﻿using ManagedBass.Dynamics;
 using System;
+using System.Collections.Generic;
 
 namespace ManagedBass
 {
     public class RecordingDevice : BassDevice
     {
-        public static RecordingDevice[] Devices
+        public static IEnumerable<RecordingDevice> Devices
         {
             get
             {
-                int NoOfDevices = Count;
+                DeviceInfo info;
 
-                RecordingDevice[] Devices = new RecordingDevice[NoOfDevices];
-
-                for (int i = 0; i < NoOfDevices; ++i) Devices[i] = new RecordingDevice(i);
-
-                return Devices;
+                for (int i = 0; Bass.GetRecordingDeviceInfo(i, out info); ++i)
+                    if (info.IsEnabled)
+                        yield return new RecordingDevice(i);
             }
         }
 

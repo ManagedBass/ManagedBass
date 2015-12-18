@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ManagedBass.Dynamics;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ManagedBass
@@ -25,14 +26,11 @@ namespace ManagedBass
         {
             get
             {
-                WasapiPlaybackDevice dev = null;
+                WasapiDeviceInfo dev;
 
-                for (int i = 0; i < DeviceCount; ++i)
-                {
-                    dev = Create(i);
+                for (int i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
                     if (!dev.IsInput)
-                        yield return dev;
-                }
+                        yield return Create(i);
             }
         }
 
@@ -44,14 +42,11 @@ namespace ManagedBass
             {
                 int Count = 0;
 
-                WasapiPlaybackDevice dev;
+                WasapiDeviceInfo dev;
 
-                for (int i = 0; i < DeviceCount; ++i)
-                {
-                    dev = Create(i);
+                for (int i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
                     if (!dev.IsInput)
                         Count++;
-                }
 
                 return Count;
             }

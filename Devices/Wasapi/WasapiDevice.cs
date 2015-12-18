@@ -104,7 +104,7 @@ namespace ManagedBass
 
         public event Action<BufferProvider> Callback;
         #endregion
-
+        
         public void Dispose()
         {
             BassWasapi.CurrentDevice = DeviceIndex;

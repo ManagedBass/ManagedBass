@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using ManagedBass.Dynamics;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ManagedBass
 {
-    public class WasapiLoopbackDevice : WasapiDevice 
+    public class WasapiLoopbackDevice : WasapiDevice
     {
         static Dictionary<int, WasapiLoopbackDevice> Singleton = new Dictionary<int, WasapiLoopbackDevice>();
 
@@ -25,14 +26,11 @@ namespace ManagedBass
         {
             get
             {
-                WasapiLoopbackDevice dev;
+                WasapiDeviceInfo dev;
 
-                for (int i = 0; i < DeviceCount; ++i)
-                {
-                    dev = Create(i);
+                for (int i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
                     if (dev.IsLoopback)
-                        yield return dev;
-                }
+                        yield return Create(i);
             }
         }
 
@@ -44,14 +42,11 @@ namespace ManagedBass
             {
                 int Count = 0;
 
-                WasapiLoopbackDevice dev;
+                WasapiDeviceInfo dev;
 
-                for (int i = 0; i < DeviceCount; ++i)
-                {
-                    dev = Create(i);
-                    if (dev.IsInput && !dev.IsLoopback)
+                for (int i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
+                    if (dev.IsLoopback)
                         Count++;
-                }
 
                 return Count;
             }

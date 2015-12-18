@@ -1,5 +1,6 @@
 ﻿using ManagedBass.Dynamics;
 using System;
+using System.Collections.Generic;
 
 namespace ManagedBass
 {
@@ -17,17 +18,15 @@ namespace ManagedBass
         /// <summary>
         /// Gets an array of Playback Devices
         /// </summary>
-        public static PlaybackDevice[] Devices
+        public static IEnumerable<PlaybackDevice> Devices
         {
             get
             {
-                int NoOfDevices = Count;
+                DeviceInfo info;
 
-                PlaybackDevice[] Devices = new PlaybackDevice[NoOfDevices];
-
-                for (int i = 0; i < NoOfDevices; ++i) Devices[i] = new PlaybackDevice(i);
-
-                return Devices;
+                for (int i = 0; Bass.GetDeviceInfo(i, out info); ++i)
+                    if (info.IsEnabled)
+                        yield return new PlaybackDevice(i);
             }
         }
 
