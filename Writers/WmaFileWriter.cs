@@ -7,10 +7,10 @@ namespace ManagedBass
     /// <summary>
     /// Writes a WMA File. Requires BassWma.dll
     /// </summary>
-    public class WmaFileWriter : AudioFileWriter
-    {        
+    public class WmaFileWriter : IAudioFileWriter
+    {
         int EncoderHandle;
-        
+
         public WmaFileWriter(string FilePath, int NoOfChannels = 2, int SampleRate = 44100, int BitRate = 128000)
         {
             EncoderHandle = BassWma.EncodeOpenFile(SampleRate, NoOfChannels, WMAEncodeFlags.Float, BitRate, FilePath);
@@ -18,15 +18,9 @@ namespace ManagedBass
 
         public void Write(IntPtr Buffer, int Length) { BassWma.EncodeWrite(EncoderHandle, Buffer, Length); }
 
-        public void Write(BufferProvider buffer) 
-        {
-            int Length = buffer.BufferKind == Resolution.Float ? buffer.FloatLength
-                : buffer.ByteLength;
+        public void Write(BufferProvider buffer) { Write(buffer.Pointer, buffer.ByteLength); }
 
-            Write(buffer.Pointer, Length);
-        }
-
-        public override void Write(float[] buffer, int Length)
+        void Write(object buffer, int Length)
         {
             GCHandle gch = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 
@@ -35,6 +29,12 @@ namespace ManagedBass
             gch.Free();
         }
 
-        public override void Close() { BassWma.EncodeClose(EncoderHandle); }
+        public void Write(byte[] buffer, int Length) { Write(buffer as object, Length); }
+
+        public void Write(short[] buffer, int Length) { Write(buffer as object, Length); }
+
+        public void Write(float[] buffer, int Length) { Write(buffer as object, Length); }
+
+        public void Dispose() { BassWma.EncodeClose(EncoderHandle); }
     }
 }

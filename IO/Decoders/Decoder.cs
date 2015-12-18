@@ -28,7 +28,7 @@ namespace ManagedBass
         /// </summary>
         /// <param name="Writer">Audio File Writer to write to</param>
         /// <param name="Offset">+ve for forward, -ve for backward</param>
-        public void Write(AudioFileWriter Writer, int Offset = 0)
+        public void Write(IAudioFileWriter Writer, int Offset = 0)
         {
             long InitialPosition = Position;
 

@@ -7,7 +7,7 @@ namespace ManagedBass
     /// <summary>
     /// This class writes WAV data to a .wav file on disk
     /// </summary>
-    public class WaveFileWriter : AudioFileWriter, IDisposable
+    public class WaveFileWriter : IAudioFileWriter
     {
         Stream outStream;
         long dataSizePos, factSampleCountPos;
@@ -92,24 +92,24 @@ namespace ManagedBass
         /// Writes 16 bit samples to the Wave file
         /// </summary>
         /// <param name="data">The buffer containing the wave data</param>
-        /// <param name="count">The number of 16 bit samples to write</param>
+        /// <param name="count">The number of bytes to write</param>
         public void Write(short[] data, int count)
         {
             BinaryWriter w = new BinaryWriter(outStream);
-            for (int n = 0; n < count; n++) w.Write(data[n]);
-            Length += (count * 2);
+            for (int n = 0; n < count / 2; n++) w.Write(data[n]);
+            Length += count;
         }
 
         /// <summary>
-        /// Writes 16 bit samples to the Wave file
+        /// Writes 32 bit float samples to the Wave file
         /// </summary>
         /// <param name="data">The buffer containing the wave data</param>
-        /// <param name="count">The number of 16 bit samples to write</param>
-        public override void Write(float[] data, int count)
+        /// <param name="count">The number of bytes to write</param>
+        public void Write(float[] data, int count)
         {
             BinaryWriter w = new BinaryWriter(outStream);
             for (int n = 0; n < count / 4; n++) w.Write(data[n]);
-            Length += (count * 2);
+            Length += count;
         }
         #endregion
 
@@ -119,11 +119,6 @@ namespace ManagedBass
         public void Flush() { outStream.Flush(); }
 
         #region IDisposable Members
-        /// <summary>
-        /// Closes this WaveFile (calls <see>Dispose</see>)
-        /// </summary>
-        public override void Close() { Dispose(); }
-
         /// <summary>
         /// Closes this WaveFile
         /// </summary>

@@ -160,7 +160,7 @@
     <Compile Include="Tags.cs" />
     <Compile Include="Devices\CDDrive.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Writers\AudioFileWriter.cs" />
+    <Compile Include="Writers\IAudioFileWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">
