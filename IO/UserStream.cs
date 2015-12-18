@@ -10,7 +10,7 @@ namespace ManagedBass
         StreamProcedure Procedure;
         UserStreamCallback call;
 
-        public UserStream(UserStreamCallback callback, PlaybackDevice Device, BufferKind BufferKind = BufferKind.Short, bool IsMono = false)
+        public UserStream(UserStreamCallback callback, PlaybackDevice Device, Resolution BufferKind = Resolution.Short, bool IsMono = false)
             : base(BufferKind)
         {
             call = callback;

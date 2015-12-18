@@ -33,7 +33,7 @@ namespace ManagedBass.Effects
 
         void OnDSP(int handle, int channel, IntPtr Buffer, int Length, IntPtr User)
         {
-            if (IsAssigned) Callback(new BufferProvider(Buffer, Length, Bass.FloatingPointDSP ? BufferKind.Float : BufferKind.Short));
+            if (IsAssigned) Callback(new BufferProvider(Buffer, Length, Bass.FloatingPointDSP ? Resolution.Float : Resolution.Short));
         }
 
         protected abstract void Callback(BufferProvider buffer);

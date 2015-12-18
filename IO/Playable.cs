@@ -13,7 +13,7 @@ namespace ManagedBass
             return Result;
         }
 
-        protected Playable(BufferKind BufferKind = BufferKind.Short) : base(BufferKind) { Bass.CurrentDevice = 1; }
+        protected Playable(Resolution BufferKind = Resolution.Short) : base(BufferKind) { Bass.CurrentDevice = 1; }
 
         public PlaybackDevice Device
         {

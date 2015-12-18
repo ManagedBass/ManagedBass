@@ -6,7 +6,7 @@ namespace ManagedBass
 {
     public class PushStream : AdvancedPlayable
     {
-        public PushStream(BufferKind BufferKind = BufferKind.Short)
+        public PushStream(Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             Handle = Bass.CreateStream(44100, 2, BufferKind.ToBassFlag(), StreamProcedureType.Push);

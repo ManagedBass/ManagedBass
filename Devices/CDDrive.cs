@@ -1,5 +1,6 @@
 ﻿using System;
 using ManagedBass.Dynamics;
+using System.Collections.Generic;
 
 namespace ManagedBass
 {
@@ -53,25 +54,24 @@ namespace ManagedBass
 
         public bool HasDisk { get { return BassCd.IsReady(DriveIndex); } }
 
-        public static Decoder DecoderFromFile(string FileName, BufferKind BufferKind = BufferKind.Short)
+        public static Decoder DecoderFromFile(string FileName, Resolution BufferKind = Resolution.Short)
         {
             return new Decoder(BassCd.CreateStream(FileName, BassFlags.Decode | BufferKind.ToBassFlag()), BufferKind);
         }
 
-        public Decoder DecodeTrack(int Track, BufferKind BufferKind = BufferKind.Short)
+        public Decoder DecodeTrack(int Track, Resolution BufferKind = Resolution.Short)
         {
             return new Decoder(BassCd.CreateStream(DriveIndex, Track, BassFlags.Decode | BufferKind.ToBassFlag()), BufferKind);
         }
 
-        public static CDDrive[] Drives
+        public static IEnumerable<CDDrive> Drives
         {
             get
             {
-                CDDrive[] Drives = new CDDrive[DriveCount];
+                CDInfo info;
 
-                for (int i = 0; i < DriveCount; ++i) Drives[i] = new CDDrive(i);
-
-                return Drives;
+                for (int i = 0; BassCd.GetDriveInfo(i, out info); ++i)
+                    yield return new CDDrive(i);
             }
         }
 

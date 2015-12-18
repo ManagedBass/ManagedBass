@@ -6,7 +6,7 @@ namespace ManagedBass
     {
         public Decoder Source { get; set; }
 
-        public SplitDecoder(Decoder Source, BufferKind BufferKind = BufferKind.Short)
+        public SplitDecoder(Decoder Source, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             this.Source = Source;

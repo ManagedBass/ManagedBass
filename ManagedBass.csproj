@@ -80,7 +80,7 @@
     <Compile Include="Dynamics\Bass\Delegates\RecordProcedure.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\InputFlags.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\DeviceInitFlags.cs" />
-    <Compile Include="Dynamics\Bass\Enumerations\ChannelTypeFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\ChannelType.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\EffectType.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\DeviceInfoFlags.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\BassFlags.cs" />
@@ -124,6 +124,8 @@
     <Compile Include="IO\MixerStream.cs" />
     <Compile Include="IO\Decoders\SplitDecoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resolution.cs" />
+    <Compile Include="Return.cs" />
     <Compile Include="Writers\WaveFormat.cs" />
     <Compile Include="Writers\WaveFileWriter.cs" />
     <Compile Include="Effects\AutoWah.cs" />

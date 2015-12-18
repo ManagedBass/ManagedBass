@@ -9,7 +9,7 @@ namespace ManagedBass
 
         ~FilePlayer() { Dispose(); }
 
-        public FilePlayer(string FilePath, BufferKind BufferKind = BufferKind.Short)
+        public FilePlayer(string FilePath, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             if (!File.Exists(FilePath)) throw new FileNotFoundException();

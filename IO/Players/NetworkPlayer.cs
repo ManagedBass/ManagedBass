@@ -12,7 +12,7 @@ namespace ManagedBass
 
         ~NetworkPlayer() { Dispose(); }
 
-        public NetworkPlayer(string Url, Action<BufferProvider> callback = null, BufferKind BufferKind = BufferKind.Short)
+        public NetworkPlayer(string Url, Action<BufferProvider> callback = null, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             this.Url = Url;

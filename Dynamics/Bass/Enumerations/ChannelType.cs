@@ -3,7 +3,7 @@
 namespace ManagedBass.Dynamics
 {
     [Flags]
-    public enum ChannelTypeFlags
+    public enum ChannelType
     {
         /// <summary>
         /// Unknown channel format.
@@ -160,82 +160,97 @@ namespace ManagedBass.Dynamics
         /// MIDI sound format stream.
         /// </summary>
         MIDI = 68864,
-        //
-        // Summary:
-        //     Apple Lossless (ALAC) format stream.
+        
+        /// <summary>
+        /// Apple Lossless (ALAC) format stream.
+        /// </summary>
         ALAC = 69120,
-        //
-        // Summary:
-        //     TTA format stream.
+        
+        /// <summary>
+        /// TTA format stream.
+        /// </summary>
         TTA = 69376,
-        //
-        // Summary:
-        //     AC3 format stream.
+        
+        /// <summary>
+        /// AC3 format stream.
+        /// </summary>
         AC3 = 69632,
-        //
-        // Summary:
-        //     Video format stream.
+
+        //Video format stream.
         Video = 69888,
-        //
-        // Summary:
-        //     Opus format stream.
+        
+        /// <summary>
+        /// Opus format stream.
+        /// </summary>
         OPUS = 70144,
-        //
-        // Summary:
-        //     Direct Stream Digital (DSD) format stream.
+        
+        /// <summary>
+        /// Direct Stream Digital (DSD) format stream.
+        /// </summary>
         DSD = 71424,
-        //
-        // Summary:
-        //     ADX format stream.
-        //     ADX is a lossy proprietary audio storage and compression format developed
-        //     by CRI Middleware specifically for use in video games, it is derived from
-        //     ADPCM.
+        
+        /// <summary>
+        /// ADX format stream.
+        /// ADX is a lossy proprietary audio storage and compression format developed
+        /// by CRI Middleware specifically for use in video games, it is derived from ADPCM.
+        /// </summary>
         ADX = 126976,
-        //
-        // Summary:
-        //     AIX format stream.
-        //     Only for ADX of all versions (with AIXP support).
+        
+        /// <summary>
+        /// AIX format stream.
+        /// Only for ADX of all versions (with AIXP support).
+        /// </summary>
         AIX = 126977,
-        //
-        // Summary:
-        //     BASS_FX tempo stream.
+        
+        /// <summary>
+        /// BASS_FX tempo stream.
+        /// </summary>
         Tempo = 127488,
-        //
-        // Summary:
-        //     BASS_FX reverse stream.
+        
+        /// <summary>
+        /// BASS_FX reverse stream.
+        /// </summary>
         Reverse = 127489,
-        //
-        // Summary:
-        //     MOD format music. This can also be used as a flag to test if the channel
-        //     is any kind of HMUSIC.
+        
+        /// <summary>
+        /// MOD format music. 
+        /// This can also be used as a flag to test if the channel is any kind of HMUSIC.
+        /// </summary>
         MOD = 131072,
-        //
-        // Summary:
-        //     MTM format music.
+        
+        /// <summary>
+        /// MTM format music.
+        /// </summary>
         MTM = 131073,
-        //
-        // Summary:
-        //     S3M format music.
+        
+        /// <summary>
+        /// S3M format music.
+        /// </summary>
         S3M = 131074,
-        //
-        // Summary:
-        //     XM format music.
+        
+        /// <summary>
+        /// XM format music.
+        /// </summary>
         XM = 131075,
-        //
-        // Summary:
-        //     IT format music.
+        
+        /// <summary>
+        /// IT format music.
+        /// </summary>
         IT = 131076,
-        //
-        // Summary:
-        //     WAV format stream, LOWORD=codec.
+        
+        /// <summary>
+        /// WAV format stream, LOWORD=codec.
+        /// </summary>
         WAV = 262144,
-        //
-        // Summary:
-        //     WAV format stream, PCM 16-bit.
+        
+        /// <summary>
+        /// WAV format stream, PCM 16-bit.
+        /// </summary>
         WAV_PCM = 327681,
-        //
-        // Summary:
-        //     WAV format stream, FLOAT 32-bit.
+        
+        /// <summary>
+        /// WAV format stream, FLOAT 32-bit.
+        /// </summary>
         WAV_FLOAT = 327683,
     }
 }

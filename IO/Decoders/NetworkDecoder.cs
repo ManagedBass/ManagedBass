@@ -12,7 +12,7 @@ namespace ManagedBass
 
         ~NetworkDecoder() { Dispose(); }
 
-        public NetworkDecoder(string Url, BufferKind BufferKind = BufferKind.Short, Action<BufferProvider> callback = null)
+        public NetworkDecoder(string Url, Resolution BufferKind = Resolution.Short, Action<BufferProvider> callback = null)
             : base(BufferKind)
         {
             this.Url = Url;

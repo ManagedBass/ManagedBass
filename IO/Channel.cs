@@ -42,9 +42,9 @@ namespace ManagedBass
 
         public double CPUUsage { get { return Bass.GetChannelAttribute(Handle, ChannelAttribute.CPUUsage); } }
 
-        protected BufferKind BufferKind { get; private set; }
+        protected Resolution BufferKind { get; private set; }
 
-        protected Channel(BufferKind BufferKind = BufferKind.Short)
+        protected Channel(Resolution BufferKind = Resolution.Short)
         {
             this.BufferKind = BufferKind;
 

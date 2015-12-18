@@ -98,7 +98,7 @@ namespace ManagedBass
 
         public int OnProc(IntPtr Buffer, int Length, IntPtr User)
         {
-            if (Callback != null) Callback.Invoke(new BufferProvider(Buffer, Length, BufferKind.Float));
+            if (Callback != null) Callback.Invoke(new BufferProvider(Buffer, Length, Resolution.Float));
             return Length;
         }
 

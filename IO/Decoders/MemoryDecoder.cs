@@ -9,7 +9,7 @@ namespace ManagedBass
 
         ~MemoryDecoder() { Dispose(); }
 
-        public MemoryDecoder(byte[] Memory, long Offset = 0, long Length = 0, BufferKind BufferKind = BufferKind.Byte)
+        public MemoryDecoder(byte[] Memory, long Offset = 0, long Length = 0, Resolution BufferKind = Resolution.Byte)
             : base(BufferKind)
         {
             GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);

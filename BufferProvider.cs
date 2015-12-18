@@ -3,24 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
-    public enum BufferKind
-    {
-        /// <summary>
-        /// 16-Bit (Default)
-        /// </summary>
-        Short,
-
-        /// <summary>
-        /// 8-Bit
-        /// </summary>
-        Byte,
-
-        /// <summary>
-        /// 32-Bit IEEE Floating Point
-        /// </summary>
-        Float
-    }
-
     public class BufferProvider
     {
         #region Fields
@@ -29,7 +11,7 @@ namespace ManagedBass
         /// </summary>
         public IntPtr Pointer { get; private set; }
 
-        public BufferKind BufferKind { get; private set; }
+        public Resolution BufferKind { get; private set; }
 
         /// <summary>
         /// Length in Bytes
@@ -43,7 +25,7 @@ namespace ManagedBass
         public int IntLength { get { return ByteLength / 4; } }
         #endregion
 
-        public BufferProvider(IntPtr Buffer, int ByteLength, BufferKind BufferKind = BufferKind.Short)
+        public BufferProvider(IntPtr Buffer, int ByteLength, Resolution BufferKind = Resolution.Short)
         {
             this.Pointer = Buffer;
             this.ByteLength = ByteLength;

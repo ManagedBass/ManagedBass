@@ -59,7 +59,7 @@ namespace ManagedBass
         }
 
         public SineWave(double Frequency, double Amplitude, double SampleRate, int Length, double StartAngle = 0)
-            : base(BufferKind.Float)
+            : base(Resolution.Float)
         {
             this.Frequency = Frequency;
             this.Amplitude = Amplitude;
@@ -76,7 +76,7 @@ namespace ManagedBass
             CreateSineWave(Buffer, StartAngle);
 
             if (AS != null) AS.Dispose();
-            AS = new AudioSample(4 * Length, BufferKind.Float);
+            AS = new AudioSample(4 * Length, Resolution.Float);
             AS.Write(Buffer);
             Handle = AS.Handle;
         }

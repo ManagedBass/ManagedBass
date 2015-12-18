@@ -8,21 +8,21 @@ namespace ManagedBass
         int Sample;
         GCHandle GCPin;
 
-        public AudioSample(int Length, BufferKind BufferKind = BufferKind.Short)
+        public AudioSample(int Length, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             Sample = Bass.CreateSample(Length, 44100, 2, 1, BufferKind.ToBassFlag());
             Handle = Bass.SampleGetChannel(Sample, true);
         }
 
-        public AudioSample(string FilePath, BufferKind BufferKind = BufferKind.Short)
+        public AudioSample(string FilePath, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             Sample = Bass.LoadSample(FilePath, 0, 0, 1, BufferKind.ToBassFlag());
             Handle = Bass.SampleGetChannel(Sample, true);
         }
 
-        public AudioSample(byte[] Memory, int Length, BufferKind BufferKind = BufferKind.Short)
+        public AudioSample(byte[] Memory, int Length, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             // Pin

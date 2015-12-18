@@ -8,7 +8,7 @@ namespace ManagedBass
     {
         List<Channel> Sources = new List<Channel>();
 
-        public MixerStream(int Frequency = 44100, int NoOfChannels = 2, bool Buffer = true, BufferKind BufferKind = BufferKind.Short)
+        public MixerStream(int Frequency = 44100, int NoOfChannels = 2, bool Buffer = true, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             Handle = BassMix.CreateMixerStream(Frequency, NoOfChannels, BufferKind.ToBassFlag());

@@ -9,7 +9,7 @@ namespace ManagedBass
 
         ~FileDecoder() { Dispose(); }
 
-        public FileDecoder(string FilePath, BufferKind BufferKind = BufferKind.Short)
+        public FileDecoder(string FilePath, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             if (!File.Exists(FilePath)) throw new FileNotFoundException();

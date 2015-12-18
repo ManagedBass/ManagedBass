@@ -6,13 +6,13 @@ namespace ManagedBass
 {
     public class MusicModule : AdvancedPlayable, IEffectAssignable
     {
-        public MusicModule(string FilePath, BufferKind BufferKind = BufferKind.Short)
+        public MusicModule(string FilePath, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             Handle = Bass.LoadMusic(FilePath, 0, 0, BufferKind.ToBassFlag(), 0);
         }
 
-        MusicModule(byte[] Memory, int Length, BufferKind BufferKind = BufferKind.Short)
+        MusicModule(byte[] Memory, int Length, Resolution BufferKind = Resolution.Short)
            : base(BufferKind)
         {
             GCHandle GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
@@ -20,7 +20,7 @@ namespace ManagedBass
             GCPin.Free();
         }
 
-        public MusicModule(float[] Memory, int Length, BufferKind BufferKind = BufferKind.Short)
+        public MusicModule(float[] Memory, int Length, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             GCHandle GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);

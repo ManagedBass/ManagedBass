@@ -1,6 +1,4 @@
-﻿using ManagedBass.Dynamics;
-
-namespace ManagedBass
+﻿namespace ManagedBass
 {
     public enum Errors
     {
@@ -238,31 +236,5 @@ namespace ManagedBass
         /// BASSWASAPI: no WASAPI available
         /// </summary>
         WasapiNotAvailable = 5000
-    }
-
-    /// <summary>
-    /// Wraps a Bass Error in a function return value
-    /// </summary>
-    /// <typeparam name="T">The Type of the function return value</typeparam>
-    public class Return<T>
-    {
-        public Errors ErrorCode { get; set; }
-
-        Return() { }
-
-        public T Value { get; set; }
-
-        public static implicit operator T(Return<T> e) { return e.Value; }
-
-        public static implicit operator Return<T>(T e)
-        {
-            return new Return<T>()
-            {
-                ErrorCode = Bass.LastError,
-                Value = e
-            };
-        }
-
-        public bool Success { get { return ErrorCode == Errors.OK; } }
     }
 }

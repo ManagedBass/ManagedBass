@@ -23,7 +23,7 @@ namespace ManagedBass
             }
         }
 
-        protected AdvancedPlayable(BufferKind BufferKind = BufferKind.Short)
+        protected AdvancedPlayable(Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             Bass.CurrentDevice = Bass.DefaultDevice; 

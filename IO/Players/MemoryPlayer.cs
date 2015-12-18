@@ -9,7 +9,7 @@ namespace ManagedBass
 
         ~MemoryPlayer() { Dispose(); }
 
-        public MemoryPlayer(byte[] Memory, long Offset = 0, long Length = 0, BufferKind BufferKind = BufferKind.Byte)
+        public MemoryPlayer(byte[] Memory, long Offset = 0, long Length = 0, Resolution BufferKind = Resolution.Byte)
             : base(BufferKind)
         {
             GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);

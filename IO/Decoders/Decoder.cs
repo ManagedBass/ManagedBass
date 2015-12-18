@@ -6,9 +6,9 @@ namespace ManagedBass
 {
     public class Decoder : Channel
     {
-        protected Decoder(BufferKind BufferKind = BufferKind.Short) : base(BufferKind) { Bass.CurrentDevice = 0; }
+        protected Decoder(Resolution BufferKind = Resolution.Short) : base(BufferKind) { Bass.CurrentDevice = 0; }
 
-        internal Decoder(int Handle, BufferKind BufferKind = BufferKind.Short) : this(BufferKind) { this.Handle = Handle; }
+        internal Decoder(int Handle, Resolution BufferKind = Resolution.Short) : this(BufferKind) { this.Handle = Handle; }
 
         public bool HasData { get { return Bass.IsChannelActive(Handle) == PlaybackState.Playing; } }
 

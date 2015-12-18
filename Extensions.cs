@@ -10,13 +10,13 @@ namespace ManagedBass
         [DllImport("kernel32.dll")]
         static extern IntPtr LoadLibrary(string dllToLoad);
 
-        public static BassFlags ToBassFlag(this BufferKind BufferKind)
+        public static BassFlags ToBassFlag(this Resolution BufferKind)
         {
             switch (BufferKind)
             {
-                case BufferKind.Byte:
+                case Resolution.Byte:
                     return BassFlags.Byte;
-                case BufferKind.Float:
+                case Resolution.Float:
                     return BassFlags.Float;
                 default:
                     return BassFlags.Default;

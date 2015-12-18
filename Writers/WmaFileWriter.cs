@@ -20,7 +20,7 @@ namespace ManagedBass
 
         public void Write(BufferProvider buffer) 
         {
-            int Length = buffer.BufferKind == BufferKind.Float ? buffer.FloatLength
+            int Length = buffer.BufferKind == Resolution.Float ? buffer.FloatLength
                 : buffer.ByteLength;
 
             Write(buffer.Pointer, Length);

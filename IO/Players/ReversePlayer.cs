@@ -6,7 +6,7 @@ namespace ManagedBass
     {
         Decoder decoder;
 
-        public ReversePlayer(Decoder decoder, BufferKind BufferKind = BufferKind.Short, double DecodingBlockLength = 2)
+        public ReversePlayer(Decoder decoder, Resolution BufferKind = Resolution.Short, double DecodingBlockLength = 2)
             : base(BufferKind)
         {
             this.decoder = decoder;

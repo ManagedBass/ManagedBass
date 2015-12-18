@@ -12,7 +12,7 @@ namespace ManagedBass
         #endregion
 
         #region Constructors
-        public Recording(RecordingDevice Device = null, BufferKind BufferKind = BufferKind.Short)
+        public Recording(RecordingDevice Device = null, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             if (Device == null) Device = RecordingDevice.DefaultDevice;

@@ -20,7 +20,7 @@ namespace ManagedBass.Effects
     /// <summary>
     /// Bi-Quad Filter Effect Manipulator.
     /// </summary>
-    public abstract class BQFEffect : Effect<BQFParameters>
+    public class BQFEffect : Effect<BQFParameters>
     {
         public BQFEffect(IEffectAssignable Stream, BQFType BQFType) : base(Stream) { Parameters.lFilter = BQFType; }
 
@@ -91,14 +91,4 @@ namespace ManagedBass.Effects
             }
         }
     }
-
-    /// <summary>
-    /// All Pass Filter Effect Manipulator.
-    /// </summary>
-    public sealed class APFEffect : BQFEffect { public APFEffect(IEffectAssignable Stream) : base(Stream, BQFType.AllPass) { } }
-
-    /// <summary>
-    /// Low Pass Filter Effect Manipulator.
-    /// </summary>
-    public sealed class LPFEffect : BQFEffect { public LPFEffect(IEffectAssignable Stream) : base(Stream, BQFType.LowPass) { } }
 }

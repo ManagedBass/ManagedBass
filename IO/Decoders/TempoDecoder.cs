@@ -6,7 +6,7 @@ namespace ManagedBass
     {
         Decoder decoder;
 
-        public TempoDecoder(Decoder decoder, BufferKind BufferKind = BufferKind.Short)
+        public TempoDecoder(Decoder decoder, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             this.decoder = decoder;

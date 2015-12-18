@@ -15,9 +15,9 @@ namespace ManagedBass.Dynamics
             get
             {
                 int Count = 0;
-                CDInfo info = new CDInfo();
+                CDInfo info;
 
-                for (int i = 0; GetDriveInfo(i, ref info); i++) ++Count;
+                for (int i = 0; GetDriveInfo(i, out info); i++) ++Count;
 
                 return Count;
             }
@@ -116,12 +116,12 @@ namespace ManagedBass.Dynamics
         public static extern bool IsReady(int Drive);
 
         [DllImport(DllName, EntryPoint = "BASS_CD_GetInfo")]
-        public static extern bool GetDriveInfo(int Drive, ref CDInfo Info);
+        public static extern bool GetDriveInfo(int Drive, out CDInfo Info);
 
         public static CDInfo GetDriveInfo(int Drive)
         {
-            CDInfo temp = new CDInfo();
-            GetDriveInfo(Drive, ref temp);
+            CDInfo temp;
+            GetDriveInfo(Drive, out temp);
             return temp;
         }
 

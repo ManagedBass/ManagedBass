@@ -8,7 +8,7 @@ namespace ManagedBass
         StreamProcedure Procedure = new StreamProcedure((h, b, l, u) => l);
 
         public Silence(PlaybackDevice Device)
-            : base(BufferKind.Byte)
+            : base(Resolution.Byte)
         {
             Handle = Bass.CreateStream(44100, 1, BassFlags.Byte, Procedure, IntPtr.Zero);
             Bass.ChannelSetDevice(Handle, Device.DeviceId);
