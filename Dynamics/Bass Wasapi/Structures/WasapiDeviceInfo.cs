@@ -6,7 +6,7 @@ namespace ManagedBass.Dynamics
     [StructLayout(LayoutKind.Sequential)]
     public struct WasapiDeviceInfo
     {
-        public IntPtr name;
+        IntPtr name;
         public IntPtr id;
         public int type;
         public WasapiDeviceInfoFlags flags;

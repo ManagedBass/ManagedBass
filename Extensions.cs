@@ -58,15 +58,15 @@ namespace ManagedBass
         // ms = samples * 1000 / samplerate. 
         // bytes = samples * bits * channels / 8. 
 
-        public static long BytesToSamples(long bytes, int bits, int channels) { return (bytes * 8) / (bits * channels); }
+        public static long BytesToSamples(long bytes, int bits, int channels) { return ((bytes * 8) / bits) / channels; }
 
-        public static long MilisecondsToSamples(int samplerate, long ms) { return ms * samplerate / 1000; }
+        public static long MilisecondsToSamples(int samplerate, long ms) { return (ms * samplerate) / 1000; }
 
-        public static long SamplesToBytes(long samples, int bits, int channels) { return samples * bits * channels / 8; }
+        public static long SamplesToBytes(long samples, int bits, int channels) { return (samples * bits * channels) / 8; }
 
-        public static long SamplesToMiliseconds(long samples, int samplerate) { return samples * 1000 / samplerate; }
+        public static long SamplesToMiliseconds(long samples, int samplerate) { return (samples * 1000) / samplerate; }
 
-        public static long SamplesToSamplerate(long samples, long ms) { return samples * 1000 / ms; }
+        public static long SamplesToSamplerate(long samples, long ms) { return (samples * 1000) / ms; }
 
         public static double SamplesToSeconds(long samples, int samplerate) { return samples / (double)samplerate; }
 
