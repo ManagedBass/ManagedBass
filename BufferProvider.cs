@@ -25,12 +25,14 @@ namespace ManagedBass
         public int IntLength { get { return ByteLength / 4; } }
         #endregion
 
-        public BufferProvider(IntPtr Buffer, int ByteLength, Resolution BufferKind = Resolution.Short)
+        internal BufferProvider(IntPtr Buffer, int ByteLength, Resolution BufferKind)
         {
             this.Pointer = Buffer;
             this.ByteLength = ByteLength;
             this.BufferKind = BufferKind;
         }
+
+        public BufferProvider(IntPtr Buffer, int ByteLength) : this(Buffer, ByteLength, Resolution.Short) { }
 
         #region Read
         public float[] ReadFloat(int Offset = 0, int Length = 0)

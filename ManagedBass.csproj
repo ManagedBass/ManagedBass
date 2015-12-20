@@ -47,7 +47,9 @@
     <Compile Include="Dynamics\BassAc3.cs" />
     <Compile Include="Dynamics\BassCd\Delegates.cs" />
     <Compile Include="Dynamics\BassCd\Enums.cs" />
-    <Compile Include="Dynamics\BassCd\Structs.cs" />
+    <Compile Include="Dynamics\BassCd\Structures\TOCTrack.cs" />
+    <Compile Include="Dynamics\BassCd\Structures\CDInfo.cs" />
+    <Compile Include="Dynamics\BassCd\Structures\TOC.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\ACMFormatFlags.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\EncodeCount.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\EncodeFlags.cs" />

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Linq;
-using ManagedBass;
+﻿using ManagedBass;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace UnitTests
 {

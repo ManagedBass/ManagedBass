@@ -54,16 +54,18 @@ namespace ManagedBass
         public ChannelInfo Info { get { return Bass.ChannelInfo(Handle); } }
 
         #region Read
-        void Read(object Buffer, int Length)
+        int Read(object Buffer, int Length)
         {
             GCHandle gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
 
-            Bass.ChannelGetData(Handle, gch.AddrOfPinnedObject(), Length);
+            int Return = Bass.ChannelGetData(Handle, gch.AddrOfPinnedObject(), Length);
 
             gch.Free();
+
+            return Return;
         }
 
-        public virtual void Read(byte[] Buffer, int Length) { Read(Buffer as object, Length); }
+        public virtual int Read(byte[] Buffer, int Length) { return Read(Buffer as object, Length); }
 
         public virtual byte[] ReadByte(int Length)
         {
@@ -74,7 +76,7 @@ namespace ManagedBass
             return Buffer;
         }
 
-        public virtual void Read(float[] Buffer, int Length) { Read(Buffer as object, Length); }
+        public virtual int Read(float[] Buffer, int Length) { return Read(Buffer as object, Length); }
 
         public virtual float[] ReadFloat(int Length)
         {

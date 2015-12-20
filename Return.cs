@@ -8,11 +8,11 @@ namespace ManagedBass
     /// <typeparam name="T">The Type of the function return value</typeparam>
     public class Return<T>
     {
-        public Errors ErrorCode { get; set; }
+        public Errors ErrorCode { get; private set; }
 
         Return() { }
 
-        public T Value { get; set; }
+        public T Value { get; private set; }
 
         public static implicit operator T(Return<T> e) { return e.Value; }
 

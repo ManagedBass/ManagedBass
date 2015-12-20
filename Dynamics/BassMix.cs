@@ -111,7 +111,7 @@ namespace ManagedBass.Dynamics
         }
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetData")]
-        public static extern bool MixerChannelGetData(int Handle, IntPtr Buffer, int Length);
+        public static extern int MixerChannelGetData(int Handle, IntPtr Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetLevel")]
         public static extern int MixerChannelGetLevel(int handle);

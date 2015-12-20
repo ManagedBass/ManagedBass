@@ -6,24 +6,24 @@ namespace ManagedBass
 {
     public class MixerStream : Playable
     {
-        List<Channel> Sources = new List<Channel>();
-
         public MixerStream(int Frequency = 44100, int NoOfChannels = 2, bool Buffer = true, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
             Handle = BassMix.CreateMixerStream(Frequency, NoOfChannels, BufferKind.ToBassFlag());
         }
 
-        void Read(object Buffer, int Length)
+        int Read(object Buffer, int Length)
         {
             GCHandle gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
 
-            BassMix.MixerChannelGetData(Handle, gch.AddrOfPinnedObject(), Length);
+            int Return = BassMix.MixerChannelGetData(Handle, gch.AddrOfPinnedObject(), Length);
 
             gch.Free();
+
+            return Return;
         }
 
-        public override void Read(byte[] Buffer, int Length) { Read(Buffer as object, Length); }
+        public override int Read(byte[] Buffer, int Length) { return Read(Buffer as object, Length); }
 
         public override byte[] ReadByte(int Length)
         {
@@ -34,7 +34,7 @@ namespace ManagedBass
             return Buffer;
         }
 
-        public override void Read(float[] Buffer, int Length) { Read(Buffer as object, Length); }
+        public override int Read(float[] Buffer, int Length) { return Read(Buffer as object, Length); }
 
         public override float[] ReadFloat(int Length)
         {
@@ -45,30 +45,8 @@ namespace ManagedBass
             return Buffer;
         }
 
-        public bool AddChannel(Channel channel)
-        {
-            bool Result = BassMix.MixerAddChannel(Handle, channel.Handle, BassFlags.Default);
+        public bool AddChannel(Channel channel) { return BassMix.MixerAddChannel(Handle, channel.Handle, BassFlags.Default); }
 
-            if (Result) Sources.Add(channel);
-
-            return Result;
-        }
-
-        public bool RemoveChannel(Channel channel)
-        {
-            for (int i = 0; i < Sources.Count; ++i)
-            {
-                if (Sources[i].Handle == channel.Handle)
-                {
-                    bool Result = BassMix.MixerRemoveChannel(channel.Handle);
-
-                    if (Result) Sources.RemoveAt(i);
-
-                    return Result;
-                }
-            }
-
-            return false;
-        }
+        public bool RemoveChannel(Channel channel) { return BassMix.MixerRemoveChannel(channel.Handle); }
     }
 }
