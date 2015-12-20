@@ -28,8 +28,8 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Devices\BassDevice.cs" />
-    <Compile Include="Devices\RecordingDevice.cs" />
+    <Compile Include="Devices\Bass\BassDevice.cs" />
+    <Compile Include="Devices\Bass\RecordingDevice.cs" />
     <Compile Include="Devices\Wasapi\WasapiLoopbackDevice.cs" />
     <Compile Include="Devices\Wasapi\WasapiRecordingDevice.cs" />
     <Compile Include="Devices\Wasapi\WasapiPlaybackDevice.cs" />
@@ -155,7 +155,7 @@
     <Compile Include="IO\UserStream.cs" />
     <Compile Include="BufferProvider.cs" />
     <Compile Include="IO\Silence.cs" />
-    <Compile Include="Devices\PlaybackDevice.cs" />
+    <Compile Include="Devices\Bass\PlaybackDevice.cs" />
     <Compile Include="Effects\Effect Base.cs" />
     <Compile Include="IO\Decoders\Decoder.cs" />
     <Compile Include="Writers\WmaFileWriter.cs" />
