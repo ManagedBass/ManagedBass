@@ -4,13 +4,11 @@ namespace ManagedBass.Dynamics
 {
     public abstract class BassDevice : IDisposable
     {
-        protected BassDevice(int DeviceIndex) { this.DeviceId = DeviceIndex; }
-
         public abstract void Dispose();
 
         protected abstract DeviceInfo DeviceInfo { get; }
 
-        public int DeviceId { get; private set; }
+        public int DeviceIndex { get; protected set; }
 
         public string Name { get { return DeviceInfo.Name; } }
 

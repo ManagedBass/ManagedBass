@@ -17,11 +17,11 @@ namespace ManagedBass
 
         public PlaybackDevice Device
         {
-            get { return new PlaybackDevice(Bass.ChannelGetDevice(Handle)); }
+            get { return PlaybackDevice.Get(Bass.ChannelGetDevice(Handle)); }
             set
             {
                 value.Initialize();
-                Bass.ChannelSetDevice(Handle, value.DeviceId);
+                Bass.ChannelSetDevice(Handle, value.DeviceIndex);
             }
         }
 

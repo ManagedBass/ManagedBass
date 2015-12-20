@@ -10,7 +10,7 @@ namespace ManagedBass
 
         WasapiLoopbackDevice() { }
 
-        static WasapiLoopbackDevice Create(int Device)
+        static WasapiLoopbackDevice Get(int Device)
         {
             if (Singleton.ContainsKey(Device)) return Singleton[Device];
             else
@@ -30,7 +30,7 @@ namespace ManagedBass
 
                 for (int i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
                     if (dev.IsLoopback)
-                        yield return Create(i);
+                        yield return Get(i);
             }
         }
 

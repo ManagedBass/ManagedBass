@@ -11,7 +11,7 @@ namespace ManagedBass
             : base(Resolution.Byte)
         {
             Handle = Bass.CreateStream(44100, 1, BassFlags.Byte, Procedure, IntPtr.Zero);
-            Bass.ChannelSetDevice(Handle, Device.DeviceId);
+            Bass.ChannelSetDevice(Handle, Device.DeviceIndex);
             Bass.SetChannelAttribute(Handle, ChannelAttribute.Volume, 0);
         }
 

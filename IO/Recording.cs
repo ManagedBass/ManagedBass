@@ -18,7 +18,7 @@ namespace ManagedBass
             if (Device == null) Device = RecordingDevice.DefaultDevice;
 
             Device.Initialize();
-            DeviceIndex = Device.DeviceId;
+            DeviceIndex = Device.DeviceIndex;
 
             Bass.CurrentRecordingDevice = DeviceIndex;
 

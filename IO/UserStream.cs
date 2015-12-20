@@ -24,7 +24,7 @@ namespace ManagedBass
 
             Handle = Bass.CreateStream(44100, 2, Flags, Procedure, IntPtr.Zero);
 
-            Bass.ChannelSetDevice(Handle, Device.DeviceId);
+            Bass.ChannelSetDevice(Handle, Device.DeviceIndex);
         }
 
         int Callback(int handle, IntPtr Buffer, int Length, IntPtr User) { return call.Invoke(new BufferProvider(Buffer, Length, BufferKind)); }
