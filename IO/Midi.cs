@@ -7,7 +7,7 @@ namespace ManagedBass
         public Midi(string FilePath, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
-            Handle = BassMidi.CreateStream(false, FilePath, 0, 0, BufferKind.ToBassFlag(), 0);
+            Handle = BassMidi.CreateStream(FilePath, 0, 0, BufferKind.ToBassFlag(), 0);
         }
     }
 }

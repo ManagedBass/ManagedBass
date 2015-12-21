@@ -188,7 +188,7 @@ namespace ManagedBass.Dynamics
 
         public static int CreateStream(string File, long Offset, long Length, BassFlags Flags)
         {
-            return BASS_StreamCreateFile(false, File, Offset, Length, Flags);
+            return BASS_StreamCreateFile(false, File, Offset, Length, Flags | BassFlags.Unicode);
         }
 
         public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags)
@@ -200,7 +200,7 @@ namespace ManagedBass.Dynamics
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
-            return Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
+            return CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
         }
 
         public static int CreateStream(Stream Stream, int Offset, int Length, BassFlags Flags)
