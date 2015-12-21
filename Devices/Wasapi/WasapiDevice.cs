@@ -56,23 +56,7 @@ namespace ManagedBass
         #region Device Info
         public int DeviceIndex { get; protected set; }
 
-        WasapiDeviceInfo DeviceInfo { get { return BassWasapi.GetDeviceInfo(DeviceIndex); } }
-
-        public int Frequency { get { return DeviceInfo.mixfreq; } }
-
-        public int NoOfChannels { get { return DeviceInfo.mixfreq; } }
-
-        public bool IsEnabled { get { return DeviceInfo.IsEnabled; } }
-
-        public string Name { get { return DeviceInfo.Name; } }
-
-        public bool IsDefault { get { return DeviceInfo.IsDefault; } }
-
-        public bool IsInitialized { get { return DeviceInfo.IsInitialized; } }
-
-        public bool IsLoopback { get { return DeviceInfo.IsLoopback; } }
-
-        public bool IsInput { get { return DeviceInfo.IsInput; } }
+        public WasapiDeviceInfo DeviceInfo { get { return BassWasapi.GetDeviceInfo(DeviceIndex); } }
         #endregion
 
         #region Notify
@@ -104,7 +88,7 @@ namespace ManagedBass
 
         public event Action<BufferProvider> Callback;
         #endregion
-        
+
         public void Dispose()
         {
             BassWasapi.CurrentDevice = DeviceIndex;
@@ -194,7 +178,7 @@ namespace ManagedBass
 
         public bool Init(int Frequency = 44100, int Channels = 2, bool Shared = true)
         {
-            if (IsInitialized) return true;
+            if (DeviceInfo.IsInitialized) return true;
             return BassWasapi.Init(DeviceIndex, Frequency, Channels, Shared ? WasapiInitFlags.Shared : WasapiInitFlags.Exclusive, proc: proc);
         }
 
@@ -222,7 +206,12 @@ namespace ManagedBass
         #region Overrides
         public override bool Equals(object obj) { return (obj is WasapiDevice) && (DeviceIndex == ((WasapiDevice)obj).DeviceIndex); }
 
-        public override string ToString() { return Name + (IsDefault ? " (Default)" : string.Empty); }
+        public override string ToString()
+        {
+            return DeviceInfo.Name
+                + (DeviceInfo.IsLoopback ? " (Loopback)" : string.Empty)
+                + (DeviceInfo.IsDefault ? " (Default)" : string.Empty);
+        }
 
         public override int GetHashCode() { return DeviceIndex; }
         #endregion

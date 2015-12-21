@@ -1,5 +1,8 @@
-﻿namespace ManagedBass.Dynamics
+﻿using System;
+
+namespace ManagedBass.Dynamics
 {
+    [Flags]
     public enum WasapiVolumeTypes
     {
         /// <summary>

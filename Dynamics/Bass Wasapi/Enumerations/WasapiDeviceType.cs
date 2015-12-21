@@ -1,8 +1,5 @@
-﻿using System;
-
-namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Dynamics
 {
-    [Flags]
     public enum WasapiDeviceType
     {
         /// <summary>
