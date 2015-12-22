@@ -142,7 +142,7 @@
         PortamentoNote = 21,
 
         /// <summary>
-        /// Set poly/mono mode (MIDI controllers 126 & 127).
+        /// Set poly/mono mode (MIDI controllers 126 and 127).
         /// param : mode (0=poly, 1=mono).
         /// </summary>
         Mode = 22,

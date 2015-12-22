@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Runtime.InteropServices;
 using ManagedBass.Dynamics;
+using System;
 
 namespace ManagedBass
 {
@@ -38,7 +39,17 @@ namespace ManagedBass
 
             int BlockLength = (int)Seconds2Bytes(2);
 
-            while (HasData) Writer.Write(ReadFloat(BlockLength), BlockLength);
+            byte[] Buffer = new byte[BlockLength];
+            
+            var gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
+
+            while (HasData)
+            {
+                Bass.ChannelGetData(Handle, gch.AddrOfPinnedObject(), BlockLength);
+                Writer.Write(Buffer, BlockLength);
+            }
+
+            gch.Free();
 
             Writer.Dispose();
 
