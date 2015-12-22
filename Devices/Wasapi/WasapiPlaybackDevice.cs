@@ -36,7 +36,7 @@ namespace ManagedBass
 
         public static WasapiPlaybackDevice DefaultDevice { get { return Devices.First(); } }
 
-        public static int DeviceCount
+        public static int Count
         {
             get
             {

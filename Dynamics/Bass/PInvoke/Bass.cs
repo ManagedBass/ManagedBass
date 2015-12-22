@@ -14,20 +14,12 @@ namespace ManagedBass.Dynamics
         static Bass()
         {
             if (File.Exists(Path.Combine(Environment.CurrentDirectory, DllName)))
-            {
-                PlaybackDevice.NoSoundDevice.Initialize();
-                PlaybackDevice.DefaultDevice.Initialize();
-
                 Bass.FloatingPointDSP = true;
-            }
         }
 
         public static void Load(string folder = null)
         {
             Extensions.Load(DllName, folder);
-
-            PlaybackDevice.NoSoundDevice.Initialize();
-            PlaybackDevice.DefaultDevice.Initialize();
 
             Bass.FloatingPointDSP = true;
         }
@@ -88,7 +80,7 @@ namespace ManagedBass.Dynamics
             if (Directory.Exists(directory))
             {
                 foreach (var lib in Directory.EnumerateFiles(directory, "bass*.dll"))
-                    if (BASS_PluginLoad(lib) != 0) 
+                    if (BASS_PluginLoad(lib) != 0)
                         Count++;
             }
 
@@ -122,13 +114,12 @@ namespace ManagedBass.Dynamics
         {
             get
             {
-                int Count = 0;
+                int i;
                 DeviceInfo info;
 
-                for (int i = 0; GetDeviceInfo(i, out info); i++)
-                    if (info.IsEnabled) ++Count;
+                for (i = 0; GetDeviceInfo(i, out info); i++) ;
 
-                return Count;
+                return i;                    
             }
         }
 

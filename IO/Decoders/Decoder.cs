@@ -6,6 +6,8 @@ namespace ManagedBass
 {
     public class Decoder : Channel
     {
+        static Decoder() { PlaybackDevice.NoSoundDevice.Initialize(); }
+
         protected Decoder(Resolution BufferKind = Resolution.Short) : base(BufferKind) { Bass.CurrentDevice = 0; }
 
         internal Decoder(int Handle, Resolution BufferKind = Resolution.Short) : this(BufferKind) { this.Handle = Handle; }

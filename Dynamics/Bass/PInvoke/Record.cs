@@ -78,13 +78,12 @@ namespace ManagedBass.Dynamics
         {
             get
             {
-                int Count = 0;
+                int i;
                 DeviceInfo info;
 
-                for (int i = 0; GetRecordingDeviceInfo(i, out info); i++)
-                    if (info.IsEnabled) ++Count;
+                for (i = 0; GetRecordingDeviceInfo(i, out info); i++) ;
 
-                return Count;
+                return i;
             }
         }
 

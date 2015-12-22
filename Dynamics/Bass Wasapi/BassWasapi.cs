@@ -49,13 +49,13 @@ namespace ManagedBass.Dynamics
         {
             get
             {
-                int Count = 0;
                 WasapiDeviceInfo info = new WasapiDeviceInfo();
 
-                for (int i = 0; GetDeviceInfo(i, out info); i++)
-                    if (info.IsEnabled) Count++;
+                int i;
 
-                return Count;
+                for (i = 0; GetDeviceInfo(i, out info); i++) ;
+
+                return i;
             }
         }
 
@@ -114,7 +114,7 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_Stop")]
         public extern static bool Stop(bool Reset = true);
-        
+
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetLevel")]
         public extern static int GetLevel();
 

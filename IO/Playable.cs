@@ -4,6 +4,8 @@ namespace ManagedBass
 {
     public abstract class Playable : Channel
     {
+        static Playable() { PlaybackDevice.DefaultDevice.Initialize(); }
+
         bool RestartOnNextPlayback = false;
 
         public bool Start()

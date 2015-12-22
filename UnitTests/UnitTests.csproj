@@ -51,7 +51,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Tests.cs" />
+    <Compile Include="DeviceTests.cs" />
+    <Compile Include="ConverterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ManagedBass.csproj">
