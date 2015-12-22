@@ -59,6 +59,16 @@
     <Compile Include="Dynamics\BassFx\Delegates\BPMBeatProcedure.cs" />
     <Compile Include="Dynamics\BassFx\Enumerations\BQFType.cs" />
     <Compile Include="Dynamics\BassFx\Enumerations\FXChannelFlags.cs" />
+    <Compile Include="Dynamics\BassMidi\Enumerations\MidiEventSequence.cs" />
+    <Compile Include="Dynamics\BassMidi\Enumerations\MidiEventsMode.cs" />
+    <Compile Include="Dynamics\BassMidi\Enumerations\MidiMarkerType.cs" />
+    <Compile Include="Dynamics\BassMidi\MidiInProcedure.cs" />
+    <Compile Include="Dynamics\BassMidi\Structures\MidiDeviceInfo.cs" />
+    <Compile Include="Dynamics\BassMidi\Structures\MidiEvent.cs" />
+    <Compile Include="Dynamics\BassMidi\Structures\MidiFont.cs" />
+    <Compile Include="Dynamics\BassMidi\Structures\MidiFontEx.cs" />
+    <Compile Include="Dynamics\BassMidi\Structures\MidiFontInfo.cs" />
+    <Compile Include="Dynamics\BassMidi\Structures\MidiMarker.cs" />
     <Compile Include="Dynamics\Bass\Delegates\FileCloseProcedure.cs" />
     <Compile Include="Dynamics\Bass\Delegates\FileLengthProcedure.cs" />
     <Compile Include="Dynamics\Bass\Delegates\FileReadProcedure.cs" />
@@ -74,7 +84,7 @@
     <Compile Include="Dynamics\BassCd\BassCd.cs" />
     <Compile Include="Dynamics\BassEnc\BassEnc.cs" />
     <Compile Include="Dynamics\BassFx\BassFx.cs" />
-    <Compile Include="Dynamics\BassMidi.cs" />
+    <Compile Include="Dynamics\BassMidi\BassMidi.cs" />
     <Compile Include="Dynamics\BassMix.cs" />
     <Compile Include="Dynamics\Bass Wasapi\BassWasapi.cs" />
     <Compile Include="Dynamics\BassWma.cs" />
