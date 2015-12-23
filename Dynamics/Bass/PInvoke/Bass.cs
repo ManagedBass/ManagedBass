@@ -195,10 +195,10 @@ namespace ManagedBass.Dynamics
             return CreateStream(buffer, 0, Length, Flags);
         }
 
-        [DllImport(DllName, EntryPoint = "BASS_StreamCreateURL")]
-        public static extern int CreateStream([MarshalAs(UnmanagedType.LPWStr)]string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr));
-
         // TODO: Unicode
+        [DllImport(DllName, EntryPoint = "BASS_StreamCreateURL")]
+        public static extern int CreateStream([MarshalAs(UnmanagedType.LPStr)]string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr));
+                
         [DllImport(DllName, EntryPoint = "BASS_StreamCreate")]
         public extern static int CreateStream(int Frequency, int Channels, BassFlags Flags, StreamProcedure Procedure, IntPtr User = default(IntPtr));
 
