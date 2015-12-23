@@ -50,6 +50,7 @@
     <Compile Include="Dynamics\BassCd\Structures\TOCTrack.cs" />
     <Compile Include="Dynamics\BassCd\Structures\CDInfo.cs" />
     <Compile Include="Dynamics\BassCd\Structures\TOC.cs" />
+    <Compile Include="Dynamics\BassEnc\Enumerations\EncodeNotifyStatus.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\ACMFormatFlags.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\EncodeCount.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\EncodeFlags.cs" />

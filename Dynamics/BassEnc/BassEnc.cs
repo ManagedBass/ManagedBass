@@ -1,8 +1,17 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using ManagedBass.Dynamics.BassEnc;
 
 namespace ManagedBass.Dynamics
 {
+    public delegate void EncodeNotifyProcedure(int handle, EncodeNotifyStatus status, IntPtr user);
+
+    public delegate void EncodeProcedure(int handle, int channel, IntPtr buffer, int length, IntPtr user);
+
+    public delegate void EncodeProcedureEx(int handle, int channel, IntPtr buffer, int length, int offset, IntPtr user);
+
+    public delegate int EncoderProcedure(int handle, int channel, IntPtr buffer, int length, int maxout, IntPtr user);
+
     public static class BassEnc
     {
         const string DllName = "bassenc.dll";
@@ -124,8 +133,29 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_Encode_SetChannel")]
         public static extern bool EncodeSetChannel(int handle, int channel);
 
+        [DllImport(DllName, EntryPoint = "BASS_Encode_SetNotify")]
+        public static extern bool EncodeSetNotify(int handle, EncodeNotifyProcedure proc, IntPtr user);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_SetPaused")]
+        public static extern bool EncodeSetPaused(int handle, bool paused);
+
+        // TODO: Unicode
+        [DllImport(DllName, EntryPoint = "BASS_Encode_Start")]
+        public static extern int EncodeStart(int handle, [MarshalAs(UnmanagedType.LPStr)] string cmdline, EncodeFlags flags, EncodeProcedure proc, IntPtr user);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_StartACM")]
+        public static extern int EncodeStartACM(int handle, IntPtr form, EncodeFlags flags, EncodeProcedure proc, IntPtr user);
+
+        // TODO: Unicode
         [DllImport(DllName, EntryPoint = "BASS_Encode_StartACMFile")]
-        public static extern int StartACMFile(int handle, IntPtr form, EncodeFlags flags, string filename);
+        public static extern int EncodeStartACM(int handle, IntPtr form, EncodeFlags flags, [MarshalAs(UnmanagedType.LPStr)] string filename);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_StartCA")]
+        public static extern int EncodeStartCA(int handle, int fytpe, int atype, EncodeFlags flags, int bitrate, EncodeProcedureEx proc, IntPtr user);
+
+        // TODO: Unicode
+        [DllImport(DllName, EntryPoint = "BASS_Encode_StartCAFile")]
+        public static extern int EncodeStartCA(int handle, int fytpe, int atype, EncodeFlags flags, int bitrate, [MarshalAs(UnmanagedType.LPStr)] string filename);
 
         //public static void Doer()
         //{
