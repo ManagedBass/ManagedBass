@@ -169,7 +169,7 @@ namespace ManagedBass.Dynamics
         /// it to DSP functions, and then convert it back after all the DSP functions are done. 
         /// As well as simplifying the DSP code (no need for 8/16-bit processing), 
         /// this also means that there is no degradation of quality as sample data passes through a chain of DSP.
-        /// This config option also applies to effects set via Un4seen.Bass.Bass.BASS_ChannelSetFX(System.Int32,Un4seen.Bass.BASSFXType,System.Int32),
+        /// This config option also applies to effects set via Bass.ChannelSetFX(),
         /// except for DX8 effects when using the "With FX flag" DX8 effect implementation.
         /// Changing the setting while there are DSP or FX set could cause problems, so should be avoided.
         /// Platform-specific: On Android and Windows CE, 8.24 bit fixed-point is used instead of floating-point. 

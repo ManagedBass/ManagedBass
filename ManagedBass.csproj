@@ -74,6 +74,7 @@
     <Compile Include="Dynamics\Bass\Delegates\FileReadProcedure.cs" />
     <Compile Include="Dynamics\Bass\Delegates\FileSeekProcedure.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\Algorithm3D.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\StreamSystem.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\3D.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\Channels.cs" />
     <Compile Include="Dynamics\Bass\Delegates\SyncProcedure.cs" />

@@ -10,18 +10,10 @@ namespace ManagedBass.Dynamics
         public const int NoSoundDevice = 0, DefaultDevice = -1;
 
         const string DllName = "bass.dll";
-
-        static Bass()
-        {
-            if (File.Exists(Path.Combine(Environment.CurrentDirectory, DllName)))
-                Bass.FloatingPointDSP = true;
-        }
-
+        
         public static void Load(string folder = null)
         {
             Extensions.Load(DllName, folder);
-
-            Bass.FloatingPointDSP = true;
         }
 
         // TODO: BASS_ChannelGetAttributeEx
@@ -175,7 +167,7 @@ namespace ManagedBass.Dynamics
         static extern int BASS_StreamCreateFile(bool Memory, IntPtr File, long Offset, long Length, BassFlags Flags);
 
         [DllImport(DllName, EntryPoint = "BASS_StreamCreateFileUser")]
-        public static extern int CreateStream(int system, BassFlags flags, FileProcedures procs, IntPtr user);
+        public static extern int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user);
 
         public static int CreateStream(string File, long Offset, long Length, BassFlags Flags)
         {
@@ -206,6 +198,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_StreamCreateURL")]
         public static extern int CreateStream([MarshalAs(UnmanagedType.LPWStr)]string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr));
 
+        // TODO: Unicode
         [DllImport(DllName, EntryPoint = "BASS_StreamCreate")]
         public extern static int CreateStream(int Frequency, int Channels, BassFlags Flags, StreamProcedure Procedure, IntPtr User = default(IntPtr));
 

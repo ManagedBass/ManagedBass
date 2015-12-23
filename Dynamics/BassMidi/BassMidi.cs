@@ -23,7 +23,7 @@ namespace ManagedBass.Dynamics
         public static extern int CreateStream(int Channels, BassFlags Flags, int Frequency);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreateEvents")]
-        public static extern int CreateStream([MarshalAs(UnmanagedType.LPArray)] MidiEvent events, int ppqn, BassFlags flags, int freq);
+        public static extern int CreateStream([MarshalAs(UnmanagedType.LPArray)] MidiEvent[] events, int ppqn, BassFlags flags, int freq);
 
         [DllImport(DllName)]
         public static extern int BASS_MIDI_StreamCreateFile(bool mem, [MarshalAs(UnmanagedType.LPWStr)]string file, long offset, long length, BassFlags flags, int freq);
@@ -58,7 +58,7 @@ namespace ManagedBass.Dynamics
         }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreateFileUser")]
-        public static extern int CreateStream(int system, BassFlags flags, FileProcedures procs, IntPtr user, int Frequency);
+        public static extern int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user, int Frequency);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreateURL")]
         public static extern int CreateStream([MarshalAs(UnmanagedType.LPWStr)]string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 44100);

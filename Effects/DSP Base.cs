@@ -15,6 +15,8 @@ namespace ManagedBass.Effects
 
         DSPProcedure DSPProc;
 
+        static DSP() { Bass.FloatingPointDSP = true; }
+
         public DSP(IEffectAssignable IEA, int Priority = 0)
         {
             Channel = IEA.Handle;

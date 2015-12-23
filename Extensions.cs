@@ -33,6 +33,8 @@ namespace ManagedBass
 
         public static short LoWord(this int pDWord) { return ((short)pDWord); }
 
+        // TODO: MakeWord();
+
         static bool? floatable = null;
 
         public static bool SupportsFloatingPoint
