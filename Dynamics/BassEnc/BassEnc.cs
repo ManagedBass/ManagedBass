@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using ManagedBass.Dynamics.BassEnc;
 
 namespace ManagedBass.Dynamics
 {
-    public delegate void EncodeNotifyProcedure(int handle, EncodeNotifyStatus status, IntPtr user);
-
-    public delegate void EncodeProcedure(int handle, int channel, IntPtr buffer, int length, IntPtr user);
-
-    public delegate void EncodeProcedureEx(int handle, int channel, IntPtr buffer, int length, int offset, IntPtr user);
-
-    public delegate int EncoderProcedure(int handle, int channel, IntPtr buffer, int length, int maxout, IntPtr user);
-
     public static class BassEnc
     {
         const string DllName = "bassenc.dll";
