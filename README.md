@@ -1,9 +1,9 @@
 # ManagedBass
-[![Build status](https://ci.appveyor.com/api/projects/status/sjdox6rxhyuptd52?svg=true)](https://ci.appveyor.com/project/MathewSachin/managedbass)  
+[![Build status](https://ci.appveyor.com/api/projects/status/sjdox6rxhyuptd52?svg=true)](https://ci.appveyor.com/project/mathewsachin/managedbass)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/ManagedBass.svg)](https://www.nuget.org/Packages/ManagedBass)  
 (c) 2015 Mathew Sachin. All Rights Reserved.  
 An Alternative to the Bass.Net Managed Wrapper around Un4seen Bass.dll
 
-Available as a [NuGet Package](https://www.nuget.org/packages/ManagedBass)  
 Bass and its AddOns can be downloaded at http://un4seen.com/  
 ManagedBass is targeted for AnyCPU, but bass dlls are separate for x86 and x64. Download the versions you need
 
