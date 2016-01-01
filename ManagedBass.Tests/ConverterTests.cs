@@ -1,8 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ManagedBass;
 
-namespace UnitTests
+namespace ManagedBass.Tests
 {
     [TestClass]
     public class ConverterTests

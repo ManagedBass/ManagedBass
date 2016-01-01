@@ -1,0 +1,45 @@
+version: 0.0.{build}
+
+branches:
+  except:
+    - gh-pages
+
+skip_commits:
+  message: Update README.md
+
+shallow_clone: true
+
+assembly_info:
+  patch: true
+  file: Proprties\AssemblyInfo.cs
+  assembly_version: "{version}"
+  assembly_file_version: "{version}"
+
+platform: Any CPU
+
+configuration: Release
+
+build:
+  project: ManagedBass.sln
+  verbosity: normal
+
+test:
+  categories:
+    - CI
+
+deploy:
+  - provider: GitHub
+    artifact: bin\Release\ManagedBass.dll
+    draft: false
+    prerelease: false
+    on:
+      branch: master
+      appveyor_repo_tag: true
+
+notifications:
+  - provider: Email
+    to:
+      - mathew.sachin.git@outlook.com
+    subject: 'Build failed'
+    message: '{{message}}'
+    on_build_failure: true

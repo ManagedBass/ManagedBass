@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace UnitTests
+namespace ManagedBass.Tests
 {
     [TestClass]
     public class DeviceTests
