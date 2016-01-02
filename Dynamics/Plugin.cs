@@ -132,11 +132,33 @@ namespace ManagedBass.Dynamics
 
             return MStreamCreateURL(Marshal.StringToBSTR(Url), Offset, Flags | BassFlags.Unicode, Procedure, User);
         }
+
+        public int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
+        {
+            var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
+
+            int Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
+
+            if (Handle == 0) GCPin.Free();
+            else Bass.ChannelSetSync(Handle, SyncFlags.Freed, 0, (a, b, c, d) => GCPin.Free());
+
+            return Handle;
+        }
+
+        public int CreateStream(Stream Stream, int Offset, int Length, BassFlags Flags)
+        {
+            var buffer = new byte[Length];
+
+            Stream.Read(buffer, Offset, Length);
+
+            return CreateStream(buffer, 0, Length, Flags);
+        }
         #endregion
 
         #region Instances
         /// <summary>
-        /// Wraps BassAAC: bass_aac.dll
+        /// Wraps BassAAC: bass_aac.dll.
+        /// MP4 and AAC both are always supported. 
         /// </summary>
         public static readonly Plugin BassAAC = new Plugin("bass_aac.dll", "AAC");
 

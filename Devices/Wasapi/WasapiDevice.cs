@@ -1,7 +1,6 @@
-﻿using System;
+﻿using ManagedBass.Dynamics;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using ManagedBass.Dynamics;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass

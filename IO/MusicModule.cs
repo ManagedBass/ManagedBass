@@ -28,13 +28,13 @@ namespace ManagedBass
             GCPin.Free();
         }
 
-        public string Title { get { return Marshal.PtrToStringAnsi(Bass.GetChannelTags(Handle, TagType.MusicName)); } }
+        public string Title { get { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicName)); } }
 
-        public string Message { get { return Marshal.PtrToStringAnsi(Bass.GetChannelTags(Handle, TagType.MusicMessage)); } }
+        public string Message { get { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicMessage)); } }
 
         public string Instrument(int Index)
         {
-            return Marshal.PtrToStringAnsi(Bass.GetChannelTags(Handle, TagType.MusicInstrument + Index)); 
+            return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicInstrument + Index)); 
         }
 
         public override void Dispose() { Bass.MusicFree(Handle); }

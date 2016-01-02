@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ManagedBass.Dynamics;
+using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using ManagedBass.Dynamics;
+using System.Text;
 
 namespace ManagedBass
 {
@@ -80,7 +82,7 @@ namespace ManagedBass
 
         public static Tags GetID3v1Tags(ITagsProvider ITA)
         {
-            var tmp = (ID3v1Tag)Marshal.PtrToStructure(Bass.GetChannelTags(ITA.Handle, TagType.ID3), typeof(ID3v1Tag));
+            var tmp = (ID3v1Tag)Marshal.PtrToStructure(Bass.ChannelGetTags(ITA.Handle, TagType.ID3), typeof(ID3v1Tag));
 
             Tags tags = new Tags();
 
@@ -106,14 +108,82 @@ namespace ManagedBass
 
         static Tags GetID3v2Tags(ITagsProvider ITA)
         {
-            IntPtr ptr = Bass.GetChannelTags(ITA.Handle, TagType.ID3v2);
+            IntPtr ptr = Bass.ChannelGetTags(ITA.Handle, TagType.ID3v2);
 
             throw new NotImplementedException();
         }
 
-        public static string GetLyrics3v2(ITagsProvider ITA) { return Marshal.PtrToStringAnsi(Bass.GetChannelTags(ITA.Handle, TagType.Lyrics3v2)); }
+        public static string GetLyrics3v2(ITagsProvider ITA) { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(ITA.Handle, TagType.Lyrics3v2)); }
 
-        public static string GetVendor(ITagsProvider ITA) { return Marshal.PtrToStringAnsi(Bass.GetChannelTags(ITA.Handle, TagType.Vendor)); }
+        public static string GetVendor(ITagsProvider ITA) { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(ITA.Handle, TagType.Vendor)); }
+
+        public static string GetRiffDisp(ITagsProvider ITA) { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(ITA.Handle, TagType.RiffDISP)); }
+
+        public static byte[] GetMusicOrder(ITagsProvider ITA)
+        {
+            int n = (int)Bass.ChannelGetLength(ITA.Handle, PositionFlags.MusicOrders);
+
+            byte[] b = new byte[n];
+
+            IntPtr ptr = Bass.ChannelGetTags(ITA.Handle, TagType.MusicOrders);
+
+            Marshal.Copy(ptr, b, 0, n);
+
+            return b;
+        }
+
+        public static string GetMusicInstrumentName(ITagsProvider ITA, int index)
+        {
+            return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(ITA.Handle, TagType.MusicInstrument + index));
+        }
+
+        public static string GetMusicSampleName(ITagsProvider ITA, int index)
+        {
+            return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(ITA.Handle, TagType.MusicSample + index));
+        }
+
+        public static string GetIcyShoutcastMeta(ITagsProvider ITA) { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(ITA.Handle, TagType.META)); }
+
+        #region Multi Strings
+        static IEnumerable<string> ExtractMultiStringAnsi(IntPtr ptr)
+        {
+            while (true)
+            {
+                string str = Marshal.PtrToStringAnsi(ptr);
+                if (str.Length == 0)
+                    break;
+                yield return str;
+                ptr += str.Length + 1 /* char \0 */;
+            }
+        }
+
+        static IEnumerable<string> ExtractMultiStringUtf8(IntPtr ptr)
+        {
+            while (true)
+            {
+                string str = PtrToStringUtf8(ptr);
+                if (str == null)
+                    break;
+                yield return str;
+            }
+        }
+
+        static unsafe string PtrToStringUtf8(IntPtr ptr)
+        {
+            byte* bytes = (byte*)ptr.ToPointer();
+            int size = 0;
+            while (bytes[size] != 0) ++size;
+
+            if (size == 0) return null;
+
+            byte[] buffer = new byte[size];
+            Marshal.Copy((IntPtr)ptr, buffer, 0, size);
+
+            ptr += size;
+
+            return Encoding.UTF8.GetString(buffer);
+        }
+        #endregion
 
         static Tags ChannelGetTags(int handle, TagType flags)
         {
@@ -126,8 +196,6 @@ namespace ManagedBass
                 case TagType.HTTP:
                     break;
                 case TagType.ICY:
-                    break;
-                case TagType.META:
                     break;
                 case TagType.APE:
                     break;
@@ -143,16 +211,7 @@ namespace ManagedBass
                     break;
                 case TagType.RiffCart:
                     break;
-                case TagType.RiffDISP:
-                    tags.Comment = Marshal.PtrToStringAnsi(Bass.GetChannelTags(handle, TagType.RiffDISP));
-                    break;
                 case TagType.ApeBinary:
-                    break;
-                case TagType.MusicOrders:
-                    break;
-                case TagType.MusicInstrument:
-                    break;
-                case TagType.MusicSample:
                     break;
                 default:
                     break;

@@ -74,7 +74,7 @@ namespace ManagedBass.Dynamics
         #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetTags")]
-        public extern static IntPtr GetChannelTags(int Handle, TagType Tags);
+        public extern static IntPtr ChannelGetTags(int Handle, TagType Tags);
 
         [DllImport(DllName, EntryPoint = "BASS_ChannelRemoveFX")]
         public extern static bool ChannelRemoveFX(int Handle, int FX);

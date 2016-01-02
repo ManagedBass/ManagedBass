@@ -98,19 +98,20 @@ namespace ManagedBass.Dynamics
         /// BASS_FX add-on (AddOn.Fx.BassFx.BASS_FX_TempoCreate): Uses a linear interpolation mode (simple).
         /// </summary>
         FxTempoAlgorithmLinear = 512,
-        //
-        // Summary:
-        //     BASSCD add-on: Read sub-channel data. 96 bytes of de-interleaved sub-channel
-        //     data will be returned after each 2352 bytes of audio. This flag can not be
-        //     used with the BASS_SAMPLE_FLOAT flag, and is ignored if the BASS_STREAM_DECODE
-        //     flag is not used.
+        
+        /// <summary>
+        /// BASSCD add-on: Read sub-channel data. 
+        /// 96 bytes of de-interleaved sub-channel data will be returned after each 2352 bytes of audio. 
+        /// This flag can not be used with the BASS_SAMPLE_FLOAT flag, 
+        /// and is ignored if the BASS_STREAM_DECODE flag is not used.
+        /// </summary>
         CDSubChannel = 512,
-        //
-        // Summary:
-        //     BASSCD add-on: Read sub-channel data, without using any hardware de-interleaving.
-        //     This is identical to the BASS_CD_SUBCHANNEL flag, except that the de-interleaving
-        //     is always performed by BASSCD even if the drive is apparently capable of
-        //     de-interleaving itself.
+        
+        /// <summary>
+        /// BASSCD add-on: Read sub-channel data, without using any hardware de-interleaving.
+        /// This is identical to the BASS_CD_SUBCHANNEL flag, except that the 
+        /// de-interleaving is always performed by BASSCD even if the drive is apparently capable of de-interleaving itself.
+        /// </summary>
         CDSubchannelNoHW = 1024,
 
         /// <summary>
@@ -139,18 +140,17 @@ namespace ManagedBass.Dynamics
         /// Music: Apply XMPlay's surround sound to the music (ignored in mono).
         /// </summary>
         MusicSurround = 2048,
-        //
-        // Summary:
-        //     BASSCD add-on: Include C2 error info. 296 bytes of C2 error info is returned
-        //     after each 2352 bytes of audio (and optionally 96 bytes of sub-channel data).
-        //      This flag cannot be used with the BASS_SAMPLE_FLOAT flag, and is ignored
-        //     if the BASS_STREAM_DECODE flag is not used.
-        //     The first 294 bytes contain the C2 error bits (one bit for each byte of audio),
-        //     followed by a byte containing the logical OR of all 294 bytes, which can
-        //     be used to quickly check if there were any C2 errors. The final byte is just
-        //     padding.
-        //     Note that if you request both sub-channel data and C2 error info, the C2
-        //     info will come before the sub-channel data!
+        
+        /// <summary>
+        /// BASSCD add-on: Include C2 error info. 
+        /// 296 bytes of C2 error info is returned after each 2352 bytes of audio (and optionally 96 bytes of sub-channel data).
+        /// This flag cannot be used with the BASS_SAMPLE_FLOAT flag, and is ignored if the BASS_STREAM_DECODE flag is not used.
+        /// The first 294 bytes contain the C2 error bits (one bit for each byte of audio),
+        /// followed by a byte containing the logical OR of all 294 bytes, 
+        /// which can be used to quickly check if there were any C2 errors. 
+        /// The final byte is just padding.
+        /// Note that if you request both sub-channel data and C2 error info, the C2 info will come before the sub-channel data!
+        /// </summary>
         CdC2Errors = 2048,
 
         /// <summary>
@@ -162,11 +162,11 @@ namespace ManagedBass.Dynamics
         /// Music: Apply XMPlay's surround sound mode 2 to the music (ignored in mono).
         /// </summary>
         MusicSurround2 = 4096,
-        //
-        // Summary:
-        //     BASSMIDI add-on: Let the sound decay naturally (including reverb) instead
-        //     of stopping it abruptly at the end of the file. This flag can be toggled
-        //     at any time using Un4seen.Bass.Bass.BASS_ChannelFlags(System.Int32,Un4seen.Bass.BASSFlag,Un4seen.Bass.BASSFlag).
+        
+        /// <summary>
+        /// BASSMIDI add-on: Let the sound decay naturally (including reverb) instead of stopping it abruptly at the end of the file.
+        /// This flag can be toggled at any time using Bass.BASS_ChannelFlags().
+        /// </summary>
         MidiDecayEnd = 4096,
 
         /// <summary>
@@ -194,13 +194,12 @@ namespace ManagedBass.Dynamics
         /// BASSmix add-on: buffer source data for BassMix.ChannelGetData() and BassMix.ChannelGetLevel().
         /// </summary>
         MixerBuffer = 8192,
-        //
-        // Summary:
-        //     BASSMIDI add-on: Let the old sound decay naturally (including reverb) when
-        //     changing the position, including looping. This flag can be toggled at any
-        //     time using Un4seen.Bass.Bass.BASS_ChannelFlags(System.Int32,Un4seen.Bass.BASSFlag,Un4seen.Bass.BASSFlag),
-        //     and can also be used in Un4seen.Bass.Bass.BASS_ChannelSetPosition(System.Int32,System.Int64,Un4seen.Bass.BASSMode)
-        //     calls to have it apply to particular position changes.
+        
+        /// <summary>
+        /// BASSMIDI add-on: Let the old sound decay naturally (including reverb) when changing the position, including looping.
+        /// This flag can be toggled at any time using Bass.ChannelFlags(), and can also be used in Bass.ChannelSetPosition()
+        /// calls to have it apply to particular position changes.
+        /// </summary>
         MidiDecaySeek = 16384,
 
         /// <summary>
@@ -233,11 +232,13 @@ namespace ManagedBass.Dynamics
         /// This generally reduces the sound quality, but can be good for chip-tunes.
         /// </summary>
         MusicNonInterpolated = 65536,
-        //
-        // Summary:
-        //     BASSMIDI add-on: Only release the oldest instance upon a note off event (MIDI_EVENT_NOTE
-        //     with velocity=0) when there are overlapping instances of the note. Otherwise
-        //     all instances are released. This flag can be toggled at any time using Un4seen.Bass.Bass.BASS_ChannelFlags(System.Int32,Un4seen.Bass.BASSFlag,Un4seen.Bass.BASSFlag).
+        
+        /// <summary>
+        /// BASSMIDI add-on: Only release the oldest instance upon a note off event (MIDI_EVENT_NOTE with velocity=0)
+        /// when there are overlapping instances of the note.
+        /// Otherwise all instances are released. 
+        /// This flag can be toggled at any time using Bass.ChannelFlags().
+        /// </summary>
         MidiNoteOff1 = 65536,
 
         /// <summary>
@@ -275,12 +276,13 @@ namespace ManagedBass.Dynamics
         //     Use Un4seen.Bass.Bass.BASS_ChannelGetLength(System.Int32,Un4seen.Bass.BASSMode)
         //     to retrieve the length.
         Prescan = 131072,
-        //
-        // Summary:
-        //     BASSMIDI add-on: Map the file into memory. This flag is ignored if the soundfont
-        //     is packed as the sample data cannot be played directly from a mapping; it
-        //     needs to be decoded. This flag is also ignored if the file is too large to
-        //     be mapped into memory.
+        
+        /// <summary>
+        /// BASSMIDI add-on: Map the file into memory. 
+        /// This flag is ignored if the soundfont is packed as the sample data cannot be played directly from a mapping;
+        /// it needs to be decoded. 
+        /// This flag is also ignored if the file is too large to be mapped into memory.
+        /// </summary>
         MidiFontMemoryMap = 131072,
 
         /// <summary>
@@ -315,11 +317,12 @@ namespace ManagedBass.Dynamics
         //     (or Un4seen.Bass.Bass.BASS_Stop()) is called.
         //     Note that some musics never actually end on their own (ie. without you stopping them).
         AutoFree = 262144,
-        //
-        // Summary:
-        //     Restrict the download rate of the file to the rate required to sustain playback.
-        //     If this flag is not used, then the file will be downloaded as quickly as
-        //     possible.  This flag has no effect on "unbuffered" streams (buffer=false).
+        
+        /// <summary>
+        /// Restrict the download rate of the file to the rate required to sustain playback.
+        /// If this flag is not used, then the file will be downloaded as quickly as possible. 
+        /// This flag has no effect on "unbuffered" streams (buffer=false).
+        /// </summary>
         RestrictDownloadRate = 524288,
         //
         // Summary:
