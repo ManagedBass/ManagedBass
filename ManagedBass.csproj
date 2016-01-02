@@ -65,6 +65,7 @@
     <Compile Include="Dynamics\BassCd\Structures\TOCTrack.cs" />
     <Compile Include="Dynamics\BassCd\Structures\CDInfo.cs" />
     <Compile Include="Dynamics\BassCd\Structures\TOC.cs" />
+    <Compile Include="Dynamics\BassEnc\Delegates\EncodeClientProcedure.cs" />
     <Compile Include="Dynamics\BassEnc\Delegates\EncoderProcedure.cs" />
     <Compile Include="Dynamics\BassEnc\Delegates\EncodeProcedureEx.cs" />
     <Compile Include="Dynamics\BassEnc\Delegates\EncodeProcedure.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="IO\Decoders\FileDecoder.cs" />
     <Compile Include="IO\Decoders\TempoDecoder.cs" />
     <Compile Include="IO\Decoders\MemoryDecoder.cs" />
+    <Compile Include="IO\Encoder.cs" />
     <Compile Include="IO\Players\TempoPlayer.cs" />
     <Compile Include="IO\Players\FilePlayer.cs" />
     <Compile Include="IO\Players\ReversePlayer.cs" />
@@ -196,7 +198,7 @@
     <Compile Include="Writers\IAudioFileWriter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System"/>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -27,6 +27,7 @@ namespace ManagedBass
         {
             if (!string.IsNullOrWhiteSpace(Folder))
                 LoadLibrary(Path.Combine(Folder, DllName));
+            else LoadLibrary(DllName);
         }
 
         public static short HiWord(this int pDWord) { return ((short)(((pDWord) >> 16) & 0xFFFF)); }

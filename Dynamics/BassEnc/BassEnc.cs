@@ -11,6 +11,11 @@ namespace ManagedBass.Dynamics
 
         public static void Load(string folder = null) { Extensions.Load(DllName, folder); }
 
+        [DllImport(DllName)]
+        static extern int BASS_Encode_GetVersion();
+
+        public static int Version { get { return BASS_Encode_GetVersion(); } }
+
         #region Configure
         /// <summary>
         /// Encoder DSP priority (default -1000)
@@ -106,9 +111,11 @@ namespace ManagedBass.Dynamics
         }
         #endregion
 
+        #region Encoding
         [DllImport(DllName, EntryPoint = "BASS_Encode_AddChunk")]
         public static extern bool EncodeAddChunk(int handle, string id, IntPtr buffer, int length);
 
+        // TODO: Unicode
         [DllImport(DllName, EntryPoint = "BASS_Encode_GetACMFormat")]
         public static extern int GetACMFormat(int handle, IntPtr form, int formlen, string title, ACMFormatFlags flags);
 
@@ -148,6 +155,22 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_Encode_StartCAFile")]
         public static extern int EncodeStartCA(int handle, int fytpe, int atype, EncodeFlags flags, int bitrate, [MarshalAs(UnmanagedType.LPStr)] string filename);
 
+        [DllImport(DllName, EntryPoint = "BASS_Encode_StartLimit")]
+        public static extern int EncodeStart(int handle, [MarshalAs(UnmanagedType.LPStr)] string cmdline, BassFlags flags, EncodeProcedure proc, IntPtr user, int limit);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_StartUser")]
+        public static extern int EncodeStart(int handle, [MarshalAs(UnmanagedType.LPStr)] string filename, BassFlags flags, EncoderProcedure proc, IntPtr user);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_Stop")]
+        public static extern bool EncodeStop(int handle);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_StopEx")]
+        public static extern bool EncodeStop(int handle, bool queue);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_Write")]
+        public static extern bool EncodeWrite(int handle, IntPtr buffer, int length);
+        #endregion
+
         //public static void Doer()
         //{
         //    var x = new ReverseDecoder(new FileDecoder(@"E:\My Music\English\Akon\Keep Up.mp3", BufferKind.Float),
@@ -171,5 +194,38 @@ namespace ManagedBass.Dynamics
 
         //    Marshal.FreeHGlobal(form);
         //}
+
+        #region Casting
+        [DllImport(DllName, EntryPoint = "BASS_Encode_CastGetStats")]
+        public static extern string CastGetStats(int handle, int type, string pass);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_CastInit")]
+        public static extern bool CastInit(int handle,
+            string server,
+            string pass,
+            string content,
+            string name,
+            string url,
+            string genre,
+            string desc,
+            string headers,
+            int bitrate,
+            bool pub);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_CastSendMeta")]
+        public static extern bool CastSendMeta(int handle, int type, IntPtr data, int length);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_CastSetTitle")]
+        public static extern bool CastSetTitle(int handle, string title, string url);
+        #endregion
+
+        #region Server
+        // TODO: flags - BASS_ENCODE_SERVER_NOHTTP
+        [DllImport(DllName, EntryPoint = "BASS_Encode_ServerInit")]
+        public static extern int ServerInit(int handle, string port, int buffer, int burst, int flags, EncodeClientProcedure proc, IntPtr user);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_ServerKick")]
+        public static extern int ServerKick(int handle, string client);
+        #endregion
     }
 }
