@@ -49,6 +49,7 @@ namespace ManagedBass.Dynamics
         public static bool ChannelRemoveFlag(int handle, BassFlags flag) { return !(ChannelFlags(handle, 0, flag).HasFlag(flag)); }
         #endregion
 
+        #region Configuration
         /// <summary>
         /// The splitter buffer length in milliseconds... 100 (min) to 5000 (max).
         /// If the value specified is outside this range, it is automatically capped.
@@ -109,6 +110,7 @@ namespace ManagedBass.Dynamics
             get { return Bass.GetConfig(Configuration.MixerPositionEx); }
             set { Bass.Configure(Configuration.MixerPositionEx, value); }
         }
+        #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetData")]
         public static extern int MixerChannelGetData(int Handle, IntPtr Buffer, int Length);
