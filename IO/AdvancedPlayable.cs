@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ManagedBass.Dynamics;
 using ManagedBass.Effects;
 
@@ -88,6 +89,18 @@ namespace ManagedBass
         public virtual long Length { get { return Bass.StreamGetFilePosition(Handle, FileStreamPosition.End); } }
 
         public int Bitrate { get { return (int)(Length / (125 * Duration) + 0.5d); } }
+
+        public Task StartAsync() {
+            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>(); // bool is dummy
+            MediaEnded += (s, e) => {
+                tcs.TrySetResult(true);
+            };
+            MediaFailed += (s, e) => {
+                tcs.TrySetException(new Exception("Media failed"));
+            };
+            Start();
+            return tcs.Task;
+        }
 
         #region Events
         SyncProcedure End_Delegate, Fail_Delegate;
