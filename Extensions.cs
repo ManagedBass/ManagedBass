@@ -8,7 +8,7 @@ namespace ManagedBass
     public static class Extensions
     {
         [DllImport("kernel32.dll")]
-        static extern IntPtr LoadLibrary(string dllToLoad);
+        internal static extern IntPtr LoadLibrary(string dllToLoad);
 
         public static BassFlags ToBassFlag(this Resolution BufferKind)
         {
@@ -25,9 +25,7 @@ namespace ManagedBass
 
         internal static void Load(string DllName, string Folder)
         {
-            if (!string.IsNullOrWhiteSpace(Folder))
-                LoadLibrary(Path.Combine(Folder, DllName));
-            else LoadLibrary(DllName);
+            LoadLibrary(!string.IsNullOrWhiteSpace(Folder) ? Path.Combine(Folder, DllName) : DllName);
         }
 
         public static short HiWord(this int pDWord) { return ((short)(((pDWord) >> 16) & 0xFFFF)); }

@@ -58,8 +58,6 @@
     <Compile Include="Dynamics\Bass Wasapi\Enumerations\WasapiVolumeTypes.cs" />
     <Compile Include="Dynamics\Bass Wasapi\Structures\WasapiDeviceInfo.cs" />
     <Compile Include="Dynamics\Bass Wasapi\Structures\WasapiInfo.cs" />
-    <Compile Include="Dynamics\BassAac.cs" />
-    <Compile Include="Dynamics\BassAc3.cs" />
     <Compile Include="Dynamics\BassCd\Delegates.cs" />
     <Compile Include="Dynamics\BassCd\Enums.cs" />
     <Compile Include="Dynamics\BassCd\Structures\TOCTrack.cs" />
@@ -144,6 +142,7 @@
     <Compile Include="Dynamics\Bass\Structures\SampleInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\BassInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\Vector3D.cs" />
+    <Compile Include="Dynamics\Plugin.cs" />
     <Compile Include="IO\Decoders\ReverseDecoder.cs" />
     <Compile Include="IO\Decoders\FileDecoder.cs" />
     <Compile Include="IO\Decoders\TempoDecoder.cs" />
