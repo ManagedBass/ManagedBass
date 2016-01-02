@@ -4,10 +4,6 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Dynamics
 {
-    delegate int DCreateStreamFile(bool mem, IntPtr file, long offset, long length, BassFlags flags);
-    delegate int DCreateStreamUser(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user);
-    delegate int DCreateStreamURL(IntPtr Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User);
-
     /// <summary>
     /// Wraps AddOns that are no more than Plugins.
     /// </summary>
@@ -17,21 +13,24 @@ namespace ManagedBass.Dynamics
     /// </remarks>
     public class Plugin
     {
-        static Plugin()
-        {
-            // Always play audio from Mp4 using BassAAC
-            Bass.Configure(Configuration.PlayAudioFromMp4, true);
+        #region Fields
+        readonly string DllName, ID;
+        readonly bool SupportsURL;
+        IntPtr HLib = IntPtr.Zero;
 
-            // Always Support MP4 files in BassAAC.CreateStream()
-            Bass.Configure(Configuration.AacSupportMp4, true);
-        }
-        
-        Plugin(string DllName, string ID, bool SupportsURL = true) 
-        {
-            this.DllName = DllName;
-            this.ID = ID;
-            this.SupportsURL = SupportsURL;
-        }
+        DCreateStreamFile MStreamCreateFile;
+        DCreateStreamURL MStreamCreateURL;
+        DCreateStreamUser MStreamCreateUser;
+        #endregion
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
+
+        #region Delegates
+        delegate int DCreateStreamFile(bool mem, IntPtr file, long offset, long length, BassFlags flags);
+        delegate int DCreateStreamUser(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user);
+        delegate int DCreateStreamURL(IntPtr Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User);
+        #endregion
 
         /// <summary>
         /// BassAc3 AddOn:
@@ -43,17 +42,24 @@ namespace ManagedBass.Dynamics
             get { return Bass.GetConfigBool(Configuration.AC3DynamicRangeCompression); }
             set { Bass.Configure(Configuration.AC3DynamicRangeCompression, value); }
         }
-        
-        [DllImport("kernel32.dll")] 
-        static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName); 
-        
-        readonly string DllName, ID;
-        readonly bool SupportsURL;
-        IntPtr HLib = IntPtr.Zero;
 
-        DCreateStreamFile MStreamCreateFile;
-        DCreateStreamURL MStreamCreateURL;
-        DCreateStreamUser MStreamCreateUser;
+        #region Construction
+        static Plugin()
+        {
+            // Always play audio from Mp4 using BassAAC
+            Bass.Configure(Configuration.PlayAudioFromMp4, true);
+
+            // Always Support MP4 files in BassAAC.CreateStream()
+            Bass.Configure(Configuration.AacSupportMp4, true);
+        }
+
+        Plugin(string DllName, string ID, bool SupportsURL = true)
+        {
+            this.DllName = DllName;
+            this.ID = ID;
+            this.SupportsURL = SupportsURL;
+        }
+        #endregion
 
         public void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
 
@@ -62,6 +68,7 @@ namespace ManagedBass.Dynamics
             Bass.LoadPlugin(Folder != null ? Path.Combine(Folder, DllName) : DllName);
         }
 
+        #region Private Methods
         void EnsureLoaded()
         {
             if (HLib == IntPtr.Zero)
@@ -71,21 +78,28 @@ namespace ManagedBass.Dynamics
             }
         }
 
-        void LoadStreamCreateFile()
+        void EnsureFunction<T>(string MethodName, ref T Method)
         {
-            if (MStreamCreateFile == null)
+            if (Method == null)
             {
                 EnsureLoaded();
-                string MethodName = "BASS_" + ID + "_StreamCreateFile";
 
                 IntPtr pAddress = GetProcAddress(HLib, MethodName);
 
                 if (pAddress == IntPtr.Zero) throw new EntryPointNotFoundException(MethodName + " was not found in " + DllName);
 
-                MStreamCreateFile = (DCreateStreamFile)Marshal.GetDelegateForFunctionPointer(pAddress, typeof(DCreateStreamFile));
+                Method = (T)(object)Marshal.GetDelegateForFunctionPointer(pAddress, typeof(T));
             }
         }
 
+        void LoadStreamCreateFile()
+        {
+            EnsureFunction("BASS_" + ID + "_StreamCreateFile",
+                           ref MStreamCreateFile);
+        }
+        #endregion
+
+        #region Create Stream
         public int CreateStream(string FileName, long Offset = 0, long Length = 0, BassFlags Flags = BassFlags.Default)
         {
             LoadStreamCreateFile();
@@ -100,41 +114,27 @@ namespace ManagedBass.Dynamics
 
         public int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr))
         {
-            if (MStreamCreateUser == null)
-            {
-                EnsureLoaded();
-                string MethodName = "BASS_" + ID + "_StreamCreateFileUser";
+            EnsureFunction("BASS_" + ID + "_StreamCreateFileUser",
+                           ref MStreamCreateUser);
 
-                IntPtr pAddress = GetProcAddress(HLib, MethodName);
-
-                if (pAddress == IntPtr.Zero) throw new EntryPointNotFoundException(MethodName + " was not found in " + DllName);
-
-                MStreamCreateUser = (DCreateStreamUser)Marshal.GetDelegateForFunctionPointer(pAddress, typeof(DCreateStreamUser));
-            }
             return MStreamCreateUser(system, flags, procs, user);
         }
 
-        /// <exception cref="UnsupportedException">
+        /// <exception cref="System.InvalidOperationException">
         /// The AddOn does not support streaming over the internet.
         /// </exception>
         public int CreateStream(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr))
         {
             if (!SupportsURL) throw new InvalidOperationException(DllName + " does not support streaming over internet");
 
-            if (MStreamCreateURL == null)
-            {
-                EnsureLoaded();
-                string MethodName = "BASS_" + ID + "_StreamCreateURL";
+            EnsureFunction("BASS_" + ID + "_StreamCreateURL",
+                           ref MStreamCreateURL);
 
-                IntPtr pAddress = GetProcAddress(HLib, MethodName);
-
-                if (pAddress == IntPtr.Zero) throw new EntryPointNotFoundException(MethodName + " was not found in " + DllName);
-
-                MStreamCreateURL = (DCreateStreamURL)Marshal.GetDelegateForFunctionPointer(pAddress, typeof(DCreateStreamURL));
-            }
             return MStreamCreateURL(Marshal.StringToBSTR(Url), Offset, Flags | BassFlags.Unicode, Procedure, User);
         }
+        #endregion
 
+        #region Instances
         /// <summary>
         /// Wraps BassAAC: bass_aac.dll
         /// </summary>
@@ -199,5 +199,6 @@ namespace ManagedBass.Dynamics
         /// Wraps BassWV: basswv.dll
         /// </summary>
         public static readonly Plugin BassWV = new Plugin("basswv.dll", "WV");
+        #endregion
     }
 }

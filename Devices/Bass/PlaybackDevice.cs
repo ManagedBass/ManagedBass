@@ -8,7 +8,7 @@ namespace ManagedBass
     /// Wraps a Bass Playback Device
     /// </summary>
     /// <remarks>All Devices except NoSound and Default need to initialized before use</remarks>
-    public class PlaybackDevice : BassDevice
+    public class PlaybackDevice : IDisposable
     {
         static Dictionary<int, PlaybackDevice> Singleton = new Dictionary<int, PlaybackDevice>();
 
@@ -25,6 +25,8 @@ namespace ManagedBass
                 return Dev;
             }
         }
+
+        public int DeviceIndex { get; private set; }
 
         /// <summary>
         /// Number of available Playback Devices
@@ -50,11 +52,11 @@ namespace ManagedBass
 
         public static PlaybackDevice DefaultDevice { get { return Get(1); } }
 
-        protected override DeviceInfo DeviceInfo { get { return Bass.GetDeviceInfo(DeviceIndex); } }
+        public DeviceInfo DeviceInfo { get { return Bass.GetDeviceInfo(DeviceIndex); } }
 
         public Return<bool> Initialize(int Frequency = 44100) { return Bass.Initialize(DeviceIndex, Frequency, DeviceInitFlags.Default); }
 
-        public override void Dispose() { Bass.Free(DeviceIndex); }
+        public void Dispose() { Bass.Free(DeviceIndex); }
 
         public double Volume
         {

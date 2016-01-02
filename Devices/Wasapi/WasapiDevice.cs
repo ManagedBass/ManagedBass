@@ -51,6 +51,8 @@ namespace ManagedBass
         }
         #endregion
 
+        int ReferenceCount = 0;
+
         protected WasapiDevice() { proc = new WasapiProcedure(OnProc); }
 
         #region Device Info
@@ -91,8 +93,13 @@ namespace ManagedBass
 
         public void Dispose()
         {
-            BassWasapi.CurrentDevice = DeviceIndex;
-            BassWasapi.Free();
+            if (ReferenceCount != 0) ReferenceCount--;
+
+            if (ReferenceCount == 0)
+            {
+                BassWasapi.CurrentDevice = DeviceIndex;
+                BassWasapi.Free();
+            }
         }
 
         #region Read
@@ -179,7 +186,12 @@ namespace ManagedBass
         public bool Init(int Frequency = 44100, int Channels = 2, bool Shared = true)
         {
             if (DeviceInfo.IsInitialized) return true;
-            return BassWasapi.Init(DeviceIndex, Frequency, Channels, Shared ? WasapiInitFlags.Shared : WasapiInitFlags.Exclusive, proc: proc);
+
+            bool Result = BassWasapi.Init(DeviceIndex, Frequency, Channels, Shared ? WasapiInitFlags.Shared : WasapiInitFlags.Exclusive, proc: proc);
+
+            if (Result) ReferenceCount++;
+
+            return Result;
         }
 
         public bool IsStarted

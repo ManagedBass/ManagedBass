@@ -14,6 +14,7 @@ namespace ManagedBass.Dynamics
 
         public static void Load(string folder = null) { Extensions.Load(DllName, folder); }
 
+        #region Split
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamCreate")]
         public static extern int CreateSplitStream(int channel, BassFlags Flags, [MarshalAs(UnmanagedType.LPArray)] int[] chanmap);
 
@@ -28,6 +29,7 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamGetSource")]
         public static extern int SplitStreamGetSource(int handle);
+        #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_StreamCreate")]
         public static extern int CreateMixerStream(int freq, int chans, BassFlags flags);

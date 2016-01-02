@@ -43,7 +43,6 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Devices\Bass\BassDevice.cs" />
     <Compile Include="Devices\Bass\RecordingDevice.cs" />
     <Compile Include="Devices\Wasapi\WasapiLoopbackDevice.cs" />
     <Compile Include="Devices\Wasapi\WasapiRecordingDevice.cs" />
@@ -143,17 +142,19 @@
     <Compile Include="Dynamics\Bass\Structures\BassInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\Vector3D.cs" />
     <Compile Include="Dynamics\Plugin.cs" />
+    <Compile Include="IO\AudioCapture\IAudioCaptureClient.cs" />
     <Compile Include="IO\Decoders\ReverseDecoder.cs" />
     <Compile Include="IO\Decoders\FileDecoder.cs" />
     <Compile Include="IO\Decoders\TempoDecoder.cs" />
     <Compile Include="IO\Decoders\MemoryDecoder.cs" />
     <Compile Include="IO\Encoder.cs" />
+    <Compile Include="IO\AudioCapture\Loopback.cs" />
     <Compile Include="IO\Players\TempoPlayer.cs" />
     <Compile Include="IO\Players\FilePlayer.cs" />
     <Compile Include="IO\Players\ReversePlayer.cs" />
     <Compile Include="IO\Players\MemoryPlayer.cs" />
     <Compile Include="IO\Players\NetworkPlayer.cs" />
-    <Compile Include="IO\Recording.cs" />
+    <Compile Include="IO\AudioCapture\Recording.cs" />
     <Compile Include="IO\Midi.cs" />
     <Compile Include="IO\MixerStream.cs" />
     <Compile Include="IO\Decoders\SplitDecoder.cs" />

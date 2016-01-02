@@ -8,16 +8,18 @@ namespace ManagedBass.Dynamics
     {
         IntPtr name;
         IntPtr driver;
-        public DeviceInfoFlags Flags;
+        DeviceInfoFlags flags;
 
         public string Name { get { return Marshal.PtrToStringAnsi(name); } }
 
         public string Driver { get { return Marshal.PtrToStringAnsi(driver); } }
 
-        public bool IsDefault { get { return Flags.HasFlag(DeviceInfoFlags.Default); } }
+        public bool IsDefault { get { return flags.HasFlag(DeviceInfoFlags.Default); } }
 
-        public bool IsEnabled { get { return Flags.HasFlag(DeviceInfoFlags.Enabled); } }
+        public bool IsEnabled { get { return flags.HasFlag(DeviceInfoFlags.Enabled); } }
 
-        public bool IsInitialized { get { return Flags.HasFlag(DeviceInfoFlags.Initialized); } }
+        public bool IsInitialized { get { return flags.HasFlag(DeviceInfoFlags.Initialized); } }
+
+        public DeviceInfoFlags Flags { get { return flags; } }
     }
 }

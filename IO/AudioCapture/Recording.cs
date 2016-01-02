@@ -1,17 +1,16 @@
-﻿using System;
-using ManagedBass.Dynamics;
+﻿using ManagedBass.Dynamics;
 using ManagedBass.Effects;
+using System;
 
 namespace ManagedBass
 {
-    public class Recording : Channel, IEffectAssignable
+    public class Recording : Channel, IAudioCaptureClient, IEffectAssignable
     {
         #region Fields
         RecordProcedure RecordProcedure;
         int DeviceIndex;
         #endregion
 
-        #region Constructors
         public Recording(RecordingDevice Device = null, Resolution BufferKind = Resolution.Short)
             : base(BufferKind)
         {
@@ -26,44 +25,24 @@ namespace ManagedBass
 
             Handle = Bass.StartRecording(44100, 2, BassFlags.RecordPause | BassFlags.Float, RecordProcedure);
         }
-        #endregion
 
-        #region Properties
         public double Level { get { return Bass.GetChannelLevel(Handle); } }
 
         public bool IsActive { get { return Bass.IsChannelActive(Handle) == PlaybackState.Playing; } }
-        #endregion
-
-        #region Control
+        
         public bool Start() { return Bass.PlayChannel(Handle, false); }
 
-        public bool Pause() { return Bass.PauseChannel(Handle); }
-
-        public bool Stop()
-        {
-            bool Result = Bass.StopChannel(Handle);
-
-            if (Result)
-            {
-                if (Stopped != null) Stopped.Invoke();
-
-                Bass.StreamFree(Handle);
-            }
-
-            return Result;
-        }
-        #endregion
-
+        public bool Stop() { return Bass.StopChannel(Handle); }
+        
         #region Callback
-        public event Action<BufferProvider> Callback;
+        public event Action<BufferProvider> DataAvailable;
 
         bool Processing(int Handle, IntPtr Buffer, int Length, IntPtr User)
         {
-            if (Callback != null) Callback.Invoke(new BufferProvider(Buffer, Length, BufferKind));
+            if (DataAvailable != null) 
+                DataAvailable.Invoke(new BufferProvider(Buffer, Length, BufferKind));
             return true;
         }
         #endregion
-
-        public event Action Stopped;
     }
 }

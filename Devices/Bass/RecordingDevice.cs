@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ManagedBass
 {
-    public class RecordingDevice : BassDevice
+    public class RecordingDevice : IDisposable
     {
         static Dictionary<int, RecordingDevice> Singleton = new Dictionary<int, RecordingDevice>();
 
@@ -34,13 +34,15 @@ namespace ManagedBass
             }
         }
 
+        public int DeviceIndex { get; private set; }
+
         public static int Count { get { return Bass.RecordingDeviceCount; } }
 
-        protected override DeviceInfo DeviceInfo { get { return Bass.GetRecordingDeviceInfo(DeviceIndex); } }
+        public DeviceInfo DeviceInfo { get { return Bass.GetRecordingDeviceInfo(DeviceIndex); } }
         
         public Return<bool> Initialize() { return Bass.RecordInit(DeviceIndex); }
 
-        public override void Dispose()
+        public void Dispose()
         {
             Bass.CurrentRecordingDevice = DeviceIndex;
             Bass.RecordFree();
