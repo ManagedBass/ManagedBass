@@ -9,7 +9,7 @@ namespace ManagedBass.Dynamics
     /// </summary>
     /// 
     /// <remarks>
-    /// Currently Wraps: BassAAC, BassAC3, BassADX, BassAIX, BassALAC, BassAPE, BassFLAC, BassMPC, BassOFR, BassOPUS, BassSPX, BassTTA, BassWv
+    /// Currently Wraps: BassAAC, BassAC3, BassADX, BassAIX, BassALAC, BassAPE, BassFLAC, BassMPC, BassOFR, BassOPUS, BassSPX, BassTTA, BassWV
     /// </remarks>
     public class Plugin
     {
