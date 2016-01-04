@@ -1,0 +1,16 @@
+﻿<Window x:Class="ManagedBass.ShowDown.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ManagedBass.ShowDown"
+        Title="ManagedBass ShowDown">
+    <Grid>
+        <TabControl>
+            <TabItem Header="DJ">
+                <local:DJ/>
+            </TabItem>
+            <TabItem Header="Loopback">
+                <local:LoopbackRecording/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

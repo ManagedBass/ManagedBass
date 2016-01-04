@@ -1,0 +1,114 @@
+﻿<UserControl x:Class="ManagedBass.ShowDown.Deck"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ManagedBass.ShowDown"
+             AllowDrop="True" 
+             Drop="UserControl_Drop">
+    <DockPanel LastChildFill="False">
+        <StackPanel DockPanel.Dock="Top">
+            <Label Height="30"
+                   Name="Title"
+                   Foreground="#B7000000"
+                   FontSize="12" />
+            <DockPanel>
+                <StackPanel Orientation="Horizontal"
+                            DockPanel.Dock="Right"
+                            Margin="5,0">
+                    <TextBlock Text="{Binding Position, Converter={StaticResource TimeConverter}}"/>
+                    <TextBlock Text="/"/>
+                    <TextBlock Text="{Binding Duration, Converter={StaticResource TimeConverter}}"/>
+                </StackPanel>
+                <Slider IsEnabled="{Binding Ready}" 
+                        IsMoveToPointEnabled="True"
+                        Margin="5,0" 
+                        IsManipulationEnabled="True" 
+                        IsTabStop="False" 
+                        PreviewMouseLeftButtonUp="Slider_PreviewMouseLeftButtonUp" 
+                        PreviewMouseLeftButtonDown="Slider_PreviewMouseLeftButtonDown" 
+                        MouseLeftButtonUp="Slider_MouseLeftButtonUp" 
+                        Value="{Binding Position}"
+                        Maximum="{Binding Duration}"/>
+            </DockPanel>
+            <StackPanel Margin="3" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Center">
+                <CheckBox Margin="10,0" 
+                          VerticalAlignment="Center"
+                          Content="Reverse"
+                          Foreground="#B7000000"
+                          IsChecked="{Binding Reverse}"
+                          IsEnabled="{Binding Ready}" />
+                <CheckBox Margin="10,0"
+                          VerticalAlignment="Center"
+                          Content="Loop"
+                          Foreground="#B7000000" 
+                          IsChecked="{Binding Loop}" 
+                          IsEnabled="{Binding Ready}" />
+                <Button Content="/Resources/Play.png" 
+                        Click="Play"
+                        Name="BPlay"
+                        Template="{DynamicResource ImageButton}" 
+                        Width="25" 
+                        Height="25"
+                        IsEnabled="{Binding Ready}"/>
+                <Button Content="/Resources/Stop.png" 
+                        Click="Stop"
+                        Name="BStop" 
+                        Template="{DynamicResource ImageButton}" 
+                        Width="35" 
+                        Height="25" 
+                        IsEnabled="{Binding Ready}"/>
+            </StackPanel>
+            <DockPanel>
+                <Label Content="Balance:" 
+                       MouseDoubleClick="ResetBalance"/>
+                <Slider IsEnabled="{Binding Ready}"
+                        ToolTip="{Binding Balance}"
+                        Margin="5"
+                        Minimum="-1" 
+                        Maximum="1" 
+                        Value="{Binding Balance, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel>
+                <Label Content="Tempo:" 
+                       MouseDoubleClick="ResetTempo"/>
+                <Slider IsEnabled="{Binding Ready}"
+                        ToolTip="{Binding Tempo}"
+                        Margin="5" 
+                        Minimum="-95"
+                        Maximum="500" 
+                        Value="{Binding Tempo, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel>
+                <Label Content="Frequency:"
+                       MouseDoubleClick="ResetFrequency"/>
+                <Slider IsEnabled="{Binding Ready}"
+                        ToolTip="{Binding Frequency}"
+                        Margin="5"
+                        Minimum="20000"
+                        Maximum="88100"
+                        Value="{Binding Frequency, Mode=TwoWay}"/>
+            </DockPanel>
+            <DockPanel>
+                <Label Content="Pitch:" 
+                       MouseDoubleClick="ResetPitch"/>
+                <Slider IsEnabled="{Binding Ready}"
+                        ToolTip="{Binding Pitch}"
+                        Margin="5"
+                        Minimum="-60" 
+                        Maximum="60"
+                        Value="{Binding Pitch, Mode=TwoWay}"/>
+            </DockPanel>
+            <CheckBox IsEnabled="{Binding Ready}"
+                      Margin="3"
+                      IsChecked="{Binding Reverb}"
+                      Content="Reverb"/>
+        </StackPanel>
+        <Label DockPanel.Dock="Bottom"
+               Content="Ready" 
+               Height="25"
+               Name="Status"
+               FontSize="11" 
+               HorizontalContentAlignment="Right" />
+    </DockPanel>
+</UserControl>
