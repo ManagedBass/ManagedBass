@@ -83,5 +83,17 @@ namespace ManagedBass
             return SamplesToBytes(SecondsToSamples(seconds, samplerate), bits, channels);
         }
         #endregion
+
+        public static double BpmToSeconds(double bpm) { return 60 / bpm; }
+
+        public static int DbToLevel(double dB, int maxLevel)
+        {
+            return (int)Math.Round((double)maxLevel * Math.Pow(10, dB / 20));
+        }
+
+        public static double DbToLevel(double dB, double maxLevel)
+        {
+            return maxLevel * Math.Pow(10, dB / 20);
+        }
     }
 }

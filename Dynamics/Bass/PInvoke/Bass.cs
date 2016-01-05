@@ -6,9 +6,34 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Dynamics
 {
+    /// <summary>
+    /// Wraps bass.dll
+    /// 
+    /// <remarks>
+    /// <para>
+    /// BASS is a multiplatform audio library. It's purpose is to provide the most powerful and efficient (yet easy to use),
+    /// sample, stream, MOD music, and recording functions. All in a tiny DLL, under 100KB in size.
+    /// </para>
+    /// </remarks>
+    /// </summary>
     public static partial class Bass
     {
         public const int NoSoundDevice = 0, DefaultDevice = -1;
+
+        /// <summary>
+        /// The BASS way to say <see langword="false" /> = 0.
+        /// </summary>
+        public const int FALSE = 0;
+
+        /// <summary>
+        /// The BASS way to say <see langword="true" /> = 1.
+        /// </summary>
+        public const int TRUE = 1;
+
+        /// <summary>
+        /// The BASS way to say ERROR = -1.
+        /// </summary>
+        public const int ERROR = -1;
 
         const string DllName = "bass.dll";
 

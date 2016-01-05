@@ -4,6 +4,14 @@ namespace ManagedBass.Dynamics
 {
     public static partial class Bass
     {
+        /// <summary>
+        /// Applies changes made to the 3D system.
+        /// </summary>
+        /// <remarks>
+        /// <para>This must be called to apply any changes made with Set3D methods. 
+        /// It improves performance to have DirectSound do all the required recalculating at the same time like this, rather than recalculating after every little change is made.</para>
+        /// <para>This function applies 3D changes on all the initialized devices - there's no need to re-call it for each individual device when using multiple devices.</para>
+        /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_Apply3D")]
         public static extern void Apply3D();
 
