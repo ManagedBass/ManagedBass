@@ -131,13 +131,21 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreateEx")]
         public static extern int CreateStream(int Drive, int Track, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr));
 
-        // Unicode:
-        [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreateFile")]
-        public static extern int CreateStream(string File, BassFlags Flags);
+        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        static extern int BASS_CD_StreamCreateFile(string File, BassFlags Flags);
 
-        // Unicode:
-        [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreateFileEx")]
-        public static extern int CreateStream(string File, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr));
+        public static int CreateStream(string File, BassFlags Flags)
+        {
+            return BASS_CD_StreamCreateFile(File, Flags | BassFlags.Unicode);
+        }
+
+        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        static extern int BASS_CD_StreamCreateFileEx(string File, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr));
+
+        public static int CreateStream(string File, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr))
+        {
+            return BASS_CD_StreamCreateFileEx(File, Flags | BassFlags.Unicode, proc, user);
+        }
 
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamGetTrack")]
         public static extern int GetStreamTrack(int handle);

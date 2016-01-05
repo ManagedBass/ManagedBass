@@ -121,7 +121,10 @@
     <Compile Include="Dynamics\Bass\Enumerations\PlaybackState.cs" />
     <Compile Include="Dynamics\Bass\Enumerations\BassInfoFlags.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\Config.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Devices.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\Record.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Samples.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Streams.cs" />
     <Compile Include="Dynamics\Bass\Structures\DeviceInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\ChannelInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\FileProcedures.cs" />

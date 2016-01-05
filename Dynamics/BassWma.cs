@@ -32,27 +32,52 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_WMA_GetWMObject")]
         public static extern IntPtr GetWMObject(int handle);
 
-        [DllImport(DllName)]
-        static extern int BASS_WMA_StreamCreateFile(bool Memory, [MarshalAs(UnmanagedType.LPWStr)]string File, long Offset, long Length, BassFlags Flags);
+        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        static extern int BASS_WMA_StreamCreateFile(bool Memory, string File, long Offset, long Length, BassFlags Flags);
 
         [DllImport(DllName)]
         static extern int BASS_WMA_StreamCreateFile(bool Memory, IntPtr File, long Offset, long Length, BassFlags Flags);
 
-        public static int CreateStream(string File, long Offset, long Length, BassFlags Flags)
+        public static int CreateStream(string File, long Offset = 0, long Length = 0, BassFlags Flags = BassFlags.Default)
         {
-            return BASS_WMA_StreamCreateFile(false, File, Offset, Length, Flags);
+            return BASS_WMA_StreamCreateFile(false, File, Offset, Length, Flags | BassFlags.Unicode);
         }
 
-        public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags)
+        public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default)
         {
             return BASS_WMA_StreamCreateFile(true, Memory, Offset, Length, Flags);
         }
 
-        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
+        static int CreateStream(object Memory, long Offset, long Length, BassFlags Flags)
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
-            return Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
+            int Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
+
+            if (Handle == 0) GCPin.Free();
+            else Bass.ChannelSetSync(Handle, SyncFlags.Freed, 0, (a, b, c, d) => GCPin.Free());
+
+            return Handle;
+        }
+
+        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
+        {
+            return CreateStream(Memory as object, Offset, Length, Flags);
+        }
+
+        public static int CreateStream(short[] Memory, long Offset, long Length, BassFlags Flags)
+        {
+            return CreateStream(Memory as object, Offset, Length, Flags);
+        }
+
+        public static int CreateStream(int[] Memory, long Offset, long Length, BassFlags Flags)
+        {
+            return CreateStream(Memory as object, Offset, Length, Flags);
+        }
+
+        public static int CreateStream(float[] Memory, long Offset, long Length, BassFlags Flags)
+        {
+            return CreateStream(Memory as object, Offset, Length, Flags);
         }
 
         public static int CreateStream(Stream Stream, int Offset, int Length, BassFlags Flags)
