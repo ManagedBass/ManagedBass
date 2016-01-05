@@ -1,19 +1,35 @@
-﻿using System.IO;
-using System.Runtime.InteropServices;
-using ManagedBass.Dynamics;
+﻿using ManagedBass.Dynamics;
 using System;
+using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
-    public class Decoder : Channel
+    public interface IDecoder : IDisposable
     {
-        static Decoder() { PlaybackDevice.NoSoundDevice.Initialize(); }
+        int Handle { get; }
 
-        protected Decoder(Resolution BufferKind = Resolution.Short) : base(BufferKind) { Bass.CurrentDevice = 0; }
+        bool HasData { get; }
+        long Position { get; set; }
 
-        internal Decoder(int Handle, Resolution BufferKind = Resolution.Short) : this(BufferKind) { this.Handle = Handle; }
+        void Reset();
+        void Write(IAudioFileWriter Writer, int Offset = 0);
+    }
+
+    class BassDecoder : IDecoder
+    {
+        IDisposable Owner;
+
+        public BassDecoder(int Handle, IDisposable Owner) 
+        {
+            this.Handle = Handle;
+            this.Owner = Owner;
+        }
 
         public bool HasData { get { return Bass.IsChannelActive(Handle) == PlaybackState.Playing; } }
+
+        public int Handle { get; private set; }
+
+        ~BassDecoder() { Dispose(); }
 
         /// <summary>
         /// Position in Bytes
@@ -37,10 +53,10 @@ namespace ManagedBass
 
             Position += Offset;
 
-            int BlockLength = (int)Seconds2Bytes(2);
+            int BlockLength = (int)Bass.ChannelSeconds2Bytes(Handle, 2);
 
             byte[] Buffer = new byte[BlockLength];
-            
+
             var gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
 
             while (HasData)
@@ -54,6 +70,18 @@ namespace ManagedBass
             Writer.Dispose();
 
             Position = InitialPosition;
+        }
+
+        public void Dispose()
+        {
+            if (Owner == null) return;
+
+            try
+            {
+                Owner.Dispose();
+                Owner = null;
+            }
+            catch { }
         }
     }
 }

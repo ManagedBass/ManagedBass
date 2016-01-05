@@ -18,7 +18,7 @@ namespace ManagedBass.Effects
 
     public sealed class CompressorEffect : Effect<CompressorParameters>
     {
-        public CompressorEffect(IEffectAssignable Stream) : base(Stream) { }
+        public CompressorEffect(int Handle) : base(Handle) { }
 
         /// <summary>
         /// Time in ms before compression reaches its full value, in the range from 0.01 to 500.

@@ -44,8 +44,9 @@ namespace ManagedBass
 
         protected Resolution BufferKind { get; private set; }
 
-        protected Channel(Resolution BufferKind = Resolution.Short)
+        protected Channel(bool IsDecoder, Resolution BufferKind = Resolution.Short)
         {
+            this.IsDecoder = IsDecoder;
             this.BufferKind = BufferKind;
 
             IsDisposed = false;
@@ -99,5 +100,11 @@ namespace ManagedBass
         public virtual void Dispose() { if (!IsDisposed) IsDisposed = Bass.StreamFree(Handle); }
 
         public override int GetHashCode() { return Handle; }
+
+        public bool IsDecoder { get; private set; }
+
+        public IDecoder Decoder { get; protected set; }
+
+        public IPlayable Player { get; protected set; }
     }
 }

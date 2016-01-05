@@ -18,7 +18,7 @@ namespace ManagedBass.Effects
 
     public sealed class PeakEQEffect : Effect<PeakEQParameters>
     {
-        public PeakEQEffect(IEffectAssignable Stream) : base(Stream) { }
+        public PeakEQEffect(int Handle) : base(Handle) { }
 
         /// <summary>
         /// Bandwidth in octaves (0.1...4...n), Q is not in use (fBandwidth has priority over fQ). Default = 1 (0=not in use).

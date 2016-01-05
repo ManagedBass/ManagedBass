@@ -36,18 +36,18 @@ namespace ManagedBass
 
         public bool Start()
         {
-            if (SilencePlayer != null) SilencePlayer.Start();
+            if (SilencePlayer != null) SilencePlayer.Player.Start();
 
             bool Result = Device.Start();
 
-            if (SilencePlayer != null && !Result) SilencePlayer.Stop();
+            if (SilencePlayer != null && !Result) SilencePlayer.Player.Stop();
 
             return Result;
         }
 
         public bool Stop()
         {
-            if (SilencePlayer != null) SilencePlayer.Stop();
+            if (SilencePlayer != null) SilencePlayer.Player.Stop();
 
             return Device.Stop();
         }

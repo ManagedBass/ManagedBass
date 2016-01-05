@@ -19,7 +19,7 @@ namespace ManagedBass.Effects
 
     public sealed class PhaserEffect : Effect<PhaserParameters>
     {
-        public PhaserEffect(IEffectAssignable Stream) : base(Stream) { }
+        public PhaserEffect(int Handle) : base(Handle) { }
 
         public void PhaseShift()
         {

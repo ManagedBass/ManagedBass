@@ -19,7 +19,7 @@ namespace ManagedBass.Effects
 
     public sealed class AutoWahEffect : Effect<AutoWahParameters>
     {
-        public AutoWahEffect(IEffectAssignable Stream) : base(Stream) { }
+        public AutoWahEffect(int Handle) : base(Handle) { }
 
         public void Slow()
         {

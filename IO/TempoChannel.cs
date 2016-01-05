@@ -2,16 +2,22 @@
 
 namespace ManagedBass
 {
-    public class TempoDecoder : Decoder
+    public class TempoChannel : Channel
     {
-        Decoder decoder;
+        IDecoder decoder;
 
-        public TempoDecoder(Decoder decoder, Resolution BufferKind = Resolution.Short)
-            : base(BufferKind)
+        public TempoChannel(IDecoder decoder, bool IsDecoder = false, Resolution BufferKind = Resolution.Short)
+            : base(IsDecoder, BufferKind)
         {
             this.decoder = decoder;
 
-            Handle = BassFx.TempoCreate(decoder.Handle, BassFlags.Float | BufferKind.ToBassFlag());
+            var flags = BufferKind.ToBassFlag();
+            if (IsDecoder) flags |= BassFlags.Decode;
+
+            Handle = BassFx.TempoCreate(decoder.Handle, flags);
+
+            if (IsDecoder) Decoder = new BassDecoder(Handle, this);
+            else Player = new BassPlayer(Handle, this);
         }
 
         public double Pitch

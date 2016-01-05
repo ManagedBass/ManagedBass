@@ -4,7 +4,7 @@ using System;
 
 namespace ManagedBass
 {
-    public class Recording : Channel, IAudioCaptureClient, IEffectAssignable
+    public class Recording : Channel, IAudioCaptureClient
     {
         #region Fields
         RecordProcedure RecordProcedure;
@@ -12,7 +12,7 @@ namespace ManagedBass
         #endregion
 
         public Recording(RecordingDevice Device = null, Resolution BufferKind = Resolution.Short)
-            : base(BufferKind)
+            : base(false, BufferKind)
         {
             if (Device == null) Device = RecordingDevice.DefaultDevice;
 
@@ -23,7 +23,7 @@ namespace ManagedBass
 
             RecordProcedure = new RecordProcedure(Processing);
 
-            Handle = Bass.StartRecording(44100, 2, BassFlags.RecordPause | BassFlags.Float, RecordProcedure);
+            Handle = Bass.StartRecording(44100, 2, BassFlags.RecordPause | BufferKind.ToBassFlag(), RecordProcedure);
         }
 
         public double Level { get { return Bass.GetChannelLevel(Handle); } }

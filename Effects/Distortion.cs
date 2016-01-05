@@ -18,7 +18,7 @@ namespace ManagedBass.Effects
 
     public sealed class DistortionEffect : Effect<DistortionParameters>
     {
-        public DistortionEffect(IEffectAssignable Stream) : base(Stream) { }
+        public DistortionEffect(int Handle) : base(Handle) { }
 
         /// <summary>
         /// Distortion Drive (0...5).

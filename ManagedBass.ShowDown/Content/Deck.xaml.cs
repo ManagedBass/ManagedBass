@@ -14,8 +14,8 @@ namespace ManagedBass.ShowDown
     public partial class Deck : UserControl, INotifyPropertyChanged
     {
         #region Fields
-        ReverseDecoder ReverseDecoder;
-        public TempoPlayer Player;
+        ReverseChannel ReverseDecoder;
+        public TempoChannel TempoChannel;
         ReverbEffect ReverbEffect;
         DispatcherTimer ProgressBarTimer;
         string FilePath;
@@ -32,10 +32,10 @@ namespace ManagedBass.ShowDown
 
         public double Position
         {
-            get { return Player != null ? Player.Position : 0; }
+            get { return TempoChannel != null ? TempoChannel.Player.Position : 0; }
             set
             {
-                if (Player != null) Player.Position = value;
+                if (TempoChannel != null) TempoChannel.Player.Position = value;
 
                 OnPropertyChanged("Position");
             }
@@ -43,11 +43,11 @@ namespace ManagedBass.ShowDown
 
         public double Duration
         {
-            get { return Player != null ? Player.Duration : 0; }
+            get { return TempoChannel != null ? TempoChannel.Player.Duration : 0; }
             set { OnPropertyChanged("Duration"); }
         }
 
-        public double Volume { set { Player.Volume = value; } }
+        public double Volume { set { TempoChannel.Player.Volume = value; } }
 
         public bool Reverse
         {
@@ -60,12 +60,13 @@ namespace ManagedBass.ShowDown
             }
         }
 
+        // TODO: Fix - Why Looping is always Enabled?
         public bool Loop
         {
-            get { return Player != null ? Player.Loop : false; }
+            get { return TempoChannel != null ? TempoChannel.Player.Loop : false; }
             set
             {
-                if (Player != null) Player.Loop = value;
+                if (TempoChannel != null) TempoChannel.Player.Loop = value;
 
                 OnPropertyChanged("Loop");
             }
@@ -73,10 +74,10 @@ namespace ManagedBass.ShowDown
 
         public double Tempo
         {
-            get { return Player != null ? Player.Tempo : 0; }
+            get { return TempoChannel != null ? TempoChannel.Tempo : 0; }
             set
             {
-                if (Player != null) Player.Tempo = value;
+                if (TempoChannel != null) TempoChannel.Tempo = value;
 
                 OnPropertyChanged("Tempo");
             }
@@ -84,10 +85,10 @@ namespace ManagedBass.ShowDown
 
         public double Frequency
         {
-            get { return Player != null ? Player.Frequency : 44100; }
+            get { return TempoChannel != null ? TempoChannel.Player.Frequency : 44100; }
             set
             {
-                if (Player != null) Player.Frequency = value;
+                if (TempoChannel != null) TempoChannel.Player.Frequency = value;
 
                 OnPropertyChanged("Frequency");
             }
@@ -95,10 +96,10 @@ namespace ManagedBass.ShowDown
 
         public double Pitch
         {
-            get { return Player != null ? Player.Pitch : 0; }
+            get { return TempoChannel != null ? TempoChannel.Pitch : 0; }
             set
             {
-                if (Player != null) Player.Pitch = value;
+                if (TempoChannel != null) TempoChannel.Pitch = value;
 
                 OnPropertyChanged("Pitch");
             }
@@ -106,10 +107,10 @@ namespace ManagedBass.ShowDown
 
         public double Balance
         {
-            get { return Player != null ? Player.Balance : 0; }
+            get { return TempoChannel != null ? TempoChannel.Player.Balance : 0; }
             set
             {
-                if (Player != null) Player.Balance = value;
+                if (TempoChannel != null) TempoChannel.Player.Balance = value;
 
                 OnPropertyChanged("Balance");
             }
@@ -136,7 +137,7 @@ namespace ManagedBass.ShowDown
             ProgressBarTimer = new DispatcherTimer(DispatcherPriority.Send) { Interval = TimeSpan.FromMilliseconds(100)};
             ProgressBarTimer.Tick += (s, e) =>
             {
-                if (Player.IsPlaying && !IsDragging)
+                if (TempoChannel.Player.IsPlaying && !IsDragging)
                     OnPropertyChanged("Position");
             };
         }
@@ -147,15 +148,15 @@ namespace ManagedBass.ShowDown
 
             //try
             //{
-            if (Player != null) Player.Dispose();
+            if (TempoChannel != null) TempoChannel.Dispose();
             if (ReverseDecoder != null) ReverseDecoder.Dispose();
             if (ReverbEffect != null) ReverbEffect = null;
 
-            ReverseDecoder = new ReverseDecoder(new FileDecoder(FilePath)) { Reverse = false };
+            ReverseDecoder = new ReverseChannel(new FileChannel(FilePath, true).Decoder, true) { Reverse = false };
 
-            Player = new TempoPlayer(ReverseDecoder);
+            TempoChannel = new TempoChannel(ReverseDecoder.Decoder);
 
-            ReverbEffect = new ReverbEffect(Player) { IsActive = false };
+            ReverbEffect = new ReverbEffect(TempoChannel.Handle) { IsActive = false };
 
             Ready = true;
 
@@ -171,7 +172,7 @@ namespace ManagedBass.ShowDown
             Frequency = 44100;
             Balance = Pitch = Tempo = 0;
 
-            Player.MediaEnded += (s, t) => Dispatcher.Invoke(() =>
+            TempoChannel.Player.MediaEnded += (s, t) => Dispatcher.Invoke(() =>
                 {
                     Status.Content = "Stopped";
                     Position = Reverse ? Duration : 0;
@@ -195,14 +196,14 @@ namespace ManagedBass.ShowDown
         
         public void Play(object sender = null, RoutedEventArgs e = null)
         {
-            if (Player != null)
+            if (TempoChannel != null)
             {
                 if (BPlay.Content.ToString().Contains("Play"))
                 {
                     if (Reverse && Position == 0)
                         Position = Duration;
 
-                    Player.Start();
+                    TempoChannel.Player.Start();
 
                     Status.Content = "Playing";
                     BPlay.Content = "/Resources/Pause.png";
@@ -211,7 +212,7 @@ namespace ManagedBass.ShowDown
 
                 else if (BPlay.Content.ToString().Contains("Pause"))
                 {
-                    Player.Pause();
+                    TempoChannel.Player.Pause();
 
                     Status.Content = "Paused";
                     BPlay.Content = "/Resources/Play.png";
@@ -222,7 +223,7 @@ namespace ManagedBass.ShowDown
 
         public void Stop(object sender = null, RoutedEventArgs e = null)
         {
-            if (Player != null && Player.Stop())
+            if (TempoChannel != null && TempoChannel.Player.Stop())
             {
                 Status.Content = "Stopped";
                 BPlay.Content = "/Resources/Play.png";
@@ -238,7 +239,7 @@ namespace ManagedBass.ShowDown
         {
             if (IsDragging)
             {
-                Player.Position = ((Slider)sender).Value;
+                TempoChannel.Player.Position = ((Slider)sender).Value;
 
                 IsDragging = false;
             }
@@ -246,7 +247,7 @@ namespace ManagedBass.ShowDown
 
         void Slider_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) { IsDragging = true; }
 
-        void Slider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) { Player.Position = ((Slider)sender).Value; }
+        void Slider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) { TempoChannel.Player.Position = ((Slider)sender).Value; }
         #endregion
         
         void UserControl_Drop(object sender, DragEventArgs e)

@@ -19,7 +19,7 @@ namespace ManagedBass.Effects
 
     public sealed class ChorusEffect : Effect<ChorusParameters>
     {
-        public ChorusEffect(IEffectAssignable Stream) : base(Stream) { }
+        public ChorusEffect(int Handle) : base(Handle) { }
 
         public void Exaggerated()
         {

@@ -4,12 +4,14 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
-    public class PushStream : AdvancedPlayable
+    public class PushStream : Channel
     {
         public PushStream(Resolution BufferKind = Resolution.Short)
-            : base(BufferKind)
+            : base(false, BufferKind)
         {
             Handle = Bass.CreateStream(44100, 2, BufferKind.ToBassFlag(), StreamProcedureType.Push);
+
+            Player = new BassPlayer(Handle, this);
         }
 
         #region Push

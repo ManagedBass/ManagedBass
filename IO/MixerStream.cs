@@ -4,12 +4,18 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
-    public class MixerStream : Playable
+    public class MixerStream : Channel
     {
-        public MixerStream(int Frequency = 44100, int NoOfChannels = 2, bool Buffer = true, Resolution BufferKind = Resolution.Short)
-            : base(BufferKind)
+        public MixerStream(int Frequency = 44100, int NoOfChannels = 2, bool IsDecoder = true, Resolution BufferKind = Resolution.Short)
+            : base(IsDecoder, BufferKind)
         {
-            Handle = BassMix.CreateMixerStream(Frequency, NoOfChannels, BufferKind.ToBassFlag());
+            var flags = BufferKind.ToBassFlag();
+            if (IsDecoder) flags |= BassFlags.Decode;
+
+            Handle = BassMix.CreateMixerStream(Frequency, NoOfChannels, flags);
+
+            if (IsDecoder) Decoder = new BassDecoder(Handle, this);
+            else Player = new BassPlayer(Handle, this);
         }
 
         int Read(object Buffer, int Length)

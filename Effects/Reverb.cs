@@ -19,7 +19,7 @@ namespace ManagedBass.Effects
 
     public sealed class ReverbEffect : Effect<ReverbParameters>
     {
-        public ReverbEffect(IEffectAssignable Stream) : base(Stream) { }
+        public ReverbEffect(int Handle) : base(Handle) { }
 
         public double Damp
         {

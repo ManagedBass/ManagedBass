@@ -18,7 +18,7 @@ namespace ManagedBass.Effects
 
     public sealed class EchoEffect : Effect<EchoParameters>
     {
-        public EchoEffect(IEffectAssignable Stream) : base(Stream) { }
+        public EchoEffect(int Handle) : base(Handle) { }
 
         /// <summary>
         /// Dry (unaffected) signal mix (-2...+2). 

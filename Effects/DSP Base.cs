@@ -17,9 +17,9 @@ namespace ManagedBass.Effects
 
         static DSP() { Bass.FloatingPointDSP = true; }
 
-        public DSP(IEffectAssignable IEA, int Priority = 0)
+        public DSP(int Handle, int Priority = 0)
         {
-            Channel = IEA.Handle;
+            Channel = Handle;
 
             DSPProc = new DSPProcedure(OnDSP);
 
@@ -27,7 +27,7 @@ namespace ManagedBass.Effects
 
             DSPHandle = Bass.ChannelSetDSP(Channel, DSPProc, IntPtr.Zero, Priority);
 
-            IEA.Disposed += (s, e) => Dispose();
+            Bass.ChannelSetSync(Handle, SyncFlags.Freed, 0, (a, b, c, d) => Dispose());
 
             if (DSPHandle != 0) IsAssigned = true;
             else throw new InvalidOperationException("DSP Assignment Failed");

@@ -6,8 +6,6 @@ using System.Text;
 
 namespace ManagedBass
 {
-    public interface ITagsProvider { int Handle { get; } }
-
     public sealed class Tags
     {
         [StructLayout(LayoutKind.Sequential)]
@@ -80,9 +78,9 @@ namespace ManagedBass
         public int TrackNo { get; set; }
         #endregion
 
-        public static Tags GetID3v1Tags(ITagsProvider ITA)
+        public static Tags GetID3v1Tags(int Handle)
         {
-            var tmp = (ID3v1Tag)Marshal.PtrToStructure(Bass.ChannelGetTags(ITA.Handle, TagType.ID3), typeof(ID3v1Tag));
+            var tmp = (ID3v1Tag)Marshal.PtrToStructure(Bass.ChannelGetTags(Handle, TagType.ID3), typeof(ID3v1Tag));
 
             Tags tags = new Tags();
 
@@ -106,43 +104,43 @@ namespace ManagedBass
             return tags;
         }
 
-        static Tags GetID3v2Tags(ITagsProvider ITA)
+        static Tags GetID3v2Tags(int Handle)
         {
-            IntPtr ptr = Bass.ChannelGetTags(ITA.Handle, TagType.ID3v2);
+            IntPtr ptr = Bass.ChannelGetTags(Handle, TagType.ID3v2);
 
             throw new NotImplementedException();
         }
 
-        public static string GetLyrics3v2(ITagsProvider ITA) { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(ITA.Handle, TagType.Lyrics3v2)); }
+        public static string GetLyrics3v2(int Handle) { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.Lyrics3v2)); }
 
-        public static string GetVendor(ITagsProvider ITA) { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(ITA.Handle, TagType.Vendor)); }
+        public static string GetVendor(int Handle) { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.Vendor)); }
 
-        public static string GetRiffDisp(ITagsProvider ITA) { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(ITA.Handle, TagType.RiffDISP)); }
+        public static string GetRiffDisp(int Handle) { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.RiffDISP)); }
 
-        public static byte[] GetMusicOrder(ITagsProvider ITA)
+        public static byte[] GetMusicOrder(int Handle)
         {
-            int n = (int)Bass.ChannelGetLength(ITA.Handle, PositionFlags.MusicOrders);
+            int n = (int)Bass.ChannelGetLength(Handle, PositionFlags.MusicOrders);
 
             byte[] b = new byte[n];
 
-            IntPtr ptr = Bass.ChannelGetTags(ITA.Handle, TagType.MusicOrders);
+            IntPtr ptr = Bass.ChannelGetTags(Handle, TagType.MusicOrders);
 
             Marshal.Copy(ptr, b, 0, n);
 
             return b;
         }
 
-        public static string GetMusicInstrumentName(ITagsProvider ITA, int index)
+        public static string GetMusicInstrumentName(int Handle, int index)
         {
-            return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(ITA.Handle, TagType.MusicInstrument + index));
+            return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicInstrument + index));
         }
 
-        public static string GetMusicSampleName(ITagsProvider ITA, int index)
+        public static string GetMusicSampleName(int Handle, int index)
         {
-            return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(ITA.Handle, TagType.MusicSample + index));
+            return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicSample + index));
         }
 
-        public static string GetIcyShoutcastMeta(ITagsProvider ITA) { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(ITA.Handle, TagType.META)); }
+        public static string GetIcyShoutcastMeta(int Handle) { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.META)); }
 
         #region Multi Strings
         static IEnumerable<string> ExtractMultiStringAnsi(IntPtr ptr)

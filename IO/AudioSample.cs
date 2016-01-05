@@ -3,36 +3,43 @@ using ManagedBass.Dynamics;
 
 namespace ManagedBass
 {
-    public class AudioSample : AdvancedPlayable
+    public class AudioSample : Channel
     {
         int Sample;
-        GCHandle GCPin;
-
+        
         public AudioSample(int Length, Resolution BufferKind = Resolution.Short)
-            : base(BufferKind)
+            : base(false, BufferKind)
         {
             Sample = Bass.CreateSample(Length, 44100, 2, 1, BufferKind.ToBassFlag());
             Handle = Bass.SampleGetChannel(Sample, true);
+
+            Player = new BassPlayer(Handle, this);
         }
 
         public AudioSample(string FilePath, Resolution BufferKind = Resolution.Short)
-            : base(BufferKind)
+            : base(false, BufferKind)
         {
             Sample = Bass.LoadSample(FilePath, 0, 0, 1, BufferKind.ToBassFlag());
             Handle = Bass.SampleGetChannel(Sample, true);
+
+            Player = new BassPlayer(Handle, this);
         }
 
         public AudioSample(byte[] Memory, int Length, Resolution BufferKind = Resolution.Short)
-            : base(BufferKind)
+            : base(false, BufferKind)
         {
             // Pin
-            GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
+            var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
             Sample = Bass.LoadSample(GCPin.AddrOfPinnedObject(), 0, Length, 1, BufferKind.ToBassFlag());
             Handle = Bass.SampleGetChannel(Sample, true);
+
+            Player = new BassPlayer(Handle, this);
+
+            GCPin.Free();
         }
 
-        public override long Length { get { return Bass.SampleGetInfo(Sample).Length; } }
+        public long Length { get { return Bass.SampleGetInfo(Sample).Length; } }
 
         public void Read(byte[] Buffer)
         {
@@ -85,11 +92,6 @@ namespace ManagedBass
             return Result;
         }
 
-        public override void Dispose()
-        {
-            Bass.SampleFree(Sample);
-
-            if (GCPin != null) GCPin.Free();
-        }
+        public override void Dispose() { try { Bass.SampleFree(Sample); } catch { } }
     }
 }

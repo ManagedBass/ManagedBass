@@ -14,7 +14,7 @@ namespace ManagedBass.Effects
 
     public sealed class RotateEffect : Effect<RotateParameters>
     {
-        public RotateEffect(IEffectAssignable Stream) : base(Stream) { }
+        public RotateEffect(int Handle) : base(Handle) { }
 
         public double Rate
         {

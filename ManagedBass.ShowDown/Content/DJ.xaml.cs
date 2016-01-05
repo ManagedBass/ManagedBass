@@ -9,6 +9,8 @@ namespace ManagedBass.ShowDown
 {
     public partial class DJ : UserControl
     {
+        static DJ() { PlaybackDevice.DefaultDevice.Initialize(); }
+
         OpenFileDialog OFD;
 
         public DJ()
@@ -111,7 +113,7 @@ namespace ManagedBass.ShowDown
                     {
                         var writer = SFD.FilterIndex == 1 ? (IAudioFileWriter)new WmaFileWriter(SFD.FileName) : new WaveFileWriter(SFD.FileName);
 
-                        new ReverseDecoder(new FileDecoder(FileName, Resolution.Float), Resolution.Float, 0.1).Write(writer);
+                        new ReverseChannel(new FileChannel(FileName, true, Resolution.Float).Decoder, true, Resolution.Float, 0.1).Decoder.Write(writer);
 
                         MessageBox.Show("Saved");
                     }

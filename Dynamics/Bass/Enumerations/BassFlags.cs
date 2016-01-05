@@ -327,7 +327,7 @@ namespace ManagedBass.Dynamics
         //
         // Summary:
         //     Music: Stop the music when a backward jump effect is played. This stops musics
-        //     that never reach the end from going into endless loops.
+        //     that never reach the end from going into endlessloops.
         //     Some MOD musics are designed to jump all over the place, so this flag would
         //     cause those to be stopped prematurely. If this flag is used together with
         //     the BASS_SAMPLE_LOOP flag, then the music would not be stopped but any BASS_SYNC_END

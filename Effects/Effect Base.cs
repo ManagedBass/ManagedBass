@@ -14,14 +14,14 @@ namespace ManagedBass.Effects
         public int Channel = 0, EffectHandle = 0;
         protected T Parameters;
 
-        protected Effect(IEffectAssignable Stream)
+        protected Effect(int Handle)
         {
-            this.Channel = Stream.Handle;
+            this.Channel = Handle;
 
             Bass.GetFXParameters(Channel, Parameters);
             IsActive = true;
 
-            Stream.Disposed += (s, e) => Dispose();
+            Bass.ChannelSetSync(Handle, SyncFlags.Freed, 0, (a, b, c, d) => Dispose());
         }
 
         public void Dispose()

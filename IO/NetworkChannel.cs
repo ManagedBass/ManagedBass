@@ -3,17 +3,15 @@ using ManagedBass.Dynamics;
 
 namespace ManagedBass
 {
-    public class NetworkPlayer : AdvancedPlayable
+    public class NetworkChannel : Channel
     {
         DownloadProcedure proc;
         Action<BufferProvider> call;
 
         public string Url { get; set; }
-
-        ~NetworkPlayer() { Dispose(); }
-
-        public NetworkPlayer(string Url, Action<BufferProvider> callback = null, Resolution BufferKind = Resolution.Short)
-            : base(BufferKind)
+        
+        public NetworkChannel(string Url, bool IsDecoder = false, Resolution BufferKind = Resolution.Short, Action<BufferProvider> callback = null)
+            : base(IsDecoder, BufferKind)
         {
             this.Url = Url;
 
@@ -25,9 +23,15 @@ namespace ManagedBass
 
             Down_Handler = new SyncProcedure(OnDownloadCompleted);
 
-            Handle = Bass.CreateStream(Url, 0, BassFlags.Unicode | BufferKind.ToBassFlag(), (callback != null ? proc : null), IntPtr.Zero);
+            var flags = BufferKind.ToBassFlag() | BassFlags.Unicode;
+            if (IsDecoder) flags |= BassFlags.Decode;
+
+            Handle = Bass.CreateStream(Url, 0, flags, (callback != null ? proc : null), IntPtr.Zero);
 
             Bass.ChannelSetSync(Handle, SyncFlags.Downloaded, 0, Down_Handler, IntPtr.Zero);
+
+            if (IsDecoder) Decoder = new BassDecoder(Handle, this);
+            else Player = new BassPlayer(Handle, this);
         }
 
         public void Callback(IntPtr Buffer, int Length, IntPtr User) { call.Invoke(new BufferProvider(Buffer, Length, BufferKind)); }

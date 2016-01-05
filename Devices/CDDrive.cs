@@ -4,6 +4,33 @@ using System.Collections.Generic;
 
 namespace ManagedBass
 {
+    public class CDChannel : Channel
+    {
+        public CDChannel(string FileName, bool IsDecoder = false, Resolution BufferKind = Resolution.Short)
+            : base(IsDecoder, BufferKind)
+        {
+            var flags = BufferKind.ToBassFlag();
+            if (IsDecoder) flags |= BassFlags.Decode;
+
+            Handle = BassCd.CreateStream(FileName, flags);
+
+            if (IsDecoder) Decoder = new BassDecoder(Handle, this);
+            else Player = new BassPlayer(Handle, this);
+        }
+
+        public CDChannel(CDDrive Drive, int Track, bool IsDecoder = false, Resolution BufferKind = Resolution.Short)
+            : base(IsDecoder, BufferKind)
+        {
+            var flags = BufferKind.ToBassFlag();
+            if (IsDecoder) flags |= BassFlags.Decode;
+
+            Handle = BassCd.CreateStream(Drive.DriveIndex, Track, flags);
+
+            if (IsDecoder) Decoder = new BassDecoder(Handle, this);
+            else Player = new BassPlayer(Handle, this);
+        }
+    }
+
     /// <summary>
     /// Managed Wrapper around BassCd
     /// </summary>
@@ -18,7 +45,7 @@ namespace ManagedBass
         /// <summary>
         /// The Drive Index used by Bass to identify a Drive
         /// </summary>
-        int DriveIndex = -1;
+        public int DriveIndex { get; private set; }
 
         /// <summary>
         /// Gets Information about a Drive
@@ -53,16 +80,6 @@ namespace ManagedBass
         }
 
         public bool HasDisk { get { return BassCd.IsReady(DriveIndex); } }
-
-        public static Decoder DecoderFromFile(string FileName, Resolution BufferKind = Resolution.Short)
-        {
-            return new Decoder(BassCd.CreateStream(FileName, BassFlags.Decode | BufferKind.ToBassFlag()), BufferKind);
-        }
-
-        public Decoder DecodeTrack(int Track, Resolution BufferKind = Resolution.Short)
-        {
-            return new Decoder(BassCd.CreateStream(DriveIndex, Track, BassFlags.Decode | BufferKind.ToBassFlag()), BufferKind);
-        }
 
         public static IEnumerable<CDDrive> Drives
         {

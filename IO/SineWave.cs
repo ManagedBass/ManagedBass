@@ -2,7 +2,7 @@
 
 namespace ManagedBass
 {
-    public class SineWave : Playable
+    public class SineWave : Channel
     {
         double freq, amp, rate, sangle;
         int length;
@@ -59,7 +59,7 @@ namespace ManagedBass
         }
 
         public SineWave(double Frequency, double Amplitude, double SampleRate, int Length, double StartAngle = 0)
-            : base(Resolution.Float)
+            : base(false, Resolution.Float)
         {
             this.Frequency = Frequency;
             this.Amplitude = Amplitude;
@@ -79,6 +79,8 @@ namespace ManagedBass
             AS = new AudioSample(4 * Length, Resolution.Float);
             AS.Write(Buffer);
             Handle = AS.Handle;
+
+            Player = new BassPlayer(Handle, this);
         }
 
         void CreateSineWave(float[] Buffer, double StartAngle = 0)
