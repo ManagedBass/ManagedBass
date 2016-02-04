@@ -26,6 +26,7 @@
     <Optimize>false</Optimize>
     <DebugType>full</DebugType>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <NoWarn />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>true</Optimize>
@@ -45,8 +46,10 @@
     <Compile Include="Dynamics\BassAsio\Structures\AsioTransportParameters.cs" />
     <Compile Include="Dynamics\BassCd\Enumerations\CDDataType.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\EncodeMetaDataType.cs" />
+    <Compile Include="Dynamics\BassMidi\Enumerations\MidiSystem.cs" />
     <Compile Include="Dynamics\BassMix\MixEnvelope.cs" />
     <Compile Include="Dynamics\BassMix\MixerNode.cs" />
+    <Compile Include="Dynamics\BassMix\SyncProcedureEx.cs" />
     <Compile Include="Dynamics\BassWasapi\Delegates\WasapiNotifyProcedure.cs" />
     <Compile Include="Dynamics\BassWasapi\Delegates\WasapiProcedure.cs" />
     <Compile Include="Dynamics\BassWasapi\Enumerations\WasapiDeviceType.cs" />

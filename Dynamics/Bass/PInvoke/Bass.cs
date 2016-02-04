@@ -25,26 +25,27 @@ namespace ManagedBass.Dynamics
     public static partial class Bass
     {
         /// <summary>
-        /// The BASS way to say <see langword="false" /> = 0.
+        /// The Bass way to say <see langword="false" /> = 0.
         /// </summary>
         public const int FALSE = 0;
 
         /// <summary>
-        /// The BASS way to say <see langword="true" /> = 1.
+        /// The Bass way to say <see langword="true" /> = 1.
         /// </summary>
         public const int TRUE = 1;
 
         /// <summary>
-        /// The BASS way to say ERROR = -1.
+        /// The Bass way to say Error = -1.
         /// </summary>
         public const int ERROR = -1;
 
         const string DllName = "bass.dll";
 
-        public static void Load(string folder = null)
-        {
-            Extensions.Load(DllName, folder);
-        }
+        /// <summary>
+        /// Load from a folder other than the Current Directory.
+        /// <param name="Folder">If null (default), Load from Current Directory</param>
+        /// </summary>
+        public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
 
         [DllImport(DllName, EntryPoint = "BASS_Start")]
         public static extern bool Start();

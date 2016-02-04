@@ -12,7 +12,11 @@ namespace ManagedBass.Dynamics
     {
         const string DllName = "bassasio.dll";
 
-        public static void Load(string folder = null) { Extensions.Load(DllName, folder); }
+        /// <summary>
+        /// Load from a folder other than the Current Directory.
+        /// <param name="Folder">If null (default), Load from Current Directory</param>
+        /// </summary>
+        public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
 
         [DllImport(DllName, CharSet = CharSet.Ansi, EntryPoint = "BASS_ASIO_AddDevice")]
         public static extern int AddDevice(Guid clsid, string driver, string name);

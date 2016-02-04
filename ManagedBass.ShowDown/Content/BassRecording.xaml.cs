@@ -8,6 +8,9 @@ using System.Windows.Input;
 
 namespace ManagedBass.ShowDown
 {
+    /// <summary>
+    /// Demonstrates using <see cref="Recording"/> to Capture audio from a <see cref="RecordingDevice"/>.
+    /// </summary>
     public partial class BassRecording : UserControl, INotifyPropertyChanged
     {
         public ObservableCollection<RecordingDevice> AvailableAudioSources { get; private set; }

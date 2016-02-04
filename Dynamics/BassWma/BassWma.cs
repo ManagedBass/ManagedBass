@@ -18,7 +18,11 @@ namespace ManagedBass.Dynamics
 
         const string DllName = "basswma.dll";
 
-        public static void Load(string folder = null) { Extensions.Load(DllName, folder); }
+        /// <summary>
+        /// Load from a folder other than the Current Directory.
+        /// <param name="Folder">If null (default), Load from Current Directory</param>
+        /// </summary>
+        public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
 
         #region Streams
         [DllImport(DllName, EntryPoint = "BASS_WMA_GetWMObject")]

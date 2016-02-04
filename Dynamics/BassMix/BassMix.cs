@@ -13,7 +13,11 @@ namespace ManagedBass.Dynamics
 
         const string DllName = "bassmix.dll";
 
-        public static void Load(string folder = null) { Extensions.Load(DllName, folder); }
+        /// <summary>
+        /// Load from a folder other than the Current Directory.
+        /// <param name="Folder">If null (default), Load from Current Directory</param>
+        /// </summary>
+        public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
 
         #region Split
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamCreate")]
@@ -54,6 +58,9 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_StreamAddChannel")]
         public static extern bool MixerAddChannel(int Handle, int Channel, BassFlags Flags);
+
+        [DllImport(DllName, EntryPoint = "BASS_Mixer_StreamAddChannelEx")]
+        public static extern bool MixerAddChannel(int Handle, int Channel, BassFlags Flags, long Start, long Length);
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelRemove")]
         public static extern bool MixerRemoveChannel(int Handle);
@@ -160,7 +167,15 @@ namespace ManagedBass.Dynamics
         public static extern bool ChannelSetPosition(int Handle, long Position, PositionFlags Mode = PositionFlags.Bytes);
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelSetSync")]
-        public static extern int ChannelSetSync(int Handle, int Type, long Parameter, SyncProcedure Procedure, IntPtr User = default(IntPtr));
+        public static extern int ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedure Procedure, IntPtr User = default(IntPtr));
+
+        [DllImport(DllName)]
+        static extern int BASS_Mixer_ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedureEx Procedure, IntPtr User);
+
+        public static int ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedureEx Procedure, IntPtr User = default(IntPtr))
+        {
+            return BASS_Mixer_ChannelSetSync(Handle, (SyncFlags)((int)Type | 0x1000000), Parameter, Procedure, User);
+        }
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelRemoveSync")]
         public static extern bool ChannelRemoveSync(int Handle, int Sync);

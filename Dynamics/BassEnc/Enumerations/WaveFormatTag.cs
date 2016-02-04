@@ -1,212 +1,390 @@
 ﻿namespace ManagedBass
 {
+    /// <summary>
+    /// Wave Format Encoding
+    /// </summary>
     public enum WaveFormatTag : short
     {
-        /// <summary>Wave Format Extensible, Microsoft Corporation</summary>
+        /// <summary>
+        /// Wave Format Extensible, Microsoft Corporation
+        /// </summary>
         Extensible = -2,
 
-        /// <summary>Unknown, Microsoft Corporation</summary>
+        /// <summary>
+        /// Unknown, Microsoft Corporation
+        /// </summary>
         Unknown = 0x0000,
 
-        /// <summary>PCM, Microsoft Corporation</summary>
+        /// <summary>
+        /// PCM, Microsoft Corporation
+        /// </summary>
         Pcm = 0x0001,
 
-        /// <summary>ADPCM, Microsoft Corporation</summary>
+        /// <summary>
+        /// ADPCM, Microsoft Corporation
+        /// </summary>
         Adpcm = 0x0002,
 
-        /// <summary>IEEE Float, Microsoft Corporation</summary>
+        /// <summary>
+        /// IEEE Float, Microsoft Corporation
+        /// </summary>
         IeeeFloat = 0x0003,
 
-        /// <summary>VSELP, Compaq Computer Corp.</summary>
+        /// <summary>
+        /// VSELP, Compaq Computer Corp.
+        /// </summary>
         Vselp = 0x0004,
 
-        /// <summary>IBM CVSD, IBM Corporation</summary>
+        /// <summary>
+        /// IBM CVSD, IBM Corporation
+        /// </summary>
         IbmCvsd = 0x0005,
 
-        /// <summary>ALAW, Microsoft Corporation</summary>
+        /// <summary>
+        /// ALAW, Microsoft Corporation
+        /// </summary>
         ALaw = 0x0006,
 
-        /// <summary>MULAW, Microsoft Corporation</summary>
+        /// <summary>
+        /// MULAW, Microsoft Corporation
+        /// </summary>
         MuLaw = 0x0007,
 
-        /// <summary>DTS, Microsoft Corporation</summary>
+        /// <summary>
+        /// DTS, Microsoft Corporation
+        /// </summary>
         Dts = 0x0008,
 
-        /// <summary>DRM, Microsoft Corporation</summary>
+        /// <summary>
+        /// DRM, Microsoft Corporation
+        /// </summary>
         Drm = 0x0009,
 
-        /// <summary>WMA VOICE 9</summary>
+        /// <summary>
+        /// WMA VOICE 9
+        /// </summary>
         WmaVoice9 = 0x000A,
 
-        /// <summary>OKI ADPCM, OKI</summary>
+        /// <summary>
+        /// OKI ADPCM, OKI
+        /// </summary>
         OkiAdpcm = 0x0010,
 
-        /// <summary>DVI ADPCM, Intel Corporation</summary>
+        /// <summary>
+        /// DVI ADPCM, Intel Corporation
+        /// </summary>
         DviAdpcm = 0x0011,
 
-        /// <summary>IMA ADPCM, Intel Corporation</summary>
+        /// <summary>
+        /// IMA ADPCM, Intel Corporation
+        /// </summary>
         ImaAdpcm = DviAdpcm,
 
-        /// <summary>MEDIASPACE ADPCM, Videologic</summary>
+        /// <summary>
+        /// MEDIASPACE ADPCM, Videologic
+        /// </summary>
         MediaspaceAdpcm = 0x0012,
 
-        /// <summary>SIERRA ADPCM, Sierra Semiconductor Corp </summary>
+        /// <summary>
+        /// SIERRA ADPCM, Sierra Semiconductor Corp
+        /// </summary>
         SierraAdpcm = 0x0013,
 
-        /// <summary>G723 ADPCM, Antex Electronics Corporation </summary>
+        /// <summary>
+        /// G723 ADPCM, Antex Electronics Corporation
+        /// </summary>
         G723Adpcm = 0x0014,
 
-        /// <summary>DIGISTD, DSP Solutions, Inc.</summary>
+        /// <summary>
+        /// DIGISTD, DSP Solutions, Inc.
+        /// </summary>
         DigiStd = 0x0015,
 
-        /// <summary>DIGIFIX, DSP Solutions, Inc.</summary>
+        /// <summary>
+        /// DIGIFIX, DSP Solutions, Inc.
+        /// </summary>
         DigiFix = 0x0016,
 
-        /// <summary>DIALOGIC OKI ADPCM, Dialogic Corporation</summary>
+        /// <summary>
+        /// DIALOGIC OKI ADPCM, Dialogic Corporation
+        /// </summary>
         DialogicOkiAdpcm = 0x0017,
 
-        /// <summary>MEDIAVISION ADPCM, Media Vision, Inc.</summary>
+        /// <summary>
+        /// MEDIAVISION ADPCM, Media Vision, Inc.
+        /// </summary>
         MediaVisionAdpcm = 0x0018,
 
-        /// <summary>CU CODEC, Hewlett-Packard Company </summary>
+        /// <summary>
+        /// CU CODEC, Hewlett-Packard Company
+        /// </summary>
         CUCodec = 0x0019,
 
-        /// <summary>YAMAHA ADPCM, Yamaha Corporation of America</summary>
+        /// <summary>
+        /// YAMAHA ADPCM, Yamaha Corporation of America
+        /// </summary>
         YamahaAdpcm = 0x0020,
 
-        /// <summary>SONARC, Speech Compression</summary>
+        /// <summary>
+        /// SONARC, Speech Compression
+        /// </summary>
         SonarC = 0x0021,
 
-        /// <summary>DSPGROUP TRUESPEECH, DSP Group, Inc </summary>
+        /// <summary>
+        /// DSPGROUP TRUESPEECH, DSP Group, Inc
+        /// </summary>
         DspGroupTrueSpeech = 0x0022,
 
-        /// <summary>ECHOSC1, Echo Speech Corporation</summary>
+        /// <summary>
+        /// ECHOSC1, Echo Speech Corporation
+        /// </summary>
         EchoSpeechCorporation1 = 0x0023,
 
-        /// <summary>AUDIOFILE AF36, Virtual Music, Inc.</summary>
+        /// <summary>
+        /// AUDIOFILE AF36, Virtual Music, Inc.
+        /// </summary>
         AudioFileAf36 = 0x0024,
 
-        /// <summary>APTX, Audio Processing Technology</summary>
+        /// <summary>
+        /// APTX, Audio Processing Technology
+        /// </summary>
         Aptx = 0x0025,
 
-        /// <summary>AUDIOFILE AF10, Virtual Music, Inc.</summary>
+        /// <summary>
+        /// AUDIOFILE AF10, Virtual Music, Inc.
+        /// </summary>
         AudioFileAf10 = 0x0026,
 
-        /// <summary>PROSODY 1612, Aculab plc</summary>
+        /// <summary>
+        /// PROSODY 1612, Aculab plc
+        /// </summary>
         Prosody1612 = 0x0027,
 
-        /// <summary>LRC, Merging Technologies S.A. </summary>
+        /// <summary>
+        /// LRC, Merging Technologies S.A.
+        /// </summary>
         Lrc = 0x0028,
 
-        /// <summary>DOLBY AC2, Dolby Laboratories</summary>
+        /// <summary>
+        /// DOLBY AC2, Dolby Laboratories
+        /// </summary>
         DolbyAc2 = 0x0030,
 
-        /// <summary>GSM610, Microsoft Corporation</summary>
+        /// <summary>
+        /// GSM610, Microsoft Corporation
+        /// </summary>
         Gsm610 = 0x0031,
 
-        /// <summary>MSNAUDIO, Microsoft Corporation</summary>
+        /// <summary>
+        /// MSNAUDIO, Microsoft Corporation
+        /// </summary>
         MsnAudio = 0x0032,
 
-        /// <summary>ANTEX ADPCME, Antex Electronics Corporation</summary>
+        /// <summary>
+        /// ANTEX ADPCME, Antex Electronics Corporation
+        /// </summary>
         AntexAdpcme = 0x0033,
 
-        /// <summary>CONTROL RES VQLPC, Control Resources Limited</summary>
+        /// <summary>
+        /// CONTROL RES VQLPC, Control Resources Limited
+        /// </summary>
         ControlResVqlpc = 0x0034,
 
-        /// <summary>DIGIREAL, DSP Solutions, Inc.</summary>
+        /// <summary>
+        /// DIGIREAL, DSP Solutions, Inc.
+        /// </summary>
         DigiReal = 0x0035,
 
-        /// <summary>DIGIADPCM, DSP Solutions, Inc.</summary>
+        /// <summary>
+        /// DIGIADPCM, DSP Solutions, Inc.
+        /// </summary>
         DigiAdpcm = 0x0036,
 
-        /// <summary>CONTROL RES CR10, Control Resources Limited</summary>
+        /// <summary>
+        /// CONTROL RES CR10, Control Resources Limited
+        /// </summary>
         ControlResCr10 = 0x0037,
 
-        /// <summary>Natural MicroSystems</summary>
+        /// <summary>
+        /// Natural MicroSystems
+        /// </summary>
         NMS_VBXADPCM = 0x0038,
 
-        /// <summary>Crystal Semiconductor IMA ADPCM</summary>
+        /// <summary>
+        /// Crystal Semiconductor IMA ADPCM
+        /// </summary>
         CS_IMAADPCM = 0x0039,
 
-        /// <summary>Echo Speech Corporation</summary>
+        /// <summary>
+        /// Echo Speech Corporation
+        /// </summary>
         ECHOSC3 = 0x003A,
 
-        /// <summary>Rockwell International</summary>
+        /// <summary>
+        /// Rockwell International
+        /// </summary>
         ROCKWELL_ADPCM = 0x003B,
 
-        /// <summary>Rockwell International</summary>
+        /// <summary>
+        /// Rockwell International
+        /// </summary>
         ROCKWELL_DIGITALK = 0x003C,
 
-        /// <summary>Xebec Multimedia Solutions Limited</summary>
+        /// <summary>
+        /// Xebec Multimedia Solutions Limited
+        /// </summary>
         XEBEC = 0x003D,
 
-        /// <summary>Antex Electronics Corporation</summary>
+        /// <summary>
+        /// Antex Electronics Corporation
+        /// </summary>
         G721_ADPCM = 0x0040,
 
-        /// <summary>Antex Electronics Corporation</summary>
+        /// <summary>
+        /// Antex Electronics Corporation
+        /// </summary>
         G728_CELP = 0x0041,
 
-        /// <summary>Microsoft Corporation</summary>
+        /// <summary>
+        /// Microsoft Corporation
+        /// </summary>
         MSG723 = 0x0042,
 
-        /// <summary>MPEG, Microsoft Corporation</summary>
+        /// <summary>
+        /// MPEG, Microsoft Corporation
+        /// </summary>
         Mpeg = 0x0050,
 
-        /// <summary>InSoft, Inc.</summary>
+        /// <summary>
+        /// InSoft, Inc.
+        /// </summary>
         RT24 = 0x0052,
 
-        /// <summary>InSoft, Inc.</summary>
+        /// <summary>
+        /// InSoft, Inc.
+        /// </summary>
         PAC = 0x0053,
 
-        /// <summary>MPEGLAYER3, ISO/MPEG Layer3 Format Tag </summary>
+        /// <summary>
+        /// MPEGLAYER3, ISO/MPEG Layer3 Format Tag
+        /// </summary>
         Mp3 = 0x0055,
 
-        /// <summary></summary>
-        LUCENT_G723 = 0x0059, // Lucent Technologies 
-        /// <summary></summary>
-        CIRRUS = 0x0060, // Cirrus Logic 
-        /// <summary></summary>
-        ESPCM = 0x0061, // ESS Technology 
-        /// <summary></summary>
-        VOXWARE = 0x0062, // Voxware Inc 
-        /// <summary></summary>
-        CANOPUS_ATRAC = 0x0063, // Canopus, co., Ltd. 
-        /// <summary></summary>
-        G726_ADPCM = 0x0064, // APICOM 
-        /// <summary></summary>
-        G722_ADPCM = 0x0065, // APICOM 
-        /// <summary></summary>
-        DSAT_DISPLAY = 0x0067, // Microsoft Corporation 
-        /// <summary></summary>
-        VOXWARE_BYTE_ALIGNED = 0x0069, // Voxware Inc 
-        /// <summary></summary>
-        VOXWARE_AC8 = 0x0070, // Voxware Inc 
-        /// <summary></summary>
-        VOXWARE_AC10 = 0x0071, // Voxware Inc 
-        /// <summary></summary>
-        VOXWARE_AC16 = 0x0072, // Voxware Inc 
-        /// <summary></summary>
-        VOXWARE_AC20 = 0x0073, // Voxware Inc 
-        /// <summary></summary>
-        VOXWARE_RT24 = 0x0074, // Voxware Inc 
-        /// <summary></summary>
-        VOXWARE_RT29 = 0x0075, // Voxware Inc 
-        /// <summary></summary>
-        VOXWARE_RT29HW = 0x0076, // Voxware Inc 
-        /// <summary></summary>
-        VOXWARE_VR12 = 0x0077, // Voxware Inc 
-        /// <summary></summary>
-        VOXWARE_VR18 = 0x0078, // Voxware Inc 
-        /// <summary></summary>
-        VOXWARE_TQ40 = 0x0079, // Voxware Inc 
-        /// <summary></summary>
-        SOFTSOUND = 0x0080, // Softsound, Ltd. 
-        /// <summary></summary>
-        VOXWARE_TQ60 = 0x0081, // Voxware Inc 
-        /// <summary></summary>
-        MSRT24 = 0x0082, // Microsoft Corporation 
-        /// <summary></summary>
-        G729A = 0x0083, // AT&T Labs, Inc. 
+        /// <summary>
+        /// Lucent Technologies
+        /// </summary>
+        LUCENT_G723 = 0x0059,
+
+        /// <summary>
+        /// Cirrus Logic
+        /// </summary>
+        CIRRUS = 0x0060,
+
+        /// <summary>
+        /// ESS Technology 
+        /// </summary>
+        ESPCM = 0x0061,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE = 0x0062,
+
+        /// <summary>
+        /// Canopus, co., Ltd.
+        /// </summary>
+        CANOPUS_ATRAC = 0x0063,
+
+        /// <summary>
+        /// APICOM
+        /// </summary>
+        G726_ADPCM = 0x0064,
+
+        /// <summary>
+        /// APICOM
+        /// </summary>
+        G722_ADPCM = 0x0065,
+
+        /// <summary>
+        /// Microsoft Corporation
+        /// </summary>
+        DSAT_DISPLAY = 0x0067,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE_BYTE_ALIGNED = 0x0069,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE_AC8 = 0x0070,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE_AC10 = 0x0071,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE_AC16 = 0x0072,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE_AC20 = 0x0073,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE_RT24 = 0x0074,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE_RT29 = 0x0075,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE_RT29HW = 0x0076,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE_VR12 = 0x0077,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE_VR18 = 0x0078,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE_TQ40 = 0x0079,
+
+        /// <summary>
+        /// Softsound, Ltd.
+        /// </summary>
+        SOFTSOUND = 0x0080,
+
+        /// <summary>
+        /// Voxware Inc
+        /// </summary>
+        VOXWARE_TQ60 = 0x0081,
+
+        /// <summary>
+        /// Microsoft Corporation
+        /// </summary>
+        MSRT24 = 0x0082,
+
+        /// <summary>
+        /// AT&amp;T Labs, Inc.
+        /// </summary>
+        G729A = 0x0083,
+
         /// <summary></summary>
         MVI_MVI2 = 0x0084, // Motion Pixels 
         /// <summary></summary>
@@ -233,16 +411,25 @@
         PACKED = 0x0099, // Studer Professional Audio AG 
         /// <summary></summary>
         MALDEN_PHONYTALK = 0x00A0, // Malden Electronics Ltd. 
-        /// <summary>WAVE_FORMAT_GSM</summary>
+
+        /// <summary>
+        /// WAVE_FORMAT_GSM
+        /// </summary>
         Gsm = 0x00A1,
 
-        /// <summary>WAVE_FORMAT_G729</summary>
+        /// <summary>
+        /// WAVE_FORMAT_G729
+        /// </summary>
         G729 = 0x00A2,
 
-        /// <summary>WAVE_FORMAT_G723</summary>
+        /// <summary>
+        /// WAVE_FORMAT_G723
+        /// </summary>
         G723 = 0x00A3,
 
-        /// <summary>WAVE_FORMAT_ACELP</summary>
+        /// <summary>
+        /// WAVE_FORMAT_ACELP
+        /// </summary>
         Acelp = 0x00A4,
 
         /// <summary>
@@ -283,6 +470,7 @@
         TUBGSM = 0x0155, // Ring Zero Systems, Inc. 
         /// <summary></summary>
         MSAUDIO1 = 0x0160, // Microsoft Corporation
+
         /// <summary>
         /// Windows Media Audio, WAVE_FORMAT_WMAUDIO2, Microsoft Corporation
         /// </summary>
@@ -405,26 +593,40 @@
         /// </summary>
         MPEG_HEAAC = 0x1610,
 
-        /// <summary>WAVE_FORMAT_DVM</summary>
+        /// <summary>
+        /// WAVE_FORMAT_DVM
+        /// </summary>
         DVM = 0x2000, // FAST Multimedia AG 
 
         // others - not from MS headers
-        /// <summary>WAVE_FORMAT_VORBIS1 "Og" Original stream compatible</summary>
+        /// <summary>
+        /// WAVE_FORMAT_VORBIS1 "Og" Original stream compatible
+        /// </summary>
         Vorbis1 = 0x674f,
 
-        /// <summary>WAVE_FORMAT_VORBIS2 "Pg" Have independent header</summary>
+        /// <summary>
+        /// WAVE_FORMAT_VORBIS2 "Pg" Have independent header
+        /// </summary>
         Vorbis2 = 0x6750,
 
-        /// <summary>WAVE_FORMAT_VORBIS3 "Qg" Have no codebook header</summary>
+        /// <summary>
+        /// WAVE_FORMAT_VORBIS3 "Qg" Have no codebook header
+        /// </summary>
         Vorbis3 = 0x6751,
 
-        /// <summary>WAVE_FORMAT_VORBIS1P "og" Original stream compatible</summary>
+        /// <summary>
+        /// WAVE_FORMAT_VORBIS1P "og" Original stream compatible
+        /// </summary>
         Vorbis1P = 0x676f,
 
-        /// <summary>WAVE_FORMAT_VORBIS2P "pg" Have independent headere</summary>
+        /// <summary>
+        /// WAVE_FORMAT_VORBIS2P "pg" Have independent headere
+        /// </summary>
         Vorbis2P = 0x6770,
 
-        /// <summary>WAVE_FORMAT_VORBIS3P "qg" Have no codebook header</summary>
+        /// <summary>
+        /// WAVE_FORMAT_VORBIS3P "qg" Have no codebook header
+        /// </summary>
         Vorbis3P = 0x6771,
     }
 }

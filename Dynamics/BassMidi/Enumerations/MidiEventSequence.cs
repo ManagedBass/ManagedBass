@@ -1,9 +1,12 @@
 ﻿namespace ManagedBass.Dynamics
 {
+    /// <summary>
+    /// The MIDI event type, to be used with <see cref="BassMidi.StreamEvent(int,int,MidiEventSequence,int)" /> or <see cref="BassMidi.StreamGetEvent(int,int,MidiEventSequence)" /> or <see cref="BassMidi.CreateStream(MidiEvent[],int,BassFlags,int)" />.
+    /// </summary>
     public enum MidiEventSequence
     {
         /// <summary>
-        /// Used with BassMidi.CreateStream(MidiEvent[]) to mark the end of the event array.
+        /// Used with <see cref="BassMidi.CreateStream(MidiEvent[],int,BassFlags,int)" /> to mark the end of the event array.
         /// </summary>
         End = 0,
 
@@ -20,7 +23,7 @@
 
         /// <summary>
         /// Select the preset/instrument to use. Standard soundfont presets follow the
-        /// General MIDI standard, and generally also include Roland GS variations in other banks (accessible via the MIDI_EVENT_BANK event).
+        /// General MIDI standard, and generally also include Roland GS variations in other banks (accessible via the <see cref="Bank"/> event).
         /// param : preset number (0-127).
         /// </summary>
         Program = 2,
@@ -284,53 +287,57 @@
         /// param : LOBYTE = key number (0-127), HIBYTE = reverb level (0-127).
         /// </summary>
         DrumReverb = 53,
-        //
-        // Summary:
-        //     Set the chorus send level of a drum key (MIDI NRPN 1Eknh).
-        //     param : LOBYTE = key number (0-127), HIBYTE = chorus level (0-127).
+        
+        /// <summary>
+        /// Set the chorus send level of a drum key (MIDI NRPN 1Eknh).
+        /// param : LOBYTE = key number (0-127), HIBYTE = chorus level (0-127).
+        /// </summary>
         DrumChorus = 54,
-        //
-        // Summary:
-        //     Set the low-pass filter cutoff of a drum key (MIDI NRPN 14knh).
-        //     param : LOBYTE = key number (0-127), HIBYTE = cutoff level (0-127, 0=-64,
-        //     64=normal, 127=+63).
+        
+        /// <summary>
+        /// Set the low-pass filter cutoff of a drum key (MIDI NRPN 14knh).
+        /// param : LOBYTE = key number (0-127), HIBYTE = cutoff level (0-127, 0=-64, 64=normal, 127=+63).
+        /// </summary>
         DrumCutOff = 55,
-        //
-        // Summary:
-        //     Set the low-pass filter resonance of a drum key (MIDI NRPN 15knh).
-        //     param : LOBYTE = key number (0-127), HIBYTE = resonance level (0-127, 0=-64,
-        //     64=normal, 127=+63).
+        
+        /// <summary>
+        /// Set the low-pass filter resonance of a drum key (MIDI NRPN 15knh).
+        /// param : LOBYTE = key number (0-127), HIBYTE = resonance level (0-127, 0=-64, 64=normal, 127=+63).
+        /// </summary>
         DrumResonance = 56,
-        //
-        // Summary:
-        //     Set the drum level NRPN of a drum key (MIDI NRPN 16knh).
-        //     param : LOBYTE = key number (0-127), HIBYTE = level (0-127, 127=full/normal).
+        
+        /// <summary>
+        /// Set the drum level NRPN of a drum key (MIDI NRPN 16knh).
+        /// param : LOBYTE = key number (0-127), HIBYTE = level (0-127, 127=full/normal).
+        /// </summary>
         DrumLevel = 57,
-        //
-        // Summary:
-        //     Set the soft pedal/switch (MIDI controller 67).
-        //     param : soft is on? (0-63=no, 64-127=yes).
+        
+        /// <summary>
+        /// Set the soft pedal/switch (MIDI controller 67).
+        /// param : soft is on? (0-63=no, 64-127=yes).
+        /// </summary>
         Soft = 60,
-        //
-        // Summary:
-        //     Set the system mode, resetting everything to the system's defaults.  MIDI_SYSTEM_DEFAULT
-        //     is identical to MIDI_SYSTEM_GS, except that channel 10 is melodic if there
-        //     are not 16 channels. MIDI_EVENT_SYSTEM does not reset things in any additional
-        //     channels allocated to a MIDI file stream via the ChannelAttribute.MidiChannels
-        //     attribute, while MIDI_EVENT_SYSTEMEX does.
-        //     param : system mode (see BassMidi.MidiSystem).
+        
+        /// <summary>
+        /// Set the system mode, resetting everything to the system's defaults.
+        /// <see cref="MidiSystem.Default"/> is identical to <see cref="MidiSystem.GS"/>, except that channel 10 is melodic if there are not 16 channels.
+        /// This does not reset things in any additional channels allocated to a MIDI file stream via the <see cref="ChannelAttribute.MidiChannels"/> attribute,
+        /// while <see cref="SystemEx"/> does.
+        /// param : system mode (see <see cref="MidiSystem"/>).
+        /// </summary>
         System = 61,
-        //
-        // Summary:
-        //     Set the tempo (MIDI meta event 81). Changing the tempo affects the stream
-        //     Length, and the Bass.ChannelGetLength() value will no longer be valid.
-        //     param : tempo in microseconds per quarter note.
+                
+        /// <summary>
+        /// Set the tempo (MIDI meta event 81).
+        /// Changing the tempo affects the stream Length, and the <see cref="Bass.ChannelGetLength"/> value will no longer be valid.
+        /// param : tempo in microseconds per quarter note.
+        /// </summary>
         Tempo = 62,
-        //
-        // Summary:
-        //     Set the tuning of a note in every octave.
-        //     param : LOWORD = tuning change in cents (0-16383, 0=-100, 8192=normal, 16383=+100),
-        //     HIWORD = note (0-11, 0=C).
+        
+        /// <summary>
+        /// Set the tuning of a note in every octave.
+        /// param : LOWORD = tuning change in cents (0-16383, 0=-100, 8192=normal, 16383=+100), HIWORD = note (0-11, 0=C).
+        /// </summary>
         ScaleTuning = 63,
 
         /// <summary>
@@ -383,15 +390,15 @@
 
         /// <summary>
         /// Set the system mode, resetting everything to the system's defaults. 
-        /// MIDI_SYSTEM_DEFAULT is identical to MIDI_SYSTEM_GS, except that channel 10 is melodic if there are not 16 channels.
-        /// MIDI_EVENT_SYSTEM does not reset things in any additional channels allocated to a MIDI file stream 
-        /// via the ChannelAttribute.MidiChannels attribute, while MIDI_EVENT_SYSTEMEX does.
-        /// param : system mode (see MidiSystem).
+        /// <see cref="MidiSystem.Default"/> is identical to <see cref="MidiSystem.GS"/>, except that channel 10 is melodic if there are not 16 channels.
+        /// <see cref="System"/> does not reset things in any additional channels allocated to a MIDI file stream 
+        /// via the <see cref="ChannelAttribute.MidiChannels"/> attribute, while this does.
+        /// param : system mode (see <see cref="MidiSystem"/>).
         /// </summary>
         SystemEx = 65538,
 
         /// <summary>
-        /// Used with BassMidi.StreamCreateEvents() to mark the end of a track (the next event will be in a new track).
+        /// Used with <see cref="BassMidi.CreateStream(MidiEvent[],int,BassFlags,int)"/> to mark the end of a track (the next event will be in a new track).
         /// </summary>
         EndTrack = 65539,
 

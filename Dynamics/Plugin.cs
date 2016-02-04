@@ -51,6 +51,10 @@ namespace ManagedBass.Dynamics
             this.SupportsURL = SupportsURL;
         }
 
+        /// <summary>
+        /// Load from a folder other than the Current Directory.
+        /// <param name="Folder">If null (default), Load from Current Directory</param>
+        /// </summary>
         public void Load(string Folder = null) { HLib = Extensions.Load(DllName, Folder); }
 
         public void LoadAsPlugin(string Folder = null)

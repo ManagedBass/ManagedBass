@@ -18,7 +18,11 @@ namespace ManagedBass.Dynamics
                          ReverbChannel = -2,
                          UserFXChannel = -3;
 
-        public static void Load(string folder = null) { Extensions.Load(DllName, folder); }
+        /// <summary>
+        /// Load from a folder other than the Current Directory.
+        /// <param name="Folder">If null (default), Load from Current Directory</param>
+        /// </summary>
+        public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
 
         #region Create Stream
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreate")]
@@ -176,7 +180,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         static extern int BASS_MIDI_StreamSetFonts(int handle, MidiFontEx fonts, int count);
 
-        public static int StreamSetFontsEx(int handle, MidiFontEx fonts, int count)
+        public static int StreamSetFonts(int handle, MidiFontEx fonts, int count)
         {
             return BASS_MIDI_StreamSetFonts(handle, fonts, count | BASS_MIDI_FONT_EX);
         }
@@ -311,7 +315,7 @@ namespace ManagedBass.Dynamics
         }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontInitUser")]
-        public static extern int FontInitUser(FileProcedures procs, IntPtr user, BassFlags flags);
+        public static extern int FontInit(FileProcedures procs, IntPtr user, BassFlags flags);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontLoad")]
         public static extern bool FontLoad(int handle, int preset, int bank);
@@ -333,17 +337,38 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern bool BASS_MIDI_FontUnpack(int handle, string outfile, BassFlags flags);
 
-        public static bool FontPack(int handle, string outfile, BassFlags flags)
+        public static bool FontUnpack(int handle, string outfile, BassFlags flags)
         {
             return BASS_MIDI_FontUnpack(handle, outfile, flags | BassFlags.Unicode);
         }
         #endregion
 
+        #region In
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InFree")]
         public static extern bool InFree(int device);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InGetDeviceInfo")]
         public static extern bool InGetDeviceInfo(int device, out MidiDeviceInfo info);
+
+        public static MidiDeviceInfo InGetDeviceInfo(int device)
+        {
+            MidiDeviceInfo info;
+            InGetDeviceInfo(device, out info);
+            return info;
+        }
+
+        public static int InDeviceCount
+        {
+            get
+            {
+                int i;
+                MidiDeviceInfo info;
+
+                for (i = 0; InGetDeviceInfo(i, out info); i++) ;
+
+                return i;
+            }
+        }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InInit")]
         public static extern bool InInit(int device, MidiInProcedure proc, IntPtr user);
@@ -353,5 +378,6 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InStop")]
         public static extern bool InStop(int device);
+        #endregion
     }
 }
