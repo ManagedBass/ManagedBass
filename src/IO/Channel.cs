@@ -27,7 +27,7 @@ namespace ManagedBass
                 ChannelInfo info;
 
                 if (!Bass.ChannelGetInfo(value, out info))
-                    throw new ArgumentException("Invalid Channel Handle");
+                    throw new ArgumentException("Invalid Channel Handle: " + value);
 
                 IsDisposed = false;
 
