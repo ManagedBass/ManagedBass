@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="MBassWPF.DJ"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"       
+             xmlns:this="clr-namespace:MBassWPF">
+    <Grid>
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <this:Deck x:Name="DeckA"
+                           DockPanel.Dock="Left"
+                           Width="250"/>
+                <this:Deck x:Name="DeckB" 
+                           DockPanel.Dock="Right"
+                           Width="250"/>
+                <StackPanel VerticalAlignment="Bottom">
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Center">
+                        <Button Content="/Resources/SyncStart.png"
+                                ToolTip="Sync Start" 
+                                Height="40" 
+                                Width="40"
+                                Template="{DynamicResource ImageButton}" 
+                                Click="SyncStart" />
+                        <Button Content="/Resources/Add.ico" 
+                                Template="{DynamicResource ImageButton}"
+                                Height="40" 
+                                ToolTip="Add"
+                                Width="40"
+                                Click="Browse"/>
+                    </StackPanel>
+                    <Slider Margin="3"
+                            Value="0.5" 
+                            Maximum="1"
+                            Name="Crossfader"
+                            ValueChanged="CrossfaderValueChanged" />
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                        <Button Content="/Resources/ShiftA.png" 
+                                Template="{DynamicResource ImageButton}"
+                                Width="35"
+                                Height="35"
+                                ToolTip="Smoothly Crossfade to Deck A">
+                            <Button.Triggers>
+                                <EventTrigger RoutedEvent="Button.Click">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Crossfader" 
+                                                             Storyboard.TargetProperty="Value" 
+                                                             From="{DynamicResource 'Crossfader.Value'}" 
+                                                             To="0.0"
+                                                             Duration="0:0:10" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button Content="/Resources/ShiftCenter.png"
+                                Template="{DynamicResource ImageButton}" 
+                                Width="35" 
+                                Height="35" 
+                                ToolTip="Slide Crossfade Slider to Center">
+                            <Button.Triggers>
+                                <EventTrigger RoutedEvent="Button.Click">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Crossfader"
+                                                             Storyboard.TargetProperty="Value"
+                                                             From="{DynamicResource 'Crossfader.Value'}"
+                                                             To="0.5"
+                                                             Duration="0:0:5" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button Content="/Resources/ShiftB.png"
+                                Template="{DynamicResource ImageButton}"
+                                Width="35"
+                                Height="35"
+                                ToolTip="Smoothly Crossfade to Deck B">
+                            <Button.Triggers>
+                                <EventTrigger RoutedEvent="Button.Click">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Crossfader"
+                                                             Storyboard.TargetProperty="Value"
+                                                             From="{DynamicResource 'Crossfader.Value'}"
+                                                             To="1"
+                                                             Duration="0:0:10" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </DockPanel>
+            <Label Content="To Save REVERSED Music, right click on an item in list and click `Save Reverse`."
+                   DockPanel.Dock="Top"/>
+            <Label Content="Items can be REMOVED using the `Delete` button."
+                   DockPanel.Dock="Top"/>
+            <ListBox Name="Playlist"
+                     SelectionMode="Extended"
+                     Margin="3"
+                     KeyUp="Playlist_KeyUp"/>
+        </DockPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="MBassWPF.LoopbackRecording"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel LastChildFill="False">
+        <DockPanel DockPanel.Dock="Top"
+                   Margin="0,5">
+            <Button Content="Refresh"
+                    DockPanel.Dock="Right"
+                    Command="Refresh"
+                    Padding="5,0"/>
+            <ComboBox ItemsSource="{Binding AvailableAudioSources}"
+                      SelectedItem="{Binding SelectedAudioDevice, Mode=TwoWay}"
+                      DisplayMemberPath="DeviceInfo.Name"
+                      SelectedIndex="0"/>
+        </DockPanel>
+        <Label Content="Ready"
+               Name="Status"
+               DockPanel.Dock="Bottom"/>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    DockPanel.Dock="Top">
+            <Button Content="/Resources/Record.png" 
+                        Click="Play"
+                        Name="BPlay"
+                        Template="{DynamicResource ImageButton}" 
+                        Width="25" 
+                        Height="25"
+                        IsEnabled="{Binding Ready}"/>
+            <Button Content="/Resources/Stop.png" 
+                        Click="Stop"
+                        Name="BStop" 
+                        Template="{DynamicResource ImageButton}" 
+                        Width="35" 
+                        Height="25" 
+                        IsEnabled="{Binding Ready}"/>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

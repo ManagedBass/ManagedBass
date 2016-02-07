@@ -28,8 +28,3 @@ Features
 
 Bass and other Add-Ons are trademarks of their respective owners
 **Un4Seen Bass - (c) Ian Luck**
-
-Examples
--------------------------------
-**ManagedBass.ShowDown** included in the project demonstrates some samples of ManagedBass working with a WPF UI.  
-It is also useful for the purpose of testing.

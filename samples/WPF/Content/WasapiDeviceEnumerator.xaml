@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="MBassWPF.WasapiDeviceEnumerator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <Button Content="Refresh"
+                    DockPanel.Dock="Right"
+                    Command="Refresh"
+                    Padding="5,0"/>
+            <ListBox ItemsSource="{Binding AvailableAudioSources}"
+                     SelectedItem="{Binding SelectedAudioDevice, Mode=TwoWay}"
+                     SelectedIndex="0"
+                     DisplayMemberPath="Name"
+                     SelectionChanged="ListBox_SelectionChanged"
+                     Height="90"/>
+        </DockPanel>
+        
+        <StackPanel DataContext="{Binding SelectedAudioDevice, Mode=TwoWay}"
+                    Margin="0,5"
+                    DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Content="Loopback"
+                          IsEnabled="False"
+                          Margin="5"
+                          IsChecked="{Binding Path=IsLoopback, Mode=OneWay}"/>
+                <CheckBox Content="Default"
+                          IsEnabled="False"
+                          Margin="5"
+                          IsChecked="{Binding Path=IsDefault, Mode=OneWay}"/>
+                <CheckBox Content="Enabled"
+                          IsEnabled="False"
+                          Margin="5"
+                          IsChecked="{Binding Path=IsEnabled, Mode=OneWay}"/>
+                <CheckBox Content="Disabled"
+                          IsEnabled="False"
+                          Margin="5"
+                          IsChecked="{Binding Path=IsDisabled, Mode=OneWay}"/>    
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,0,0,5">
+                <CheckBox Content="Initialized"
+                          IsEnabled="False"
+                          Margin="5"
+                          IsChecked="{Binding Path=IsInitialized, Mode=OneWay}"/>
+                <CheckBox Content="Input"
+                          IsEnabled="False"
+                          Margin="5"
+                          IsChecked="{Binding Path=IsInput, Mode=OneWay}"/>
+                <CheckBox Content="Unplugged"
+                          IsEnabled="False"
+                          Margin="5"
+                          IsChecked="{Binding Path=IsUnplugged, Mode=OneWay}"/>
+            </StackPanel>
+            
+            <DockPanel Margin="0,0,0,5">
+                <Label Content="ID:"/>
+                <TextBox IsReadOnly="True"
+                         Text="{Binding Path=ID, Mode=OneWay}"
+                         Height="20"/>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,5">
+                <Label Content="Default Update Period:"/>
+                <TextBox IsReadOnly="True"
+                         Text="{Binding Path=DefaultUpdatePeriod, Mode=OneWay}"
+                         Height="20"/>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,5">
+                <Label Content="Mix Channels:"/>
+                <TextBox IsReadOnly="True"
+                         Text="{Binding Path=MixChannels, Mode=OneWay}"
+                         Height="20"/>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,5">
+                <Label Content="Mix Frequency:"/>
+                <TextBox IsReadOnly="True"
+                         Text="{Binding Path=MixFrequency, Mode=OneWay}"
+                         Height="20"/>
+            </DockPanel>
+            <DockPanel Margin="0,0,0,5">
+                <Label Content="Type:"/>
+                <TextBox IsReadOnly="True"
+                         Text="{Binding Path=Type, Mode=OneWay}"
+                         Height="20"/>
+            </DockPanel>
+        </StackPanel>
+        <DockPanel/>
+    </DockPanel>
+</UserControl>

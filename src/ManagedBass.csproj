@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform>AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ManagedBass</RootNamespace>
+    <AssemblyName>ManagedBass</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectGuid>{D03D63BB-9333-462B-987E-167FF2F32DFF}</ProjectGuid>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1591</NoWarn>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <DocumentationFile>bin\$(Configuration)\ManagedBass.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <DefineConstants>DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="BitHelper.cs" />
+    <Compile Include="Devices\Bass\RecordingDevice.cs" />
+    <Compile Include="Devices\Wasapi\WasapiLoopbackDevice.cs" />
+    <Compile Include="Devices\Wasapi\WasapiRecordingDevice.cs" />
+    <Compile Include="Devices\Wasapi\WasapiPlaybackDevice.cs" />
+    <Compile Include="Dynamics\BassAsio\Enumerations\AsioFuture.cs" />
+    <Compile Include="Dynamics\BassAsio\Structures\AsioChannelControls.cs" />
+    <Compile Include="Dynamics\BassAsio\Structures\AsioInputMonitor.cs" />
+    <Compile Include="Dynamics\BassAsio\Structures\AsioIOFormat.cs" />
+    <Compile Include="Dynamics\BassAsio\Structures\AsioTransportParameters.cs" />
+    <Compile Include="Dynamics\BassCd\Enumerations\CDDataType.cs" />
+    <Compile Include="Dynamics\BassEnc\Enumerations\EncodeMetaDataType.cs" />
+    <Compile Include="Dynamics\BassMidi\Enumerations\MidiSystem.cs" />
+    <Compile Include="Dynamics\BassMix\MixEnvelope.cs" />
+    <Compile Include="Dynamics\BassMix\MixerNode.cs" />
+    <Compile Include="Dynamics\BassMix\SyncProcedureEx.cs" />
+    <Compile Include="Dynamics\BassWasapi\Delegates\WasapiNotifyProcedure.cs" />
+    <Compile Include="Dynamics\BassWasapi\Delegates\WasapiProcedure.cs" />
+    <Compile Include="Dynamics\BassWasapi\Enumerations\WasapiDeviceType.cs" />
+    <Compile Include="Dynamics\BassWasapi\Enumerations\WasapiDeviceInfoFlags.cs" />
+    <Compile Include="Dynamics\BassWasapi\Enumerations\WasapiFormat.cs" />
+    <Compile Include="Dynamics\BassWasapi\Enumerations\WasapiInitFlags.cs" />
+    <Compile Include="Dynamics\BassWasapi\Enumerations\WasapiNotificationType.cs" />
+    <Compile Include="Dynamics\BassWasapi\Enumerations\WasapiVolumeTypes.cs" />
+    <Compile Include="Dynamics\BassWasapi\Structures\WasapiDeviceInfo.cs" />
+    <Compile Include="Dynamics\BassWasapi\Structures\WasapiInfo.cs" />
+    <Compile Include="Dynamics\BassAsio\BassAsio.cs" />
+    <Compile Include="Dynamics\BassAsio\Delegates\AsioNotifyProcedure.cs" />
+    <Compile Include="Dynamics\BassAsio\Delegates\AsioProcedure.cs" />
+    <Compile Include="Dynamics\BassAsio\Enumerations\AsioChannelResetFlags.cs" />
+    <Compile Include="Dynamics\BassAsio\Enumerations\AsioChannelActive.cs" />
+    <Compile Include="Dynamics\BassAsio\Enumerations\AsioNotify.cs" />
+    <Compile Include="Dynamics\BassAsio\Enumerations\AsioSampleFormat.cs" />
+    <Compile Include="Dynamics\BassAsio\Enumerations\AsioInitFlags.cs" />
+    <Compile Include="Dynamics\BassAsio\Structures\AsioDeviceInfo.cs" />
+    <Compile Include="Dynamics\BassAsio\Structures\AsioInfo.cs" />
+    <Compile Include="Dynamics\BassAsio\Structures\AsioChannelInfo.cs" />
+    <Compile Include="Dynamics\BassCd\CDDataProcedure.cs" />
+    <Compile Include="Dynamics\BassCd\Enumerations\CDDoorAction.cs" />
+    <Compile Include="Dynamics\BassCd\Enumerations\CDReadWriteFlags.cs" />
+    <Compile Include="Dynamics\BassCd\Enumerations\TOCControlFlags.cs" />
+    <Compile Include="Dynamics\BassCd\Enumerations\TOCMode.cs" />
+    <Compile Include="Dynamics\BassCd\Structures\TOCTrack.cs" />
+    <Compile Include="Dynamics\BassCd\Structures\CDInfo.cs" />
+    <Compile Include="Dynamics\BassCd\Structures\TOC.cs" />
+    <Compile Include="Dynamics\BassEnc\Delegates\EncodeClientProcedure.cs" />
+    <Compile Include="Dynamics\BassEnc\Delegates\EncoderProcedure.cs" />
+    <Compile Include="Dynamics\BassEnc\Delegates\EncodeProcedureEx.cs" />
+    <Compile Include="Dynamics\BassEnc\Delegates\EncodeProcedure.cs" />
+    <Compile Include="Dynamics\BassEnc\Delegates\EncodeNotifyProcedure.cs" />
+    <Compile Include="Dynamics\BassEnc\Enumerations\EncodeNotifyStatus.cs" />
+    <Compile Include="Dynamics\BassEnc\Enumerations\ACMFormatFlags.cs" />
+    <Compile Include="Dynamics\BassEnc\Enumerations\EncodeCount.cs" />
+    <Compile Include="Dynamics\BassEnc\Enumerations\EncodeFlags.cs" />
+    <Compile Include="Dynamics\BassEnc\Enumerations\WaveFormatTag.cs" />
+    <Compile Include="Dynamics\BassFx\Delegates\BPMProcedure.cs" />
+    <Compile Include="Dynamics\BassFx\Delegates\BPMProgressProcedure.cs" />
+    <Compile Include="Dynamics\BassFx\Delegates\BPMBeatProcedure.cs" />
+    <Compile Include="Dynamics\BassFx\Enumerations\BQFType.cs" />
+    <Compile Include="Dynamics\BassFx\Enumerations\FXChannelFlags.cs" />
+    <Compile Include="Dynamics\BassMidi\Enumerations\MidiEventSequence.cs" />
+    <Compile Include="Dynamics\BassMidi\Enumerations\MidiEventsMode.cs" />
+    <Compile Include="Dynamics\BassMidi\Enumerations\MidiMarkerType.cs" />
+    <Compile Include="Dynamics\BassMidi\MidiInProcedure.cs" />
+    <Compile Include="Dynamics\BassMidi\Structures\MidiDeviceInfo.cs" />
+    <Compile Include="Dynamics\BassMidi\Structures\MidiEvent.cs" />
+    <Compile Include="Dynamics\BassMidi\Structures\MidiFont.cs" />
+    <Compile Include="Dynamics\BassMidi\Structures\MidiFontEx.cs" />
+    <Compile Include="Dynamics\BassMidi\Structures\MidiFontInfo.cs" />
+    <Compile Include="Dynamics\BassMidi\Structures\MidiMarker.cs" />
+    <Compile Include="Dynamics\BassWma\WMAEncodeFlags.cs" />
+    <Compile Include="Dynamics\BassWma\Delegates\WMEncodeProcedure.cs" />
+    <Compile Include="Dynamics\BassWma\Delegates\ClientConnectProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\FileCloseProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\FileLengthProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\FileReadProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\FileSeekProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\Algorithm3D.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\DataFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\EAXEnvironment.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\StreamSystem.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\3D.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Channels.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\SyncProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\StreamProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\DSPProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\DownloadProcedure.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Bass.cs" />
+    <Compile Include="Dynamics\BassCd\BassCd.cs" />
+    <Compile Include="Dynamics\BassEnc\BassEnc.cs" />
+    <Compile Include="Dynamics\BassFx\BassFx.cs" />
+    <Compile Include="Dynamics\BassMidi\BassMidi.cs" />
+    <Compile Include="Dynamics\BassMix\BassMix.cs" />
+    <Compile Include="Dynamics\BassWasapi\BassWasapi.cs" />
+    <Compile Include="Dynamics\BassWma\BassWma.cs" />
+    <Compile Include="Devices\Wasapi\WasapiDevice.cs" />
+    <Compile Include="Dynamics\Bass\Delegates\RecordProcedure.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\InputFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\DeviceInitFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\ChannelType.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\EffectType.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\DeviceInfoFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\BassFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\SyncFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\InputTypeFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\RecordFormatFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\Configuration.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\TagType.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\StreamProcedureType.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\Mode3D.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\VAMMode.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\LevelRetrievalFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\FileStreamPosition.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\ChannelAttribute.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\PositionFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\RecordInfoFlags.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\PlaybackState.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\BassInfoFlags.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Config.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Devices.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Record.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Samples.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Streams.cs" />
+    <Compile Include="Dynamics\Bass\Structures\DeviceInfo.cs" />
+    <Compile Include="Dynamics\Bass\Structures\ChannelInfo.cs" />
+    <Compile Include="Dynamics\Bass\Structures\FileProcedures.cs" />
+    <Compile Include="Dynamics\Bass\Structures\PluginFormat.cs" />
+    <Compile Include="Dynamics\Bass\Structures\PluginInfo.cs" />
+    <Compile Include="Dynamics\Bass\Structures\RecordInfo.cs" />
+    <Compile Include="Dynamics\Bass\Structures\SampleInfo.cs" />
+    <Compile Include="Dynamics\Bass\Structures\BassInfo.cs" />
+    <Compile Include="Dynamics\Bass\Structures\Vector3D.cs" />
+    <Compile Include="Dynamics\Plugin.cs" />
+    <Compile Include="Effects\PitchShift.cs" />
+    <Compile Include="IO\AudioCapture\IAudioCaptureClient.cs" />
+    <Compile Include="IO\CDChannel.cs" />
+    <Compile Include="IO\FileChannel.cs" />
+    <Compile Include="IO\ManagedFileChannel.cs" />
+    <Compile Include="IO\TempoChannel.cs" />
+    <Compile Include="IO\MemoryChannel.cs" />
+    <Compile Include="IO\Encoder.cs" />
+    <Compile Include="IO\AudioCapture\Loopback.cs" />
+    <Compile Include="IO\ReverseChannel.cs" />
+    <Compile Include="IO\AudioCapture\Recording.cs" />
+    <Compile Include="IO\Midi.cs" />
+    <Compile Include="IO\MixerStream.cs" />
+    <Compile Include="IO\SplitChannel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resolution.cs" />
+    <Compile Include="Return.cs" />
+    <Compile Include="Writers\ACMEncodedFileWriter.cs" />
+    <Compile Include="Writers\WaveFormat.cs" />
+    <Compile Include="Writers\WaveFileWriter.cs" />
+    <Compile Include="Effects\AutoWah.cs" />
+    <Compile Include="Effects\Chorus.cs" />
+    <Compile Include="Effects\Compressor.cs" />
+    <Compile Include="Effects\Damp.cs" />
+    <Compile Include="Effects\Distortion.cs" />
+    <Compile Include="Effects\DSP Base.cs" />
+    <Compile Include="Effects\Echo.cs" />
+    <Compile Include="Effects\Peak EQ.cs" />
+    <Compile Include="Effects\Phaser.cs" />
+    <Compile Include="Effects\Reverb.cs" />
+    <Compile Include="Errors.cs" />
+    <Compile Include="IO\AudioSample.cs" />
+    <Compile Include="Effects\BQF.cs" />
+    <Compile Include="Effects\Rotate.cs" />
+    <Compile Include="IO\Channel.cs" />
+    <Compile Include="IO\MusicModule.cs" />
+    <Compile Include="IO\NetworkChannel.cs" />
+    <Compile Include="IO\PushStream.cs" />
+    <Compile Include="IO\SineWave.cs" />
+    <Compile Include="IO\UserStream.cs" />
+    <Compile Include="BufferProvider.cs" />
+    <Compile Include="IO\Silence.cs" />
+    <Compile Include="Devices\Bass\PlaybackDevice.cs" />
+    <Compile Include="Effects\Effect Base.cs" />
+    <Compile Include="Writers\WmaFileWriter.cs" />
+    <Compile Include="Tags.cs" />
+    <Compile Include="Devices\CDDrive.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Writers\IAudioFileWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
