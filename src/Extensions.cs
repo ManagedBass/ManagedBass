@@ -10,8 +10,18 @@ namespace ManagedBass
     /// </summary>
     public static class Extensions
     {
-        [DllImport("kernel32.dll")]
-        internal static extern IntPtr LoadLibrary(string dllToLoad);
+        internal static readonly bool IsWindows = false;
+
+        static Extensions()
+        {
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Win32NT:
+                case PlatformID.Win32Windows:
+                    IsWindows = true;
+                    break;
+            }
+        }
 
         /// <summary>
         /// Converts <see cref="Resolution"/> to <see cref="BassFlags"/>
@@ -31,7 +41,8 @@ namespace ManagedBass
 
         internal static IntPtr Load(string DllName, string Folder)
         {
-            return LoadLibrary(!string.IsNullOrWhiteSpace(Folder) ? Path.Combine(Folder, DllName + ".dll") : DllName);
+            if (IsWindows) return WindowsNative.LoadLibrary(!string.IsNullOrWhiteSpace(Folder) ? Path.Combine(Folder, DllName + ".dll") : DllName);
+            else throw new PlatformNotSupportedException("Only available on Windows");            
         }
 
         static bool? floatable = null;

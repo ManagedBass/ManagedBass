@@ -127,11 +127,27 @@ namespace ManagedBass.Dynamics
         public static IEnumerable<int> PluginLoadDirectory(string directory)
         {
             if (Directory.Exists(directory))
-                foreach (var lib in Directory.EnumerateFiles(directory, "bass*.dll"))
+            {
+                // Try to get Windows Plugins
+                var libs = Directory.GetFiles(directory, "bass*.dll");
+
+                // Try to get Linux/Android Plugins
+                if (libs == null || libs.Length == 0)
+                    libs = Directory.GetFiles(directory, "libbass*.so");
+
+                // Try to get OSX Plugins
+                if (libs == null || libs.Length == 0)
+                    libs = Directory.GetFiles(directory, "libbass*.dylib");
+
+                if (libs != null)
                 {
-                    int h = BASS_PluginLoad(lib);
-                    if (h != 0) yield return h;
+                    foreach (var lib in libs)
+                    {
+                        int h = BASS_PluginLoad(lib);
+                        if (h != 0) yield return h;
+                    }
                 }
+            }
         }
         #endregion
 

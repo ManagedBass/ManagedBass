@@ -2,9 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform>AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ManagedBass</RootNamespace>
@@ -214,6 +212,7 @@
     <Compile Include="Devices\CDDrive.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Writers\IAudioFileWriter.cs" />
+    <Compile Include="WindowsNative.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

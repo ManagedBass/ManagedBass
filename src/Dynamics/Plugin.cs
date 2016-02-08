@@ -4,8 +4,6 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Dynamics
 {
-    // TODO: Test class Plugin
-
     /// <summary>
     /// Wraps AddOns that are no more than Plugins.
     /// </summary>
@@ -25,9 +23,6 @@ namespace ManagedBass.Dynamics
         DCreateStreamURL MStreamCreateURL;
         DCreateStreamUser MStreamCreateUser;
         #endregion
-
-        [DllImport("kernel32.dll")]
-        static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
 
         #region Delegates
         delegate int DCreateStreamFile(bool mem, IntPtr file, long offset, long length, BassFlags flags);
@@ -55,11 +50,28 @@ namespace ManagedBass.Dynamics
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public void Load(string Folder = null) { HLib = Extensions.Load(DllName, Folder); }
+        public void Load(string Folder = null)
+        {
+            if (Extensions.IsWindows)
+                HLib = Extensions.Load(DllName, Folder);
+            else LoadAsPlugin(Folder);
+        }
 
         public void LoadAsPlugin(string Folder = null)
         {
-            Bass.PluginLoad(Folder != null ? Path.Combine(Folder, DllName) : DllName);
+            // Try for Windows, Linux/Android and OSX Libraries respectively.
+            foreach (var extension in new string[] { ".dll", ".so", ".dylib" })
+            {
+                string path = Folder != null ? Path.Combine(Folder, DllName + extension) : DllName + extension;
+
+                if (Bass.PluginLoad(path) != 0)
+                {
+                    if (HLib != IntPtr.Zero)
+                        HLib = (IntPtr)(-1);
+
+                    break;
+                }
+            }
         }
 
         #region Private Methods
@@ -67,7 +79,7 @@ namespace ManagedBass.Dynamics
         {
             if (HLib == IntPtr.Zero)
             {
-                HLib = Extensions.LoadLibrary(DllName);
+                Load();
                 if (HLib == IntPtr.Zero) throw new DllNotFoundException(DllName);
             }
 
@@ -81,18 +93,20 @@ namespace ManagedBass.Dynamics
             {
                 EnsureLoaded();
 
-                IntPtr pAddress = GetProcAddress(HLib, MethodName);
+                if (Extensions.IsWindows)
+                {
+                    IntPtr pAddress = WindowsNative.GetProcAddress(HLib, MethodName);
 
-                if (pAddress == IntPtr.Zero) throw new EntryPointNotFoundException(MethodName + " was not found in " + DllName);
+                    if (pAddress == IntPtr.Zero) throw new EntryPointNotFoundException(MethodName + " was not found in " + DllName);
 
-                Method = (T)(object)Marshal.GetDelegateForFunctionPointer(pAddress, typeof(T));
+                    Method = (T)(object)Marshal.GetDelegateForFunctionPointer(pAddress, typeof(T));
+                }
             }
         }
 
         void LoadStreamCreateFile()
         {
-            EnsureFunction("BASS_" + ID + "_StreamCreateFile",
-                           ref MStreamCreateFile);
+            EnsureFunction("BASS_" + ID + "_StreamCreateFile", ref MStreamCreateFile);
         }
         #endregion
 
@@ -101,34 +115,44 @@ namespace ManagedBass.Dynamics
         {
             LoadStreamCreateFile();
 
-            IntPtr ptr = Marshal.StringToHGlobalUni(FileName);
+            if (Extensions.IsWindows)
+            {
+                IntPtr ptr = Marshal.StringToHGlobalUni(FileName);
 
-            int Result = MStreamCreateFile(false, ptr, Offset, Length, Flags | BassFlags.Unicode);
+                int Result = MStreamCreateFile(false, ptr, Offset, Length, Flags | BassFlags.Unicode);
 
-            Marshal.FreeHGlobal(ptr);
+                Marshal.FreeHGlobal(ptr);
 
-            return Result;
+                return Result;
+            }
+            else return Bass.CreateStream(FileName, Offset, Length, Flags);
         }
 
         public int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default)
         {
             LoadStreamCreateFile();
-            return MStreamCreateFile(true, Memory, Offset, Length, Flags);
+
+            if (Extensions.IsWindows)
+                return MStreamCreateFile(true, Memory, Offset, Length, Flags);
+            else return Bass.CreateStream(Memory, Offset, Length, Flags);
         }
 
         public int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr))
         {
-            EnsureFunction("BASS_" + ID + "_StreamCreateFileUser",
-                           ref MStreamCreateUser);
+            EnsureFunction("BASS_" + ID + "_StreamCreateFileUser", ref MStreamCreateUser);
 
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(procs));
-            Marshal.StructureToPtr(procs, ptr, true);
+            if (Extensions.IsWindows)
+            {
+                IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(procs));
+                Marshal.StructureToPtr(procs, ptr, true);
 
-            int handle = MStreamCreateUser(system, flags, ptr, user);
+                int handle = MStreamCreateUser(system, flags, ptr, user);
 
-            Marshal.FreeHGlobal(ptr);
+                Marshal.FreeHGlobal(ptr);
 
-            return handle;
+                return handle;
+            }
+            else return Bass.CreateStream(system, flags, procs, user);
         }
 
         /// <exception cref="System.InvalidOperationException">
@@ -138,16 +162,19 @@ namespace ManagedBass.Dynamics
         {
             if (!SupportsURL) throw new InvalidOperationException(DllName + " does not support streaming over internet");
 
-            EnsureFunction("BASS_" + ID + "_StreamCreateURL",
-                           ref MStreamCreateURL);
+            EnsureFunction("BASS_" + ID + "_StreamCreateURL", ref MStreamCreateURL);
 
-            IntPtr ptr = Marshal.StringToHGlobalUni(Url);
+            if (Extensions.IsWindows)
+            {
+                IntPtr ptr = Marshal.StringToHGlobalUni(Url);
 
-            int Result = MStreamCreateURL(ptr, Offset, Flags | BassFlags.Unicode, Procedure, User);
+                int Result = MStreamCreateURL(ptr, Offset, Flags | BassFlags.Unicode, Procedure, User);
 
-            Marshal.FreeHGlobal(ptr);
+                Marshal.FreeHGlobal(ptr);
 
-            return Result;
+                return Result;
+            }
+            else return Bass.CreateStream(Url, Offset, Flags, Procedure, User);
         }
 
         #region From Array
@@ -201,89 +228,89 @@ namespace ManagedBass.Dynamics
         /// 
         /// Supports .aac, .adts, .mp4, .m4a, .m4b
         /// </summary>
-        public static readonly Plugin BassAAC = new Plugin("bass_aac.dll", "AAC");
+        public static readonly Plugin BassAAC = new Plugin("bass_aac", "AAC");
 
         /// <summary>
         /// Wraps BassAC3: bassac3.dll
         /// 
         /// Supports: .ac3
         /// </summary>
-        public static readonly Plugin BassAC3 = new Plugin("bass_ac3.dll", "AC3");
+        public static readonly Plugin BassAC3 = new Plugin("bass_ac3", "AC3");
 
         /// <summary>
         /// Wraps BassADX: bassadx.dll
         /// 
         /// Supports: .adx
         /// </summary>
-        public static readonly Plugin BassADX = new Plugin("bass_adx.dll", "ADX");
+        public static readonly Plugin BassADX = new Plugin("bass_adx", "ADX");
 
         /// <summary>
         /// Wraps BassAIX: bass_aix.dll
         /// </summary>
-        public static readonly Plugin BassAIX = new Plugin("bass_aix.dll", "AIX", false);
+        public static readonly Plugin BassAIX = new Plugin("bass_aix", "AIX", false);
 
         /// <summary>
-        /// Wraps BassALAC: bass_alac.dll
+        /// Wraps BassALAC: bassalac.dll
         /// 
         /// Supports: .m4a, .aac, .mp4, .mov
         /// </summary>
-        public static readonly Plugin BassALAC = new Plugin("bass_alac.dll", "ALAC");
+        public static readonly Plugin BassALAC = new Plugin("bassalac", "ALAC");
 
         /// <summary>
         /// Wraps BassAPE: bass_ape.dll
         /// 
         /// Supports: .ape, .ap1
         /// </summary>
-        public static readonly Plugin BassAPE = new Plugin("bass_ape.dll", "APE", false);
+        public static readonly Plugin BassAPE = new Plugin("bass_ape", "APE", false);
 
         /// <summary>
         /// Wraps BassFLAC: bassflac.dll
         /// 
         /// Supports: .flac
         /// </summary>
-        public static readonly Plugin BassFLAC = new Plugin("bassflac.dll", "FLAC");
+        public static readonly Plugin BassFLAC = new Plugin("bassflac", "FLAC");
 
         /// <summary>
         /// Wraps BassMPC: bass_mpc.dll
         /// 
         /// Supports: .mpc, .mpp, .mp+
         /// </summary>
-        public static readonly Plugin BassMPC = new Plugin("bass_mpc.dll", "MPC");
+        public static readonly Plugin BassMPC = new Plugin("bass_mpc", "MPC");
 
         /// <summary>
         /// Wraps BassOFR: bass_ofr.dll
         /// 
         /// Supports: .ofr, .ofs
         /// </summary>
-        public static readonly Plugin BassOFR = new Plugin("bass_ofr.dll", "OFR", false);
+        public static readonly Plugin BassOFR = new Plugin("bass_ofr", "OFR", false);
 
         /// <summary>
         /// Wraps BassOPUS: bassopus.dll
         /// 
         /// Supports: .opus
         /// </summary>
-        public static readonly Plugin BassOPUS = new Plugin("bassopus.dll", "OPUS");
+        public static readonly Plugin BassOPUS = new Plugin("bassopus", "OPUS");
 
         /// <summary>
         /// Wraps BassSPX: bass_spx.dll
         /// 
         /// Supports: .spx
         /// </summary>
-        public static readonly Plugin BassSPX = new Plugin("bass_spx.dll", "SPX");
+        public static readonly Plugin BassSPX = new Plugin("bass_spx", "SPX");
 
         /// <summary>
         /// Wraps BassTTA: bass_tta.dll
         /// 
         /// Supports: .tta
         /// </summary>
-        public static readonly Plugin BassTTA = new Plugin("bass_tta.dll", "TTA", false);
+        public static readonly Plugin BassTTA = new Plugin("bass_tta", "TTA", false);
 
         /// <summary>
         /// Wraps BassWV: basswv.dll
         /// 
         /// Supports: .wv
         /// </summary>
-        public static readonly Plugin BassWV = new Plugin("basswv.dll", "WV");
+        public static readonly Plugin BassWV = new Plugin("basswv", "WV");
         #endregion
     }
 }
