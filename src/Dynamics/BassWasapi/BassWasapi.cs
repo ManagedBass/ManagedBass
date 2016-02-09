@@ -16,7 +16,6 @@ namespace ManagedBass.Dynamics
     /// </remarks>
     public static class BassWasapi
     {
-        // TODO: BASS_WASAPI_GetLevelEx
         public const int DefaultDevice = -1,
                          DefaultInputDevice = -2,
                          DefaultLoopbackDevice = -3;
@@ -150,6 +149,9 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetLevel")]
         public extern static int GetLevel();
+
+        [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetLevelEx")]
+        public static extern int GetLevel(float[] Levels, float Length, LevelRetrievalFlags Flags);
 
         [DllImport(DllName)]
         extern static int BASS_WASAPI_GetVersion();

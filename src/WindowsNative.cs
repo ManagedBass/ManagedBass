@@ -8,7 +8,6 @@ namespace ManagedBass
     /// </summary>
     static class WindowsNative
     {
-        // TODO: Cross-Platform LoadLibrary
         [DllImport("kernel32.dll")]
         public static extern IntPtr LoadLibrary(string dllToLoad);
 

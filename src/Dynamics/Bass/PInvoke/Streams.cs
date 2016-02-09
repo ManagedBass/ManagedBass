@@ -42,7 +42,7 @@ namespace ManagedBass.Dynamics
         }
 
         #region From Array
-        static int CreateStream(object Memory, long Offset, long Length, BassFlags Flags)
+        static int CreateStreamObj(object Memory, long Offset, long Length, BassFlags Flags)
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
@@ -56,22 +56,22 @@ namespace ManagedBass.Dynamics
 
         public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
         {
-            return CreateStream(Memory as object, Offset, Length, Flags);
+            return CreateStreamObj(Memory, Offset, Length, Flags);
         }
 
         public static int CreateStream(short[] Memory, long Offset, long Length, BassFlags Flags)
         {
-            return CreateStream(Memory as object, Offset, Length, Flags);
+            return CreateStreamObj(Memory, Offset, Length, Flags);
         }
 
         public static int CreateStream(int[] Memory, long Offset, long Length, BassFlags Flags)
         {
-            return CreateStream(Memory as object, Offset, Length, Flags);
+            return CreateStreamObj(Memory, Offset, Length, Flags);
         }
 
         public static int CreateStream(float[] Memory, long Offset, long Length, BassFlags Flags)
         {
-            return CreateStream(Memory as object, Offset, Length, Flags);
+            return CreateStreamObj(Memory, Offset, Length, Flags);
         }
         #endregion
 

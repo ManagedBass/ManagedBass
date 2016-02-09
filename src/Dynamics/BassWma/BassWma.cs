@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -11,11 +12,6 @@ namespace ManagedBass.Dynamics
     /// </summary>
     public static class BassWma
     {
-        // TODO: BASS_WMA_StreamCreateFileAuth
-        // TODO: BASS_WMA_StreamCreateFileUser
-        // TODO: BASS_WMA_GetTags
-        // TODO: BASS_WMA_EncodeGetRates
-
         const string DllName = "basswma";
 
         /// <summary>
@@ -24,9 +20,25 @@ namespace ManagedBass.Dynamics
         /// </summary>
         public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
 
-        #region Streams
         [DllImport(DllName, EntryPoint = "BASS_WMA_GetWMObject")]
         public static extern IntPtr GetWMObject(int handle);
+
+        #region CreateStream
+        [DllImport(DllName)]
+        static extern int BASS_WMA_StreamCreateFileUser(StreamSystem system, BassFlags flags, IntPtr procs, IntPtr user);
+
+        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr))
+        {
+            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(procs));
+
+            Marshal.StructureToPtr(procs, ptr, true);
+
+            int handle = BASS_WMA_StreamCreateFileUser(system, flags, ptr, user);
+
+            Marshal.FreeHGlobal(ptr);
+
+            return handle;
+        }
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_WMA_StreamCreateFile(bool Memory, string File, long Offset, long Length, BassFlags Flags);
@@ -44,7 +56,7 @@ namespace ManagedBass.Dynamics
             return BASS_WMA_StreamCreateFile(true, Memory, Offset, Length, Flags);
         }
 
-        static int CreateStream(object Memory, long Offset, long Length, BassFlags Flags)
+        static int CreateStreamObj(object Memory, long Offset, long Length, BassFlags Flags)
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
@@ -58,22 +70,22 @@ namespace ManagedBass.Dynamics
 
         public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
         {
-            return CreateStream(Memory as object, Offset, Length, Flags);
+            return CreateStreamObj(Memory, Offset, Length, Flags);
         }
 
         public static int CreateStream(short[] Memory, long Offset, long Length, BassFlags Flags)
         {
-            return CreateStream(Memory as object, Offset, Length, Flags);
+            return CreateStreamObj(Memory, Offset, Length, Flags);
         }
 
         public static int CreateStream(int[] Memory, long Offset, long Length, BassFlags Flags)
         {
-            return CreateStream(Memory as object, Offset, Length, Flags);
+            return CreateStreamObj(Memory, Offset, Length, Flags);
         }
 
         public static int CreateStream(float[] Memory, long Offset, long Length, BassFlags Flags)
         {
-            return CreateStream(Memory as object, Offset, Length, Flags);
+            return CreateStreamObj(Memory, Offset, Length, Flags);
         }
 
         public static int CreateStream(Stream Stream, int Offset, int Length, BassFlags Flags)
@@ -83,6 +95,65 @@ namespace ManagedBass.Dynamics
             Stream.Read(buffer, Offset, Length);
 
             return CreateStream(buffer, 0, Length, Flags);
+        }
+        #endregion
+
+        #region CreateStream Auth
+        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        static extern int BASS_WMA_StreamCreateFileAuth(bool mem, IntPtr file, long offset, long length, BassFlags flags, string user, string pass);
+
+        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        static extern int BASS_WMA_StreamCreateFileAuth(bool mem, string file, long offset, long length, BassFlags flags, string user, string pass);
+
+        public static int CreateStream(string File, long Length, BassFlags Flags, string UserName, string Password)
+        {
+            return BASS_WMA_StreamCreateFileAuth(false, File, 0, Length, Flags | BassFlags.Unicode, UserName, Password);
+        }
+
+        public static int CreateStream(IntPtr Memory, long Length, BassFlags Flags, string UserName, string Password)
+        {
+            return BASS_WMA_StreamCreateFileAuth(true, Memory, 0, Length, Flags | BassFlags.Unicode, UserName, Password);
+        }
+
+        static int CreateStreamObj(object Memory, long Length, BassFlags Flags, string UserName, string Password)
+        {
+            var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
+
+            int Handle = CreateStream(GCPin.AddrOfPinnedObject(), Length, Flags, UserName, Password);
+
+            if (Handle == 0) GCPin.Free();
+            else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
+
+            return Handle;
+        }
+
+        public static int CreateStream(byte[] Memory, long Length, BassFlags Flags, string UserName, string Password)
+        {
+            return CreateStreamObj(Memory, Length, Flags, UserName, Password);
+        }
+
+        public static int CreateStream(short[] Memory, long Length, BassFlags Flags, string UserName, string Password)
+        {
+            return CreateStreamObj(Memory, Length, Flags, UserName, Password);
+        }
+
+        public static int CreateStream(int[] Memory, long Length, BassFlags Flags, string UserName, string Password)
+        {
+            return CreateStreamObj(Memory, Length, Flags, UserName, Password);
+        }
+
+        public static int CreateStream(float[] Memory, long Length, BassFlags Flags, string UserName, string Password)
+        {
+            return CreateStreamObj(Memory, Length, Flags, UserName, Password);
+        }
+
+        public static int CreateStream(Stream Stream, int Offset, int Length, BassFlags Flags, string UserName, string Password)
+        {
+            var buffer = new byte[Length];
+
+            Stream.Read(buffer, Offset, Length);
+
+            return CreateStream(buffer, Length, Flags, UserName, Password);
         }
         #endregion
 
@@ -122,6 +193,27 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeClose")]
         public static extern bool EncodeClose(int handle);
+
+        [DllImport(DllName)]
+        static unsafe extern int* BASS_WMA_EncodeGetRates(int freq, int chans, WMAEncodeFlags Flags);
+
+        public unsafe static int[] EncodeGetRates(int Frequency, int Channels, WMAEncodeFlags Flags)
+        {
+            var list = new List<int>();
+
+            var rates = BASS_WMA_EncodeGetRates(Frequency, Channels, Flags);
+
+            if (rates != null)
+            {
+                while (*rates != 0)
+                {
+                    list.Add(*rates);
+                    rates++;
+                }
+            }
+
+            return list.ToArray();
+        }
         #endregion
 
         #region Configuration
@@ -196,5 +288,13 @@ namespace ManagedBass.Dynamics
             set { Bass.Configure(Configuration.WmaAsync, value); }
         }
         #endregion
+
+        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        static extern IntPtr BASS_WMA_GetTags(string File, BassFlags Flags);
+
+        public static IEnumerable<string> GetTags(string File, BassFlags Flags)
+        {
+            return Tags.ExtractMultiStringUtf8(BASS_WMA_GetTags(File, Flags | BassFlags.Unicode));
+        }
     }
 }

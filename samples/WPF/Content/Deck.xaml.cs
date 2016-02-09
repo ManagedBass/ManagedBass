@@ -1,4 +1,5 @@
-﻿using ManagedBass.Effects;
+﻿using ManagedBass;
+using ManagedBass.Effects;
 using System;
 using System.ComponentModel;
 using System.IO;

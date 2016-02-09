@@ -3,8 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Dynamics
 {
-    // TODO: Test BassAsio
-
     /// <summary>
     /// Wraps BassAsio: bassasio.dll
     /// </summary>

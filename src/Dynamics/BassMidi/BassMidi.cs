@@ -217,9 +217,7 @@ namespace ManagedBass.Dynamics
             get { return Bass.GetConfigBool(Configuration.MidiAutoFont); }
             set { Bass.Configure(Configuration.MidiAutoFont, value); }
         }
-
-        // TODO: ChannelAttribute.MidiCPU
-
+        
         /// <summary>
         /// The maximum number of samples to play at a time (polyphony).
         /// voices (int): Maximum number of samples to play at a time... 1 (min) - 1000 (max).

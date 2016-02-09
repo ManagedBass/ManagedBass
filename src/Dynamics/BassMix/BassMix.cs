@@ -3,14 +3,11 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Dynamics
 {
-    // TODO: Wrap BassMix to Completion
     /// <summary>
     /// Wraps BassMix: bassmix.dll
     /// </summary>
     public static class BassMix
     {
-        // TODO: BASS_Mixer_ChannelGetLevelEx
-
         const string DllName = "bassmix";
 
         /// <summary>
@@ -27,16 +24,16 @@ namespace ManagedBass.Dynamics
         public static extern int SplitStreamGetAvailable(int hndle);
 
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamReset")]
-        public static extern bool ResetSplitStream(int handle);
+        public static extern bool SplitStreamReset(int handle);
 
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamResetEx")]
-        public static extern bool ResetSplitStreamEx(int handle, int offset);
+        public static extern bool SplitStreamReset(int handle, int offset);
 
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamGetSource")]
         public static extern int SplitStreamGetSource(int handle);
 
         [DllImport(DllName)]
-        static extern int BASS_Split_StreamGetSplits(int handle, [In][Out] int[] array, int length);
+        static extern int BASS_Split_StreamGetSplits(int handle, int[] array, int length);
 
         public static int[] SplitStreamGetSplits(int handle)
         {
@@ -64,17 +61,6 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelRemove")]
         public static extern bool MixerRemoveChannel(int Handle);
-
-        #region Channel Flags
-        [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelFlags")]
-        public static extern BassFlags ChannelFlags(int Handle, BassFlags Flags, BassFlags Mask);
-
-        public static bool ChannelHasFlag(int handle, BassFlags flag) { return ChannelFlags(handle, 0, 0).HasFlag(flag); }
-
-        public static bool ChannelAddFlag(int handle, BassFlags flag) { return ChannelFlags(handle, flag, flag).HasFlag(flag); }
-
-        public static bool ChannelRemoveFlag(int handle, BassFlags flag) { return !(ChannelFlags(handle, 0, flag).HasFlag(flag)); }
-        #endregion
 
         #region Configuration
         /// <summary>
@@ -139,14 +125,29 @@ namespace ManagedBass.Dynamics
         }
         #endregion
 
+        #region Mixer Source Channels
+        #region Channel Flags
+        [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelFlags")]
+        public static extern BassFlags ChannelFlags(int Handle, BassFlags Flags, BassFlags Mask);
+
+        public static bool ChannelHasFlag(int handle, BassFlags flag) { return ChannelFlags(handle, 0, 0).HasFlag(flag); }
+
+        public static bool ChannelAddFlag(int handle, BassFlags flag) { return ChannelFlags(handle, flag, flag).HasFlag(flag); }
+
+        public static bool ChannelRemoveFlag(int handle, BassFlags flag) { return !(ChannelFlags(handle, 0, flag).HasFlag(flag)); }
+        #endregion
+
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetData")]
         public static extern int ChannelGetData(int Handle, IntPtr Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetLevel")]
         public static extern int ChannelGetLevel(int Handle);
 
+        [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetLevelEx")]
+        public static extern int ChannelGetLevel(int Handle, float[] Levels, float Length, LevelRetrievalFlags Flags);
+
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetMatrix")]
-        public static extern bool ChannelGetMatrix(int Handle, IntPtr Matrix);
+        public static extern bool ChannelGetMatrix(int Handle, [In][Out] float[,] Matrix);
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetMixer")]
         public static extern int ChannelGetMixer(int Handle);
@@ -193,5 +194,6 @@ namespace ManagedBass.Dynamics
         {
             return ChannelSetEnvelope(Handle, Type, Nodes, Nodes != null ? Nodes.Length : 0);
         }
+        #endregion
     }
 }

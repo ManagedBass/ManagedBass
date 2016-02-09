@@ -235,9 +235,8 @@ namespace ManagedBass.Dynamics
         #endregion
 
         #region Server
-        // TODO: flags - BASS_ENCODE_SERVER_NOHTTP
         [DllImport(DllName, EntryPoint = "BASS_Encode_ServerInit")]
-        public static extern int ServerInit(int handle, string port, int buffer, int burst, int flags, EncodeClientProcedure proc, IntPtr user);
+        public static extern int ServerInit(int handle, string port, int buffer, int burst, EncodeServer flags, EncodeClientProcedure proc, IntPtr user);
 
         [DllImport(DllName, EntryPoint = "BASS_Encode_ServerKick")]
         public static extern int ServerKick(int handle, string client);

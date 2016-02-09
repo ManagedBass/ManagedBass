@@ -57,6 +57,10 @@ namespace ManagedBass.Dynamics
             else LoadAsPlugin(Folder);
         }
 
+        /// <summary>
+        /// Load the Library into Bass Plugin System.
+        /// </summary>
+        /// <param name="Folder">The Folder to load from. null (default) = Load from Current folder.</param>
         public void LoadAsPlugin(string Folder = null)
         {
             // Try for Windows, Linux/Android and OSX Libraries respectively.

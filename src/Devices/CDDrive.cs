@@ -35,6 +35,9 @@ namespace ManagedBass
 
         public bool HasDisk { get { return BassCd.IsReady(DriveIndex); } }
 
+        /// <summary>
+        /// Enumerates CDDrives present on the Computer
+        /// </summary>
         public static IEnumerable<CDDrive> Drives
         {
             get
@@ -46,6 +49,9 @@ namespace ManagedBass
             }
         }
 
+        /// <summary>
+        /// Release the Disk
+        /// </summary>
         public void Dispose() { BassCd.Release(DriveIndex); }
     }
 }

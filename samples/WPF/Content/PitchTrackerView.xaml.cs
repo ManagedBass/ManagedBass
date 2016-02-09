@@ -1,4 +1,5 @@
-﻿using Pitch;
+﻿using ManagedBass;
+using Pitch;
 using System.Windows;
 using System.Windows.Controls;
 

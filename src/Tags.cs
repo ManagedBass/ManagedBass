@@ -265,7 +265,7 @@ namespace ManagedBass
             }
         }
 
-        static IEnumerable<string> ExtractMultiStringUtf8(IntPtr ptr)
+        internal static IEnumerable<string> ExtractMultiStringUtf8(IntPtr ptr)
         {
             while (true)
             {
