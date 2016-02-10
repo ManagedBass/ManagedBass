@@ -1,6 +1,27 @@
-bin/
+# Build Result Folders
+[Bb]in/
+[Oo]bj/
+
+# Mono/Android Libraries Folder
 lib/
-obj/
-publish/
+
+# Nuget Packages
+*.nupkg
+packages/
+
+# Libraries
+*.dll
+*.so
+*.exe
+
+# User-Specific files
+.vs/
 *.suo
+*.user
+
+# User-Specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
+
+# MSTest test Results
+[Tt]est[Rr]esults.xml
+[Bb]uild[Ll]og.xml

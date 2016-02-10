@@ -1,7 +1,7 @@
 ﻿namespace ManagedBass
 {
     /// <summary>
-    /// BitsPerSample of a Channel
+    /// Bits per Sample of a Channel
     /// </summary>
     public enum Resolution
     {

@@ -22,7 +22,7 @@ namespace ManagedBass.Dynamics
         AutoFormat = 2,
         
         /// <summary>
-        /// Enable double buffering, for use by <see cref="BassWasapi.Read"/> and <see cref="BassWasapi.GetLevel"/>. 
+        /// Enable double buffering, for use by <see cref="BassWasapi.Read"/> and <see cref="BassWasapi.GetLevel()"/>. 
         /// This requires the BASS "no sound" device to have been initilized, via <see cref="Bass.Init"/>.
         /// Internally, a BASS stream is used for that, so the usual <see cref="DataFlags"/> flags are supported.
         /// </summary>

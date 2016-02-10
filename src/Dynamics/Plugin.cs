@@ -64,9 +64,9 @@ namespace ManagedBass.Dynamics
         public void LoadAsPlugin(string Folder = null)
         {
             // Try for Windows, Linux/Android and OSX Libraries respectively.
-            foreach (var extension in new string[] { ".dll", ".so", ".dylib" })
+            foreach (var lib in new string[] { DllName + ".dll", "lib" + DllName + ".so", "lib" + DllName + ".dylib" })
             {
-                string path = Folder != null ? Path.Combine(Folder, DllName + extension) : DllName + extension;
+                string path = Folder != null ? Path.Combine(Folder, lib) : lib;
 
                 if (Bass.PluginLoad(path) != 0)
                 {

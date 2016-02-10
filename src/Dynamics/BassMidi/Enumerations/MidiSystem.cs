@@ -3,7 +3,7 @@
 namespace ManagedBass.Dynamics
 {
     /// <summary>
-    /// System mode parameter, to be used with <see cref="MidiEventSequence.System" />, <see cref="MidiEventSequence.SystemEx" />.
+    /// System mode parameter, to be used with <see cref="MidiEventType.System" />, <see cref="MidiEventType.SystemEx" />.
     /// </summary>
     /// <remarks>
     /// <see cref="Default"/> is identical to <see cref="GS"/>, except that channel 10 is melodic if there are not 16 channels.

@@ -1,5 +1,5 @@
 # ManagedBass
-Copyright (c) 2015 [Mathew Sachin](https://github.com/MathewSachin)
+Copyright (c) 2016 [Mathew Sachin](https://github.com/MathewSachin)
 
 ## MIT License
 

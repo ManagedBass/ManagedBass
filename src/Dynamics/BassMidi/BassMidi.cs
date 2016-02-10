@@ -81,7 +81,7 @@ namespace ManagedBass.Dynamics
         #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamEvent")]
-        public static extern bool StreamEvent(int handle, int chan, MidiEventSequence Event, int param);
+        public static extern bool StreamEvent(int handle, int chan, MidiEventType Event, int param);
 
         [DllImport(DllName)]
         static extern int BASS_MIDI_StreamEvents(int handle, MidiEventsMode mode, [MarshalAs(UnmanagedType.LPArray)] MidiEvent[] Event, int length);
@@ -98,20 +98,20 @@ namespace ManagedBass.Dynamics
             return BASS_MIDI_StreamEvents(handle, flags, events, events.Length);
         }
 
-        public static int StreamEvents(int handle, byte[] raw, bool NoRunningStatus = false, bool Sync = false)
+        public static int StreamEvents(int handle, byte[] raw, int length = 0, bool NoRunningStatus = false, bool Sync = false)
         {
             var flags = MidiEventsMode.Raw;
             if (NoRunningStatus) flags |= MidiEventsMode.NoRunningStatus;
             if (Sync) flags |= MidiEventsMode.Sync;
 
-            return BASS_MIDI_StreamEvents(handle, flags, raw, raw.Length);
+            return BASS_MIDI_StreamEvents(handle, flags, raw, length == 0 ? raw.Length : length);
         }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetChannel")]
         public static extern int StreamGetChannel(int handle, int chan);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetEvent")]
-        public static extern int StreamGetEvent(int handle, int chan, MidiEventSequence Event);
+        public static extern int StreamGetEvent(int handle, int chan, MidiEventType Event);
 
         [DllImport(DllName)]
         static extern int BASS_MIDI_StreamGetEvents(int handle, int track, int filter, [MarshalAs(UnmanagedType.LPArray)] MidiEvent[] events);
@@ -369,7 +369,7 @@ namespace ManagedBass.Dynamics
         }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InInit")]
-        public static extern bool InInit(int device, MidiInProcedure proc, IntPtr user);
+        public static extern bool InInit(int device, MidiInProcedure proc, IntPtr user = default(IntPtr));
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InStart")]
         public static extern bool InStart(int device);

@@ -107,7 +107,7 @@ namespace ManagedBass.Dynamics
         Midi16Bit = 2,
 
         /// <summary>
-        /// BASSMIDI add-on: Ignore system reset events (<see cref="MidiEventSequence.System"/>) when the system mode is unchanged.
+        /// BASSMIDI add-on: Ignore system reset events (<see cref="MidiEventType.System"/>) when the system mode is unchanged.
         /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MidiNoSystemReset = 2048,
@@ -137,7 +137,7 @@ namespace ManagedBass.Dynamics
         MidiNoCrop = 32768,
 
         /// <summary>
-        /// BASSMIDI add-on: Only release the oldest instance upon a note off event (<see cref="MidiEventSequence.Note"/> with velocity=0)
+        /// BASSMIDI add-on: Only release the oldest instance upon a note off event (<see cref="MidiEventType.Note"/> with velocity=0)
         /// when there are overlapping instances of the note.
         /// Otherwise all instances are released. 
         /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
@@ -298,7 +298,7 @@ namespace ManagedBass.Dynamics
         MixerPositionEx = 8192,
 
         /// <summary>
-        /// BASSmix add-on: Buffer source data for <see cref="BassMix.ChannelGetData"/> and <see cref="BassMix.ChannelGetLevel"/>.
+        /// BASSmix add-on: Buffer source data for <see cref="BassMix.ChannelGetData"/> and <see cref="BassMix.ChannelGetLevel(int)"/>.
         /// </summary>
         MixerBuffer = 8192,
 

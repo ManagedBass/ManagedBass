@@ -15,4 +15,3 @@ namespace ManagedBass
         public static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
     }
 }
-

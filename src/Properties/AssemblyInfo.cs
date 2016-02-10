@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle ("ManagedBass")]
-[assembly: AssemblyDescription ("A Free Open-Source .Net Wrapper for Bass.Net")]
+[assembly: AssemblyDescription ("Free Open-Source Cross-Platform .Net Wrapper for Un4seen Bass and its AddOns")]
 [assembly: AssemblyCompany ("Mathew Sachin")]
 [assembly: AssemblyProduct ("ManagedBass")]
-[assembly: AssemblyCopyright ("(c) 2016. Mathew Sachin")]
+[assembly: AssemblyCopyright ("(c) 2016 Mathew Sachin")]
 
 [assembly: AssemblyVersion ("0.11.0")]

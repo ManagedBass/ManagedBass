@@ -1,9 +1,9 @@
 ﻿namespace ManagedBass.Dynamics
 {
     /// <summary>
-    /// The MIDI event type, to be used with <see cref="BassMidi.StreamEvent(int,int,MidiEventSequence,int)" /> or <see cref="BassMidi.StreamGetEvent(int,int,MidiEventSequence)" /> or <see cref="BassMidi.CreateStream(MidiEvent[],int,BassFlags,int)" />.
+    /// The MIDI event type, to be used with <see cref="BassMidi.StreamEvent(int,int,MidiEventType,int)" /> or <see cref="BassMidi.StreamGetEvent(int,int,MidiEventType)" /> or <see cref="BassMidi.CreateStream(MidiEvent[],int,BassFlags,int)" />.
     /// </summary>
-    public enum MidiEventSequence
+    public enum MidiEventType
     {
         /// <summary>
         /// Used with <see cref="BassMidi.CreateStream(MidiEvent[],int,BassFlags,int)" /> to mark the end of the event array.

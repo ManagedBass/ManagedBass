@@ -17,21 +17,219 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_Apply3D")]
         public static extern void Apply3D();
 
+        /// <summary>
+        /// Retrieves the factors that affect the calculations of 3D sound.
+        /// <para>This overload allows you to only get all three values at a time.</para>
+        /// </summary>
+        /// <param name="Distance">The distance factor.</param>
+        /// <param name="RollOff">The rolloff factor.</param>
+        /// <param name="Doppler">The doppler factor.</param>
+        /// <returns>
+        /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
+        /// Use <see cref="LastError" /> to get the error code.
+        /// </returns>
+        /// <remarks>
+        /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.
+        /// <para>
+        /// <list type="table">
+        /// <listheader>
+        ///     <term><see cref="Errors">ERROR CODE</see></term>
+        ///     <description>Description</description>
+        /// </listheader>
+        /// <item>
+        ///     <term><see cref="Errors.NotInitialised"/></term>
+        ///     <description><see cref="Init" /> has not been successfully called.</description>
+        /// </item>
+        /// <item>
+        ///     <term><see cref="Errors.No3D"/></term>
+        ///     <description>The device was not initialized with 3D support.</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_Get3DFactors")]
         public static extern bool Get3DFactors(ref float Distance, ref float RollOff, ref float Doppler);
 
+        /// <summary>
+        /// Sets the factors that affect the calculations of 3D sound.
+        /// </summary>
+        /// <param name="Distance">
+        /// The distance factor... less than 0.0 = leave current... examples: 1.0 = use meters, 0.9144 = use yards, 0.3048 = use feet.
+        /// By default BASS measures distances in meters, you can change this setting if you are using a different unit of measurement.
+        /// </param>
+        /// <param name="RollOff">The rolloff factor, how fast the sound quietens with distance... 0.0 (min) - 10.0 (max), less than 0.0 = leave current... examples: 0.0 = no rolloff, 1.0 = real world, 2.0 = 2x real.</param>
+        /// <param name="Doppler">
+        /// The doppler factor... 0.0 (min) - 10.0 (max), less than 0.0 = leave current... examples: 0.0 = no doppler, 1.0 = real world, 2.0 = 2x real.
+        /// The doppler effect is the way a sound appears to change pitch when it is moving towards or away from you (say hello to Einstein!).
+        /// The listener and sound velocity settings are used to calculate this effect, this doppf value can be used to lessen or exaggerate the effect.
+        /// </param>
+        /// <returns>
+        /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
+        /// Use <see cref="LastError" /> to get the error code.
+        /// </returns>
+        /// <remarks>
+        /// <para>As with all 3D functions, use <see cref="Apply3D" /> to apply the changes.</para>
+        /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
+        /// <para>
+        /// <list type="table">
+        /// <listheader>
+        ///     <term><see cref="Errors">ERROR CODE</see></term>
+        ///     <description>Description</description>
+        /// </listheader>
+        /// <item>
+        ///     <term><see cref="Errors.NotInitialised"/></term>
+        ///     <description><see cref="Init" /> has not been successfully called.</description>
+        /// </item>
+        /// <item>
+        ///     <term><see cref="Errors.No3D"/></term>
+        ///     <description>The device was not initialized with 3D support.</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_Set3DFactors")]
         public static extern bool Set3DFactors(float Distance, float RollOff, float Doppler);
 
+        /// <summary>
+        /// Retrieves the current type of EAX environment and it's parameters.
+        /// </summary>
+        /// <param name="Environment">The EAX environment to get (one of the <see cref="EAXEnvironment" /> values).</param>
+        /// <param name="Volume">The volume of the reverb.</param>
+        /// <param name="Decay">The decay duration.</param>
+        /// <param name="Damp">The damping.</param>
+        /// <returns>
+        /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
+        /// Use <see cref="LastError" /> to get the error code.
+        /// </returns>
+        /// <remarks>
+        /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.
+        /// <para>
+        /// <list type="table">
+        /// <listheader>
+        ///     <term><see cref="Errors">ERROR CODE</see></term>
+        ///     <description>Description</description>
+        /// </listheader>
+        /// <item>
+        ///     <term><see cref="Errors.NotInitialised"/></term>
+        ///     <description><see cref="Init"/> has not been successfully called.</description>
+        /// </item>
+        /// <item>
+        ///     <term><see cref="Errors.NoEAX"/></term>
+        ///     <description>The current device does not support EAX.</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// <para><b>Platform-specific</b></para>
+        /// <para>EAX and this function are only available on Windows</para>
+        /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_GetEAXParameters")]
         public static extern bool GetEAXParameters(ref EAXEnvironment Environment, ref float Volume, ref float Decay, ref float Damp);
 
+        /// <summary>
+        /// Sets the type of EAX environment and it's parameters.
+        /// </summary>
+        /// <param name="Environment">The EAX environment... -1 = leave current, or one of the these <see cref="EAXEnvironment" />.</param>
+        /// <param name="Volume">The volume of the reverb... 0.0 (off) - 1.0 (max), less than 0.0 = leave current.</param>
+        /// <param name="Decay">The time in seconds it takes the reverb to diminish by 60dB... 0.1 (min) - 20.0 (max), less than 0.0 = leave current.</param>
+        /// <param name="Damp">The damping, high or low frequencies decay faster... 0.0 = high decays quickest, 1.0 = low/high decay equally, 2.0 = low decays quickest, less than 0.0 = leave current.</param>
+        /// <returns>
+        /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
+        /// Use <see cref="LastError" /> to get the error code.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// Obviously, EAX functions have no effect if no EAX supporting device is used.
+        /// You can use <see cref="GetInfo" /> to check if the current device suports EAX.
+        /// EAX only affects 3D channels, but EAX functions do NOT require <see cref="Apply3D" /> to apply the changes.
+        /// </para>
+        /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
+        /// <para>
+        /// <list type="table">
+        /// <listheader>
+        ///     <term><see cref="Errors">ERROR CODE</see></term>
+        ///     <description>Description</description>
+        /// </listheader>
+        /// <item>
+        ///     <term><see cref="Errors.NotInitialised"/></term>
+        ///     <description><see cref="Init"/> has not been successfully called.</description>
+        /// </item>
+        /// <item>
+        ///     <term><see cref="Errors.NoEAX"/></term>
+        ///     <description>The current device does not support EAX.</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// <para><b>Platform-specific</b></para>
+        /// <para>This function is only available on Windows.</para>
+        /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_SetEAXParameters")]
         public static extern bool SetEAXParameters(EAXEnvironment Environment, float Volume, float Decay, float Damp);
-        
+
+        /// <summary>
+        /// Retrieves the position, velocity, and orientation of the listener.
+        /// </summary>
+        /// <param name="Position">The position of the listener</param>
+        /// <param name="Velocity">The listener's velocity</param>
+        /// <param name="Front">The direction that the listener's front is pointing</param>
+        /// <param name="Top">The direction that the listener's top is pointing</param>
+        /// <returns>
+        /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
+        /// Use <see cref="LastError" /> to get the error code.
+        /// </returns>
+        /// <remarks>
+        /// <para>The <paramref name="Front" /> and <paramref name="Top" /> parameters must both be retrieved in a single call, they can not be retrieved individually.</para>
+        /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
+        /// <para>
+        /// <list type="table">
+        /// <listheader>
+        ///     <term><see cref="Errors">ERROR CODE</see></term>
+        ///     <description>Description</description>
+        /// </listheader>
+        /// <item>
+        ///     <term><see cref="Errors.NotInitialised"/></term>
+        ///     <description><see cref="Init" /> has not been successfully called.</description>
+        /// </item>
+        /// <item>
+        ///     <term><see cref="Errors.No3D"/></term>
+        ///     <description>The device was not initialized with 3D support.</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_Get3DPosition")]
         public static extern bool Get3DPosition(ref Vector3D Position, ref Vector3D Velocity, ref Vector3D Front, ref Vector3D Top);
 
+        /// <summary>
+        /// Sets the position, velocity, and orientation of the listener (i.e. the player).
+        /// </summary>
+        /// <param name="Position">The position of the listener</param>
+        /// <param name="Velocity">The listener's velocity</param>
+        /// <param name="Front">The direction that the listener's front is pointing</param>
+        /// <param name="Top">The direction that the listener's top is pointing</param>
+        /// <returns>
+        /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
+        /// Use <see cref="LastError" /> to get the error code.
+        /// </returns>
+        /// <remarks>
+        /// <para>The <paramref name="Front" /> and <paramref name="Top" /> parameters must both be set in a single call, they can not be set individually.</para>
+        /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
+        /// <para>
+        /// <list type="table">
+        /// <listheader>
+        ///     <term><see cref="Errors">ERROR CODE</see></term>
+        ///     <description>Description</description>
+        /// </listheader>
+        /// <item>
+        ///     <term><see cref="Errors.NotInitialised"/></term>
+        ///     <description><see cref="Init" /> has not been successfully called.</description>
+        /// </item>
+        /// <item>
+        ///     <term><see cref="Errors.No3D"/></term>
+        ///     <description>The device was not initialized with 3D support.</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_Set3DPosition")]
         public static extern bool Set3DPosition(Vector3D Position, Vector3D Velocity, Vector3D Front, Vector3D Top);
 

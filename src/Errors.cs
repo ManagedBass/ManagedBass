@@ -7,7 +7,7 @@ namespace ManagedBass
     {
         /// <summary>
         /// Some other mystery error
-        /// </summary>     
+        /// </summary>
         Unknown = -1,
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace ManagedBass
         DataNotAvailable = 37,
 
         /// <summary>
-        /// The channel is a 'decoding channel'
+        /// The channel is a 'Decoding Channel'
         /// </summary>
         DecodingChannel = 38,
 
@@ -212,7 +212,7 @@ namespace ManagedBass
 
         #region BassWma
         /// <summary>
-        /// BassWma: the file is protected
+        /// BassWma: The file is protected
         /// </summary>
         WmaLicense = 1000,
 
@@ -222,12 +222,12 @@ namespace ManagedBass
         WM9 = 1001,
 
         /// <summary>
-        /// BassWma: access denied (User/pass is invalid)
+        /// BassWma: Access denied (Username/Password is invalid)
         /// </summary>
         WmaAccesDenied = 1002,
 
         /// <summary>
-        /// BassWma: no appropriate codec is installed
+        /// BassWma: No appropriate codec is installed
         /// </summary>
         WmaCodecNotInstalled = 1003,
 
@@ -238,7 +238,7 @@ namespace ManagedBass
         #endregion
 
         /// <summary>
-        /// BassWASAPI: no WASAPI available
+        /// BassWASAPI: WASAPI Not available
         /// </summary>
         WasapiNotAvailable = 5000,
 

@@ -1,0 +1,11 @@
+# AppVeyor Configuration
+
+version: 0.9.{build}
+
+configuration: Release
+
+build:
+  project: src\ManagedBass.sln
+  verbosity: minimal
+
+test: off

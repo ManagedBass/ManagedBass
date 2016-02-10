@@ -9,9 +9,7 @@ namespace ManagedBass
     [StructLayout(LayoutKind.Sequential)]
     public class ApeBinaryTag
     {
-        IntPtr key = IntPtr.Zero;
-
-        IntPtr data = IntPtr.Zero;
+        IntPtr key = IntPtr.Zero, data = IntPtr.Zero;
 
         int length;
 

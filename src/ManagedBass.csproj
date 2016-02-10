@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform>AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ManagedBass</RootNamespace>
@@ -91,7 +91,7 @@
     <Compile Include="Dynamics\BassFx\Delegates\BPMBeatProcedure.cs" />
     <Compile Include="Dynamics\BassFx\Enumerations\BQFType.cs" />
     <Compile Include="Dynamics\BassFx\Enumerations\FXChannelFlags.cs" />
-    <Compile Include="Dynamics\BassMidi\Enumerations\MidiEventSequence.cs" />
+    <Compile Include="Dynamics\BassMidi\Enumerations\MidiEventType.cs" />
     <Compile Include="Dynamics\BassMidi\Enumerations\MidiEventsMode.cs" />
     <Compile Include="Dynamics\BassMidi\Enumerations\MidiMarkerType.cs" />
     <Compile Include="Dynamics\BassMidi\MidiInProcedure.cs" />
@@ -169,6 +169,7 @@
     <Compile Include="IO\CDChannel.cs" />
     <Compile Include="IO\FileChannel.cs" />
     <Compile Include="IO\ManagedFileChannel.cs" />
+    <Compile Include="IO\MidiIn.cs" />
     <Compile Include="IO\TempoChannel.cs" />
     <Compile Include="IO\MemoryChannel.cs" />
     <Compile Include="IO\Encoder.cs" />
