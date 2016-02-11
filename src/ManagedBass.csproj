@@ -43,6 +43,7 @@
     <Compile Include="Dynamics\BassCd\Enumerations\CDDataType.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\EncodeServer.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\EncodeMetaDataType.cs" />
+    <Compile Include="Dynamics\BassDsd.cs" />
     <Compile Include="Dynamics\BassMidi\Enumerations\MidiSystem.cs" />
     <Compile Include="Dynamics\BassMix\MixEnvelope.cs" />
     <Compile Include="Dynamics\BassMix\MixerNode.cs" />

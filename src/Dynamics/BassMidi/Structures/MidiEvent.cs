@@ -3,7 +3,7 @@
 namespace ManagedBass.Dynamics
 {
     /// <summary>
-    /// Used with <see cref="BassMidi.StreamEvents"/> to apply events and <see cref="BassMidi.StreamGetEvents"/> to retrieve events, and <see cref="BassMidi.CreateStream(MidiEvent[],int,BassFlags,int)"/> to play event sequences.
+    /// Used with <see cref="BassMidi.StreamEvents(int,MidiEvent[],bool,bool)"/> to apply events and <see cref="BassMidi.StreamGetEvents"/> to retrieve events, and <see cref="BassMidi.CreateStream(MidiEvent[],int,BassFlags,int)"/> to play event sequences.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct MidiEvent

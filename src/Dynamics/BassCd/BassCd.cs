@@ -5,8 +5,11 @@ namespace ManagedBass.Dynamics
 {
     /// <summary>
     /// Wraps basscd.dll.
-    /// <para>Supports: .cda</para>
     /// </summary>
+    /// <remarks>
+    /// <para>Supports: .cda</para>
+    /// <para>Not available on OSX</para>
+    /// </remarks>
     public static class BassCd
     {
         const string DllName = "basscd";

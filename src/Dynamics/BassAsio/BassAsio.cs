@@ -6,6 +6,9 @@ namespace ManagedBass.Dynamics
     /// <summary>
     /// Wraps BassAsio: bassasio.dll
     /// </summary>
+    /// <remarks>
+    /// Only available on Windows
+    /// </remarks>
     public static class BassAsio
     {
         const string DllName = "bassasio";

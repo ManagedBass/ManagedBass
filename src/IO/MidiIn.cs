@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
+    // TODO: Won't work most probably
     class MidiIn : IDisposable
     {
         public int DeviceId { get; private set; }
@@ -23,18 +24,26 @@ namespace ManagedBass
 
         public string DeviceName { get; private set; }
 
-        void Callback(int device, double time, IntPtr buffer, int length, IntPtr user)
+        MidiEvent[] data;
+        static readonly int sMidiEvent = Marshal.SizeOf(typeof(MidiEvent));
+
+        unsafe void Callback(int device, double time, IntPtr buffer, int length, IntPtr user)
         {
-            var b = new byte[length];
+            int count = length / sMidiEvent;
 
-            Marshal.Copy(buffer, b, 0, length);
+            if (data == null || data.Length < count)
+                data = new MidiEvent[count];
+            
+            var ptr = (MidiEvent*)buffer;
 
+            for (int i = 0; i < count; ++i)
+                data[i] = *(ptr + i);
+         
             if (MessageReceived != null)
-                MessageReceived(b);
+                MessageReceived(data, count);
         }
 
-        // TODO: Convert Raw Midi data to MidiEvent
-        public event Action<byte[]> MessageReceived;
+        public event Action<MidiEvent[], int> MessageReceived;
 
         public void Dispose() { BassMidi.InFree(DeviceId); }
     }
