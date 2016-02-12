@@ -251,7 +251,7 @@ namespace ManagedBass
         }
 
         #region Multi Strings
-        static IEnumerable<string> ExtractMultiStringAnsi(IntPtr ptr)
+        internal static IEnumerable<string> ExtractMultiStringAnsi(IntPtr ptr)
         {
             while (true)
             {

@@ -24,21 +24,6 @@ namespace ManagedBass.Dynamics
     /// </remarks>
     public static partial class Bass
     {
-        /// <summary>
-        /// The Bass way to say <see langword="false" /> = 0.
-        /// </summary>
-        public const int FALSE = 0;
-
-        /// <summary>
-        /// The Bass way to say <see langword="true" /> = 1.
-        /// </summary>
-        public const int TRUE = 1;
-
-        /// <summary>
-        /// The Bass way to say Error = -1.
-        /// </summary>
-        public const int ERROR = -1;
-
         const string DllName = "bass";
 
         /// <summary>

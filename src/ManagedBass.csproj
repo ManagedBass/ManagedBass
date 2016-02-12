@@ -102,6 +102,8 @@
     <Compile Include="Dynamics\BassMidi\Structures\MidiFontEx.cs" />
     <Compile Include="Dynamics\BassMidi\Structures\MidiFontInfo.cs" />
     <Compile Include="Dynamics\BassMidi\Structures\MidiMarker.cs" />
+    <Compile Include="Dynamics\BassWinamp\BassWinamp.cs" />
+    <Compile Include="Dynamics\BassWinamp\WinampFindPluginFlags.cs" />
     <Compile Include="Dynamics\BassWma\WMAEncodeFlags.cs" />
     <Compile Include="Dynamics\BassWma\Delegates\WMEncodeProcedure.cs" />
     <Compile Include="Dynamics\BassWma\Delegates\ClientConnectProcedure.cs" />
