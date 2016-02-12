@@ -9,7 +9,7 @@ namespace ManagedBass.Dynamics
     /// </summary>
     /// 
     /// <remarks>
-    /// Currently Wraps: BassAAC, BassAC3, BassADX, BassAIX, BassALAC, BassAPE, BassFLAC, BassMPC, BassOFR, BassOPUS, BassSPX, BassTTA, BassWV
+    /// Currently Wraps: BassAAC, BassAC3, BassADX, BassAIX, BassALAC, BassAPE, BassFLAC, BassHLS, BassMPC, BassOFR, BassOPUS, BassSPX, BassTTA, BassWV
     /// </remarks>
     public class Plugin
     {
@@ -228,24 +228,27 @@ namespace ManagedBass.Dynamics
         #region Instances
         /// <summary>
         /// Wraps BassAAC: bass_aac.dll.
-        /// MP4 and AAC both are always supported.
-        /// 
-        /// Supports .aac, .adts, .mp4, .m4a, .m4b
         /// </summary>
+        /// <remarks>
+        /// MP4 and AAC both are always supported.
+        /// <para>Supports .aac, .adts, .mp4, .m4a, .m4b</para>
+        /// </remarks>
         public static readonly Plugin BassAAC = new Plugin("bass_aac", "AAC");
 
         /// <summary>
         /// Wraps BassAC3: bassac3.dll
-        /// 
-        /// Supports: .ac3
         /// </summary>
+        /// <remarks>
+        /// Supports: .ac3
+        /// </remarks>
         public static readonly Plugin BassAC3 = new Plugin("bass_ac3", "AC3");
 
         /// <summary>
         /// Wraps BassADX: bassadx.dll
-        /// 
-        /// Supports: .adx
         /// </summary>
+        /// <remarks>
+        /// Supports: .adx
+        /// </remarks>
         public static readonly Plugin BassADX = new Plugin("bass_adx", "ADX");
 
         /// <summary>
@@ -255,65 +258,79 @@ namespace ManagedBass.Dynamics
 
         /// <summary>
         /// Wraps BassALAC: bassalac.dll
-        /// 
-        /// Supports: .m4a, .aac, .mp4, .mov
         /// </summary>
+        /// <remarks>
+        /// Supports: .m4a, .aac, .mp4, .mov
+        /// </remarks>
         public static readonly Plugin BassALAC = new Plugin("bassalac", "ALAC");
 
         /// <summary>
         /// Wraps BassAPE: bass_ape.dll
-        /// 
-        /// Supports: .ape, .ap1
         /// </summary>
+        /// <remarks>
+        /// Supports: .ape, .ap1
+        /// </remarks>
         public static readonly Plugin BassAPE = new Plugin("bass_ape", "APE", false);
 
         /// <summary>
         /// Wraps BassFLAC: bassflac.dll
-        /// 
-        /// Supports: .flac
         /// </summary>
+        /// <remarks>
+        /// Supports: .flac
+        /// </remarks>
         public static readonly Plugin BassFLAC = new Plugin("bassflac", "FLAC");
 
         /// <summary>
-        /// Wraps BassMPC: bass_mpc.dll
-        /// 
-        /// Supports: .mpc, .mpp, .mp+
+        /// Wraps BassHLS: basshls.dll
         /// </summary>
+        public static readonly Plugin BassHLS = new Plugin("basshls", "HLS");
+
+        /// <summary>
+        /// Wraps BassMPC: bass_mpc.dll
+        /// </summary>
+        /// <remarks>
+        /// Supports: .mpc, .mpp, .mp+
+        /// </remarks>
         public static readonly Plugin BassMPC = new Plugin("bass_mpc", "MPC");
 
         /// <summary>
         /// Wraps BassOFR: bass_ofr.dll
-        /// 
-        /// Supports: .ofr, .ofs
         /// </summary>
+        /// <remarks>
+        /// Supports: .ofr, .ofs
+        /// </remarks>
         public static readonly Plugin BassOFR = new Plugin("bass_ofr", "OFR", false);
 
         /// <summary>
         /// Wraps BassOPUS: bassopus.dll
-        /// 
-        /// Supports: .opus
         /// </summary>
+        /// <remarks>
+        /// Supports: .opus
+        /// </remarks>
         public static readonly Plugin BassOPUS = new Plugin("bassopus", "OPUS");
 
         /// <summary>
         /// Wraps BassSPX: bass_spx.dll
-        /// 
-        /// Supports: .spx
         /// </summary>
+        /// <remarks>
+        /// Supports: .spx
+        /// </remarks>
         public static readonly Plugin BassSPX = new Plugin("bass_spx", "SPX");
 
         /// <summary>
         /// Wraps BassTTA: bass_tta.dll
-        /// 
-        /// Supports: .tta
         /// </summary>
+        /// <remarks>
+        /// Supports: .tta
+        /// </remarks>
         public static readonly Plugin BassTTA = new Plugin("bass_tta", "TTA", false);
 
         /// <summary>
         /// Wraps BassWV: basswv.dll
-        /// 
-        /// Supports: .wv
         /// </summary>
+        /// <remarks>
+        /// Supports: .wv
+        /// </remarks>
         public static readonly Plugin BassWV = new Plugin("basswv", "WV");
         #endregion
     }

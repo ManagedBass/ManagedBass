@@ -1,6 +1,6 @@
 # AppVeyor Configuration
 
-version: 0.9.{build}
+version: 0.11.{build}
 
 configuration: Release
 
