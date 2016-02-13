@@ -11,7 +11,7 @@ namespace ManagedBass.Dynamics
     /// This means it is not required to pin the 'procs' instance, but it is still required to keep a reference as long as BASS uses the callback delegates in order to prevent the callbacks from being garbage collected.
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public struct FileProcedures
+    public class FileProcedures
     {
         /// <summary>
         /// Callback function to close the file.

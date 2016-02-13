@@ -10,6 +10,28 @@ namespace ManagedBass
     /// <remarks>Requires basscd.dll</remarks>
     public class CDDrive : IDisposable
     {
+        #region Singleton
+        static Dictionary<int, CDDrive> Singleton = new Dictionary<int, CDDrive>();
+
+        CDDrive(int Index) { DriveIndex = Index; }
+
+        public static CDDrive Get(int Device)
+        {
+            if (Singleton.ContainsKey(Device)) return Singleton[Device];
+            else
+            {
+                CDInfo info;
+                if (!BassCd.GetDriveInfo(Device, out info))
+                    throw new ArgumentException("Invalid CDDrive Index");
+
+                var Dev = new CDDrive(Device);
+                Singleton.Add(Device, Dev);
+
+                return Dev;
+            }
+        }
+        #endregion
+
         /// <summary>
         /// Number of CD Drives available on the System
         /// </summary>
@@ -24,8 +46,6 @@ namespace ManagedBass
         /// Gets Information about a Drive
         /// </summary>
         public CDInfo DriveInfo { get { return BassCd.GetDriveInfo(DriveIndex); } }
-
-        CDDrive(int Index) { DriveIndex = Index; }
 
         public int Speed
         {
@@ -45,7 +65,7 @@ namespace ManagedBass
                 CDInfo info;
 
                 for (int i = 0; BassCd.GetDriveInfo(i, out info); ++i)
-                    yield return new CDDrive(i);
+                    yield return Get(i);
             }
         }
 

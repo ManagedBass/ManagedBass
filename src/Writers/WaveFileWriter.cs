@@ -10,8 +10,10 @@ namespace ManagedBass
     public class WaveFileWriter : IAudioFileWriter
     {
         #region Fields
-        Stream outStream;
+        Stream ofstream;
+        BinaryWriter Writer;
         long dataSizePos, factSampleCountPos;
+        object locker = new object();
 
         public Resolution Resolution { get; private set; }
 
@@ -26,29 +28,30 @@ namespace ManagedBass
         #region Factory
         WaveFileWriter(Stream outStream, WaveFormat format)
         {
-            this.outStream = outStream;
-            BinaryWriter w = new BinaryWriter(outStream, Encoding.ASCII);
-            w.Write(Encoding.ASCII.GetBytes("RIFF"));
-            w.Write((int)0); // placeholder
-            w.Write(Encoding.ASCII.GetBytes("WAVEfmt "));
+            ofstream = outStream;
+            Writer = new BinaryWriter(outStream, Encoding.ASCII);
+
+            Writer.Write(Encoding.ASCII.GetBytes("RIFF"));
+            Writer.Write((int)0); // placeholder
+            Writer.Write(Encoding.ASCII.GetBytes("WAVEfmt "));
             WaveFormat = format;
 
-            w.Write((int)(18 + format.ExtraSize)); // wave format Length
-            format.Serialize(w);
+            Writer.Write((int)(18 + format.ExtraSize)); // wave format Length
+            format.Serialize(Writer);
 
             // CreateFactChunk
             if (format.Encoding != WaveFormatTag.Pcm)
             {
-                w.Write(Encoding.ASCII.GetBytes("fact"));
-                w.Write((int)4);
+                Writer.Write(Encoding.ASCII.GetBytes("fact"));
+                Writer.Write((int)4);
                 factSampleCountPos = outStream.Position;
-                w.Write((int)0); // number of samples
+                Writer.Write((int)0); // number of samples
             }
 
             // WriteDataChunkHeader
-            w.Write(System.Text.Encoding.ASCII.GetBytes("data"));
+            Writer.Write(Encoding.ASCII.GetBytes("data"));
             dataSizePos = outStream.Position;
-            w.Write((int)0); // placeholder
+            Writer.Write((int)0); // placeholder
 
             Length = 0;
         }
@@ -84,8 +87,14 @@ namespace ManagedBass
         /// <param name="count">the number of bytes to write</param>
         public void Write(byte[] data, int count)
         {
-            outStream.Write(data, 0, count);
-            Length += count;
+            try
+            {
+                lock (locker)
+                    Writer.Write(data, 0, count);
+
+                Length += count;
+            }
+            catch { }
         }
 
         /// <summary>
@@ -95,9 +104,17 @@ namespace ManagedBass
         /// <param name="count">The number of bytes to write</param>
         public void Write(short[] data, int count)
         {
-            BinaryWriter w = new BinaryWriter(outStream);
-            for (int n = 0; n < count / 2; n++) w.Write(data[n]);
-            Length += count;
+            try
+            {
+                int n = count / 2;
+
+                lock (locker)
+                    for (int i = 0; i < n; i++)
+                        Writer.Write(data[i]);
+
+                Length += count;
+            }
+            catch { }
         }
 
         /// <summary>
@@ -107,16 +124,24 @@ namespace ManagedBass
         /// <param name="count">The number of bytes to write</param>
         public void Write(float[] data, int count)
         {
-            BinaryWriter w = new BinaryWriter(outStream);
-            for (int n = 0; n < count / 4; n++) w.Write(data[n]);
-            Length += count;
+            try
+            {
+                int n = count / 4;
+
+                lock (locker)
+                    for (int i = 0; i < n; i++)
+                        Writer.Write(data[i]);
+
+                Length += count;
+            }
+            catch { }
         }
         #endregion
 
         /// <summary>
         /// Ensures data is written to disk
         /// </summary>
-        public void Flush() { outStream.Flush(); }
+        public void Flush() { Writer.Flush(); }
 
         #region IDisposable Members
         /// <summary>
@@ -136,30 +161,31 @@ namespace ManagedBass
         {
             if (disposing)
             {
-                if (outStream != null)
+                if (Writer != null)
                 {
                     try
                     {
-                        outStream.Flush();
-                        BinaryWriter w = new BinaryWriter(outStream, Encoding.ASCII);
-                        w.Seek(4, SeekOrigin.Begin);
-                        w.Write((int)(outStream.Length - 8));
+                        Writer.Flush();
+                        
+                        Writer.Seek(4, SeekOrigin.Begin);
+                        Writer.Write((int)(ofstream.Length - 8));
 
                         if (WaveFormat.Encoding != WaveFormatTag.Pcm)
                         {
-                            w.Seek((int)factSampleCountPos, SeekOrigin.Begin);
-                            w.Write((int)((Length * 8) / WaveFormat.BitsPerSample));
+                            Writer.Seek((int)factSampleCountPos, SeekOrigin.Begin);
+                            Writer.Write((int)((Length * 8) / WaveFormat.BitsPerSample));
                         }
 
-                        w.Seek((int)dataSizePos, SeekOrigin.Begin);
-                        w.Write((int)(Length));
+                        Writer.Seek((int)dataSizePos, SeekOrigin.Begin);
+                        Writer.Write((int)(Length));
                     }
                     finally
                     {
-                        // in a finally block as we don't want the FileStream to run its disposer in
-                        // the GC thread if the code above caused an IOException (e.g. due to disk full)
-                        outStream.Close(); // will close the underlying base stream
-                        outStream = null;
+                        Writer.Close();
+                        Writer = null;
+
+                        ofstream.Close(); // will close the underlying base stream
+                        ofstream = null;
                     }
                 }
             }

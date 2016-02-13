@@ -10,7 +10,7 @@ namespace ManagedBass
         Silence SilencePlayer;
         WasapiLoopbackDevice Device;
 
-        public Loopback(WasapiLoopbackDevice Device, bool IncludeSilence)
+        public Loopback(WasapiLoopbackDevice Device, bool IncludeSilence = true)
         {
             this.Device = Device;
 

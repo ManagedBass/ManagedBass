@@ -13,7 +13,7 @@ namespace ManagedBass.Dynamics
     /// <param name="User">The User instance data given on stream creation.</param>
     /// <remarks>
     /// <para>
-    /// Sub-channel data or C2 error info is delivered to this function as soon as it is read from the CD, before the associated audio data is played, or delivered by <see cref="Bass.ChannelGetData" /> in the case of a decoding channel.
+    /// Sub-channel data or C2 error info is delivered to this function as soon as it is read from the CD, before the associated audio data is played, or delivered by <see cref="Bass.ChannelGetData(int,IntPtr,int)" /> in the case of a decoding channel.
     /// The Position value can be used to synchronize the delivered data with the stream's audio data.
     /// </para>
     /// <para>

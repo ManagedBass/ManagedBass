@@ -3,7 +3,7 @@
 namespace ManagedBass.Dynamics
 {
     /// <summary>
-    /// Flags to be used with <see cref="Bass.ChannelGetData" />.
+    /// Flags to be used with <see cref="Bass.ChannelGetData(int,IntPtr,int)" />.
     /// </summary>
     [Flags]
     public enum DataFlags

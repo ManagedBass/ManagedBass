@@ -15,7 +15,7 @@ namespace ManagedBass.Dynamics
     /// </para>
     /// <para>
     /// BASS supports 8/16/32-bit sample data, so if a WAV file, for example, uses another sample resolution, it'll have to be converted by BASS.
-    /// The origres member can be used to check what the resolution originally was.
+    /// The <see cref="OriginalResolution"/> member can be used to check what the resolution originally was.
     /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]

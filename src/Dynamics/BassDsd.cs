@@ -79,22 +79,9 @@ namespace ManagedBass.Dynamics
             return CreateStream(buffer, 0, Length, Flags, Frequency);
         }
 
-        [DllImport(DllName)]
-        static extern int BASS_DSD_StreamCreateFileUser(StreamSystem system, BassFlags flags, IntPtr procs, IntPtr user, int freq);
-
-        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr), int Frequency = 44100)
-        {
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(procs));
-
-            Marshal.StructureToPtr(procs, ptr, true);
-
-            int handle = BASS_DSD_StreamCreateFileUser(system, flags, ptr, user, Frequency);
-
-            Marshal.FreeHGlobal(ptr);
-
-            return handle;
-        }
-
+        [DllImport(DllName, EntryPoint = "BASS_DSD_StreamCreateFileUser")]
+        public static extern int CreateStream(StreamSystem system, BassFlags flags, [In][Out] FileProcedures procs, IntPtr user, int freq);
+        
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_DSD_StreamCreateURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 44100);
 

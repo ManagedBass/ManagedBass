@@ -10,34 +10,31 @@ using System.Windows.Input;
 namespace MBassWPF
 {
     /// <summary>
-    /// Interaction logic for LoopbackRecording.xaml
+    /// Demonstrates using <see cref="Recording"/> and <see cref="Loopback"/>.
     /// </summary>
-    public partial class LoopbackRecording : UserControl, INotifyPropertyChanged
+    public partial class Recorder : UserControl, INotifyPropertyChanged
     {
-        public ObservableCollection<WasapiLoopbackDevice> AvailableAudioSources { get; private set; }
-        
-        IAudioCaptureClient L;
+        public ObservableCollection<IDisposable> AvailableAudioSources { get; private set; }
+
+        IAudioCaptureClient R;
         IAudioFileWriter Writer;
 
-        WasapiLoopbackDevice dev;
-        public WasapiLoopbackDevice SelectedAudioDevice
+        IDisposable dev;
+        public IDisposable SelectedAudioDevice
         {
             get { return dev; }
             set
             {
-                if (dev != value)
-                {
-                    dev = value;
-                    OnPropertyChanged("SelectedAudioDevice");
-                }
+                dev = value;
+                OnPropertyChanged("SelectedAudioDevice");
             }
         }
 
-        public LoopbackRecording()
+        public Recorder()
         {
             DataContext = this;
-            
-            AvailableAudioSources = new ObservableCollection<WasapiLoopbackDevice>();
+
+            AvailableAudioSources = new ObservableCollection<IDisposable>();
 
             Refresh();
 
@@ -49,6 +46,11 @@ namespace MBassWPF
         void Refresh()
         {
             AvailableAudioSources.Clear();
+
+            foreach (var dev in RecordingDevice.Devices)
+                if (dev.DeviceInfo.IsEnabled)
+                    AvailableAudioSources.Add(dev);
+
             foreach (var dev in WasapiLoopbackDevice.Devices)
                 if (dev.DeviceInfo.IsEnabled)
                     AvailableAudioSources.Add(dev);
@@ -58,14 +60,16 @@ namespace MBassWPF
         {
             if (BPlay.Content.ToString().Contains("Record"))
             {
-                Start();
+                if (R == null)
+                    New();
+                else R.Start();
 
                 Status.Content = "Recording";
                 BPlay.Content = "/Resources/Pause.png";
             }
             else if (BPlay.Content.ToString().Contains("Pause"))
             {
-                L.Stop();
+                R.Stop();
 
                 Status.Content = "Paused";
                 BPlay.Content = "/Resources/Record.png";
@@ -74,43 +78,58 @@ namespace MBassWPF
 
         public void Stop(object sender = null, RoutedEventArgs e = null)
         {
-            if (L != null && L.Stop())
+            if (R != null)
             {
                 Status.Content = "Stopped";
                 BPlay.Content = "/Resources/Record.png";
 
+                R.Dispose();
+
+                R = null;
+
                 Writer.Dispose();
 
-                L = null;
                 Writer = null;
             }
         }
 
-        void Start()
+        void New()
         {
             var writerKind = MainWindow.SelectedWriterKind;
 
             string filePath = Path.Combine(MainWindow.OutFolder, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + writerKind.ToString().ToLower());
 
-            var info = dev.DeviceInfo;
+            bool isLoopback = dev is WasapiLoopbackDevice;
+
+            int chan = 2, freq = 44100;
+
+            if (isLoopback)
+            {
+                var info = (dev as WasapiLoopbackDevice).DeviceInfo;
+
+                chan = info.MixChannels;
+                freq = info.MixFrequency;
+            }
 
             switch (writerKind)
             {
-                // Loopback provides 32-bit floating point audio
                 case WriterKind.Mp3:
-                    Writer = new ACMEncodedFileWriter(filePath, WaveFormatTag.Mp3, info.MixChannels, info.MixFrequency, Resolution.Float);
+                    Writer = new ACMEncodedFileWriter(filePath, WaveFormatTag.Mp3, chan, freq, Resolution.Float);
                     break;
                 case WriterKind.Wav:
-                    Writer = new WaveFileWriter(filePath, info.MixChannels, info.MixFrequency, Resolution.Float);
+                    Writer = new WaveFileWriter(filePath, chan, freq, Resolution.Float);
                     break;
                 case WriterKind.Wma:
-                    Writer = new WmaFileWriter(filePath, info.MixChannels, info.MixFrequency, 128000, Resolution.Float);
+                    Writer = new WmaFileWriter(filePath, chan, freq, 128000, Resolution.Float);
                     break;
             }
 
-            L = new Loopback(dev, true);
-            L.DataAvailable += L_DataAvailable;
-            L.Start();
+            R = isLoopback
+                ? (IAudioCaptureClient)new Loopback(dev as WasapiLoopbackDevice)
+                : new Recording(dev as RecordingDevice, Resolution: Resolution.Float);
+
+            R.DataAvailable += L_DataAvailable;
+            R.Start();
         }
 
         float[] Buffer = null;
@@ -122,10 +141,9 @@ namespace MBassWPF
 
             obj.Read(Buffer);
 
-            Writer.Write(Buffer, obj.ByteLength);
+            if (Writer != null)
+                Writer.Write(Buffer, obj.ByteLength);
         }
-
-        void Pause() { L.Stop(); }
 
         void OnPropertyChanged(string e)
         {

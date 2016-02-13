@@ -18,7 +18,7 @@ namespace ManagedBass.Dynamics
 
         #region Split
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamCreate")]
-        public static extern int CreateSplitStream(int channel, BassFlags Flags, [MarshalAs(UnmanagedType.LPArray)] int[] chanmap);
+        public static extern int CreateSplitStream(int channel, BassFlags Flags, int[] chanmap);
 
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamGetAvailable")]
         public static extern int SplitStreamGetAvailable(int hndle);
@@ -33,7 +33,7 @@ namespace ManagedBass.Dynamics
         public static extern int SplitStreamGetSource(int handle);
 
         [DllImport(DllName)]
-        static extern int BASS_Split_StreamGetSplits(int handle, int[] array, int length);
+        static extern int BASS_Split_StreamGetSplits(int handle, [In][Out] int[] array, int length);
 
         public static int[] SplitStreamGetSplits(int handle)
         {
@@ -137,14 +137,28 @@ namespace ManagedBass.Dynamics
         public static bool ChannelRemoveFlag(int handle, BassFlags flag) { return !(ChannelFlags(handle, 0, flag).HasFlag(flag)); }
         #endregion
 
+        #region Channel Get Data
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetData")]
         public static extern int ChannelGetData(int Handle, IntPtr Buffer, int Length);
+
+        [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetData")]
+        public static extern int ChannelGetData(int Handle, [In][Out] byte[] Buffer, int Length);
+
+        [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetData")]
+        public static extern int ChannelGetData(int Handle, [In][Out] short[] Buffer, int Length);
+
+        [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetData")]
+        public static extern int ChannelGetData(int Handle, [In][Out] int[] Buffer, int Length);
+
+        [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetData")]
+        public static extern int ChannelGetData(int Handle, [In][Out] float[] Buffer, int Length);
+        #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetLevel")]
         public static extern int ChannelGetLevel(int Handle);
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetLevelEx")]
-        public static extern int ChannelGetLevel(int Handle, float[] Levels, float Length, LevelRetrievalFlags Flags);
+        public static extern int ChannelGetLevel(int Handle, [In][Out] float[] Levels, float Length, LevelRetrievalFlags Flags);
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetMatrix")]
         public static extern bool ChannelGetMatrix(int Handle, [In][Out] float[,] Matrix);

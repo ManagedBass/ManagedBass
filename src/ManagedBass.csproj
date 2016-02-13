@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BitHelper.cs" />
+    <Compile Include="Devices\AsioDevice.cs" />
     <Compile Include="Devices\Bass\RecordingDevice.cs" />
     <Compile Include="Devices\Wasapi\WasapiLoopbackDevice.cs" />
     <Compile Include="Devices\Wasapi\WasapiRecordingDevice.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Dynamics\Bass\Structures\Vector3D.cs" />
     <Compile Include="Dynamics\Plugin.cs" />
     <Compile Include="Effects\PitchShift.cs" />
+    <Compile Include="FullDuplex.cs" />
     <Compile Include="IO\AudioCapture\IAudioCaptureClient.cs" />
     <Compile Include="IO\CDChannel.cs" />
     <Compile Include="IO\FileChannel.cs" />

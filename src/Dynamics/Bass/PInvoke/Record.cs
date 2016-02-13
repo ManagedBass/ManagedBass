@@ -90,12 +90,12 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_RecordGetInput")]
         public extern static int RecordGetInput(int input, ref float volume);
 
-        [DllImport(DllName, EntryPoint = "BASS_RecordGetInput")]
-        extern static int RecordGetInput(int input, IntPtr volume);
+        [DllImport(DllName)]
+        extern static int BASS_RecordGetInput(int input, IntPtr volume);
 
         public static InputTypeFlags RecordGetInputType(int input)
         {
-            int n = RecordGetInput(input, IntPtr.Zero);
+            int n = BASS_RecordGetInput(input, IntPtr.Zero);
             if (n == -1) return InputTypeFlags.Error;
             return (InputTypeFlags)(n & 0xff0000);
         }

@@ -39,21 +39,11 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <DockPanel>
-                        <Label Content="Loopback"
-                               DockPanel.Dock="Top"/>
-                        <local:LoopbackRecording Padding="5,0"/>
-                    </DockPanel>
 
                     <DockPanel Grid.Row="1">
-                        <Label Content="Recording"
+                        <Label Content="Recording and Loopback"
                                DockPanel.Dock="Top"/>
-                        <local:BassRecording Padding="5,0"/>
+                        <local:Recorder Padding="5,0"/>
                     </DockPanel>
 
                     <DockPanel Grid.Column="1">

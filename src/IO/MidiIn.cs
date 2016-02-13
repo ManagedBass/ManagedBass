@@ -24,26 +24,20 @@ namespace ManagedBass
 
         public string DeviceName { get; private set; }
 
-        MidiEvent[] data;
-        static readonly int sMidiEvent = Marshal.SizeOf(typeof(MidiEvent));
+        byte[] data;
 
         unsafe void Callback(int device, double time, IntPtr buffer, int length, IntPtr user)
         {
-            int count = length / sMidiEvent;
+            if (data == null || data.Length < length)
+                data = new byte[length];
 
-            if (data == null || data.Length < count)
-                data = new MidiEvent[count];
-            
-            var ptr = (MidiEvent*)buffer;
-
-            for (int i = 0; i < count; ++i)
-                data[i] = *(ptr + i);
+            Marshal.Copy(buffer, data, 0, length);
          
             if (MessageReceived != null)
-                MessageReceived(data, count);
+                MessageReceived(data, length);
         }
 
-        public event Action<MidiEvent[], int> MessageReceived;
+        public event Action<byte[], int> MessageReceived;
 
         public void Dispose() { BassMidi.InFree(DeviceId); }
     }

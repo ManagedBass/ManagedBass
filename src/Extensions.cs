@@ -42,8 +42,13 @@ namespace ManagedBass
         internal static IntPtr Load(string DllName, string Folder)
         {
             if (IsWindows) return WindowsNative.LoadLibrary(!string.IsNullOrWhiteSpace(Folder) ? Path.Combine(Folder, DllName + ".dll") : DllName);
-            else throw new PlatformNotSupportedException("Only available on Windows");            
+            else throw new PlatformNotSupportedException("Only available on Windows");
         }
+
+        /// <summary>
+        /// Returns the <param name="n">n'th (max 15)</param> pair of Speaker Assignment Flags
+        /// </summary>
+        public static BassFlags SpeakerN(int n) { return (BassFlags)(n << 24); }
 
         static bool? floatable = null;
 
@@ -71,7 +76,7 @@ namespace ManagedBass
         internal static Version GetVersion(int num)
         {
             return new Version(num >> 24 & 0xff,
-                               num >> 16 & 0xff, 
+                               num >> 16 & 0xff,
                                num >> 8 & 0xff,
                                num & 0xff);
         }

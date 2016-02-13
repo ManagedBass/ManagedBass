@@ -14,14 +14,18 @@ namespace ManagedBass
         #region Singleton
         static Dictionary<int, PlaybackDevice> Singleton = new Dictionary<int, PlaybackDevice>();
 
-        PlaybackDevice() { }
+        PlaybackDevice(int DeviceIndex) { this.DeviceIndex = DeviceIndex; }
 
-        internal static PlaybackDevice Get(int Device)
+        public static PlaybackDevice Get(int Device)
         {
             if (Singleton.ContainsKey(Device)) return Singleton[Device];
             else
             {
-                var Dev = new PlaybackDevice() { DeviceIndex = Device };
+                DeviceInfo info;
+                if (!Bass.GetDeviceInfo(Device, out info))
+                    throw new ArgumentException("Invalid PlaybackDevice Index");
+
+                var Dev = new PlaybackDevice(Device);
                 Singleton.Add(Device, Dev);
 
                 return Dev;
@@ -49,7 +53,7 @@ namespace ManagedBass
                 DeviceInfo info;
 
                 for (int i = 0; Bass.GetDeviceInfo(i, out info); ++i)
-                        yield return Get(i);
+                    yield return Get(i);
             }
         }
 
@@ -77,6 +81,24 @@ namespace ManagedBass
         public Return<bool> Init(int Frequency = 44100, DeviceInitFlags flags = DeviceInitFlags.Default)
         {
             return Bass.Init(DeviceIndex, Frequency, flags);
+        }
+
+        public bool Start()
+        {
+            Bass.CurrentDevice = DeviceIndex;
+            return Bass.Start();
+        }
+
+        public bool Pause()
+        {
+            Bass.CurrentDevice = DeviceIndex;
+            return Bass.Pause();
+        }
+
+        public bool Stop()
+        {
+            Bass.CurrentDevice = DeviceIndex;
+            return Bass.Stop();
         }
 
         /// <summary>

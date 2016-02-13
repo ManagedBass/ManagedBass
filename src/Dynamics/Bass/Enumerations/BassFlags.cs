@@ -3,7 +3,7 @@
 namespace ManagedBass.Dynamics
 {
     /// <summary>
-    /// Stream/Sample/Music/Recording/BassFx create flags to be used with Stream Creation functions.
+    /// Stream/Sample/Music/Recording/AddOn create flags to be used with Stream Creation functions.
     /// </summary>
     [Flags]
     public enum BassFlags
@@ -190,42 +190,50 @@ namespace ManagedBass.Dynamics
         #region MOD Music
         /// <summary>
         /// Music: Use "normal" ramping (as used in FastTracker 2).
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MusicRamp = 512,
 
         /// <summary>
         /// Music: Use "sensitive" ramping.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MuicSensitiveRamping = 1024,
 
         /// <summary>
         /// Music: Apply XMPlay's surround sound to the music (ignored in mono).
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MusicSurround = 2048,
 
         /// <summary>
         /// Music: Apply XMPlay's surround sound mode 2 to the music (ignored in mono).
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MusicSurround2 = 4096,
 
         /// <summary>
         /// Music: Play .MOD file as FastTracker 2 would.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MusicFT2Mod = 8192,
 
         /// <summary>
         /// Music: Play .MOD file as ProTracker 1 would.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MusicPT1Mod = 16384,
 
         /// <summary>
         /// Music: Stop all notes when seeking (using <see cref="Bass.ChannelSetPosition"/>).
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MusicPositionReset = 32768,
 
         /// <summary>
         /// Music: Use non-interpolated mixing.
         /// This generally reduces the sound quality, but can be good for chip-tunes.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MusicNonInterpolated = 65536,
 
@@ -236,6 +244,7 @@ namespace ManagedBass.Dynamics
         /// so this flag would cause those to be stopped prematurely. 
         /// If this flag is used together with the <see cref="Loop"/> flag,
         /// then the music would not be stopped but any <see cref="SyncFlags.End"/> sync would be triggered.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MusicStopBack = 524288,
 
@@ -248,6 +257,7 @@ namespace ManagedBass.Dynamics
 
         /// <summary>
         /// Music: Stop all notes and reset bpm/etc when seeking.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MusicPositionResetEx = 4194304,
         #endregion
@@ -298,7 +308,7 @@ namespace ManagedBass.Dynamics
         MixerPositionEx = 8192,
 
         /// <summary>
-        /// BASSmix add-on: Buffer source data for <see cref="BassMix.ChannelGetData"/> and <see cref="BassMix.ChannelGetLevel(int)"/>.
+        /// BASSmix add-on: Buffer source data for <see cref="BassMix.ChannelGetData(int,IntPtr,int)"/> and <see cref="BassMix.ChannelGetLevel(int)"/>.
         /// </summary>
         MixerBuffer = 8192,
 
@@ -354,6 +364,7 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// Automatically free the music or stream's resources when it has reached the end, 
         /// or when <see cref="Bass.ChannelStop"/> or <see cref="Bass.Stop"/> is called.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         AutoFree = 262144,
 
@@ -361,6 +372,7 @@ namespace ManagedBass.Dynamics
         /// Restrict the download rate of the file to the rate required to sustain playback.
         /// If this flag is not used, then the file will be downloaded as quickly as possible. 
         /// This flag has no effect on "unbuffered" streams (Buffer=false).
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         RestrictDownloadRate = 524288,
 
@@ -377,7 +389,7 @@ namespace ManagedBass.Dynamics
 
         /// <summary>
         /// Decode the sample data, without outputting it. 
-        /// Use <see cref="Bass.ChannelGetData"/> to retrieve decoded sample data.
+        /// Use <see cref="Bass.ChannelGetData(int,IntPtr,int)"/> to retrieve decoded sample data.
         /// <see cref="SoftwareMixing"/>/<see cref="Bass3D"/>/<see cref="FX"/>/<see cref="AutoFree"/> are all ignored when using this flag, as are the Speaker flags.
         /// </summary>
         Decode = 2097152,
@@ -387,6 +399,7 @@ namespace ManagedBass.Dynamics
         /// This increases the sound quality, but also requires more CPU.
         /// Otherwise linear interpolation is used.
         /// Music: If neither this or the <see cref="MusicNonInterpolated"/> flag is specified, linear interpolation is used.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         SincInterpolation = 8388608,
 

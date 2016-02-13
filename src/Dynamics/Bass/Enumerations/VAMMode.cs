@@ -13,8 +13,8 @@ namespace ManagedBass.Dynamics
     public enum VAMMode
     {
         /// <summary>
-        /// Play the sample in hardware. 
-        /// If no hardware voices are available then the "play" call will fail
+        /// Play the sample in hardware (default).
+        /// If no hardware voices are available then the "play" call will fail.
         /// </summary>
         Hardware = 1,
 

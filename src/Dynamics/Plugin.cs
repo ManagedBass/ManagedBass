@@ -20,14 +20,22 @@ namespace ManagedBass.Dynamics
         IntPtr HLib = IntPtr.Zero;
 
         DCreateStreamFile MStreamCreateFile;
+        DCreateStreamFileMemory MStreamCreateFileMemory;
         DCreateStreamURL MStreamCreateURL;
         DCreateStreamUser MStreamCreateUser;
         #endregion
 
         #region Delegates
-        delegate int DCreateStreamFile(bool mem, IntPtr file, long offset, long length, BassFlags flags);
-        delegate int DCreateStreamUser(StreamSystem system, BassFlags flags, IntPtr procs, IntPtr user);
-        delegate int DCreateStreamURL(IntPtr Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User);
+        [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
+        delegate int DCreateStreamFile(bool mem, string file, long offset, long length, BassFlags flags);
+
+        delegate int DCreateStreamFileMemory(bool mem, IntPtr file, long offset, long length, BassFlags flags);
+
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
+        delegate int DCreateStreamUser(StreamSystem system, BassFlags flags, [In][Out] FileProcedures procs, IntPtr user);
+
+        [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
+        delegate int DCreateStreamURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User);
         #endregion
 
         /// <summary>
@@ -107,37 +115,24 @@ namespace ManagedBass.Dynamics
                 }
             }
         }
-
-        void LoadStreamCreateFile()
-        {
-            EnsureFunction("BASS_" + ID + "_StreamCreateFile", ref MStreamCreateFile);
-        }
         #endregion
 
         #region Create Stream
         public int CreateStream(string FileName, long Offset = 0, long Length = 0, BassFlags Flags = BassFlags.Default)
         {
-            LoadStreamCreateFile();
+            EnsureFunction("BASS_" + ID + "_StreamCreateFile", ref MStreamCreateFile);
 
             if (Extensions.IsWindows)
-            {
-                IntPtr ptr = Marshal.StringToHGlobalUni(FileName);
-
-                int Result = MStreamCreateFile(false, ptr, Offset, Length, Flags | BassFlags.Unicode);
-
-                Marshal.FreeHGlobal(ptr);
-
-                return Result;
-            }
+                return MStreamCreateFile(false, FileName, Offset, Length, Flags | BassFlags.Unicode);
             else return Bass.CreateStream(FileName, Offset, Length, Flags);
         }
 
         public int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default)
         {
-            LoadStreamCreateFile();
+            EnsureFunction("BASS_" + ID + "_StreamCreateFile", ref MStreamCreateFileMemory);
 
             if (Extensions.IsWindows)
-                return MStreamCreateFile(true, Memory, Offset, Length, Flags);
+                return MStreamCreateFileMemory(true, Memory, Offset, Length, Flags);
             else return Bass.CreateStream(Memory, Offset, Length, Flags);
         }
 
@@ -146,16 +141,7 @@ namespace ManagedBass.Dynamics
             EnsureFunction("BASS_" + ID + "_StreamCreateFileUser", ref MStreamCreateUser);
 
             if (Extensions.IsWindows)
-            {
-                IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(procs));
-                Marshal.StructureToPtr(procs, ptr, true);
-
-                int handle = MStreamCreateUser(system, flags, ptr, user);
-
-                Marshal.FreeHGlobal(ptr);
-
-                return handle;
-            }
+                return MStreamCreateUser(system, flags, procs, user);
             else return Bass.CreateStream(system, flags, procs, user);
         }
 
@@ -169,15 +155,7 @@ namespace ManagedBass.Dynamics
             EnsureFunction("BASS_" + ID + "_StreamCreateURL", ref MStreamCreateURL);
 
             if (Extensions.IsWindows)
-            {
-                IntPtr ptr = Marshal.StringToHGlobalUni(Url);
-
-                int Result = MStreamCreateURL(ptr, Offset, Flags | BassFlags.Unicode, Procedure, User);
-
-                Marshal.FreeHGlobal(ptr);
-
-                return Result;
-            }
+                return MStreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User);
             else return Bass.CreateStream(Url, Offset, Flags, Procedure, User);
         }
 

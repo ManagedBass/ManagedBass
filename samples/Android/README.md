@@ -1,10 +1,10 @@
 # ManagedBass Android Sample
 The current sample demonstrates using ManagedBass to feed recorded audio to Speaker output.
+* Permissions Required: `RecordAudio`
 
 >The same ManagedBass.dll which is used for .Net development can be used with Xamarin.Android.
 
 ## Set-Up for Android Studio (for those new to Xamarin.Android)
-* Permissions Required: `RecordAudio`
 * Put the specific versions of `libbass.so` (available on Bass website) in the project folders as per your requirement.
 * Right click the `libbass.so` file, Select Properties.
   * Set `Copy to Output Directory` = **Always**

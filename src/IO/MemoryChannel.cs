@@ -24,6 +24,13 @@ namespace ManagedBass
             Handle = Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution.Float));
         }
 
+        public MemoryChannel(short[] Memory, long Offset, long Length, bool IsDecoder = false)
+        {
+            GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
+
+            Handle = Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution.Short));
+        }
+
         public override void Dispose()
         {
             base.Dispose();

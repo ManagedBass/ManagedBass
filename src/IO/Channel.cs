@@ -123,29 +123,15 @@ namespace ManagedBass
         public ChannelInfo Info { get { return Bass.ChannelGetInfo(Handle); } }
 
         #region Read
-        public virtual int Read(IntPtr Buffer, int Length)
-        {
-            return Bass.ChannelGetData(Handle, Buffer, Length);
-        }
+        public virtual int Read(IntPtr Buffer, int Length) { return Bass.ChannelGetData(Handle, Buffer, Length); }
 
-        int ReadObj(object Buffer, int Length)
-        {
-            GCHandle gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
+        public virtual int Read(byte[] Buffer, int Length) { return Bass.ChannelGetData(Handle, Buffer, Length); }
 
-            int Return = Read(gch.AddrOfPinnedObject(), Length);
+        public virtual int Read(float[] Buffer, int Length) { return Bass.ChannelGetData(Handle, Buffer, Length); }
 
-            gch.Free();
+        public virtual int Read(short[] Buffer, int Length) { return Bass.ChannelGetData(Handle, Buffer, Length); }
 
-            return Return;
-        }
-
-        public int Read(byte[] Buffer, int Length) { return ReadObj(Buffer, Length); }
-
-        public int Read(float[] Buffer, int Length) { return ReadObj(Buffer, Length); }
-
-        public int Read(short[] Buffer, int Length) { return ReadObj(Buffer, Length); }
-
-        public int Read(int[] Buffer, int Length) { return ReadObj(Buffer, Length); }
+        public virtual int Read(int[] Buffer, int Length) { return Bass.ChannelGetData(Handle, Buffer, Length); }
         #endregion
 
         public long Seconds2Bytes(double Seconds) { return Bass.ChannelSeconds2Bytes(Handle, Seconds); }
@@ -195,7 +181,7 @@ namespace ManagedBass
             Position = InitialPosition;
         }
 
-        public bool Start()
+        public virtual bool Start()
         {
             bool Result = Bass.ChannelPlay(Handle, RestartOnNextPlayback);
             if (Result) RestartOnNextPlayback = false;
@@ -214,9 +200,9 @@ namespace ManagedBass
 
         public bool IsPlaying { get { return Bass.ChannelIsActive(Handle) == PlaybackState.Playing; } }
 
-        public bool Pause() { return Bass.ChannelPause(Handle); }
+        public virtual bool Pause() { return Bass.ChannelPause(Handle); }
 
-        public bool Stop()
+        public virtual bool Stop()
         {
             RestartOnNextPlayback = true;
             return Bass.ChannelStop(Handle);

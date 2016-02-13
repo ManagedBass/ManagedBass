@@ -14,14 +14,18 @@ namespace ManagedBass
         #region Singleton
         static Dictionary<int, RecordingDevice> Singleton = new Dictionary<int, RecordingDevice>();
 
-        RecordingDevice() { }
+        RecordingDevice(int DeviceIndex) { this.DeviceIndex = DeviceIndex; }
 
-        static RecordingDevice Get(int Device)
+        public static RecordingDevice Get(int Device)
         {
             if (Singleton.ContainsKey(Device)) return Singleton[Device];
             else
             {
-                var Dev = new RecordingDevice() { DeviceIndex = Device };
+                DeviceInfo info;
+                if (!Bass.RecordGetDeviceInfo(Device, out info))
+                    throw new ArgumentException("Invalid RecordingDevice Index");
+
+                var Dev = new RecordingDevice(Device);
                 Singleton.Add(Device, Dev);
 
                 return Dev;

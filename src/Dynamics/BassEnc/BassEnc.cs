@@ -121,6 +121,9 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_Encode_AddChunk")]
         public static extern bool EncodeAddChunk(int handle, string id, IntPtr buffer, int length);
 
+        [DllImport(DllName, EntryPoint = "BASS_Encode_AddChunk")]
+        public static extern bool EncodeAddChunk(int handle, string id, byte[] buffer, int length);
+
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_Encode_GetACMFormat(int handle, IntPtr form, int formlen, string title, int flags);
 
@@ -206,8 +209,22 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_Encode_StopEx")]
         public static extern bool EncodeStop(int handle, bool queue);
 
+        #region Encode Write
         [DllImport(DllName, EntryPoint = "BASS_Encode_Write")]
         public static extern bool EncodeWrite(int handle, IntPtr buffer, int length);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_Write")]
+        public static extern bool EncodeWrite(int handle, byte[] buffer, int length);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_Write")]
+        public static extern bool EncodeWrite(int handle, short[] buffer, int length);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_Write")]
+        public static extern bool EncodeWrite(int handle, int[] buffer, int length);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_Write")]
+        public static extern bool EncodeWrite(int handle, float[] buffer, int length);
+        #endregion
         #endregion
 
         #region Casting

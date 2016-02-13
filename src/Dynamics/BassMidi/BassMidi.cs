@@ -29,7 +29,7 @@ namespace ManagedBass.Dynamics
         public static extern int CreateStream(int Channels, BassFlags Flags = BassFlags.Default, int Frequency = 44100);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreateEvents")]
-        public static extern int CreateStream([MarshalAs(UnmanagedType.LPArray)] MidiEvent[] events, int ppqn, BassFlags flags = BassFlags.Default, int freq = 44100);
+        public static extern int CreateStream(MidiEvent[] events, int ppqn, BassFlags flags = BassFlags.Default, int freq = 44100);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_MIDI_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags, int freq);
@@ -90,21 +90,8 @@ namespace ManagedBass.Dynamics
             return CreateStream(buffer, 0, Length, Flags, Frequency);
         }
 
-        [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamCreateFileUser(StreamSystem system, BassFlags flags, IntPtr procs, IntPtr user, int freq);
-
-        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr), int Frequency = 44100)
-        {
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(procs));
-
-            Marshal.StructureToPtr(procs, ptr, true);
-
-            int handle = BASS_MIDI_StreamCreateFileUser(system, flags, ptr, user, Frequency);
-
-            Marshal.FreeHGlobal(ptr);
-
-            return handle;
-        }
+        [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreateFileUser")]
+        public static extern int CreateStream(StreamSystem system, BassFlags flags, [In][Out] FileProcedures procs, IntPtr user = default(IntPtr), int freq = 44100);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_MIDI_StreamCreateURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 44100);
@@ -119,10 +106,10 @@ namespace ManagedBass.Dynamics
         public static extern bool StreamEvent(int handle, int chan, MidiEventType Event, int param);
 
         [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamEvents(int handle, MidiEventsMode mode, [MarshalAs(UnmanagedType.LPArray)] MidiEvent[] Event, int length);
+        static extern int BASS_MIDI_StreamEvents(int handle, MidiEventsMode mode, MidiEvent[] Event, int length);
 
         [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamEvents(int handle, MidiEventsMode mode, [MarshalAs(UnmanagedType.LPArray)] byte[] Event, int length);
+        static extern int BASS_MIDI_StreamEvents(int handle, MidiEventsMode mode, byte[] Event, int length);
 
         public static int StreamEvents(int handle, MidiEvent[] events, bool NoRunningStatus = false, bool Sync = false)
         {
@@ -149,7 +136,7 @@ namespace ManagedBass.Dynamics
         public static extern int StreamGetEvent(int handle, int chan, MidiEventType Event);
 
         [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamGetEvents(int handle, int track, int filter, [MarshalAs(UnmanagedType.LPArray)] MidiEvent[] events);
+        static extern int BASS_MIDI_StreamGetEvents(int handle, int track, int filter, [In][Out] MidiEvent[] events);
 
         public static MidiEvent[] StreamGetEvents(int handle, int track, int filter)
         {
@@ -195,7 +182,7 @@ namespace ManagedBass.Dynamics
         public static extern bool StreamGetMarker(int handle, MidiMarkerType type, int index, out MidiMarker mark);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetMarks")]
-        public static extern int StreamGetMarkers(int handle, int track, MidiMarkerType type, [MarshalAs(UnmanagedType.LPArray)] MidiMarker[] marks);
+        public static extern int StreamGetMarkers(int handle, int track, MidiMarkerType type, [In][Out] MidiMarker[] marks);
 
         public static MidiMarker[] StreamGetAllMarkers(int handle)
         {
@@ -252,7 +239,7 @@ namespace ManagedBass.Dynamics
             get { return Bass.GetConfigBool(Configuration.MidiAutoFont); }
             set { Bass.Configure(Configuration.MidiAutoFont, value); }
         }
-        
+
         /// <summary>
         /// The maximum number of samples to play at a time (polyphony).
         /// voices (int): Maximum number of samples to play at a time... 1 (min) - 1000 (max).
@@ -330,11 +317,10 @@ namespace ManagedBass.Dynamics
         }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetPreset")]
-        [return: MarshalAs(UnmanagedType.LPStr)]
         public static extern string FontGetPreset(int handle, int preset, int bank);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetPresets")]
-        public static extern bool FontGetPresets(int handle, [MarshalAs(UnmanagedType.LPArray)] int[] presets);
+        public static extern bool FontGetPresets(int handle, [In][Out] int[] presets);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetVolume")]
         public static extern float FontGetVolume(int handle);

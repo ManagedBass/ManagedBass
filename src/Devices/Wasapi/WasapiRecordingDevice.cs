@@ -1,4 +1,5 @@
 ﻿using ManagedBass.Dynamics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,12 +9,16 @@ namespace ManagedBass
     {
         WasapiRecordingDevice(int Index) : base(Index) { }
 
-        static WasapiRecordingDevice Get(int Device)
+        public static WasapiRecordingDevice Get(int Device)
         {
             if (Singleton.ContainsKey(Device))
                 return Singleton[Device] as WasapiRecordingDevice;
             else
             {
+                WasapiDeviceInfo info;
+                if (!(BassWasapi.GetDeviceInfo(Device, out info) && !info.IsLoopback && info.IsInput))
+                    throw new ArgumentException("Invalid WasapiRecordingDevice Index");
+
                 var Dev = new WasapiRecordingDevice(Device);
                 Singleton.Add(Device, Dev);
 

@@ -14,7 +14,7 @@ namespace ManagedBass.Dynamics
     /// <para>A stream writing function should obviously be as quick as possible, because other streams (and MOD musics) can't be updated until it's finished.</para>
     /// <para>It is better to return less data quickly, rather than spending a long time delivering the amount BASS requested.</para>
     /// <para>Although a STREAMPROC may return less data than BASS requests, be careful not to do so by too much, too often. If the Buffer level gets too low, BASS will automatically stall playback of the stream, until the whole Buffer has refilled.</para>
-    /// <para><see cref="Bass.ChannelGetData" /> <see cref="DataFlags"/> can be used to check the Buffer level, and <see cref="Bass.ChannelIsActive" /> can be used to check if playback has stalled.</para>
+    /// <para><see cref="Bass.ChannelGetData(int,IntPtr,int)" /> <see cref="DataFlags"/> can be used to check the Buffer level, and <see cref="Bass.ChannelIsActive" /> can be used to check if playback has stalled.</para>
     /// <para>A <see cref="SyncFlags.Stalled"/> sync can also be set via <see cref="Bass.ChannelSetSync" />, to be triggered upon playback stalling or resuming.</para>
     /// <para>If you do return less than the requested amount of data, the number of bytes should still equate to a whole number of samples.</para>
     /// <para>Some functions can cause problems if called from within a stream (or DSP) function. Do not call these functions from within a stream callback:</para>

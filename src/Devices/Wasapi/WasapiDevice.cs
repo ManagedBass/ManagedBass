@@ -83,50 +83,15 @@ namespace ManagedBass
         }
 
         #region Read
-        public int Read(IntPtr Buffer, int Length) { return BassWasapi.Read(Buffer, Length); }
-        
-        int ReadObj(object Buffer, int Length)
-        {
-            BassWasapi.CurrentDevice = DeviceIndex;
+        public int Read(IntPtr Buffer, int Length) { return BassWasapi.GetData(Buffer, Length); }
 
-            GCHandle gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
-
-            int Return = BassWasapi.Read(gch.AddrOfPinnedObject(), Length);
-
-            gch.Free();
-
-            return Return;
-        }
-
-        public int Read(byte[] Buffer, int Length) { return ReadObj(Buffer, Length); }
-
-        public int Read(float[] Buffer, int Length) { return ReadObj(Buffer, Length); }
-
-        public int Read(short[] Buffer, int Length) { return ReadObj(Buffer, Length); }
-
-        public int Read(int[] Buffer, int Length) { return ReadObj(Buffer, Length); }
+        public int Read(float[] Buffer, int Length) { return BassWasapi.GetData(Buffer, Length); }
         #endregion
 
         #region Write
-        public void Write(IntPtr Buffer, int Length) { BassWasapi.Write(Buffer, Length); }
+        public void Write(IntPtr Buffer, int Length) { BassWasapi.PutData(Buffer, Length); }
 
-        void WriteObj(object Buffer, int Length)
-        {
-            BassWasapi.CurrentDevice = DeviceIndex;
-
-            GCHandle gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
-
-            BassWasapi.Write(gch.AddrOfPinnedObject(), Length);
-            gch.Free();
-        }
-
-        public void Write(byte[] Buffer, int Length) { WriteObj(Buffer, Length); }
-
-        public void Write(float[] Buffer, int Length) { WriteObj(Buffer, Length); }
-
-        public void Write(short[] Buffer, int Length) { WriteObj(Buffer, Length); }
-
-        public void Write(int[] Buffer, int Length) { WriteObj(Buffer, Length); }
+        public void Write(float[] Buffer, int Length) { BassWasapi.PutData(Buffer, Length); }
         #endregion
 
         public bool Lock(bool Lock = true)

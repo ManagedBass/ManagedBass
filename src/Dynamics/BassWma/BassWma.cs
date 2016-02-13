@@ -26,22 +26,9 @@ namespace ManagedBass.Dynamics
         public static extern IntPtr GetWMObject(int handle);
 
         #region CreateStream
-        [DllImport(DllName)]
-        static extern int BASS_WMA_StreamCreateFileUser(StreamSystem system, BassFlags flags, IntPtr procs, IntPtr user);
-
-        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr))
-        {
-            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(procs));
-
-            Marshal.StructureToPtr(procs, ptr, true);
-
-            int handle = BASS_WMA_StreamCreateFileUser(system, flags, ptr, user);
-
-            Marshal.FreeHGlobal(ptr);
-
-            return handle;
-        }
-
+        [DllImport(DllName, EntryPoint="BASS_WMA_StreamCreateFileUser")]
+        public static extern int CreateStream(StreamSystem system, BassFlags flags, [In][Out] FileProcedures procs, IntPtr user = default(IntPtr));
+        
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_WMA_StreamCreateFile(bool Memory, string File, long Offset, long Length, BassFlags Flags);
 
@@ -172,14 +159,14 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpenNetwork")]
         public static extern int EncodeOpenNetwork(int freq, int chans, WMAEncodeFlags flags, int bitrate, int port, int clients);
 
-        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpenNetworkMuli")]
-        public static extern int EncodeOpenNetwork(int freq, int chans, WMAEncodeFlags flags, [MarshalAs(UnmanagedType.LPArray)] int[] bitrate, int port, int clients);
+        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpenNetworkMulti")]
+        public static extern int EncodeOpenNetwork(int freq, int chans, WMAEncodeFlags flags, int[] bitrate, int port, int clients);
 
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpenPublish")]
         public static extern int EncodeOpenPublish(int freq, int chans, WMAEncodeFlags flags, int bitrate, string url, string user, string pass);
 
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpenPublishMulti")]
-        public static extern int EncodeOpenPublish(int freq, int chans, WMAEncodeFlags flags, [MarshalAs(UnmanagedType.LPArray)] int[] bitrate, string url, string user, string pass);
+        public static extern int EncodeOpenPublish(int freq, int chans, WMAEncodeFlags flags, int[] bitrate, string url, string user, string pass);
 
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeSetNotify")]
         public static extern bool EncodeSetNotify(int handle, ClientConnectProcedure proc, IntPtr user);

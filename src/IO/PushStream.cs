@@ -17,24 +17,13 @@ namespace ManagedBass
         #region Push
         public bool Push(IntPtr data, int Length) { return Bass.StreamPutData(Handle, data, Length) != -1; }
 
-        bool PushObj(object data, int Length)
-        {
-            GCHandle gch = GCHandle.Alloc(data, GCHandleType.Pinned);
+        public bool Push(byte[] data, int Length) { return Bass.StreamPutData(Handle, data, Length) != -1; }
 
-            bool Result = Bass.StreamPutData(Handle, gch.AddrOfPinnedObject(), Length) != -1;
+        public bool Push(float[] data, int Length) { return Bass.StreamPutData(Handle, data, Length) != -1; }
 
-            gch.Free();
+        public bool Push(short[] data, int Length) { return Bass.StreamPutData(Handle, data, Length) != -1; }
 
-            return Result;
-        }
-
-        public bool Push(byte[] data, int Length) { return PushObj(data, Length); }
-
-        public bool Push(float[] data, int Length) { return PushObj(data, Length); }
-
-        public bool Push(short[] data, int Length) { return PushObj(data, Length); }
-
-        public bool Push(int[] data, int Length) { return PushObj(data, Length); }
+        public bool Push(int[] data, int Length) { return Bass.StreamPutData(Handle, data, Length) != -1; }
         #endregion
 
         public void End() { Bass.StreamPutData(Handle, IntPtr.Zero, (int)StreamProcedureType.End); }

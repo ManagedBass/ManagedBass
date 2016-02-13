@@ -2,6 +2,8 @@
 
 namespace ManagedBass
 {
+    // TODO: Manage Marshaling of Value excluding ErrorCode
+
     /// <summary>
     /// Wraps a Bass Error in a function return value
     /// </summary>

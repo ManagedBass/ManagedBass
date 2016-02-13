@@ -36,47 +36,25 @@ namespace ManagedBass
         #region Read Sample Data
         public bool ReadSampleData(IntPtr Buffer) { return Bass.SampleGetData(Sample, Buffer); }
 
-        bool ReadObj(object Buffer)
-        {
-            GCHandle gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
+        public bool ReadSampleData(byte[] Buffer) { return Bass.SampleGetData(Sample, Buffer); }
 
-            bool Result = Bass.SampleGetData(Sample, gch.AddrOfPinnedObject());
+        public bool ReadSampleData(float[] Buffer) { return Bass.SampleGetData(Sample, Buffer); }
 
-            gch.Free();
+        public bool ReadSampleData(short[] Buffer) { return Bass.SampleGetData(Sample, Buffer); }
 
-            return Result;
-        }
-
-        public bool ReadSampleData(byte[] Buffer) { return ReadObj(Buffer); }
-
-        public bool ReadSampleData(float[] Buffer) { return ReadObj(Buffer); }
-
-        public bool ReadSampleData(short[] Buffer) { return ReadObj(Buffer); }
-
-        public bool ReadSampleData(int[] Buffer) { return ReadObj(Buffer); }
+        public bool ReadSampleData(int[] Buffer) { return Bass.SampleGetData(Sample, Buffer); }
         #endregion
 
         #region Write Sample Data
         public bool WriteSampleData(IntPtr Buffer) { return Bass.SampleSetData(Sample, Buffer); }
 
-        bool WriteObj(object buffer)
-        {
-            GCHandle gch = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+        public bool WriteSampleData(byte[] Buffer) { return Bass.SampleSetData(Sample, Buffer); }
 
-            bool Result = Bass.SampleSetData(Sample, gch.AddrOfPinnedObject());
+        public bool WriteSampleData(float[] Buffer) { return Bass.SampleSetData(Sample, Buffer); }
 
-            gch.Free();
+        public bool WriteSampleData(short[] Buffer) { return Bass.SampleSetData(Sample, Buffer); }
 
-            return Result;
-        }
-
-        public bool WriteSampleData(byte[] buffer) { return WriteObj(buffer); }
-
-        public bool WriteSampleData(float[] buffer) { return WriteObj(buffer); }
-
-        public bool WriteSampleData(short[] buffer) { return WriteObj(buffer); }
-
-        public bool WriteSampleData(int[] buffer) { return WriteObj(buffer); }
+        public bool WriteSampleData(int[] Buffer) { return Bass.SampleSetData(Sample, Buffer); }
         #endregion
 
         public override void Dispose() { try { Bass.SampleFree(Sample); } catch { } }

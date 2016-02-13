@@ -31,10 +31,10 @@ namespace ManagedBass.Dynamics
         Buffer,
 
         /// <summary>
-        /// Buffered, with the data pushed to BASS via <see cref="Bass.StreamPutFileData" />.
+        /// Buffered, with the data pushed to BASS via <see cref="Bass.StreamPutFileData(int,IntPtr,int)" />.
         /// <para>
         /// The push buffered file system is the same as <see cref="Buffer"/>, except that instead of the file data being pulled from the <see cref="FileReadProcedure" /> function in a "download" thread, 
-        /// the data is pushed to BASS via <see cref="Bass.StreamPutFileData" />.
+        /// the data is pushed to BASS via <see cref="Bass.StreamPutFileData(int,IntPtr,int)" />.
         /// A <see cref="FileReadProcedure" /> function is still required, to get the initial data used in the creation of the stream.
         /// </para>
         /// </summary>

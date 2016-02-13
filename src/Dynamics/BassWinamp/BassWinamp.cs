@@ -26,12 +26,8 @@ namespace ManagedBass.Dynamics
 
         public static IEnumerable<string> FindPlugins(string plugindirectory, WinampFindPluginFlags flags)
         {
-            var ptr = BASS_WINAMP_FindPlugins(plugindirectory,
-                                              flags & (WinampFindPluginFlags.Input | WinampFindPluginFlags.Recursive));
-
-            if (ptr == IntPtr.Zero) return null;
-
-            return Tags.ExtractMultiStringAnsi(ptr);
+            return Tags.ExtractMultiStringAnsi(BASS_WINAMP_FindPlugins(plugindirectory,
+                                                                       flags & (WinampFindPluginFlags.Input | WinampFindPluginFlags.Recursive)));
         }
 
         [DllImport(DllName)]
@@ -39,11 +35,7 @@ namespace ManagedBass.Dynamics
 
         public static IEnumerable<string> GetExtentions(int handle)
         {
-            var ptr = BASS_WINAMP_GetExtentions(handle);
-
-            if (ptr == IntPtr.Zero) return null;
-
-            return Tags.ExtractMultiStringAnsi(ptr);
+            return Tags.ExtractMultiStringAnsi(BASS_WINAMP_GetExtentions(handle));
         }
 
         [DllImport(DllName, EntryPoint = "BASS_WINAMP_GetIsSeekable")]
@@ -70,11 +62,7 @@ namespace ManagedBass.Dynamics
 
         public static string GetName(int handle)
         {
-            IntPtr ptr = BASS_WINAMP_GetName(handle);
-
-            if (ptr == IntPtr.Zero) return null;
-
-            return Marshal.PtrToStringAnsi(ptr);
+            return Marshal.PtrToStringAnsi(BASS_WINAMP_GetName(handle));
         }
 
         [DllImport(DllName, EntryPoint = "BASS_WINAMP_GetUsesOutput")]

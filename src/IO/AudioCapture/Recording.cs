@@ -30,6 +30,8 @@ namespace ManagedBass
 
         public bool IsActive { get { return Bass.ChannelIsActive(Handle) == PlaybackState.Playing; } }
 
+        public override bool Stop() { return Bass.ChannelPause(Handle); }
+
         #region Callback
         public event Action<BufferProvider> DataAvailable;
 

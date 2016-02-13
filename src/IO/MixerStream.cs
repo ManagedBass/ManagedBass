@@ -11,10 +11,15 @@ namespace ManagedBass
             Handle = BassMix.CreateMixerStream(Frequency, NoOfChannels, FlagGen(IsDecoder, Resolution));
         }
 
-        public override int Read(IntPtr Buffer, int Length)
-        {
-            return BassMix.ChannelGetData(Handle, Buffer, Length);
-        }
+        public override int Read(IntPtr Buffer, int Length) { return BassMix.ChannelGetData(Handle, Buffer, Length); }
+
+        public override int Read(byte[] Buffer, int Length) { return BassMix.ChannelGetData(Handle, Buffer, Length); }
+
+        public override int Read(short[] Buffer, int Length) { return BassMix.ChannelGetData(Handle, Buffer, Length); }
+
+        public override int Read(int[] Buffer, int Length) { return BassMix.ChannelGetData(Handle, Buffer, Length); }
+
+        public override int Read(float[] Buffer, int Length) { return BassMix.ChannelGetData(Handle, Buffer, Length); }
 
         public bool AddChannel(Channel channel) { return AddChannel(channel.Handle); }
 

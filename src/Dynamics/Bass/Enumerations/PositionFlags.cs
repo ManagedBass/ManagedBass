@@ -16,6 +16,7 @@ namespace ManagedBass.Dynamics
 
         /// <summary>
         /// Order.Row position (HMUSIC only).
+        /// LoWord = order, HiWord = row * scaler (<see cref="ChannelAttribute.MusicPositionScaler" />).
         /// </summary>
         MusicOrders = 1,
 

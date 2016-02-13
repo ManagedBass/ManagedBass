@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace ManagedBass.Effects
 {
     public interface IEffectParameter { EffectType FXType { get; } }
-    
+
     /// <summary>
     /// Wraps a Bass Effect such that you don't need to touch the Bass functions to Handle it.
     /// </summary>

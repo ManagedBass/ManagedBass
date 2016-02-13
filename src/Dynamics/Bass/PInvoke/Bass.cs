@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Dynamics
 {
+    // TODO: Unload() for Load()
+
     /// <summary>
     /// Wraps bass.dll.
     /// 
@@ -31,16 +33,18 @@ namespace ManagedBass.Dynamics
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
         public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
-
-        [DllImport(DllName, EntryPoint = "BASS_Start")]
-        public static extern bool Start();
-
-        [DllImport(DllName, EntryPoint = "BASS_Pause")]
-        public static extern bool Pause();
-
-        [DllImport(DllName, EntryPoint = "BASS_Stop")]
-        public static extern bool Stop();
-
+        
+        /// <summary>
+        /// "Manually" updates the HSTREAM and HMUSIC channel buffers.
+        /// </summary>
+        /// <param name="Length">The amount to render, in milliseconds.</param>
+        /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.DataNotAvailable">Updating is already in progress.</exception>
+        /// <remarks>
+        /// When automatic updating is disabled, this function (or <see cref="ChannelUpdate" />) needs to be called to keep the playback buffers updated. 
+        /// The <paramref name="Length"/> parameter should include some safety margin, in case the next update cycle gets delayed. 
+        /// For example, if calling this function every 100ms, 200 would be a reasonable <paramref name="Length"/> parameter.
+        /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_Update")]
         public static extern bool Update(int Length);
 

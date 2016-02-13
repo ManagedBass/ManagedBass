@@ -104,7 +104,7 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// <para>
         /// The channel's data is still placed in its playback Buffer when this attribute is on,
-        /// which allows <see cref="Bass.ChannelGetData"/> and <see cref="Bass.ChannelGetLevel(int)"/> to be used, although there is 
+        /// which allows <see cref="Bass.ChannelGetData(int,IntPtr,int)"/> and <see cref="Bass.ChannelGetLevel(int)"/> to be used, although there is 
         /// likely to be less data available to them due to the Buffer being less full.
         /// </para>
         /// <para>This attribute can be changed mid-playback.</para>
@@ -132,7 +132,7 @@ namespace ManagedBass.Dynamics
         /// The duration of the data is based on the channel's current sample rate (<see cref="ChannelAttribute.Frequency"/>).
         /// A channel's CPU usage is updated whenever it generates data. 
         /// That could be during a playback Buffer update cycle, or a <see cref="Bass.Update"/> call, or a <see cref="Bass.ChannelUpdate"/> call.
-        /// For a decoding channel, it would be in a <see cref="Bass.ChannelGetData"/> or <see cref="Bass.ChannelGetLevel(int)"/> call.
+        /// For a decoding channel, it would be in a <see cref="Bass.ChannelGetData(int,IntPtr,int)"/> or <see cref="Bass.ChannelGetLevel(int)"/> call.
         /// </para>
         /// <para>This attribute is read-only, so cannot be modified via <see cref="Bass.ChannelSetAttribute(int, ChannelAttribute, float)"/>.</para>
         /// </summary>
@@ -159,7 +159,7 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// <para>
         /// The sample rate conversion occurs (when required) during playback, 
-        /// after the sample data has left the channel's playback Buffer, so it does not affect the data delivered by <see cref="Bass.ChannelGetData" />. 
+        /// after the sample data has left the channel's playback Buffer, so it does not affect the data delivered by <see cref="Bass.ChannelGetData(int,IntPtr,int)" />. 
         /// Although this attribute has no direct effect on decoding channels,
         /// it is still available so that it can be used by the <see cref="BassMix" /> add-on and anything else that wants to use it.
         /// </para>

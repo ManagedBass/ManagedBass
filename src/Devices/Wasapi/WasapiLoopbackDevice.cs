@@ -1,4 +1,5 @@
 ﻿using ManagedBass.Dynamics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,12 +9,16 @@ namespace ManagedBass
     {
         WasapiLoopbackDevice(int Index) : base(Index) { }
 
-        static WasapiLoopbackDevice Get(int Device)
+        public static WasapiLoopbackDevice Get(int Device)
         {
             if (Singleton.ContainsKey(Device))
                 return Singleton[Device] as WasapiLoopbackDevice;
             else
             {
+                WasapiDeviceInfo info;
+                if (!(BassWasapi.GetDeviceInfo(Device, out info) && info.IsLoopback))
+                    throw new ArgumentException("Invalid WasapiLoopbackDevice Index");
+
                 var Dev = new WasapiLoopbackDevice(Device);
                 Singleton.Add(Device, Dev);
 
@@ -21,7 +26,7 @@ namespace ManagedBass
             }
         }
 
-        public bool Init() { return base._Init(0, 0, true, false, 0, 0); }
+        public bool Init() { return _Init(0, 0, true, false, 0, 0); }
 
         public static IEnumerable<WasapiLoopbackDevice> Devices
         {

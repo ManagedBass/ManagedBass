@@ -9,12 +9,16 @@ namespace ManagedBass
     {
         WasapiPlaybackDevice(int Index) : base(Index) { }
 
-        static WasapiPlaybackDevice Get(int Device)
+        public static WasapiPlaybackDevice Get(int Device)
         {
             if (Singleton.ContainsKey(Device))
                 return Singleton[Device] as WasapiPlaybackDevice;
             else
             {
+                WasapiDeviceInfo info;
+                if (!BassWasapi.GetDeviceInfo(Device, out info) || info.IsInput)
+                    throw new ArgumentException("Invalid WasapiPlaybackDevice Index");
+
                 var Dev = new WasapiPlaybackDevice(Device);
                 Singleton.Add(Device, Dev);
 
