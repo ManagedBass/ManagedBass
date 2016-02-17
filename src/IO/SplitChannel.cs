@@ -9,7 +9,7 @@ namespace ManagedBass
 
         public SplitChannel(Channel DecodingSource, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
-            if (!DecodingSource.Info.IsDecodingChannel)
+            if (!DecodingSource.IsDecodingChannel)
                 throw new ArgumentException("Not a Decoding Channel!");
 
             this.Source = DecodingSource;

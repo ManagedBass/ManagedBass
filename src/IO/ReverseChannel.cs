@@ -15,7 +15,7 @@ namespace ManagedBass
         {
 			this.decoder = DecodingSource;
 
-			if (!decoder.Info.IsDecodingChannel)
+			if (!decoder.IsDecodingChannel)
                 throw new ArgumentException("Not a Decoding Channel!");
 			
 			Handle = BassFx.ReverseCreate(decoder.Handle, (float)DecodingBlockLength, FlagGen(IsDecoder, Resolution));

@@ -3,14 +3,7 @@ using ManagedBass.Dynamics;
 
 namespace ManagedBass
 {
-    interface IFullDuplex : IDisposable
-    {
-        bool Start();
-
-        bool Stop();
-    }
-
-    class WasapiToBassFullDuplex : Channel, IFullDuplex
+    public class WasapiToBassFullDuplex : Channel
     {
         WasapiDevice WasapiDevice;
 
@@ -54,6 +47,13 @@ namespace ManagedBass
             WasapiDevice.Stop();
 
             return Result;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            WasapiDevice.Dispose();
         }
     }
 }

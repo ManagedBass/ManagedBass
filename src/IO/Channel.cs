@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace ManagedBass
 {
-    public abstract class Channel : IDisposable
+    public class Channel : IDisposable
     {
         #region Fields
         public bool IsDisposed { get; protected set; }
@@ -28,6 +28,15 @@ namespace ManagedBass
 
                 if (!Bass.ChannelGetInfo(value, out info))
                     throw new ArgumentException("Invalid Channel Handle: " + value);
+
+                // Populate info
+                DefaultFrequency = info.Frequency;
+                ChannelCount = info.Channels;
+                Type = info.ChannelType;
+                Plugin = info.Plugin;
+                Resolution = info.Resolution;
+                OriginalResolution = info.OriginalResolution;
+                IsDecodingChannel = info.IsDecodingChannel;
 
                 IsDisposed = false;
 
@@ -99,10 +108,10 @@ namespace ManagedBass
         public event EventHandler MediaFailed;
         #endregion
 
-        protected static BassFlags FlagGen(bool IsDecoder, Resolution Resolution, BassFlags Default = BassFlags.Default)
+        protected static BassFlags FlagGen(bool Decode, Resolution Resolution, BassFlags Default = BassFlags.Default)
         {
             var flags = Default | Resolution.ToBassFlag();
-            if (IsDecoder) flags |= BassFlags.Decode;
+            if (Decode) flags |= BassFlags.Decode;
 
             return flags;
         }
@@ -120,7 +129,24 @@ namespace ManagedBass
 
         public Channel(int Handle) : this() { this.Handle = Handle; }
 
-        public ChannelInfo Info { get { return Bass.ChannelGetInfo(Handle); } }
+        #region Info
+        public int DefaultFrequency { get; private set; }
+        public int ChannelCount { get; private set; }
+        public ChannelType Type { get; private set; }
+        public int Plugin { get; private set; }
+        public int OriginalResolution { get; private set; }
+        public bool IsDecodingChannel { get; private set; }
+
+        public bool HasFlag(BassFlags Flag) { return Bass.ChannelHasFlag(Handle, Flag); }
+
+        public bool AddFlag(BassFlags Flag) { return Bass.ChannelAddFlag(Handle, Flag); }
+
+        public bool RemoveFlag(BassFlags Flag) { return Bass.ChannelRemoveFlag(Handle, Flag); }
+
+        public Resolution Resolution { get; private set; }
+
+        public bool IsMono { get { return HasFlag(BassFlags.Mono); } }
+        #endregion
 
         #region Read
         public virtual int Read(IntPtr Buffer, int Length) { return Bass.ChannelGetData(Handle, Buffer, Length); }
@@ -146,6 +172,7 @@ namespace ManagedBass
 
         public override int GetHashCode() { return Handle; }
 
+        #region Decoding
         public bool DecoderHasData { get { return Bass.ChannelIsActive(Handle) == PlaybackState.Playing; } }
 
         /// <summary>
@@ -155,7 +182,7 @@ namespace ManagedBass
         /// <param name="Offset">+ve for forward, -ve for backward</param>
         public void DecodeToFile(IAudioFileWriter Writer, int Offset = 0)
         {
-            if (!Info.IsDecodingChannel)
+            if (!IsDecodingChannel)
                 throw new InvalidOperationException("Not a Decoding Channel!");
 
             double InitialPosition = Position;
@@ -180,22 +207,14 @@ namespace ManagedBass
 
             Position = InitialPosition;
         }
+        #endregion
 
+        #region Playable
         public virtual bool Start()
         {
             bool Result = Bass.ChannelPlay(Handle, RestartOnNextPlayback);
             if (Result) RestartOnNextPlayback = false;
             return Result;
-        }
-
-        public PlaybackDevice Device
-        {
-            get { return PlaybackDevice.Get(Bass.ChannelGetDevice(Handle)); }
-            set
-            {
-                value.Init();
-                Bass.ChannelSetDevice(Handle, value.DeviceIndex);
-            }
         }
 
         public bool IsPlaying { get { return Bass.ChannelIsActive(Handle) == PlaybackState.Playing; } }
@@ -208,6 +227,39 @@ namespace ManagedBass
             return Bass.ChannelStop(Handle);
         }
 
+        /// <summary>
+        /// Gets or Sets the Playback Frequency in Hertz.
+        /// Default is 44100 Hz.
+        /// </summary>
+        public double Frequency
+        {
+            get { return Bass.ChannelGetAttribute(Handle, ChannelAttribute.Frequency); }
+            set { Bass.ChannelSetAttribute(Handle, ChannelAttribute.Frequency, value); }
+        }
+
+        /// <summary>
+        /// Gets or Sets Balance (Panning) (-1 ... 0 ... 1).
+        /// -1 Represents Completely Left.
+        ///  1 Represents Completely Right.
+        /// Default is 0.
+        /// </summary>
+        public double Balance
+        {
+            get { return Bass.ChannelGetAttribute(Handle, ChannelAttribute.Pan); }
+            set { Bass.ChannelSetAttribute(Handle, ChannelAttribute.Pan, value); }
+        }
+        #endregion
+
+        public PlaybackDevice Device
+        {
+            get { return PlaybackDevice.Get(Bass.ChannelGetDevice(Handle)); }
+            set
+            {
+                value.Init();
+                Bass.ChannelSetDevice(Handle, value.DeviceIndex);
+            }
+        }
+        
         public double Volume
         {
             get { return Bass.ChannelGetAttribute(Handle, ChannelAttribute.Volume); }
@@ -222,42 +274,18 @@ namespace ManagedBass
 
         public double Level { get { return Bass.ChannelGetLevel(Handle); } }
 
-        /// <summary>
-        /// Gets or Sets the Playback Frequency in Hertz.
-        /// Default is 44100 Hz.
-        /// </summary>
-        public double Frequency
-        {
-            get { return Bass.ChannelGetAttribute(Handle, ChannelAttribute.Frequency); }
-            set { Bass.ChannelSetAttribute(Handle, ChannelAttribute.Frequency, value); }
-        }
-
         public double Duration { get { return Bass.ChannelBytes2Seconds(Handle, Bass.ChannelGetLength(Handle)); } }
 
         public bool Loop
         {
-            get { return Bass.ChannelHasFlag(Handle, BassFlags.Loop); }
+            get { return HasFlag(BassFlags.Loop); }
             set
             {
-                if (value && !Loop) Bass.ChannelAddFlag(Handle, BassFlags.Loop);
-                else if (!value && Loop) Bass.ChannelRemoveFlag(Handle, BassFlags.Loop);
+                if (value && !Loop) AddFlag(BassFlags.Loop);
+                else if (!value && Loop) RemoveFlag(BassFlags.Loop);
             }
         }
-
-        public bool IsMono { get { return Bass.ChannelHasFlag(Handle, BassFlags.Mono); } }
-
-        /// <summary>
-        /// Gets or Sets Balance (Panning) (-1 ... 0 ... 1).
-        /// -1 Represents Completely Left.
-        ///  1 Represents Completely Right.
-        /// Default is 0.
-        /// </summary>
-        public double Balance
-        {
-            get { return Bass.ChannelGetAttribute(Handle, ChannelAttribute.Pan); }
-            set { Bass.ChannelSetAttribute(Handle, ChannelAttribute.Pan, value); }
-        }
-
+        
         public void Link(int target) { Bass.ChannelSetLink(Handle, target); }
 
         public bool IsSliding(ChannelAttribute attrib) { return Bass.ChannelIsSliding(Handle, attrib); }

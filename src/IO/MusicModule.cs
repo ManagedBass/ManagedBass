@@ -55,7 +55,7 @@ namespace ManagedBass
             }
         }
 
-        public int ChannelCount
+        public int MusicChannelCount
         {
             get
             {
