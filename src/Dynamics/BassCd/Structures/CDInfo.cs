@@ -20,53 +20,53 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The drive product/model name.
         /// </summary>
-        public string Name { get { return Marshal.PtrToStringAnsi(product); } }
+        public string Name => Marshal.PtrToStringAnsi(product);
 
         /// <summary>
         /// The drive manufacturer name.
         /// </summary>
-        public string Manufacturer { get { return Marshal.PtrToStringAnsi(vendor); } }
+        public string Manufacturer => Marshal.PtrToStringAnsi(vendor);
 
         /// <summary>
         /// The revision number as a string.
         /// </summary>
-        public string Revision { get { return Marshal.PtrToStringAnsi(rev); } }
+        public string Revision => Marshal.PtrToStringAnsi(rev);
 
-        public int SpeedMultiplier { get { return (int)(maxspeed / 176.4); } }
+        public int SpeedMultiplier => (int)(maxspeed / 176.4);
 
         /// <summary>
         /// The character letter of the drive.
         /// </summary>
-        public char DriveLetter { get { return letter != -1 ? char.ToUpper((char)(letter + 65)) : '_'; } }
+        public char DriveLetter => letter != -1 ? char.ToUpper((char)(letter + 65)) : '_';
 
         /// <summary>
         /// If <see langword="true" />, <see cref="BassCd.Door" /> can be used and <see cref="CDDoorAction.Open"/>/<see cref="CDDoorAction.Close"/> is supported?
         /// </summary>
-        public bool CanOpen { get { return canopen; } }
+        public bool CanOpen => canopen;
 
         /// <summary>
         /// If <see langword="true" />, <see cref="BassCd.Door" /> can be used and <see cref="CDDoorAction.Lock"/>/<see cref="CDDoorAction.Unlock"/> is supported?
         /// </summary>
-        public bool CanLock { get { return canlock; } }
+        public bool CanLock => canlock;
 
         /// <summary>
         /// The maximum read speed, in kilobytes per second (KB/s). Divide by 176.4 to get the real-time speed multiplier, eg. 5645 / 176.4 = "32x speed".
         /// </summary>
-        public int MaxSpeed { get { return maxspeed; } }
+        public int MaxSpeed => maxspeed;
 
         /// <summary>
         /// The drive's cache size, in kilobytes (KB).
         /// </summary>
-        public int Cache { get { return cache; } }
+        public int Cache => cache;
 
         /// <summary>
         /// The drive can read CD-TEXT?
         /// </summary>
-        public bool CDText { get { return cdtext; } }
+        public bool CDText => cdtext;
 
         /// <summary>
         /// Read/Write capability flags (any combination of <see cref="CDReadWriteFlags" />).
         /// </summary>
-        public CDReadWriteFlags ReadWriteFlags { get { return rwflags; } }
+        public CDReadWriteFlags ReadWriteFlags => rwflags;
     }
 }

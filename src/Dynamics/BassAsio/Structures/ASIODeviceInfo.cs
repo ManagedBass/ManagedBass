@@ -15,14 +15,14 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The description of the device.
         /// </summary>
-        public string Name { get { return Marshal.PtrToStringAnsi(name); } }
+        public string Name => Marshal.PtrToStringAnsi(name);
 
         /// <summary>
         /// The filename of the driver being used.
         /// <para>Further information can be obtained from the file using the GetFileVersionInfo Win32 API function.</para>
         /// </summary>
-        public string Driver { get { return Marshal.PtrToStringAnsi(driver); } }
+        public string Driver => Marshal.PtrToStringAnsi(driver);
 
-        public override string ToString() { return Name; }
+        public override string ToString() => Name;
     }
 }

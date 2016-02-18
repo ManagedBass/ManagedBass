@@ -11,7 +11,7 @@ namespace ManagedBass
         DownloadProcedure proc;
         Action<BufferProvider> call;
 
-        public string Url { get; set; }
+        public string Url { get; }
         
         public NetworkChannel(string Url, bool IsDecoder = false, Resolution Resolution = Resolution.Short, Action<BufferProvider> callback = null, int Offset = 0)
         {
@@ -33,20 +33,20 @@ namespace ManagedBass
             Bass.ChannelSetSync(Handle, SyncFlags.Downloaded, 0, Down_Handler, IntPtr.Zero);
         }
 
-        void Callback(IntPtr Buffer, int Length, IntPtr User) { call.Invoke(new BufferProvider(Buffer, Length)); }
+        void Callback(IntPtr Buffer, int Length, IntPtr User) => call.Invoke(new BufferProvider(Buffer, Length));
 
-        public long DownloadProgress { get { return Bass.StreamGetFilePosition(Handle, FileStreamPosition.Download); } }
+        public long DownloadProgress => Bass.StreamGetFilePosition(Handle, FileStreamPosition.Download);
 
-        public bool IsStalled { get { return Bass.ChannelIsActive(Handle) == PlaybackState.Stalled; } }
+        public bool IsStalled => Bass.ChannelIsActive(Handle) == PlaybackState.Stalled;
 
-        public bool IsConnected { get { return Bass.StreamGetFilePosition(Handle, FileStreamPosition.Connected) == 1; } }
+        public bool IsConnected => Bass.StreamGetFilePosition(Handle, FileStreamPosition.Connected) == 1;
 
         #region Download Completed
         SyncProcedure Down_Handler;
 
         void OnDownloadCompleted(int handle, int channel, int data, IntPtr User)
         {
-            if (DownloadComplete != null) DownloadComplete.Invoke();
+            DownloadComplete?.Invoke();
         }
 
         public event Action DownloadComplete;

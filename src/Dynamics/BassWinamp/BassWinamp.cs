@@ -15,6 +15,12 @@ namespace ManagedBass.Dynamics
     {
         const string DllName = "bass_winamp";
 
+        /// <summary>
+        /// Load from a folder other than the Current Directory.
+        /// <param name="Folder">If null (default), Load from Current Directory</param>
+        /// </summary>
+        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
+
         [DllImport(DllName, EntryPoint = "BASS_WINAMP_AboutPlugin")]
         public static extern void AboutPlugin(int handle, IntPtr win);
 

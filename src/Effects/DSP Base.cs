@@ -7,29 +7,29 @@ namespace ManagedBass.Effects
     {
         int Channel;
 
-        int DSPHandle;
+        public int Handle { get; }
 
-        public int Priortity { get; set; }
+        public int Priortity { get; }
 
-        public bool IsAssigned { get; set; }
+        public bool IsAssigned { get; private set; }
 
         DSPProcedure DSPProc;
 
         static DSP() { Bass.FloatingPointDSP = true; }
 
-        public DSP(int Handle, int Priority = 0)
+        public DSP(int Channel, int Priority = 0)
         {
-            Channel = Handle;
+            this.Channel = Channel;
 
             DSPProc = new DSPProcedure(OnDSP);
 
             this.Priortity = Priortity;
 
-            DSPHandle = Bass.ChannelSetDSP(Channel, DSPProc, IntPtr.Zero, Priority);
+            Handle = Bass.ChannelSetDSP(Channel, DSPProc, IntPtr.Zero, Priority);
 
-            Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => Dispose());
+            Bass.ChannelSetSync(Channel, SyncFlags.Free, 0, (a, b, c, d) => Dispose());
 
-            if (DSPHandle != 0) IsAssigned = true;
+            if (Handle != 0) IsAssigned = true;
             else throw new InvalidOperationException("DSP Assignment Failed");
         }
 
@@ -42,9 +42,9 @@ namespace ManagedBass.Effects
 
         public void Dispose()
         {
-            Bass.ChannelRemoveDSP(Channel, DSPHandle);
+            Bass.ChannelRemoveDSP(Channel, Handle);
             IsAssigned = false;
-            Channel = DSPHandle = Priortity = 0;
+            Channel = 0;
             DSPProc = null;
         }
     }

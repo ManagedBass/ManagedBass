@@ -11,22 +11,22 @@ namespace ManagedBass
             Handle = BassMix.CreateMixerStream(Frequency, NoOfChannels, FlagGen(IsDecoder, Resolution));
         }
 
-        public override int Read(IntPtr Buffer, int Length) { return BassMix.ChannelGetData(Handle, Buffer, Length); }
+        public override int Read(IntPtr Buffer, int Length) => BassMix.ChannelGetData(Handle, Buffer, Length);
 
-        public override int Read(byte[] Buffer, int Length) { return BassMix.ChannelGetData(Handle, Buffer, Length); }
+        public override int Read(byte[] Buffer, int Length) => BassMix.ChannelGetData(Handle, Buffer, Length);
 
-        public override int Read(short[] Buffer, int Length) { return BassMix.ChannelGetData(Handle, Buffer, Length); }
+        public override int Read(short[] Buffer, int Length) => BassMix.ChannelGetData(Handle, Buffer, Length);
 
-        public override int Read(int[] Buffer, int Length) { return BassMix.ChannelGetData(Handle, Buffer, Length); }
+        public override int Read(int[] Buffer, int Length) => BassMix.ChannelGetData(Handle, Buffer, Length);
 
-        public override int Read(float[] Buffer, int Length) { return BassMix.ChannelGetData(Handle, Buffer, Length); }
+        public override int Read(float[] Buffer, int Length) => BassMix.ChannelGetData(Handle, Buffer, Length);
 
-        public bool AddChannel(Channel channel) { return AddChannel(channel.Handle); }
+        public bool AddChannel(Channel channel) => AddChannel(channel.Handle);
 
-        public bool AddChannel(int channel) { return BassMix.MixerAddChannel(Handle, channel, BassFlags.Default); }
+        public bool AddChannel(int channel) => BassMix.MixerAddChannel(Handle, channel, BassFlags.Default);
 
-        public bool RemoveChannel(Channel channel) { return RemoveChannel(channel.Handle); }
+        public bool RemoveChannel(Channel channel) => RemoveChannel(channel.Handle);
 
-        public bool RemoveChannel(int channel) { return BassMix.MixerRemoveChannel(channel); }
+        public bool RemoveChannel(int channel) => BassMix.MixerRemoveChannel(channel);
     }
 }

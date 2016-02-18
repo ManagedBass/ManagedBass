@@ -17,10 +17,7 @@ namespace ManagedBass
 
         static void OnNotify(WasapiNotificationType notify, int device, IntPtr User)
         {
-            var handler = Singleton[device]._StateChanged;
-
-            if (handler != null)
-                handler(notify);
+            Singleton[device]._StateChanged?.Invoke(notify);
         }
 
         bool notifyRegistered = false;
@@ -59,9 +56,9 @@ namespace ManagedBass
         }
 
         #region Device Info
-        public int DeviceIndex { get; protected set; }
+        public int DeviceIndex { get; }
 
-        public WasapiDeviceInfo DeviceInfo { get { return BassWasapi.GetDeviceInfo(DeviceIndex); } }
+        public WasapiDeviceInfo DeviceInfo => BassWasapi.GetDeviceInfo(DeviceIndex);
         #endregion
 
         #region Callback
@@ -69,7 +66,7 @@ namespace ManagedBass
 
         public virtual int OnProc(IntPtr Buffer, int Length, IntPtr User)
         {
-            if (Callback != null) Callback.Invoke(new BufferProvider(Buffer, Length));
+            Callback?.Invoke(new BufferProvider(Buffer, Length));
             return Length;
         }
 
@@ -83,15 +80,15 @@ namespace ManagedBass
         }
 
         #region Read
-        public int Read(IntPtr Buffer, int Length) { return BassWasapi.GetData(Buffer, Length); }
+        public int Read(IntPtr Buffer, int Length) => BassWasapi.GetData(Buffer, Length);
 
-        public int Read(float[] Buffer, int Length) { return BassWasapi.GetData(Buffer, Length); }
+        public int Read(float[] Buffer, int Length) => BassWasapi.GetData(Buffer, Length);
         #endregion
 
         #region Write
-        public void Write(IntPtr Buffer, int Length) { BassWasapi.PutData(Buffer, Length); }
+        public void Write(IntPtr Buffer, int Length) => BassWasapi.PutData(Buffer, Length);
 
-        public void Write(float[] Buffer, int Length) { BassWasapi.PutData(Buffer, Length); }
+        public void Write(float[] Buffer, int Length) => BassWasapi.PutData(Buffer, Length);
         #endregion
 
         public bool Lock(bool Lock = true)
@@ -114,7 +111,7 @@ namespace ManagedBass
             }
         }
 
-        public double Level { get { return BassWasapi.GetDeviceLevel(DeviceIndex); } }
+        public double Level => BassWasapi.GetDeviceLevel(DeviceIndex);
 
         public double Volume
         {
@@ -170,7 +167,7 @@ namespace ManagedBass
         }
 
         #region Overrides
-        public override bool Equals(object obj) { return (obj is WasapiDevice) && (DeviceIndex == ((WasapiDevice)obj).DeviceIndex); }
+        public override bool Equals(object obj) => (obj is WasapiDevice) && (DeviceIndex == ((WasapiDevice)obj).DeviceIndex);
 
         public override string ToString()
         {
@@ -179,7 +176,7 @@ namespace ManagedBass
                 + (DeviceInfo.IsDefault ? " (Default)" : string.Empty);
         }
 
-        public override int GetHashCode() { return DeviceIndex; }
+        public override int GetHashCode() => DeviceIndex;
         #endregion
     }
 }

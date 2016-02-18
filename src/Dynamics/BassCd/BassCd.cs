@@ -19,7 +19,7 @@ namespace ManagedBass.Dynamics
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
+        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
 
         public static int DriveCount
         {
@@ -34,6 +34,7 @@ namespace ManagedBass.Dynamics
             }
         }
 
+        #region Configuration
         /// <summary>
         /// Automatically free an existing stream when creating a new one on the same drive? (enabled by Default)
         /// </summary>
@@ -105,6 +106,7 @@ namespace ManagedBass.Dynamics
                 Bass.Configure(Configuration.CDDBServer, _cddbServer);
             }
         }
+        #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_CD_Release")]
         public static extern bool Release(int Drive);

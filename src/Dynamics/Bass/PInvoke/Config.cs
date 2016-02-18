@@ -22,7 +22,8 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_GetConfigPtr")]
         internal extern static IntPtr GetConfigPtr(Configuration option);
 
-        internal static bool GetConfigBool(Configuration option) { return GetConfig(option) == 1; }
+        [DllImport(DllName, EntryPoint = "BASS_GetConfig")]
+        internal extern static bool GetConfigBool(Configuration option);
 
         /// <summary>
         /// The Buffer Length in milliseconds. 
@@ -236,7 +237,7 @@ namespace ManagedBass.Dynamics
         /// The Handle count may not only include the app-created stuff but also internal stuff, 
         /// eg. <see cref="BassWasapi.Init"/> will create a stream when the <see cref="WasapiInitFlags.Buffer"/> flag is used.
         /// </remarks>
-        public static int HandleCount { get { return GetConfig(Configuration.HandleCount); } }
+        public static int HandleCount => GetConfig(Configuration.HandleCount);
 
         /// <summary>
         /// Time (in milliseconds) to wait for a server to respond to a connection request.

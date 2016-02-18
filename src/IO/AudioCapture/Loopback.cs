@@ -26,16 +26,12 @@ namespace ManagedBass
             }
 
             Device.Init();
-            Device.Callback += (b) =>
-                {
-                    if (DataAvailable != null)
-                        DataAvailable(b);
-                };
+            Device.Callback += (b) => DataAvailable?.Invoke(b);
         }
 
-        public double Level { get { return Device.Level; } }
+        public double Level => Device.Level;
 
-        public bool IsActive { get { return Device.IsStarted; } }
+        public bool IsActive => Device.IsStarted;
 
         public bool Start()
         {

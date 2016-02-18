@@ -17,16 +17,16 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The channel's group.
         /// </summary>
-        public int Group { get { return group; } }
+        public int Group => group;
 
         /// <summary>
         /// The channel's sample format
         /// </summary>
-        public AsioSampleFormat Format { get { return format; } }
+        public AsioSampleFormat Format => format;
 
         /// <summary>
         /// The name of the channel.
         /// </summary>
-        public string Name { get { return new string(name).Replace("\0", "").Trim(); } }
+        public string Name => new string(name).Replace("\0", "").Trim();
     }
 }

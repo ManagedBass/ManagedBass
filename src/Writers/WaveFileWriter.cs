@@ -15,7 +15,7 @@ namespace ManagedBass
         long dataSizePos, factSampleCountPos;
         object locker = new object();
 
-        public Resolution Resolution { get; private set; }
+        public Resolution Resolution { get; }
 
         /// <summary>
         /// Number of bytes of audio
@@ -141,7 +141,7 @@ namespace ManagedBass
         /// <summary>
         /// Ensures data is written to disk
         /// </summary>
-        public void Flush() { Writer.Flush(); }
+        public void Flush() => Writer.Flush();
 
         #region IDisposable Members
         /// <summary>

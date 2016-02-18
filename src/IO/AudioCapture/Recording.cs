@@ -28,17 +28,17 @@ namespace ManagedBass
             Handle = Bass.RecordStart(SampleRate, Channels, BassFlags.RecordPause | Resolution.ToBassFlag(), RecordProcedure);
         }
 
-        public bool IsActive { get { return Bass.ChannelIsActive(Handle) == PlaybackState.Playing; } }
+        public bool IsActive => Bass.ChannelIsActive(Handle) == PlaybackState.Playing;
 
-        public override bool Stop() { return Bass.ChannelPause(Handle); }
+        public override bool Stop() => Bass.ChannelPause(Handle);
 
         #region Callback
         public event Action<BufferProvider> DataAvailable;
 
         bool Processing(int Handle, IntPtr Buffer, int Length, IntPtr User)
         {
-            if (DataAvailable != null)
-                DataAvailable.Invoke(new BufferProvider(Buffer, Length));
+            DataAvailable?.Invoke(new BufferProvider(Buffer, Length));
+
             return true;
         }
         #endregion

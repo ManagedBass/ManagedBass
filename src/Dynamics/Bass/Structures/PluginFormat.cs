@@ -23,12 +23,12 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The channel Type, as would appear in the <see cref="ChannelInfo" /> structure.
         /// </summary>
-        public ChannelType ChannelType { get { return ctype; } }
+        public ChannelType ChannelType => ctype;
 
         /// <summary>
         /// The Format description or name.
         /// </summary>
-        public string Name { get { return Marshal.PtrToStringAnsi(name); } }
+        public string Name => Marshal.PtrToStringAnsi(name);
 
         /// <summary>
         /// File extension filter, in the form of "*.ext1;*.ext2;etc...".
@@ -37,6 +37,6 @@ namespace ManagedBass.Dynamics
         /// The extension filter is for information only. 
         /// A plugin will check the file contents rather than file extension, to verify that it is a supported format.
         /// </remarks>
-        public string FileExtensions { get { return Marshal.PtrToStringAnsi(exts); } }
+        public string FileExtensions => Marshal.PtrToStringAnsi(exts);
     }
 }

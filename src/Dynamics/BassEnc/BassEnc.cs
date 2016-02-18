@@ -16,12 +16,12 @@ namespace ManagedBass.Dynamics
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
+        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
 
         [DllImport(DllName)]
         static extern int BASS_Encode_GetVersion();
 
-        public static Version Version { get { return Extensions.GetVersion(BASS_Encode_GetVersion()); } }
+        public static Version Version => Extensions.GetVersion(BASS_Encode_GetVersion());
 
         #region Configure
         /// <summary>

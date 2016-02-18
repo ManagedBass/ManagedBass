@@ -10,7 +10,7 @@ namespace ManagedBass
     /// <typeparam name="T">The Type of the function return value</typeparam>
     public class Return<T>
     {
-        public Errors ErrorCode { get; private set; }
+        public Errors ErrorCode { get; }
 
         Return(T Value)
         {
@@ -18,12 +18,12 @@ namespace ManagedBass
             this.Value = Value;
         }
 
-        public T Value { get; private set; }
+        public T Value { get; }
 
-        public static implicit operator T(Return<T> e) { return e.Value; }
+        public static implicit operator T(Return<T> e) => e.Value;
 
-        public static implicit operator Return<T>(T e) { return new Return<T>(e); }
+        public static implicit operator Return<T>(T e) => new Return<T>(e);
 
-        public bool Success { get { return ErrorCode == Errors.OK; } }
+        public bool Success => ErrorCode == Errors.OK;
     }
 }

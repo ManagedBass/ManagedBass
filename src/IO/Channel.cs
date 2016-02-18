@@ -116,7 +116,7 @@ namespace ManagedBass
             return flags;
         }
 
-        public double CPUUsage { get { return Bass.ChannelGetAttribute(Handle, ChannelAttribute.CPUUsage); } }
+        public double CPUUsage => Bass.ChannelGetAttribute(Handle, ChannelAttribute.CPUUsage);
 
         protected Channel()
         {
@@ -137,43 +137,43 @@ namespace ManagedBass
         public int OriginalResolution { get; private set; }
         public bool IsDecodingChannel { get; private set; }
 
-        public bool HasFlag(BassFlags Flag) { return Bass.ChannelHasFlag(Handle, Flag); }
+        public bool HasFlag(BassFlags Flag) => Bass.ChannelHasFlag(Handle, Flag);
 
-        public bool AddFlag(BassFlags Flag) { return Bass.ChannelAddFlag(Handle, Flag); }
+        public bool AddFlag(BassFlags Flag) => Bass.ChannelAddFlag(Handle, Flag);
 
-        public bool RemoveFlag(BassFlags Flag) { return Bass.ChannelRemoveFlag(Handle, Flag); }
+        public bool RemoveFlag(BassFlags Flag) => Bass.ChannelRemoveFlag(Handle, Flag);
 
         public Resolution Resolution { get; private set; }
 
-        public bool IsMono { get { return HasFlag(BassFlags.Mono); } }
+        public bool IsMono => HasFlag(BassFlags.Mono);
         #endregion
 
         #region Read
-        public virtual int Read(IntPtr Buffer, int Length) { return Bass.ChannelGetData(Handle, Buffer, Length); }
+        public virtual int Read(IntPtr Buffer, int Length) => Bass.ChannelGetData(Handle, Buffer, Length);
 
-        public virtual int Read(byte[] Buffer, int Length) { return Bass.ChannelGetData(Handle, Buffer, Length); }
+        public virtual int Read(byte[] Buffer, int Length) => Bass.ChannelGetData(Handle, Buffer, Length);
 
-        public virtual int Read(float[] Buffer, int Length) { return Bass.ChannelGetData(Handle, Buffer, Length); }
+        public virtual int Read(float[] Buffer, int Length) => Bass.ChannelGetData(Handle, Buffer, Length);
 
-        public virtual int Read(short[] Buffer, int Length) { return Bass.ChannelGetData(Handle, Buffer, Length); }
+        public virtual int Read(short[] Buffer, int Length) => Bass.ChannelGetData(Handle, Buffer, Length);
 
-        public virtual int Read(int[] Buffer, int Length) { return Bass.ChannelGetData(Handle, Buffer, Length); }
+        public virtual int Read(int[] Buffer, int Length) => Bass.ChannelGetData(Handle, Buffer, Length);
         #endregion
 
-        public long Seconds2Bytes(double Seconds) { return Bass.ChannelSeconds2Bytes(Handle, Seconds); }
+        public long Seconds2Bytes(double Seconds) => Bass.ChannelSeconds2Bytes(Handle, Seconds);
 
-        public double Bytes2Seconds(long Bytes) { return Bass.ChannelBytes2Seconds(Handle, Bytes); }
+        public double Bytes2Seconds(long Bytes) => Bass.ChannelBytes2Seconds(Handle, Bytes);
 
-        public bool Lock() { return Bass.ChannelLock(Handle, true); }
+        public bool Lock() => Bass.ChannelLock(Handle, true);
 
-        public bool Unlock() { return Bass.ChannelLock(Handle, false); }
+        public bool Unlock() => Bass.ChannelLock(Handle, false);
 
         public virtual void Dispose() { if (!IsDisposed) IsDisposed = Bass.StreamFree(Handle); }
 
-        public override int GetHashCode() { return Handle; }
+        public override int GetHashCode() => Handle;
 
         #region Decoding
-        public bool DecoderHasData { get { return Bass.ChannelIsActive(Handle) == PlaybackState.Playing; } }
+        public bool DecoderHasData => Bass.ChannelIsActive(Handle) == PlaybackState.Playing;
 
         /// <summary>
         /// Writes all the Data in the decoder to a file
@@ -217,9 +217,9 @@ namespace ManagedBass
             return Result;
         }
 
-        public bool IsPlaying { get { return Bass.ChannelIsActive(Handle) == PlaybackState.Playing; } }
+        public bool IsPlaying => Bass.ChannelIsActive(Handle) == PlaybackState.Playing;
 
-        public virtual bool Pause() { return Bass.ChannelPause(Handle); }
+        public virtual bool Pause() => Bass.ChannelPause(Handle);
 
         public virtual bool Stop()
         {
@@ -272,9 +272,9 @@ namespace ManagedBass
             set { Bass.ChannelSetPosition(Handle, Bass.ChannelSeconds2Bytes(Handle, value)); }
         }
 
-        public double Level { get { return Bass.ChannelGetLevel(Handle); } }
+        public double Level => Bass.ChannelGetLevel(Handle);
 
-        public double Duration { get { return Bass.ChannelBytes2Seconds(Handle, Bass.ChannelGetLength(Handle)); } }
+        public double Duration => Bass.ChannelBytes2Seconds(Handle, Bass.ChannelGetLength(Handle));
 
         public bool Loop
         {
@@ -286,10 +286,10 @@ namespace ManagedBass
             }
         }
         
-        public void Link(int target) { Bass.ChannelSetLink(Handle, target); }
+        public void Link(int target) => Bass.ChannelSetLink(Handle, target);
 
-        public bool IsSliding(ChannelAttribute attrib) { return Bass.ChannelIsSliding(Handle, attrib); }
+        public bool IsSliding(ChannelAttribute attrib) => Bass.ChannelIsSliding(Handle, attrib);
 
-        public bool Slide(ChannelAttribute attrib, double Value, int Time) { return Bass.ChannelSlideAttribute(Handle, attrib, (float)Value, Time); }
+        public bool Slide(ChannelAttribute attrib, double Value, int Time) => Bass.ChannelSlideAttribute(Handle, attrib, (float)Value, Time);
     }
 }

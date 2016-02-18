@@ -33,12 +33,12 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// Default playback rate.
         /// </summary>
-        public int Frequency { get { return freq; } }
+        public int Frequency => freq;
 
         /// <summary>
         /// Number of channels... 1=mono, 2=stereo, etc.
         /// </summary>
-        public int Channels { get { return chans; } }
+        public int Channels => chans;
 
         /// <summary>
         /// Sample/Stream/Music/Speaker flags.
@@ -50,12 +50,12 @@ namespace ManagedBass.Dynamics
         /// On Windows CE, the opposite is true: the <see cref="BassFlags.Unicode"/> flag may be present even if it was not used in the stream's creation, as BASS will have translated the filename to the native UTF-16 form.
         /// </para>
         /// </remarks>
-        public BassFlags Flags { get { return flags; } }
+        public BassFlags Flags => flags;
 
         /// <summary>
         /// The Type of Channel
         /// </summary>
-        public ChannelType ChannelType { get { return ctype; } }
+        public ChannelType ChannelType => ctype;
 
         /// <summary>
         /// The plugin that is handling the channel... 0 = not using a plugin. 
@@ -64,12 +64,12 @@ namespace ManagedBass.Dynamics
         /// Information on the plugin can be retrieved via <see cref="Bass.GetPluginInfo" />.
         /// </para>
         /// </summary>
-        public int Plugin { get { return plugin; } }
+        public int Plugin => plugin;
 
         /// <summary>
         /// The sample that is playing on the channel. (HCHANNEL only)
         /// </summary>
-        public int Sample { get { return sample; } }
+        public int Sample => sample;
 
         /// <summary>
         /// The resolution which Bass uses for the stream.
@@ -87,16 +87,16 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The original resolution (bits per sample)... 0 = undefined.
         /// </summary>
-        public int OriginalResolution { get { return origres; } }
+        public int OriginalResolution => origres;
 
         /// <summary>
         /// The filename associated with the channel. (HSTREAM only)
         /// </summary>
-        public string FileName { get { return Marshal.PtrToStringAnsi(filename); } }
+        public string FileName => Marshal.PtrToStringAnsi(filename);
 
         /// <summary>
         /// Is the channel a decoding channel?
         /// </summary>
-        public bool IsDecodingChannel { get { return flags.HasFlag(BassFlags.Decode); } }
+        public bool IsDecodingChannel => flags.HasFlag(BassFlags.Decode);
     }
 }

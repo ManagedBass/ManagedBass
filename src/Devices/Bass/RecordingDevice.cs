@@ -50,23 +50,23 @@ namespace ManagedBass
         /// <summary>
         /// The Index of the Device as identified by Bass
         /// </summary>
-        public int DeviceIndex { get; private set; }
+        public int DeviceIndex { get; }
 
         /// <summary>
         /// Number of available Recording Devices
         /// </summary>
-        public static int Count { get { return Bass.RecordingDeviceCount; } }
+        public static int Count => Bass.RecordingDeviceCount;
 
         /// <summary>
         /// Gets a DeviceInfo object containing information on the Device like Name, Type, IsEnabled, etc.
         /// </summary>
-        public DeviceInfo DeviceInfo { get { return Bass.RecordGetDeviceInfo(DeviceIndex); } }
+        public DeviceInfo DeviceInfo => Bass.RecordGetDeviceInfo(DeviceIndex);
 
         /// <summary>
         /// Initialize a Device for Recording
         /// </summary>
         /// <returns>A Return&lt;bool&gt; object containing success and error info</returns>
-        public Return<bool> Init() { return Bass.RecordInit(DeviceIndex); }
+        public Return<bool> Init() => Bass.RecordInit(DeviceIndex);
 
         /// <summary>
         /// Frees an initialized Device
@@ -80,11 +80,11 @@ namespace ManagedBass
         /// <summary>
         /// Default Audio Recording Devices
         /// </summary>
-        public static RecordingDevice DefaultDevice { get { return Devices.First((dev) => dev.DeviceInfo.IsDefault); } }
+        public static RecordingDevice DefaultDevice => Devices.First((dev) => dev.DeviceInfo.IsDefault);
 
         /// <summary>
         /// Returns the Name of the Device
         /// </summary>
-        public override string ToString() { return DeviceInfo.Name; }
+        public override string ToString() => DeviceInfo.Name;
     }
 }

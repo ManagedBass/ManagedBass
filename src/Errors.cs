@@ -262,6 +262,6 @@ namespace ManagedBass
             this.ErrorCode = Bass.LastError;
         }
 
-        public Errors ErrorCode { get; private set; }
+        public Errors ErrorCode { get; }
     }
 }

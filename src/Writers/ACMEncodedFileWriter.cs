@@ -35,12 +35,12 @@ namespace ManagedBass
             gch.Free();
         }
 
-        public void Write(byte[] buffer, int Length) { Write(buffer as object, Length); }
+        public void Write(byte[] buffer, int Length) => Write(buffer as object, Length);
 
-        public void Write(short[] buffer, int Length) { Write(buffer as object, Length); }
+        public void Write(short[] buffer, int Length) => Write(buffer as object, Length);
 
-        public void Write(float[] buffer, int Length) { Write(buffer as object, Length); }
+        public void Write(float[] buffer, int Length) => Write(buffer as object, Length);
 
-        public Resolution Resolution { get; private set; }
+        public Resolution Resolution { get; }
     }
 }

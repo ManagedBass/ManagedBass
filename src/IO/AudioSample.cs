@@ -31,7 +31,7 @@ namespace ManagedBass
             GCPin.Free();
         }
 
-        public long Length { get { return Bass.SampleGetInfo(Sample).Length; } }
+        public long Length => Bass.SampleGetInfo(Sample).Length;
 
         #region Read Sample Data
         public bool ReadSampleData(IntPtr Buffer) { return Bass.SampleGetData(Sample, Buffer); }
@@ -57,6 +57,6 @@ namespace ManagedBass
         public bool WriteSampleData(int[] Buffer) { return Bass.SampleSetData(Sample, Buffer); }
         #endregion
 
-        public override void Dispose() { try { Bass.SampleFree(Sample); } catch { } }
+        public override void Dispose() { try { if (!IsDisposed) IsDisposed = Bass.SampleFree(Sample); } catch { } }
     }
 }

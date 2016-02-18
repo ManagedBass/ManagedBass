@@ -14,17 +14,17 @@ namespace ManagedBass.Dynamics
         int volmin;
         int volstep;
 
-        public WasapiInitFlags InitFlags { get { return initflags; } }
-        public WasapiFormat Format { get { return format; } }
+        public WasapiInitFlags InitFlags => initflags;
+        public WasapiFormat Format => format;
 
-        public int Frequency { get { return freq; } }
-        public int Channels { get { return chans; } }
-        public int BufferLength { get { return buflen; } }
-        public int MaxVolume { get { return volmax; } }
-        public int MinVolume { get { return volmin; } }
-        public int VolumeStep { get { return volstep; } }
+        public int Frequency => freq;
+        public int Channels => chans;
+        public int BufferLength => buflen;
+        public int MaxVolume => volmax;
+        public int MinVolume => volmin;
+        public int VolumeStep => volstep;
 
-        public bool IsEventDriven { get { return initflags.HasFlag(WasapiInitFlags.EventDriven); } }
-        public bool IsExclusive { get { return initflags.HasFlag(WasapiInitFlags.Exclusive); } }
+        public bool IsEventDriven => initflags.HasFlag(WasapiInitFlags.EventDriven);
+        public bool IsExclusive => initflags.HasFlag(WasapiInitFlags.Exclusive);
     }
 }

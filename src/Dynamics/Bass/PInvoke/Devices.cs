@@ -86,7 +86,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         static extern bool BASS_Free();
 
-        public static Return<bool> Free(int Device) { return BASS_SetDevice(Device) && BASS_Free(); }
+        public static Return<bool> Free(int Device) => BASS_SetDevice(Device) && BASS_Free();
         #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetDevice")]

@@ -23,43 +23,43 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The name of the device/driver.
         /// </summary>
-        public string Name { get { return new string(name).Replace("\0", "").Trim(); } }
+        public string Name => new string(name).Replace("\0", "").Trim();
 
         /// <summary>
         /// The driver version.
         /// </summary>
-        public int DriverVersion { get { return version; } }
+        public int DriverVersion => version;
 
         /// <summary>
         /// The number of input channels available.
         /// </summary>
-        public int Inputs { get { return inputs; } }
+        public int Inputs => inputs;
 
         /// <summary>
         /// The number of output channels available.
         /// </summary>
-        public int Outputs { get { return outputs; } }
+        public int Outputs => outputs;
 
         /// <summary>
         /// The minimum Buffer Length, in samples.
         /// </summary>
-        public int MinBufferLength { get { return bufmin; } }
+        public int MinBufferLength => bufmin;
 
         /// <summary>
         /// The maximum Buffer Length, in samples.
         /// </summary>
-        public int MaxBufferLength { get { return bufmin; } }
+        public int MaxBufferLength => bufmin;
 
         /// <summary>
         /// The preferred/default Buffer Length, in samples.
         /// </summary>
-        public int PreferredBufferLength { get { return bufpref; } }
+        public int PreferredBufferLength => bufpref;
 
         /// <summary>
         /// The Buffer Length granularity, that is the smallest possible Length change... -1 = the possible Buffer lengths increase in powers of 2.
         /// </summary>
-        public int BufferLengthGranularity { get { return bufgran; } }
+        public int BufferLengthGranularity => bufgran;
 
-        public override string ToString() { return Name; }
+        public override string ToString() => Name;
     }
 }

@@ -14,7 +14,7 @@ namespace ManagedBass.Dynamics
     public class Plugin
     {
         #region Fields
-        public readonly string DllName;
+        public string DllName { get; }
         readonly string ID;
         readonly bool SupportsURL;
         IntPtr HLib = IntPtr.Zero;

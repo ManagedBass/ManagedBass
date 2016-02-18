@@ -10,12 +10,12 @@ namespace ManagedBass.Dynamics
         int id;
         DeviceInfoFlags flags;
 
-        public int ID { get { return id; } }
+        public int ID => id;
 
-        public string Name { get { return Marshal.PtrToStringAnsi(name); } }
+        public string Name => Marshal.PtrToStringAnsi(name);
 
-        public bool IsEnabled { get { return flags.HasFlag(DeviceInfoFlags.Enabled); } }
+        public bool IsEnabled => flags.HasFlag(DeviceInfoFlags.Enabled);
 
-        public bool IsInitialized { get { return flags.HasFlag(DeviceInfoFlags.Initialized); } }
+        public bool IsInitialized => flags.HasFlag(DeviceInfoFlags.Initialized);
     }
 }

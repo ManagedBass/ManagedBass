@@ -5,7 +5,7 @@ namespace ManagedBass
 {
     public class SplitChannel : Channel
     {
-        public Channel Source { get; set; }
+        Channel Source;
 
         public SplitChannel(Channel DecodingSource, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {

@@ -46,7 +46,7 @@ namespace ManagedBass
         /// <summary>
         /// The size of data in bytes.
         /// </summary>
-        public int Length { get { return length; } }
+        public int Length => length;
 
         public static ApeBinaryTag Read(int handle, int index)
         {
@@ -72,7 +72,7 @@ namespace ManagedBass
         /// <summary>
         /// Returns the Key of the binary tag.
         /// </summary>
-        public override string ToString() { return Key; }
+        public override string ToString() => Key;
     }
 
     /// <summary>

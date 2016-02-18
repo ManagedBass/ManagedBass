@@ -14,10 +14,10 @@ namespace ManagedBass.Dynamics
         public int samload;
         public int samtype;
 
-        public string Name { get { return Marshal.PtrToStringAnsi(name); } }
+        public string Name => Marshal.PtrToStringAnsi(name);
 
-        public string Copyright { get { return Marshal.PtrToStringAnsi(copyright); } }
+        public string Copyright => Marshal.PtrToStringAnsi(copyright);
 
-        public string Comment { get { return Marshal.PtrToStringAnsi(comment); } }
+        public string Comment => Marshal.PtrToStringAnsi(comment);
     }
 }

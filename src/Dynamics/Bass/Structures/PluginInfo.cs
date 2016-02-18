@@ -16,7 +16,7 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// Plugin version.
         /// </summary>
-        public Version Version { get { return Extensions.GetVersion(version); } }
+        public Version Version => Extensions.GetVersion(version);
 
         /// <summary>
         /// The collection of supported formats.

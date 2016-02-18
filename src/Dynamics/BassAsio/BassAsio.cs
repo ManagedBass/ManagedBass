@@ -17,7 +17,7 @@ namespace ManagedBass.Dynamics
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
+        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
 
         [DllImport(DllName, CharSet = CharSet.Ansi, EntryPoint = "BASS_ASIO_AddDevice")]
         public static extern int AddDevice(Guid clsid, string driver, string name);
@@ -31,7 +31,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         static extern Errors BASS_ASIO_ErrorGetCode();
 
-        public static Errors LastError { get { return BASS_ASIO_ErrorGetCode(); } }
+        public static Errors LastError => BASS_ASIO_ErrorGetCode();
 
         [DllImport(DllName, EntryPoint = "BASS_ASIO_Free")]
         public static extern bool Free();
@@ -42,7 +42,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         static extern float BASS_ASIO_GetCPU();
 
-        public static double CPUUsage { get { return BASS_ASIO_GetCPU(); } }
+        public static double CPUUsage => BASS_ASIO_GetCPU();
 
         #region Current Device
         [DllImport(DllName)]
@@ -114,7 +114,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         static extern int BASS_ASIO_GetVersion();
 
-        public static Version Version { get { return Extensions.GetVersion(BASS_ASIO_GetVersion()); } }
+        public static Version Version => Extensions.GetVersion(BASS_ASIO_GetVersion());
 
         [DllImport(DllName, EntryPoint = "BASS_ASIO_Init")]
         public static extern bool Init(int device, AsioInitFlags flags);
@@ -122,7 +122,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         static extern bool BASS_ASIO_IsStarted();
 
-        public static bool IsStarted { get { return BASS_ASIO_IsStarted(); } }
+        public static bool IsStarted => BASS_ASIO_IsStarted();
 
         [DllImport(DllName, EntryPoint = "BASS_ASIO_Monitor")]
         public static extern bool Monitor(int input, int output, int gain, int state, int pan);

@@ -20,7 +20,7 @@ namespace ManagedBass.Dynamics
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
+        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
 
         [DllImport(DllName, EntryPoint = "BASS_WMA_GetWMObject")]
         public static extern IntPtr GetWMObject(int handle);
@@ -147,6 +147,7 @@ namespace ManagedBass.Dynamics
         #endregion
 
         #region Encode
+        // TODO: Array overloads
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
         public static extern bool EncodeWrite(int Handle, IntPtr Buffer, int Length);
 

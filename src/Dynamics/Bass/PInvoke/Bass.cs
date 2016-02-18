@@ -32,7 +32,7 @@ namespace ManagedBass.Dynamics
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
+        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
         
         /// <summary>
         /// "Manually" updates the HSTREAM and HMUSIC channel buffers.
@@ -78,12 +78,12 @@ namespace ManagedBass.Dynamics
         /// On other platforms, the CPU usage does include sample playback as well as the generation of the final output mix.
         /// </para>
         /// </remarks>
-        public static double CPUUsage { get { return BASS_GetCPU(); } }
+        public static double CPUUsage => BASS_GetCPU();
 
         [DllImport(DllName)]
         static extern int BASS_GetVersion();
 
-        public static Version Version { get { return Extensions.GetVersion(BASS_GetVersion()); } }
+        public static Version Version => Extensions.GetVersion(BASS_GetVersion());
 
         [DllImport(DllName, EntryPoint = "BASS_GetInfo")]
         public static extern bool GetInfo(out BassInfo Info);
@@ -108,7 +108,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_PluginLoad(string FileName, BassFlags Flags = BassFlags.Unicode);
 
-        public static int PluginLoad(string FileName) { return BASS_PluginLoad(FileName); }
+        public static int PluginLoad(string FileName) => BASS_PluginLoad(FileName);
 
         [DllImport(DllName, EntryPoint = "BASS_PluginFree")]
         public static extern bool PluginFree(int Handle);
@@ -155,7 +155,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         extern static Errors BASS_ErrorGetCode();
 
-        public static Errors LastError { get { return BASS_ErrorGetCode(); } }
+        public static Errors LastError => BASS_ErrorGetCode();
         #endregion
 
         #region Music

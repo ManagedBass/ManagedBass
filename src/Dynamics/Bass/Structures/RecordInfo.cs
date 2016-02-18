@@ -28,45 +28,36 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The standard wave formats supported by the device (default is <see cref="RecordFormatFlags.WF4S16"/>).
         /// </summary>
-        public RecordFormatFlags SupportedFormats
-        {
-            get { return (RecordFormatFlags)(this.formats & 0xffffff); }
-        }
+        public RecordFormatFlags SupportedFormats => (RecordFormatFlags)(this.formats & 0xffffff);
 
         /// <summary>
         /// The number of Input sources available to the device
         /// </summary>
-        public int Inputs { get { return inputs; } }
+        public int Inputs => inputs;
 
         /// <summary>
         /// <see langword="true" /> = only one Input may be active at a time
         /// </summary>
-        public bool SingleInput { get { return singlein; } }
+        public bool SingleInput => singlein;
 
         /// <summary>
         /// The device's current Input sample rate. This is only available on Windows Vista and OSX.
         /// </summary>
-        public int Frequency { get { return freq; } }
+        public int Frequency => freq;
 
         /// <summary>
         /// Gets the available channel count for a recording Input.
         /// </summary>
-        public int Channels { get { return formats >> 24; } }
+        public int Channels => formats >> 24;
 
         /// <summary>
         /// The device driver has been certified by Microsoft. Always true for WDM drivers.
         /// </summary>
-        public bool IsCertified
-        {
-            get { return flags.HasFlag(RecordInfoFlags.Certified); }
-        }
+        public bool IsCertified => flags.HasFlag(RecordInfoFlags.Certified);
 
         /// <summary>
         /// The device's drivers has DirectSound support
         /// </summary>
-        public bool SupportsDirectSound
-        {
-            get { return flags.HasFlag(RecordInfoFlags.EmulatedDrivers); }
-        }
+        public bool SupportsDirectSound => flags.HasFlag(RecordInfoFlags.EmulatedDrivers);
     }
 }

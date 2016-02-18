@@ -12,27 +12,27 @@ namespace ManagedBass
         /// <summary>
         /// Pointer to the Unmanaged Buffer
         /// </summary>
-        public IntPtr Pointer { get; private set; }
+        public IntPtr Pointer { get; }
 
         /// <summary>
         /// Length in Bytes
         /// </summary>
-        public int ByteLength { get; private set; }
+        public int ByteLength { get; }
 
         /// <summary>
         /// Length in Floats
         /// </summary>
-        public int FloatLength { get { return ByteLength / 4; } }
+        public int FloatLength => ByteLength / 4;
 
         /// <summary>
         /// Length in Shorts
         /// </summary>
-        public int ShortLength { get { return ByteLength / 2; } }
+        public int ShortLength => ByteLength / 2;
 
         /// <summary>
         /// Length in Ints
         /// </summary>
-        public int IntLength { get { return ByteLength / 4; } }
+        public int IntLength => ByteLength / 4;
         #endregion
 
         public BufferProvider(IntPtr Buffer, int ByteLength)

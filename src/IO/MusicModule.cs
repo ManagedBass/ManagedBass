@@ -25,9 +25,9 @@ namespace ManagedBass
             GCPin.Free();
         }
 
-        public string Title { get { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicName)); } }
+        public string Title => Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicName));
 
-        public string Message { get { return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicMessage)); } }
+        public string Message => Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicMessage));
 
         public string Instrument(int Index)
         {
@@ -83,6 +83,6 @@ namespace ManagedBass
             }
         }
 
-        public override void Dispose() { Bass.MusicFree(Handle); }
+        public override void Dispose() => Bass.MusicFree(Handle);
     }
 }

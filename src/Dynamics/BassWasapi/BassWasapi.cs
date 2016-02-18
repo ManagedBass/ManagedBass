@@ -26,7 +26,7 @@ namespace ManagedBass.Dynamics
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) { Extensions.Load(DllName, Folder); }
+        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
 
         #region CPU
         [DllImport(DllName)]
@@ -37,7 +37,7 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <returns>The BASSWASAPI CPU usage as a percentage of total CPU time.</returns>
         /// <remarks>This function includes the time taken by the <see cref="WasapiProcedure" /> callback functions.</remarks>
-        public static double CPUUsage { get { return BASS_WASAPI_GetCPU(); } }
+        public static double CPUUsage => BASS_WASAPI_GetCPU();
         #endregion
 
         #region Current Device
@@ -144,7 +144,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         extern static bool BASS_WASAPI_IsStarted();
 
-        public static bool IsStarted { get { return BASS_WASAPI_IsStarted(); } }
+        public static bool IsStarted => BASS_WASAPI_IsStarted();
         #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_Start")]
@@ -162,6 +162,6 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         extern static int BASS_WASAPI_GetVersion();
 
-        public static Version Version { get { return Extensions.GetVersion(BASS_WASAPI_GetVersion()); } }
+        public static Version Version => Extensions.GetVersion(BASS_WASAPI_GetVersion());
     }
 }

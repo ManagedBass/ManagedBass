@@ -35,17 +35,17 @@ namespace ManagedBass
         /// <summary>
         /// Number of CD Drives available on the System
         /// </summary>
-        public static int DriveCount { get { return BassCd.DriveCount; } }
+        public static int DriveCount => BassCd.DriveCount;
 
         /// <summary>
         /// The Drive Index used by Bass to identify a Drive
         /// </summary>
-        public int DriveIndex { get; private set; }
+        public int DriveIndex { get; }
 
         /// <summary>
         /// Gets Information about a Drive
         /// </summary>
-        public CDInfo DriveInfo { get { return BassCd.GetDriveInfo(DriveIndex); } }
+        public CDInfo DriveInfo => BassCd.GetDriveInfo(DriveIndex);
 
         public int Speed
         {
@@ -53,7 +53,7 @@ namespace ManagedBass
             set { if (!BassCd.SetSpeed(DriveIndex, value)) throw new InvalidOperationException(); }
         }
 
-        public bool HasDisk { get { return BassCd.IsReady(DriveIndex); } }
+        public bool HasDisk => BassCd.IsReady(DriveIndex);
 
         /// <summary>
         /// Enumerates CDDrives present on the Computer
@@ -72,6 +72,6 @@ namespace ManagedBass
         /// <summary>
         /// Release the Disk
         /// </summary>
-        public void Dispose() { BassCd.Release(DriveIndex); }
+        public void Dispose() => BassCd.Release(DriveIndex);
     }
 }

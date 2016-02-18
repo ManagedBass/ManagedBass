@@ -13,9 +13,13 @@ namespace ManagedBass
         FileProcedures procs;
         FileStream Stream;
 
+        public string FileName { get; }
+
         public ManagedFileChannel(string FileName, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
             Stream = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+            this.FileName = FileName;
 
             procs = new FileProcedures();
             procs.Close = (u) => Stream.Dispose();

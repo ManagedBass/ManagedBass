@@ -36,12 +36,12 @@ namespace ManagedBass
         /// <summary>
         /// The Index of the Device as identified by Bass
         /// </summary>
-        public int DeviceIndex { get; private set; }
+        public int DeviceIndex { get; }
 
         /// <summary>
         /// Number of available Playback Devices
         /// </summary>
-        public static int Count { get { return Bass.DeviceCount; } }
+        public static int Count => Bass.DeviceCount;
 
         /// <summary>
         /// Enumerates available Playback Devices
@@ -60,17 +60,17 @@ namespace ManagedBass
         /// <summary>
         /// Dummy Device used for Decoding streams
         /// </summary>
-        public static PlaybackDevice NoSoundDevice { get { return Get(0); } }
+        public static PlaybackDevice NoSoundDevice => Get(0);
 
         /// <summary>
         /// Default Audio Playback Device
         /// </summary>
-        public static PlaybackDevice DefaultDevice { get { return Devices.First((dev) => dev.DeviceInfo.IsDefault); } }
+        public static PlaybackDevice DefaultDevice => Devices.First((dev) => dev.DeviceInfo.IsDefault);
 
         /// <summary>
         /// Gets a DeviceInfo object containing information on the Device like Name, Type, IsEnabled, etc.
         /// </summary>
-        public DeviceInfo DeviceInfo { get { return Bass.GetDeviceInfo(DeviceIndex); } }
+        public DeviceInfo DeviceInfo => Bass.GetDeviceInfo(DeviceIndex);
 
         /// <summary>
         /// Initialize a Device for Playback
@@ -82,7 +82,7 @@ namespace ManagedBass
         {
             return Bass.Init(DeviceIndex, Frequency, flags);
         }
-
+        
         public bool Start()
         {
             Bass.CurrentDevice = DeviceIndex;
@@ -104,7 +104,7 @@ namespace ManagedBass
         /// <summary>
         /// Frees an initialized Device
         /// </summary>
-        public void Dispose() { Bass.Free(DeviceIndex); }
+        public void Dispose() => Bass.Free(DeviceIndex);
 
         /// <summary>
         /// Gets or Sets the Device Volume
@@ -127,6 +127,6 @@ namespace ManagedBass
         /// <summary>
         /// Returns the Name of the Device
         /// </summary>
-        public override string ToString() { return DeviceInfo.Name; }
+        public override string ToString() => DeviceInfo.Name;
     }
 }

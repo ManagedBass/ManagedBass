@@ -96,33 +96,33 @@ namespace ManagedBass
         /// <summary>
         /// Returns the number of channels (1=mono,2=stereo etc)
         /// </summary>
-        public int Channels { get { return channels; } }
+        public int Channels => channels;
 
         /// <summary>
         /// Returns the sample rate (samples per second)
         /// </summary>
-        public int SampleRate { get { return sampleRate; } }
+        public int SampleRate => sampleRate;
 
         /// <summary>
         /// Returns the average number of bytes used per second
         /// </summary>
-        public int AverageBytesPerSecond { get { return averageBytesPerSecond; } }
+        public int AverageBytesPerSecond => averageBytesPerSecond;
 
         /// <summary>
         /// Returns the block alignment
         /// </summary>
-        public virtual int BlockAlign { get { return blockAlign; } }
+        public virtual int BlockAlign => blockAlign;
 
         /// <summary>
         /// Returns the number of bits per sample (usually 16 or 32, sometimes 24 or 8)
         /// Can be 0 for some codecs
         /// </summary>
-        public int BitsPerSample { get { return bitsPerSample; } }
+        public int BitsPerSample => bitsPerSample;
 
         /// <summary>
         /// Returns the number of extra bytes used by this waveformat. Often 0,
         /// except for compressed formats which store extra data after the WAVEFORMATEX header
         /// </summary>
-        public int ExtraSize { get { return extraSize; } }
+        public int ExtraSize => extraSize;
     }
 }

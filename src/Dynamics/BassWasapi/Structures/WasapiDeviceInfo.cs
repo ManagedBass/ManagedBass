@@ -18,55 +18,55 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The Type of the devices.
         /// </summary>
-        public WasapiDeviceType Type { get { return type; } }
+        public WasapiDeviceType Type => type;
 
         /// <summary>
         /// The minimum update period (in seconds) of the device.
         /// </summary>
-        public double MinimumUpdatePeriod { get { return minperiod; } }
+        public double MinimumUpdatePeriod => minperiod;
 
         /// <summary>
         /// The default update period (in seconds) of the device.
         /// </summary>
-        public double DefaultUpdatePeriod { get { return defperiod; } }
+        public double DefaultUpdatePeriod => defperiod;
 
         /// <summary>
         /// The shared-mode format mixers sample rate.
         /// </summary>
-        public int MixFrequency { get { return mixfreq; } }
+        public int MixFrequency => mixfreq;
 
         /// <summary>
         /// The shared-mode format mixers number of channels.
         /// </summary>
-        public int MixChannels { get { return mixchans; } }
+        public int MixChannels => mixchans;
 
         /// <summary>
         /// The description of the device.
         /// </summary>
-        public string Name { get { return Marshal.PtrToStringAnsi(name); } }
+        public string Name => Marshal.PtrToStringAnsi(name);
 
         /// <summary>
         /// The ID of the driver being used.
         /// </summary>
-        public string ID { get { return Marshal.PtrToStringAnsi(id); } }
+        public string ID => Marshal.PtrToStringAnsi(id);
 
         /// <summary>
         /// The device is the system default device.
         /// </summary>
-        public bool IsDefault { get { return flags.HasFlag(WasapiDeviceInfoFlags.Default); } }
+        public bool IsDefault => flags.HasFlag(WasapiDeviceInfoFlags.Default);
 
-        public bool IsEnabled { get { return flags.HasFlag(WasapiDeviceInfoFlags.Enabled); } }
+        public bool IsEnabled => flags.HasFlag(WasapiDeviceInfoFlags.Enabled);
 
-        public bool IsInput { get { return flags.HasFlag(WasapiDeviceInfoFlags.Input); } }
+        public bool IsInput => flags.HasFlag(WasapiDeviceInfoFlags.Input);
 
-        public bool IsLoopback { get { return flags.HasFlag(WasapiDeviceInfoFlags.Loopback); } }
+        public bool IsLoopback => flags.HasFlag(WasapiDeviceInfoFlags.Loopback);
 
-        public bool IsInitialized { get { return flags.HasFlag(WasapiDeviceInfoFlags.Initialized); } }
+        public bool IsInitialized => flags.HasFlag(WasapiDeviceInfoFlags.Initialized);
 
-        public bool IsUnplugged { get { return flags.HasFlag(WasapiDeviceInfoFlags.Unplugged); } }
+        public bool IsUnplugged => flags.HasFlag(WasapiDeviceInfoFlags.Unplugged);
 
-        public bool IsDisabled { get { return flags.HasFlag(WasapiDeviceInfoFlags.Disabled); } }
+        public bool IsDisabled => flags.HasFlag(WasapiDeviceInfoFlags.Disabled);
 
-        public override string ToString() { return Name; }
+        public override string ToString() => Name;
     }
 }

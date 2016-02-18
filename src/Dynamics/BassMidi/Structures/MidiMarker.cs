@@ -10,10 +10,10 @@ namespace ManagedBass.Dynamics
         int pos;
         IntPtr text;
 
-        public string Text { get { return Marshal.PtrToStringAnsi(text); } }
+        public string Text => Marshal.PtrToStringAnsi(text);
 
-        public int Track { get { return track; } }
+        public int Track => track;
 
-        public int Position { get { return pos; } }
+        public int Position => pos;
     }
 }

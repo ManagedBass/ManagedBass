@@ -26,7 +26,7 @@ namespace ManagedBass
             }
         }
 
-        public bool Init() { return _Init(0, 0, true, false, 0, 0); }
+        public bool Init() => _Init(0, 0, true, false, 0, 0);
 
         public static IEnumerable<WasapiLoopbackDevice> Devices
         {
@@ -40,7 +40,7 @@ namespace ManagedBass
             }
         }
 
-        public static WasapiLoopbackDevice DefaultDevice { get { return Devices.First((dev) => dev.DeviceInfo.IsDefault); } }
+        public static WasapiLoopbackDevice DefaultDevice => Devices.First((dev) => dev.DeviceInfo.IsDefault);
 
         public static int Count
         {

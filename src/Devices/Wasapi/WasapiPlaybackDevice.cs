@@ -115,7 +115,7 @@ namespace ManagedBass
         }
         #endregion
 
-        public static WasapiPlaybackDevice DefaultDevice { get { return Devices.First((dev) => dev.DeviceInfo.IsDefault); } }
+        public static WasapiPlaybackDevice DefaultDevice => Devices.First((dev) => dev.DeviceInfo.IsDefault);
 
         public static int Count
         {

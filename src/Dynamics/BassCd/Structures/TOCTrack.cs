@@ -12,18 +12,15 @@ namespace ManagedBass.Dynamics
         byte res2;
         int lba;
 
-        public byte ADR { get { return (byte)(adrcon >> 4 & 15); } }
+        public byte ADR => (byte)(adrcon >> 4 & 15);
 
-        public TOCControlFlags Control
-        {
-            get { return (TOCControlFlags)((byte)(adrcon & 15)); }
-        }
+        public TOCControlFlags Control => (TOCControlFlags)((byte)(adrcon & 15));
 
-        public byte Track { get { return track; } }
+        public byte Track => track;
 
-        public int LBA { get { return lba; } }
+        public int LBA => lba;
 
-        public byte Frame { get { return (byte)(lba & 15); } }
+        public byte Frame => (byte)(lba & 15);
 
         public TimeSpan Address
         {

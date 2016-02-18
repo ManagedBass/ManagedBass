@@ -11,7 +11,7 @@ namespace ManagedBass
     {
         int EncoderHandle;
 
-        public Resolution Resolution { get; private set; }
+        public Resolution Resolution { get; }
 
         public WmaFileWriter(string FilePath, int NoOfChannels = 2, int SampleRate = 44100, int BitRate = 128000, Resolution Resolution = Resolution.Short)
         {
@@ -24,9 +24,9 @@ namespace ManagedBass
             EncoderHandle = BassWma.EncodeOpenFile(SampleRate, NoOfChannels, flags, BitRate, FilePath);
         }
 
-        public void Write(IntPtr Buffer, int Length) { BassWma.EncodeWrite(EncoderHandle, Buffer, Length); }
+        public void Write(IntPtr Buffer, int Length) => BassWma.EncodeWrite(EncoderHandle, Buffer, Length);
 
-        public void Write(BufferProvider buffer) { Write(buffer.Pointer, buffer.ByteLength); }
+        public void Write(BufferProvider buffer) => Write(buffer.Pointer, buffer.ByteLength);
 
         void Write(object buffer, int Length)
         {
@@ -37,12 +37,12 @@ namespace ManagedBass
             gch.Free();
         }
 
-        public void Write(byte[] buffer, int Length) { Write(buffer as object, Length); }
+        public void Write(byte[] buffer, int Length) => Write(buffer as object, Length);
 
-        public void Write(short[] buffer, int Length) { Write(buffer as object, Length); }
+        public void Write(short[] buffer, int Length) => Write(buffer as object, Length);
 
-        public void Write(float[] buffer, int Length) { Write(buffer as object, Length); }
+        public void Write(float[] buffer, int Length) => Write(buffer as object, Length);
 
-        public void Dispose() { BassWma.EncodeClose(EncoderHandle); }
+        public void Dispose() => BassWma.EncodeClose(EncoderHandle);
     }
 }

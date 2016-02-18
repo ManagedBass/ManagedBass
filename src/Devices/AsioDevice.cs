@@ -5,9 +5,9 @@ namespace ManagedBass
 {
     class AsioDevice : IDisposable
     {
-        public int DeviceIndex { get; private set; }
+        public int DeviceIndex { get; }
 
-        public AsioDeviceInfo DeviceInfo { get { return BassAsio.GetDeviceInfo(DeviceIndex); } }
+        public AsioDeviceInfo DeviceInfo => BassAsio.GetDeviceInfo(DeviceIndex);
 
         public double SampleRate
         {

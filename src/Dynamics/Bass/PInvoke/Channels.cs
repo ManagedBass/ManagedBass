@@ -270,21 +270,21 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM.</param>
         /// <param name="Flag">see <see cref="BassFlags" /></param>
-        public static bool ChannelHasFlag(int Handle, BassFlags Flag) { return ChannelFlags(Handle, 0, 0).HasFlag(Flag); }
+        public static bool ChannelHasFlag(int Handle, BassFlags Flag) => ChannelFlags(Handle, 0, 0).HasFlag(Flag);
 
         /// <summary>
         /// Adds a flag to a channel.
         /// </summary>
         /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM.</param>
         /// <param name="Flag">see <see cref="BassFlags" /></param>
-        public static bool ChannelAddFlag(int Handle, BassFlags Flag) { return ChannelFlags(Handle, Flag, Flag).HasFlag(Flag); }
+        public static bool ChannelAddFlag(int Handle, BassFlags Flag) => ChannelFlags(Handle, Flag, Flag).HasFlag(Flag);
 
         /// <summary>
         /// Removes a flag from a channel.
         /// </summary>
         /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM.</param>
         /// <param name="Flag">see <see cref="BassFlags" /></param>
-        public static bool ChannelRemoveFlag(int Handle, BassFlags Flag) { return !(ChannelFlags(Handle, 0, Flag).HasFlag(Flag)); }
+        public static bool ChannelRemoveFlag(int Handle, BassFlags Flag) => !(ChannelFlags(Handle, 0, Flag).HasFlag(Flag));
         #endregion
 
         #region Channel Attributes

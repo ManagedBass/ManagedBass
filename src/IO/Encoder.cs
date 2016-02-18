@@ -6,7 +6,7 @@ namespace ManagedBass
 {
     public abstract class Encoder : IDisposable
     {
-        protected int Channel { get; private set; }
+        protected int Channel { get; }
 
         public int Handle { get; protected set; }
 
@@ -37,16 +37,16 @@ namespace ManagedBass
             BassEnc.EncodeStop(Handle);
         }
 
-        public bool IsActive { get { return BassEnc.EncodeIsActive(Handle) == PlaybackState.Playing; } }
+        public bool IsActive => BassEnc.EncodeIsActive(Handle) == PlaybackState.Playing;
 
-        public long QueueCount { get { return BassEnc.EncodeGetCount(Handle, EncodeCount.Queue); } }
-        public long InCount { get { return BassEnc.EncodeGetCount(Handle, EncodeCount.In); } }
-        public long OutCount { get { return BassEnc.EncodeGetCount(Handle, EncodeCount.Out); } }
-        public long QueueLimit { get { return BassEnc.EncodeGetCount(Handle, EncodeCount.QueueLimit); } }
-        public long CastCount { get { return BassEnc.EncodeGetCount(Handle, EncodeCount.Cast); } }
-        public long QueueFailCount { get { return BassEnc.EncodeGetCount(Handle, EncodeCount.QueueFail); } }
+        public long QueueCount => BassEnc.EncodeGetCount(Handle, EncodeCount.Queue);
+        public long InCount => BassEnc.EncodeGetCount(Handle, EncodeCount.In);
+        public long OutCount => BassEnc.EncodeGetCount(Handle, EncodeCount.Out);
+        public long QueueLimit => BassEnc.EncodeGetCount(Handle, EncodeCount.QueueLimit);
+        public long CastCount => BassEnc.EncodeGetCount(Handle, EncodeCount.Cast);
+        public long QueueFailCount => BassEnc.EncodeGetCount(Handle, EncodeCount.QueueFail);
 
-        public void Dispose() { Bass.StreamFree(Channel); }
+        public void Dispose() => Bass.StreamFree(Channel);
     }
 
     public class ACMFileEncoder : Encoder

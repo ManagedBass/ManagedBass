@@ -15,17 +15,17 @@ namespace ManagedBass
         }
 
         #region Push
-        public bool Push(IntPtr data, int Length) { return Bass.StreamPutData(Handle, data, Length) != -1; }
+        public bool Push(IntPtr data, int Length) => Bass.StreamPutData(Handle, data, Length) != -1;
 
-        public bool Push(byte[] data, int Length) { return Bass.StreamPutData(Handle, data, Length) != -1; }
+        public bool Push(byte[] data, int Length) => Bass.StreamPutData(Handle, data, Length) != -1;
 
-        public bool Push(float[] data, int Length) { return Bass.StreamPutData(Handle, data, Length) != -1; }
+        public bool Push(float[] data, int Length) => Bass.StreamPutData(Handle, data, Length) != -1;
 
-        public bool Push(short[] data, int Length) { return Bass.StreamPutData(Handle, data, Length) != -1; }
+        public bool Push(short[] data, int Length) => Bass.StreamPutData(Handle, data, Length) != -1;
 
-        public bool Push(int[] data, int Length) { return Bass.StreamPutData(Handle, data, Length) != -1; }
+        public bool Push(int[] data, int Length) => Bass.StreamPutData(Handle, data, Length) != -1;
         #endregion
 
-        public void End() { Bass.StreamPutData(Handle, IntPtr.Zero, (int)StreamProcedureType.End); }
+        public void End() => Bass.StreamPutData(Handle, IntPtr.Zero, (int)StreamProcedureType.End);
     }
 }

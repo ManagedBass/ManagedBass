@@ -8,7 +8,7 @@ namespace ManagedBass
     /// </summary>
     public class FileChannel : Channel
     {
-        public string FilePath { get; set; }
+        public string FilePath { get; }
         
         public FileChannel(string FilePath, bool IsDecoder = false, Resolution Resolution = Resolution.Short, long Offset = 0, long Length = 0)
         {

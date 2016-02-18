@@ -11,39 +11,36 @@ namespace ManagedBass
         /// <summary>
         /// The return value is the high-order double word of the specified value.
         /// </summary>
-        public static int HiDword(this long pDWord) { return ((int)(((pDWord) >> 32) & 0xFFFFFFFF)); }
+        public static int HiDword(this long pDWord) => (int)((pDWord >> 32) & 0xFFFFFFFF);
 
         /// <summary>
         /// The return value is the low-order word of the specified value.
         /// </summary>
-        public static int LoDword(this long pDWord) { return ((int)pDWord); }
+        public static int LoDword(this long pDWord) => (int)pDWord;
 
         /// <summary>
         /// The return value is the high-order word of the specified value.
         /// </summary>
-        public static short HiWord(this int pDWord) { return ((short)(((pDWord) >> 16) & 0xFFFF)); }
+        public static short HiWord(this int pDWord) => (short)((pDWord >> 16) & 0xFFFF);
 
         /// <summary>
         /// The return value is the low-order word of the specified value.
         /// </summary>
-        public static short LoWord(this int pDWord) { return ((short)pDWord); }
+        public static short LoWord(this int pDWord) => (short)pDWord;
 
         /// <summary>
         /// The return value is the high-order byte of the specified value.
         /// </summary>
-        public static byte HiByte(this short pWord) { return ((byte)(((short)(pWord) >> 8) & 0xFF)); }
+        public static byte HiByte(this short pWord) => (byte)((pWord >> 8) & 0xFF);
 
         /// <summary>
         /// The return value is the low-order byte of the specified value.
         /// </summary>
-        public static byte LoByte(this short pWord) { return ((byte)pWord); }
+        public static byte LoByte(this short pWord) => (byte)pWord;
 
         /// <summary>
         /// Make an integer putting <paramref name="low"/> in low 2-bits and <paramref name="high"/> in high 2-bits.
         /// </summary>
-        public static int MakeLong(short low, short high)
-        {
-            return (int)(((ushort)low) | (uint)(high << 16));
-        }
+        public static int MakeLong(short low, short high) => (int)((ushort)low | (uint)(high << 16));
     }
 }

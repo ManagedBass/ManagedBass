@@ -33,6 +33,6 @@ namespace ManagedBass
             Bass.ChannelSetDevice(Handle, Device.DeviceIndex);
         }
 
-        int Callback(int handle, IntPtr Buffer, int Length, IntPtr User) { return call.Invoke(new BufferProvider(Buffer, Length)); }
+        int Callback(int handle, IntPtr Buffer, int Length, IntPtr User) => call.Invoke(new BufferProvider(Buffer, Length));
     }
 }

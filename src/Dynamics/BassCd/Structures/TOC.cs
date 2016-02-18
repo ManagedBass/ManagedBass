@@ -15,12 +15,12 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The first track number (or index number if <see cref="TOCMode.Index"/> is used).
         /// </summary>
-        public int First { get { return first; } }
+        public int First => first;
 
         /// <summary>
         /// The last track number (or index number if <see cref="TOCMode.Index"/> is used).
         /// </summary>
-        public int Last { get { return last; } }
+        public int Last => last;
 
         /// <summary>
         /// The list of tracks retrieved (see <see cref="TOCTrack" />, up to 100 tracks).

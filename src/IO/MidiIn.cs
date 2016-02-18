@@ -7,7 +7,7 @@ namespace ManagedBass
     // TODO: Won't work most probably
     class MidiIn : IDisposable
     {
-        public int DeviceId { get; private set; }
+        public int DeviceId { get; }
 
         public MidiIn(int DeviceId)
         {
@@ -18,11 +18,11 @@ namespace ManagedBass
             BassMidi.InInit(DeviceId, Callback);
         }
 
-        public bool Start() { return BassMidi.InStart(DeviceId); }
+        public bool Start() => BassMidi.InStart(DeviceId);
 
-        public bool Stop() { return BassMidi.InStop(DeviceId); }
+        public bool Stop() => BassMidi.InStop(DeviceId);
 
-        public string DeviceName { get; private set; }
+        public string DeviceName { get; }
 
         byte[] data;
 
@@ -33,12 +33,11 @@ namespace ManagedBass
 
             Marshal.Copy(buffer, data, 0, length);
          
-            if (MessageReceived != null)
-                MessageReceived(data, length);
+            MessageReceived?.Invoke(data, length);
         }
 
         public event Action<byte[], int> MessageReceived;
 
-        public void Dispose() { BassMidi.InFree(DeviceId); }
+        public void Dispose() => BassMidi.InFree(DeviceId);
     }
 }

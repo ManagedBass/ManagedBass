@@ -40,33 +40,34 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The description of the device.
         /// </summary>
-        public string Name { get { return Marshal.PtrToStringAnsi(name); } }
+        public string Name => Marshal.PtrToStringAnsi(name);
 
         /// <summary>
         /// The filename of the driver being used... <see langword="null" /> = no driver (ie. "No Sound" device).
         /// <para>On systems that can use both VxD and WDM drivers (Windows Me/98SE), this will reveal which Type of driver is being used.</para>
         /// <para>Further information can be obtained from the file using the GetFileVersionInfo Win32 API function.</para>
         /// </summary>
-        public string Driver { get { return Marshal.PtrToStringAnsi(driver); } }
+        public string Driver => Marshal.PtrToStringAnsi(driver);
 
         /// <summary>
         /// The device is the system default device.
         /// </summary>
-        public bool IsDefault { get { return flags.HasFlag(DeviceInfoFlags.Default); } }
+        public bool IsDefault => flags.HasFlag(DeviceInfoFlags.Default);
 
         /// <summary>
         /// The device is enabled and can be used.
         /// </summary>
-        public bool IsEnabled { get { return flags.HasFlag(DeviceInfoFlags.Enabled); } }
+        public bool IsEnabled => flags.HasFlag(DeviceInfoFlags.Enabled);
 
         /// <summary>
         /// The device is already initialized.
         /// </summary>
-        public bool IsInitialized { get { return flags.HasFlag(DeviceInfoFlags.Initialized); } }
+        public bool IsInitialized => flags.HasFlag(DeviceInfoFlags.Initialized);
 
         /// <summary>
         /// The device's current status.
         /// </summary>
+        [Obsolete("Use IsDefault, IsEnabled, IsInitialized instead")]
         public DeviceInfoFlags Status
         {
             get
@@ -78,6 +79,6 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The device's Type.
         /// </summary>
-        public DeviceInfoFlags Type { get { return flags & DeviceInfoFlags.TypeMask; } }
+        public DeviceInfoFlags Type => flags & DeviceInfoFlags.TypeMask;
     }
 }
