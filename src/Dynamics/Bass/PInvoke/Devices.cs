@@ -31,7 +31,7 @@ namespace ManagedBass.Dynamics
         /// <remarks>
         /// <para>This function must be successfully called before using any sample, stream or MOD music functions. The recording functions may be used without having called this function.</para>
         /// <para>Playback is not possible with the "no sound" device, but it does allow the use of "decoding channels", eg. to decode files.</para>
-        /// <para>When specifying a class identifier (<paramref name="ClsID"/>), after successful initialization, you can use <see cref="GetDSoundObject" /> to retrieve the DirectSound object, and through that access any special interfaces that the object may provide.</para>
+        /// <para>When specifying a class identifier (<paramref name="ClsID"/>), after successful initialization, you can use <see cref="GetDSoundObject(DSInterface)" /> to retrieve the DirectSound object, and through that access any special interfaces that the object may provide.</para>
         /// <para>
         /// Simultaneously using multiple devices is supported in the BASS API via a context switching system - instead of there being an extra "device" parameter in the function calls, the device to be used is set prior to calling the functions. <see cref="CurrentDevice" /> is used to switch the current device.
         /// When successful, <see cref="Init"/> automatically sets the current thread's device to the one that was just initialized.
@@ -137,6 +137,8 @@ namespace ManagedBass.Dynamics
         #endregion
 
         #region Get Device Info
+        public const int AirplayFlag = 0x1000000;
+
         [DllImport(DllName, EntryPoint = "BASS_GetDeviceInfo")]
         public static extern bool GetDeviceInfo(int Device, out DeviceInfo Info);
 

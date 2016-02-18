@@ -25,17 +25,38 @@
         UpdateThreads = 24,
         DeviceBufferLength = 27,
         TruePlayPosition = 30,
+        
+        // TODO: Implement Config
+        IOSMixAudio = 34,
         SuppressMP3ErrorCorruptionSilence = 35,
         IncludeDefaultDevice = 36,
         NetReadTimeOut = 37,
         VistaSpeakerAssignment = 38,
+
+        // TODO: Implement Config
+        IOSSpeaker = 39,
+
+        // TODO: Implement Config
+        MFDisable = 40,
         HandleCount = 41,
         UnicodeDeviceInformation = 42,
         SRCQuality = 43,
         SampleSRCQuality = 44,
         AsyncFileBufferLength = 45,
+
+        // TODO: Implement Config
+        IOSNotify = 46,
         OggPreScan = 47,
         MFVideo = 48,
+
+        // TODO: Implement Config
+        Airplay = 49,
+
+        // TODO: Implement Config
+        DevNonStop = 50,
+
+        // TODO: Implement Config
+        IOSNoCategory = 51,
         NetVerificationBytes = 52,
         AC3DynamicRangeCompression = 65537,
         WmaNetPreBuffer = 65793,

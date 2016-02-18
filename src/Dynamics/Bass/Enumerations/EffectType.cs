@@ -1,7 +1,5 @@
 ﻿namespace ManagedBass.Dynamics
 {
-    // TODO: Implement DX8 Effects
-
     /// <summary>
     /// FX effect types, use with <see cref="Bass.ChannelSetFX" />.
     /// </summary>

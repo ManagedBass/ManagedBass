@@ -81,6 +81,93 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_GetEAXParameters")]
         public static extern bool GetEAXParameters(ref EAXEnvironment Environment, ref float Volume, ref float Decay, ref float Damp);
 
+        public static bool SetEAXPreset(EAXEnvironment Environment)
+        {
+            switch (Environment)
+            {
+                case EAXEnvironment.Generic:
+                    return SetEAXParameters(Environment, 0.5f, 1.493f, 0.5f);
+
+                case EAXEnvironment.PaddedCell:
+                    return SetEAXParameters(Environment, 0.25f, 0.1f, 0);
+
+                case EAXEnvironment.Room:
+                    return SetEAXParameters(Environment, 0.417f, 0.4f, 0.666f);
+
+                case EAXEnvironment.Bathroom:
+                    return SetEAXParameters(Environment, 0.653f, 1.499f, 0.166f);
+
+                case EAXEnvironment.Livingroom:
+                    return SetEAXParameters(Environment, 0.208f, 0.478f, 0);
+
+                case EAXEnvironment.Stoneroom:
+                    return SetEAXParameters(Environment, 0.5f, 2.309f, 0.888f);
+
+                case EAXEnvironment.Auditorium:
+                    return SetEAXParameters(Environment, 0.403f, 4.279f, 0.5f);
+
+                case EAXEnvironment.ConcertHall:
+                    return SetEAXParameters(Environment, 0.5f, 3.961f, 0.5f);
+
+                case EAXEnvironment.Cave:
+                    return SetEAXParameters(Environment, 0.5f, 2.886f, 1.304f);
+
+                case EAXEnvironment.Arena:
+                    return SetEAXParameters(Environment, 0.361f, 7.284f, 0.332f);
+
+                case EAXEnvironment.Hangar:
+                    return SetEAXParameters(Environment, 0.5f, 10, 0.3f);
+
+                case EAXEnvironment.CarpetedHallway:
+                    return SetEAXParameters(Environment, 0.153f, 0.259f, 2);
+
+                case EAXEnvironment.Hallway:
+                    return SetEAXParameters(Environment, 0.361f, 1.493f, 0);
+
+                case EAXEnvironment.StoneCorridor:
+                    return SetEAXParameters(Environment, 0.444f, 2.697f, 0.638f);
+
+                case EAXEnvironment.Alley:
+                    return SetEAXParameters(Environment, 0.25f, 1.752f, 0.776f);
+
+                case EAXEnvironment.Forest:
+                    return SetEAXParameters(Environment, 0.111f, 3.145f, 0.472f);
+
+                case EAXEnvironment.City:
+                    return SetEAXParameters(Environment, 0.111f, 2.767f, 0.224f);
+
+                case EAXEnvironment.Mountains:
+                    return SetEAXParameters(Environment, 0.194f, 7.841f, 0.472f);
+
+                case EAXEnvironment.Quarry:
+                    return SetEAXParameters(Environment, 1, 1.499f, 0.5f);
+
+                case EAXEnvironment.Plain:
+                    return SetEAXParameters(Environment, 0.097f, 2.767f, 0.224f);
+
+                case EAXEnvironment.ParkingLot:
+                    return SetEAXParameters(Environment, 0.208f, 1.652f, 1.5f);
+
+                case EAXEnvironment.SewerPipe:
+                    return SetEAXParameters(Environment, 0.652f, 2.886f, 0.25f);
+
+                case EAXEnvironment.Underwater:
+                    return SetEAXParameters(Environment, 1, 1.499f, 0);
+
+                case EAXEnvironment.Drugged:
+                    return SetEAXParameters(Environment, 0.875f, 8.392f, 1.388f);
+
+                case EAXEnvironment.Dizzy:
+                    return SetEAXParameters(Environment, 0.139f, 17.234f, 0.666f);
+
+                case EAXEnvironment.Psychotic:
+                    return SetEAXParameters(Environment, 0.486f, 7.563f, 0.806f);
+
+                default:
+                    return false;
+            }
+        }
+
         /// <summary>
         /// Sets the type of EAX environment and it's parameters.
         /// </summary>

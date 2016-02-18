@@ -120,7 +120,7 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// Sewer Pipe
         /// </summary>
-        SewerPipw = 21,
+        SewerPipe = 21,
 
         /// <summary>
         /// Underwater

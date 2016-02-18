@@ -23,7 +23,7 @@ namespace ManagedBass.Dynamics
     /// On OSX, driver is the device's UID, and on Linux it is the ALSA device name. 
     /// It is unused on other platforms. 
     /// The device Type is only available on Windows (Vista and newer) and OSX.
-    /// On Windows, DisplayPort devices will have <see cref="DeviceInfoFlags.HDMI"/> rather than <see cref="DeviceInfoFlags.DisplayPort"/>.
+    /// On Windows, DisplayPort devices will have <see cref="DeviceType.HDMI"/> rather than <see cref="DeviceType.DisplayPort"/>.
     /// </para>
     /// <para>
     /// Depending on the <see cref="Bass.UnicodeDeviceInformation" /> config setting, <see cref="DeviceInfo.Name"/> and <see cref="DeviceInfo.Driver"/> can be in ANSI or UTF-8 form on Windows.
@@ -63,22 +63,10 @@ namespace ManagedBass.Dynamics
         /// The device is already initialized.
         /// </summary>
         public bool IsInitialized => flags.HasFlag(DeviceInfoFlags.Initialized);
-
-        /// <summary>
-        /// The device's current status.
-        /// </summary>
-        [Obsolete("Use IsDefault, IsEnabled, IsInitialized instead")]
-        public DeviceInfoFlags Status
-        {
-            get
-            {
-                return flags & (DeviceInfoFlags.Default | DeviceInfoFlags.Enabled | DeviceInfoFlags.Initialized);
-            }
-        }
-
+        
         /// <summary>
         /// The device's Type.
         /// </summary>
-        public DeviceInfoFlags Type => flags & DeviceInfoFlags.TypeMask;
+        public DeviceType Type => (DeviceType)(flags & DeviceInfoFlags.TypeMask);
     }
 }

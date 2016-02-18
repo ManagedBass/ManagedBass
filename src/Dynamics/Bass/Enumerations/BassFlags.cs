@@ -6,13 +6,8 @@ namespace ManagedBass.Dynamics
     /// Stream/Sample/Music/Recording/AddOn create flags to be used with Stream Creation functions.
     /// </summary>
     [Flags]
-    public enum BassFlags
+    public enum BassFlags : uint
     {
-        /// <summary>
-        /// File is a Unicode (16-bit characters) filename
-        /// </summary>
-        Unicode = -2147483648,
-
         /// <summary>
         /// 0 = default create stream: 16 Bit, stereo, no Float, hardware mixing, no Loop, no 3D, no speaker assignments...
         /// </summary>
@@ -160,6 +155,90 @@ namespace ManagedBass.Dynamics
         MidiFontXGDRUMS = 0x40000,
         #endregion
 
+        /// <summary>
+        /// Music and BASSMIDI add-on: Use sinc interpolated sample mixing.
+        /// This increases the sound quality, but also requires more CPU.
+        /// Otherwise linear interpolation is used.
+        /// Music: If neither this or the <see cref="MusicNonInterpolated"/> flag is specified, linear interpolation is used.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        SincInterpolation = 0x800000,
+
+        #region MOD Music
+        /// <summary>
+        /// Music: Use "normal" ramping (as used in FastTracker 2).
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        MusicRamp = 0x200,
+
+        /// <summary>
+        /// Music: Use "sensitive" ramping.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        MuicSensitiveRamping = 0x400,
+
+        /// <summary>
+        /// Music: Apply XMPlay's surround sound to the music (ignored in mono).
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        MusicSurround = 0x800,
+
+        /// <summary>
+        /// Music: Apply XMPlay's surround sound mode 2 to the music (ignored in mono).
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        MusicSurround2 = 0x1000,
+
+        /// <summary>
+        /// Music: Play .MOD file as FastTracker 2 would.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        MusicFT2Mod = 0x2000,
+
+        /// <summary>
+        /// Music: Play .MOD file as ProTracker 1 would.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        MusicPT1Mod = 0x4000,
+
+        /// <summary>
+        /// Music: Stop all notes when seeking (using <see cref="Bass.ChannelSetPosition"/>).
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        MusicPositionReset = 0x8000,
+
+        /// <summary>
+        /// Music: Use non-interpolated mixing.
+        /// This generally reduces the sound quality, but can be good for chip-tunes.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        MusicNonInterpolated = 0x10000,
+
+        /// <summary>
+        /// Music: Stop the music when a backward jump effect is played. 
+        /// This stops musics that never reach the end from going into endless loops.
+        /// Some MOD musics are designed to jump all over the place, 
+        /// so this flag would cause those to be stopped prematurely. 
+        /// If this flag is used together with the <see cref="Loop"/> flag,
+        /// then the music would not be stopped but any <see cref="SyncFlags.End"/> sync would be triggered.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        MusicStopBack = 0x80000,
+
+        /// <summary>
+        /// Music: Don't load the samples. 
+        /// This reduces the time taken to load the music, notably with MO3 files,
+        /// which is useful if you just want to get the name and Length of the music without playing it.
+        /// </summary>
+        MusicNoSample = 0x100000,
+
+        /// <summary>
+        /// Music: Stop all notes and reset bpm/etc when seeking.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        MusicPositionResetEx = 0x400000,
+        #endregion
+
         #region Sample
         /// <summary>
         /// Sample: muted at max distance (3D only)
@@ -174,92 +253,17 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// Sample: override lowest volume
         /// </summary>
-        SampleOverrideLowestVolume = 65536,
+        SampleOverrideLowestVolume = 0x10000,
 
         /// <summary>
         /// Sample: override longest playing
         /// </summary>
-        SampleOverrideLongestPlaying = 131072,
+        SampleOverrideLongestPlaying = 0x20000,
 
         /// <summary>
         /// Sample: override furthest from listener (3D only)
         /// </summary>
-        SampleOverrideDistance = 196608,
-        #endregion
-
-        #region MOD Music
-        /// <summary>
-        /// Music: Use "normal" ramping (as used in FastTracker 2).
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        MusicRamp = 512,
-
-        /// <summary>
-        /// Music: Use "sensitive" ramping.
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        MuicSensitiveRamping = 1024,
-
-        /// <summary>
-        /// Music: Apply XMPlay's surround sound to the music (ignored in mono).
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        MusicSurround = 2048,
-
-        /// <summary>
-        /// Music: Apply XMPlay's surround sound mode 2 to the music (ignored in mono).
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        MusicSurround2 = 4096,
-
-        /// <summary>
-        /// Music: Play .MOD file as FastTracker 2 would.
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        MusicFT2Mod = 8192,
-
-        /// <summary>
-        /// Music: Play .MOD file as ProTracker 1 would.
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        MusicPT1Mod = 16384,
-
-        /// <summary>
-        /// Music: Stop all notes when seeking (using <see cref="Bass.ChannelSetPosition"/>).
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        MusicPositionReset = 32768,
-
-        /// <summary>
-        /// Music: Use non-interpolated mixing.
-        /// This generally reduces the sound quality, but can be good for chip-tunes.
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        MusicNonInterpolated = 65536,
-
-        /// <summary>
-        /// Music: Stop the music when a backward jump effect is played. 
-        /// This stops musics that never reach the end from going into endless loops.
-        /// Some MOD musics are designed to jump all over the place, 
-        /// so this flag would cause those to be stopped prematurely. 
-        /// If this flag is used together with the <see cref="Loop"/> flag,
-        /// then the music would not be stopped but any <see cref="SyncFlags.End"/> sync would be triggered.
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        MusicStopBack = 524288,
-
-        /// <summary>
-        /// Music: Don't load the samples. 
-        /// This reduces the time taken to load the music, notably with MO3 files,
-        /// which is useful if you just want to get the name and Length of the music without playing it.
-        /// </summary>
-        MusicNoSample = 1048576,
-
-        /// <summary>
-        /// Music: Stop all notes and reset bpm/etc when seeking.
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        MusicPositionResetEx = 4194304,
+        SampleOverrideDistance = 0x30000,
         #endregion
 
         #region BassCd
@@ -348,10 +352,16 @@ namespace ManagedBass.Dynamics
         MixerNoRampin = 8388608,
         #endregion
 
+        #region Recording
         /// <summary>
         /// Recording: Start the recording paused. Use <see cref="Bass.ChannelPlay"/> to start it.
         /// </summary>
-        RecordPause = 32768,
+        RecordPause = 0x8000,
+
+        RecordEchoCancel = 0x2000,
+
+        RecordAGC = 0x4000,
+        #endregion
 
         /// <summary>
         /// Enable pin-point accurate seeking (to the exact byte) on the MP3/MP2/MP1 stream or MOD music.
@@ -359,14 +369,14 @@ namespace ManagedBass.Dynamics
         /// due to the entire file being pre-scanned for the seek points.  
         /// Note: This flag is ONLY needed for files with a VBR, files with a CBR are always accurate.
         /// </summary>
-        Prescan = 131072,
+        Prescan = 0x20000,
 
         /// <summary>
         /// Automatically free the music or stream's resources when it has reached the end, 
         /// or when <see cref="Bass.ChannelStop"/> or <see cref="Bass.Stop"/> is called.
         /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
-        AutoFree = 262144,
+        AutoFree = 0x40000,
 
         /// <summary>
         /// Restrict the download rate of the file to the rate required to sustain playback.
@@ -374,7 +384,7 @@ namespace ManagedBass.Dynamics
         /// This flag has no effect on "unbuffered" streams (Buffer=false).
         /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
-        RestrictDownloadRate = 524288,
+        RestrictDownloadRate = 0x80000,
 
         /// <summary>
         /// Download and play the file in smaller chunks.
@@ -385,181 +395,181 @@ namespace ManagedBass.Dynamics
         /// This flag also has the effect of resticting the download rate.
         /// This flag has no effect on "unbuffered" streams (Buffer=false).
         /// </summary>
-        StreamDownloadBlocks = 1048576,
+        StreamDownloadBlocks = 0x100000,
 
         /// <summary>
         /// Decode the sample data, without outputting it. 
         /// Use <see cref="Bass.ChannelGetData(int,IntPtr,int)"/> to retrieve decoded sample data.
         /// <see cref="SoftwareMixing"/>/<see cref="Bass3D"/>/<see cref="FX"/>/<see cref="AutoFree"/> are all ignored when using this flag, as are the Speaker flags.
         /// </summary>
-        Decode = 2097152,
-
-        /// <summary>
-        /// Music and BASSMIDI add-on: Use sinc interpolated sample mixing.
-        /// This increases the sound quality, but also requires more CPU.
-        /// Otherwise linear interpolation is used.
-        /// Music: If neither this or the <see cref="MusicNonInterpolated"/> flag is specified, linear interpolation is used.
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        SincInterpolation = 8388608,
+        Decode = 0x200000,
 
         /// <summary>
         /// Pass status info (HTTP/ICY tags) from the server to the <see cref="DownloadProcedure"/> callback during connection.
         /// This can be useful to determine the reason for a failure.
         /// </summary>
-        StreamStatus = 8388608,
+        StreamStatus = 0x800000,
 
         #region Speaker Assignment
         /// <summary>
         /// Front speakers (channel 1/2)
         /// </summary>
-        SpeakerFront = 16777216,
-
-        /// <summary>
-        /// Speakers Pair 1
-        /// </summary>
-        SpeakerPair1 = 16777216,
-
-        /// <summary>
-        /// Speakers Pair 2
-        /// </summary>
-        SpeakerPair2 = 33554432,
+        SpeakerFront = 0x1000000,
 
         /// <summary>
         /// Rear/Side speakers (channel 3/4)
         /// </summary>
-        SpeakerRear = 33554432,
-
-        /// <summary>
-        /// Speakers Pair 3
-        /// </summary>
-        SpeakerPair3 = 50331648,
+        SpeakerRear = 0x2000000,
 
         /// <summary>
         /// Center and LFE speakers (5.1, channel 5/6)
         /// </summary>
-        SpeakerCenterLFE = 50331648,
-
-        /// <summary>
-        /// Speakers Pair 4
-        /// </summary>
-        SpeakerPair4 = 67108864,
+        SpeakerCenterLFE = 0x3000000,
 
         /// <summary>
         /// Rear Center speakers (7.1, channel 7/8)
         /// </summary>
-        SpeakerRearCenter = 67108864,
+        SpeakerRearCenter = 0x4000000,
+
+        #region Pairs
+        /// <summary>
+        /// Speakers Pair 1
+        /// </summary>
+        SpeakerPair1 = 1 << 24,
+
+        /// <summary>
+        /// Speakers Pair 2
+        /// </summary>
+        SpeakerPair2 = 2 << 24,
+
+        /// <summary>
+        /// Speakers Pair 3
+        /// </summary>
+        SpeakerPair3 = 3 << 24,
+
+        /// <summary>
+        /// Speakers Pair 4
+        /// </summary>
+        SpeakerPair4 = 4 << 24,
 
         /// <summary>
         /// Speakers Pair 5
         /// </summary>
-        SpeakerPair5 = 83886080,
+        SpeakerPair5 = 5 << 24,
 
         /// <summary>
         /// Speakers Pair 6
         /// </summary>
-        SpeakerPair6 = 100663296,
+        SpeakerPair6 = 6 << 24,
 
         /// <summary>
         /// Speakers Pair 7
         /// </summary>
-        SpeakerPair7 = 117440512,
+        SpeakerPair7 = 7 << 24,
 
         /// <summary>
         /// Speakers Pair 8
         /// </summary>
-        SpeakerPair8 = 134217728,
+        SpeakerPair8 = 8 << 24,
 
         /// <summary>
         /// Speakers Pair 9
         /// </summary>
-        SpeakerPair9 = 150994944,
+        SpeakerPair9 = 9 << 24,
 
         /// <summary>
         /// Speakers Pair 10
         /// </summary>
-        SpeakerPair10 = 167772160,
+        SpeakerPair10 = 10 << 24,
 
         /// <summary>
         /// Speakers Pair 11
         /// </summary>
-        SpeakerPair11 = 184549376,
+        SpeakerPair11 = 11 << 24,
 
         /// <summary>
         /// Speakers Pair 12
         /// </summary>
-        SpeakerPair12 = 201326592,
+        SpeakerPair12 = 12 << 24,
 
         /// <summary>
         /// Speakers Pair 13
         /// </summary>
-        SpeakerPair13 = 218103808,
+        SpeakerPair13 = 13 << 24,
 
         /// <summary>
         /// Speakers Pair 14
         /// </summary>
-        SpeakerPair14 = 234881024,
+        SpeakerPair14 = 14 << 24,
 
         /// <summary>
         /// Speakers Pair 15
         /// </summary>
-        SpeakerPair15 = 251658240,
+        SpeakerPair15 = 15 << 24,
+        #endregion
 
+        #region Modifiers
         /// <summary>
         /// Speaker Modifier: left channel only
         /// </summary>
-        SpeakerLeft = 268435456,
-
-        /// <summary>
-        /// Front Left speaker only (channel 1)
-        /// </summary>
-        SpeakerFrontLeft = 285212672,
-
-        /// <summary>
-        /// Rear/Side Left speaker only (channel 3)
-        /// </summary>
-        SpeakerRearLeft = 301989888,
-
-        /// <summary>
-        /// Center speaker only (5.1, channel 5)
-        /// </summary>
-        SpakerCenter = 318767104,
-
-        /// <summary>
-        /// Rear Center Left speaker only (7.1, channel 7)
-        /// </summary>
-        SpeakerRearCenterLeft = 335544320,
+        SpeakerLeft = 0x10000000,
 
         /// <summary>
         /// Speaker Modifier: right channel only
         /// </summary>
-        SpeakerRight = 536870912,
+        SpeakerRight = 0x20000000,
+        #endregion
+
+        /// <summary>
+        /// Front Left speaker only (channel 1)
+        /// </summary>
+        SpeakerFrontLeft = SpeakerFront | SpeakerLeft,
+
+        /// <summary>
+        /// Rear/Side Left speaker only (channel 3)
+        /// </summary>
+        SpeakerRearLeft = SpeakerRear | SpeakerLeft,
+
+        /// <summary>
+        /// Center speaker only (5.1, channel 5)
+        /// </summary>
+        SpeakerCenter = SpeakerCenterLFE | SpeakerLeft,
+
+        /// <summary>
+        /// Rear Center Left speaker only (7.1, channel 7)
+        /// </summary>
+        SpeakerRearCenterLeft = SpeakerRearCenter | SpeakerLeft,
 
         /// <summary>
         /// Front Right speaker only (channel 2)
         /// </summary>
-        SpeakerFrontRight = 553648128,
+        SpeakerFrontRight = SpeakerFront | SpeakerRight,
 
         /// <summary>
         /// Rear/Side Right speaker only (channel 4)
         /// </summary>
-        SpeakerRearRight = 570425344,
+        SpeakerRearRight = SpeakerRear | SpeakerRight,
 
         /// <summary>
         /// LFE speaker only (5.1, channel 6)
         /// </summary>
-        SpeakerLFE = 587202560,
+        SpeakerLFE = SpeakerCenterLFE | SpeakerRight,
 
         /// <summary>
         /// Rear Center Right speaker only (7.1, channel 8)
         /// </summary>
-        SpeakerRearCenterRight = 603979776,
+        SpeakerRearCenterRight = SpeakerRearCenter | SpeakerRight,
         #endregion
 
         /// <summary>
         /// Use an async look-ahead cache.
         /// </summary>
-        AsyncFile = 1073741824,
+        AsyncFile = 0x40000000,
+
+        /// <summary>
+        /// File is a Unicode (16-bit characters) filename
+        /// </summary>
+        Unicode = 0x80000000,
 
         /// <summary>
         /// BassAac add-on: use 960 samples per frame

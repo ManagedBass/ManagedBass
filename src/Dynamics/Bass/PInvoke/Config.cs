@@ -472,7 +472,7 @@ namespace ManagedBass.Dynamics
         /// The <see cref="BassInfo.Latency"/> and <see cref="BassInfo.MinBufferLength"/> values 
         /// in the <see cref="BassInfo"/> structure reflect the setting at the time of the device's <see cref="Bass.Init"/> call.
         /// </remarks>
-        public static bool TruePlayPosition
+        public static bool VistaTruePlayPosition
         {
             get { return GetConfigBool(Configuration.TruePlayPosition); }
             set { Configure(Configuration.TruePlayPosition, value); }

@@ -28,7 +28,7 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The standard wave formats supported by the device (default is <see cref="RecordFormatFlags.WF4S16"/>).
         /// </summary>
-        public RecordFormatFlags SupportedFormats => (RecordFormatFlags)(this.formats & 0xffffff);
+        public RecordFormatFlags SupportedFormats => (RecordFormatFlags)(formats & 0xffffff);
 
         /// <summary>
         /// The number of Input sources available to the device

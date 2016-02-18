@@ -147,7 +147,23 @@ namespace ManagedBass.Dynamics
         #endregion
 
         #region Encode
-        // TODO: Array overloads
+        #region Encode Write
+        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
+        public static extern bool EncodeWrite(int Handle, IntPtr Buffer, int Length);
+
+        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
+        public static extern bool EncodeWrite(int Handle, byte[] Buffer, int Length);
+
+        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
+        public static extern bool EncodeWrite(int Handle, short[] Buffer, int Length);
+
+        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
+        public static extern bool EncodeWrite(int Handle, int[] Buffer, int Length);
+
+        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
+        public static extern bool EncodeWrite(int Handle, float[] Buffer, int Length);
+        #endregion
+
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
         public static extern bool EncodeWrite(int Handle, IntPtr Buffer, int Length);
 

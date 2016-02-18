@@ -39,7 +39,12 @@ namespace ManagedBass
         public static byte LoByte(this short pWord) => (byte)pWord;
 
         /// <summary>
-        /// Make an integer putting <paramref name="low"/> in low 2-bits and <paramref name="high"/> in high 2-bits.
+        /// Make an short from 2-bytes.
+        /// </summary>
+        public static short MakeWord(byte low, byte high) => (short)(low | (ushort)(high << 8));
+
+        /// <summary>
+        /// Make an integer putting <paramref name="low"/> in low 2-bytes and <paramref name="high"/> in high 2-bytes.
         /// </summary>
         public static int MakeLong(short low, short high) => (int)((ushort)low | (uint)(high << 16));
     }

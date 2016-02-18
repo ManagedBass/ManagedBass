@@ -9,7 +9,7 @@ namespace ManagedBass
     [StructLayout(LayoutKind.Sequential)]
     public class ApeBinaryTag
     {
-        IntPtr key = IntPtr.Zero, data = IntPtr.Zero;
+        IntPtr key, data;
 
         int length;
 
@@ -75,6 +75,143 @@ namespace ManagedBass
         public override string ToString() => Key;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    public class TAG_BEXT
+    {
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+        public string Description;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string Originator;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string OriginatorReference;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 10)]
+        public string OriginationDate;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
+        public string OriginationTime;
+
+        public long TimeReference;
+
+        public short Version;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+        public byte[] umid;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 190)]
+        byte[] reserved;
+
+        // TODO: Check what's size of codinghistory
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+        public string codinghistory;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public class TAG_CART_TIMER
+    {
+        int Usage, Value;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public class TAG_CART
+    {
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string Version;				// version of the data structure
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        public string Title;					// title of cart audio sequence
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        public string Artist;				// artist or creator name
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        public string CutID;					// cut number identification
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        public string ClientID;				// client identification
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        public string Category;				// category ID, PSA, NEWS, etc
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        public string Classification;		// classification or auxiliary key
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        public string OutCue;				// out cue text
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 10)]
+        string startDate;				// yyyy-mm-dd
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
+        string startTime;				// hh:mm:ss
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 10)]
+        string endDate;				// yyyy-mm-dd
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 8)]
+        string endTime;				// hh:mm:ss
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        public string ProducerAppID;			// name of vendor or application
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        public string ProducerAppVersion;	// version of producer application
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+        public string UserDef;				// user defined text
+
+        public int dwLevelReference;			// sample value for 0 dB reference
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+        public TAG_CART_TIMER[] PostTimer;	// 8 time markers after head
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 276)]
+        char[] Reserved;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1024)]
+        public string URL;					// uniform resource locator
+
+        // TODO: What's size of this??
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 1)]
+        char[] TagText;				// free form text for scripts or tags
+
+        public DateTime StartTime
+        {
+            get
+            {
+                string[] date = startDate.Split('-'),
+                         time = startTime.Split(':');
+
+                return new DateTime(int.Parse(date[0]), int.Parse(date[1]), int.Parse(date[2]),
+                                    int.Parse(time[0]), int.Parse(time[1]), int.Parse(time[2]));
+            }
+        }
+
+        public DateTime EndTime
+        {
+            get
+            {
+                string[] date = endDate.Split('-'),
+                         time = endTime.Split(':');
+
+                return new DateTime(int.Parse(date[0]), int.Parse(date[1]), int.Parse(date[2]),
+                                    int.Parse(time[0]), int.Parse(time[1]), int.Parse(time[2]));
+            }
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public class TAG_CA_CODEC
+    {
+        public int ftype, atype;
+
+        IntPtr name;
+
+        public string Name => Marshal.PtrToStringAnsi(name);
+    }
+
     /// <summary>
     /// Wraps an ID3v1 tag
     /// </summary>
@@ -84,22 +221,22 @@ namespace ManagedBass
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         char[] id;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 30)]
-        char[] title;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+        public string Title;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 30)]
-        char[] artist;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+        public string Artist;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 30)]
-        char[] album;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 30)]
+        public string Album;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        char[] year;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 4)]
+        public string Year;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 30)]
         char[] comment;
 
-        public byte genre = 0;
+        public byte genre = 147;
 
         static string[] Genres = new string[148]
             {
@@ -129,42 +266,6 @@ namespace ManagedBass
             return (ID3v1Tag)Marshal.PtrToStructure(Bass.ChannelGetTags(Handle, TagType.ID3), typeof(ID3v1Tag));
         }
 
-        public string Title
-        {
-            get
-            {
-                return title == null ? "Untitled"
-                                     : new string(title).Replace("\0", "").Trim();
-            }
-        }
-
-        public string Artist
-        {
-            get
-            {
-                return artist == null ? "Unknown Artist"
-                                      : new string(artist).Replace("\0", "").Trim();
-            }
-        }
-
-        public string Album
-        {
-            get
-            {
-                return album == null ? "Unknown Album"
-                                     : new string(album).Replace("\0", "").Trim();
-            }
-        }
-
-        public string Year
-        {
-            get
-            {
-                return year == null ? ""
-                                    : new string(year).Replace("\0", "").Trim();
-            }
-        }
-
         public string Comment
         {
             get
@@ -187,11 +288,8 @@ namespace ManagedBass
         {
             get
             {
-                // if 29 byte of comment is null ('\0') then 30 byte of comment string is track nomber
-                if (comment[28] == (char)0)
-                    return comment[29];
-
-                return -1;
+                // If 29th byte of comment[] is null ('\0'), then 30th byte is track number
+                return comment[28] == '\0' ? comment[29] : -1;
             }
         }
     }

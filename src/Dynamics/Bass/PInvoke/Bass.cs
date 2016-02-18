@@ -99,7 +99,7 @@ namespace ManagedBass.Dynamics
         }
 
         [DllImport(DllName, EntryPoint = "BASS_GetDSoundObject")]
-        public static extern IntPtr GetDSoundObject(int obj);
+        public static extern IntPtr GetDSoundObject(DSInterface obj);
 
         #region Plugin
         [DllImport(DllName, EntryPoint = "BASS_PluginGetInfo")]
