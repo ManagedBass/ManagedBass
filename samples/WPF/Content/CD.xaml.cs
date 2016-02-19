@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -23,7 +24,7 @@ namespace MBassWPF
             set
             {
                 dev = value;
-                OnPropertyChanged("SelectedDrive");
+                OnPropertyChanged();
 
                 CDAFiles.Clear();
 
@@ -51,7 +52,7 @@ namespace MBassWPF
             set
             {
                 cda = value;
-                OnPropertyChanged("SelectedCDA");
+                OnPropertyChanged();
             }
         }
 
@@ -80,7 +81,7 @@ namespace MBassWPF
                 AvailableDrives.Add(DevInfo);
         }
 
-        void OnPropertyChanged(string e)
+        void OnPropertyChanged([CallerMemberName] string e = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(e));

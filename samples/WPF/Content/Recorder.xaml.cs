@@ -3,6 +3,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -26,7 +27,7 @@ namespace MBassWPF
             set
             {
                 dev = value;
-                OnPropertyChanged("SelectedAudioDevice");
+                OnPropertyChanged();
             }
         }
 
@@ -145,7 +146,7 @@ namespace MBassWPF
                 Writer.Write(Buffer, obj.ByteLength);
         }
 
-        void OnPropertyChanged(string e)
+        void OnPropertyChanged([CallerMemberName] string e = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(e));

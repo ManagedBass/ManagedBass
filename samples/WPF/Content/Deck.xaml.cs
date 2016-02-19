@@ -3,6 +3,7 @@ using ManagedBass.Effects;
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -35,14 +36,14 @@ namespace MBassWPF
             {
                 if (TempoChannel != null) TempoChannel.Position = value;
 
-                OnPropertyChanged("Position");
+                OnPropertyChanged();
             }
         }
 
         public double Duration
         {
             get { return TempoChannel != null ? TempoChannel.Duration : 0; }
-            set { OnPropertyChanged("Duration"); }
+            set { OnPropertyChanged(); }
         }
 
         public double Volume { set { TempoChannel.Volume = value; } }
@@ -54,7 +55,7 @@ namespace MBassWPF
             {
                 if (ReverseDecoder != null) ReverseDecoder.Reverse = value;
 
-                OnPropertyChanged("Reverse");
+                OnPropertyChanged();
             }
         }
 
@@ -65,7 +66,7 @@ namespace MBassWPF
             {
                 if (TempoChannel != null) TempoChannel.Loop = value;
 
-                OnPropertyChanged("Loop");
+                OnPropertyChanged();
             }
         }
 
@@ -76,7 +77,7 @@ namespace MBassWPF
             {
                 if (TempoChannel != null) TempoChannel.Tempo = value;
 
-                OnPropertyChanged("Tempo");
+                OnPropertyChanged();
             }
         }
 
@@ -87,7 +88,7 @@ namespace MBassWPF
             {
                 if (TempoChannel != null) TempoChannel.Frequency = value;
 
-                OnPropertyChanged("Frequency");
+                OnPropertyChanged();
             }
         }
 
@@ -98,7 +99,7 @@ namespace MBassWPF
             {
                 if (TempoChannel != null) TempoChannel.Pitch = value;
 
-                OnPropertyChanged("Pitch");
+                OnPropertyChanged();
             }
         }
 
@@ -109,7 +110,7 @@ namespace MBassWPF
             {
                 if (TempoChannel != null) TempoChannel.Balance = value;
 
-                OnPropertyChanged("Balance");
+                OnPropertyChanged();
             }
         }
         #endregion
@@ -124,7 +125,7 @@ namespace MBassWPF
             {
                 if (ReverbEffect != null) ReverbEffect.IsActive = value;
 
-                OnPropertyChanged("Reverb");
+                OnPropertyChanged();
             }
         }
 
@@ -135,7 +136,7 @@ namespace MBassWPF
             {
                 if (ReverbEffect != null) ReverbEffect.Damp = value;
 
-                OnPropertyChanged("Reverb_Damp");
+                OnPropertyChanged();
             }
         }
 
@@ -146,7 +147,7 @@ namespace MBassWPF
             {
                 if (ReverbEffect != null) ReverbEffect.DryMix = value;
 
-                OnPropertyChanged("Reverb_DryMix");
+                OnPropertyChanged();
             }
         }
 
@@ -157,7 +158,7 @@ namespace MBassWPF
             {
                 if (ReverbEffect != null) ReverbEffect.WetMix = value;
 
-                OnPropertyChanged("Reverb_WetMix");
+                OnPropertyChanged();
             }
         }
 
@@ -168,7 +169,7 @@ namespace MBassWPF
             {
                 if (ReverbEffect != null) ReverbEffect.RoomSize = value;
 
-                OnPropertyChanged("Reverb_RoomSize");
+                OnPropertyChanged();
             }
         }
 
@@ -179,7 +180,7 @@ namespace MBassWPF
             {
                 if (ReverbEffect != null) ReverbEffect.Width = value;
 
-                OnPropertyChanged("Reverb_Width");
+                OnPropertyChanged();
             }
         }
         #endregion
@@ -194,7 +195,7 @@ namespace MBassWPF
             {
                 if (DistortionEffect != null) DistortionEffect.IsActive = value;
 
-                OnPropertyChanged("Distortion");
+                OnPropertyChanged();
             }
         }
         #endregion
@@ -230,23 +231,19 @@ namespace MBassWPF
 
             Reverse = false;
 
+            string title = Path.GetFileNameWithoutExtension(FilePath);
+            try { title = ID3v1Tag.Read(TempoChannel.Handle).Title; }
+            catch { }
+
             string artist = "Unknown Artist";
             try { artist = ID3v1Tag.Read(TempoChannel.Handle).Artist; }
             catch { }
 
-            Title.Content = Path.GetFileNameWithoutExtension(FilePath) + " - " + artist;
+            Title.Content = title + " - " + artist;
 
-            OnPropertyChanged("Duration");
-            OnPropertyChanged("Position");
-
-            OnPropertyChanged("Reverb");
-            OnPropertyChanged("Reverb_Damp");
-            OnPropertyChanged("Reverb_DryMix");
-            OnPropertyChanged("Reverb_WetMix");
-            OnPropertyChanged("Reverb_RoomSize");
-            OnPropertyChanged("Reverb_Width");
-
-            OnPropertyChanged("Distorion");
+            // Update all bindings
+            DataContext = null;
+            DataContext = this;
 
             BPlay.Content = "/Resources/Play.png";
             Status.Content = "Ready";
@@ -350,7 +347,7 @@ namespace MBassWPF
         #endregion
 
         #region INotifyPropertyChanged
-        void OnPropertyChanged(string name)
+        void OnPropertyChanged([CallerMemberName] string name = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
