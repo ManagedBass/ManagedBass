@@ -9,12 +9,15 @@ namespace ManagedBass.Dynamics
     public static class BassMix
     {
         const string DllName = "bassmix";
+        static IntPtr hLib;
 
         /// <summary>
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+
+        public static void Unload() => Extensions.Unload(hLib);
 
         #region Split
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamCreate")]

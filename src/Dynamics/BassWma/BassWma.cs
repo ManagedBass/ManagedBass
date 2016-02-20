@@ -15,12 +15,15 @@ namespace ManagedBass.Dynamics
     public static class BassWma
     {
         const string DllName = "basswma";
+        static IntPtr hLib;
 
         /// <summary>
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+
+        public static void Unload() => Extensions.Unload(hLib);
 
         [DllImport(DllName, EntryPoint = "BASS_WMA_GetWMObject")]
         public static extern IntPtr GetWMObject(int handle);
@@ -164,9 +167,6 @@ namespace ManagedBass.Dynamics
         public static extern bool EncodeWrite(int Handle, float[] Buffer, int Length);
         #endregion
 
-        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
-        public static extern bool EncodeWrite(int Handle, IntPtr Buffer, int Length);
-
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpen")]
         public static extern int EncodeOpen(int freq, int chans, WMAEncodeFlags flags, int bitrate, WMEncodeProcedure proc, IntPtr user);
 
@@ -298,9 +298,6 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern IntPtr BASS_WMA_GetTags(string File, BassFlags Flags);
 
-        public static IEnumerable<string> GetTags(string File, BassFlags Flags)
-        {
-            return Tags.ExtractMultiStringUtf8(BASS_WMA_GetTags(File, Flags | BassFlags.Unicode));
-        }
+        public static string[] GetTags(string File, BassFlags Flags) => Extensions.ExtractMultiStringUtf8(BASS_WMA_GetTags(File, Flags | BassFlags.Unicode));
     }
 }

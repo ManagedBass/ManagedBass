@@ -9,14 +9,15 @@ namespace ManagedBass.Dynamics
     public static class BassEnc
     {
         const string DllName = "bassenc";
-
-        static IntPtr _castProxy;
+        static IntPtr _castProxy, hLib;
 
         /// <summary>
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+
+        public static void Unload() => Extensions.Unload(hLib);
 
         [DllImport(DllName)]
         static extern int BASS_Encode_GetVersion();

@@ -82,6 +82,12 @@ namespace ManagedBass
         /// </summary>
         public static RecordingDevice DefaultDevice => Devices.First((dev) => dev.DeviceInfo.IsDefault);
 
+        public static RecordingDevice CurrentDevice
+        {
+            get { return Get(Bass.CurrentRecordingDevice); }
+            set { Bass.CurrentRecordingDevice = value.DeviceIndex; }
+        }
+
         /// <summary>
         /// Returns the Name of the Device
         /// </summary>

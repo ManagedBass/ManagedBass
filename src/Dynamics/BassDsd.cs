@@ -13,12 +13,15 @@ namespace ManagedBass.Dynamics
     public static class BassDsd
     {
         const string DllName = "bassdsd";
+        static IntPtr hLib;
 
         /// <summary>
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+
+        public static void Unload() => Extensions.Unload(hLib);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_DSD_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags, int freq);

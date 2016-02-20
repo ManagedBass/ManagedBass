@@ -13,13 +13,15 @@ namespace ManagedBass.Dynamics
     public static class BassCd
     {
         const string DllName = "basscd";
-        static IntPtr _cddbServer;
+        static IntPtr _cddbServer, hLib;
 
         /// <summary>
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+
+        public static void Unload() => Extensions.Unload(hLib);
 
         public static int DriveCount
         {

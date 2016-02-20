@@ -6,6 +6,7 @@ namespace ManagedBass.Dynamics
     public static partial class Bass
     {
         static IntPtr _netAgent, _netProxy;
+        static IOSNotifyProcedure iosnproc = (status) => _iosnotify?.Invoke(status);
 
         [DllImport(DllName, EntryPoint = "BASS_SetConfig")]
         internal extern static bool Configure(Configuration option, bool newvalue);
@@ -24,6 +25,38 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_GetConfig")]
         internal extern static bool GetConfigBool(Configuration option);
+
+        public static bool EnableAirplayReceivers(int receivers)
+        {
+            return Configure(Configuration.Airplay, receivers);
+        }
+
+        static event IOSNotifyProcedure _iosnotify;
+        
+        public static event IOSNotifyProcedure IOSNotification
+        {
+            add
+            {
+                if (_iosnotify == null)
+                    Configure(Configuration.IOSNotify,
+                              Marshal.GetFunctionPointerForDelegate(iosnproc));
+
+                _iosnotify += value;
+            }
+            remove { _iosnotify-=value; }
+        }
+
+        public static bool IOSMixAudio
+        {
+            get { return GetConfigBool(Configuration.IOSMixAudio); }
+            set { Configure(Configuration.IOSMixAudio, value); }
+        }
+
+        public static bool MFDisable
+        {
+            get { return GetConfigBool(Configuration.MFDisable); }
+            set { Configure(Configuration.MFDisable, value); }
+        }
 
         /// <summary>
         /// The Buffer Length in milliseconds. 
@@ -625,6 +658,15 @@ namespace ManagedBass.Dynamics
         {
             get { return GetConfigBool(Configuration.MFVideo); }
             set { Configure(Configuration.MFVideo, value); }
+        }
+
+        /// <summary>
+        /// Do not stop the output device when nothing is playing on it? 
+        /// </summary>
+        public static bool DeviceNonStop
+        {
+            get { return GetConfigBool(Configuration.DevNonStop); }
+            set { Configure(Configuration.DevNonStop, value); }
         }
     }
 }

@@ -8,10 +8,15 @@ namespace ManagedBass
     /// </summary>
     static class WindowsNative
     {
-        [DllImport("kernel32.dll")]
+        const string DllName = "kernel32.dll";
+
+        [DllImport(DllName)]
         public static extern IntPtr LoadLibrary(string dllToLoad);
 
-        [DllImport("kernel32.dll")]
+        [DllImport(DllName)]
         public static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
+
+        [DllImport(DllName)]
+        public static extern bool FreeLibrary(IntPtr hLib);
     }
 }

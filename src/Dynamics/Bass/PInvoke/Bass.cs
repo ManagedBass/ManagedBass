@@ -6,8 +6,6 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Dynamics
 {
-    // TODO: Unload() for Load()
-
     /// <summary>
     /// Wraps bass.dll.
     /// 
@@ -27,13 +25,16 @@ namespace ManagedBass.Dynamics
     public static partial class Bass
     {
         const string DllName = "bass";
+        static IntPtr hLib;
 
         /// <summary>
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
         
+        public static void Unload() => Extensions.Unload(hLib);
+
         /// <summary>
         /// "Manually" updates the HSTREAM and HMUSIC channel buffers.
         /// </summary>

@@ -1,7 +1,9 @@
 ﻿using ManagedBass.Dynamics;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace ManagedBass
 {
@@ -42,6 +44,12 @@ namespace ManagedBass
         internal static IntPtr Load(string DllName, string Folder)
         {
             if (IsWindows) return WindowsNative.LoadLibrary(!string.IsNullOrWhiteSpace(Folder) ? Path.Combine(Folder, DllName + ".dll") : DllName);
+            else throw new PlatformNotSupportedException("Only available on Windows");
+        }
+
+        internal static bool Unload(IntPtr hLib)
+        {
+            if (IsWindows) return WindowsNative.FreeLibrary(hLib);
             else throw new PlatformNotSupportedException("Only available on Windows");
         }
 
@@ -145,6 +153,59 @@ namespace ManagedBass
                     if (Channels < 1) throw new ArgumentException("Channels must be greater than Zero.");
                     else return Channels + " Channels";
             }
+        }
+
+        public static string[] ExtractMultiStringAnsi(IntPtr ptr)
+        {
+            var l = new List<string>();
+
+            while (true)
+            {
+                string str = Marshal.PtrToStringAnsi(ptr);
+
+                if (str.Length == 0)
+                    break;
+                
+                l.Add(str);
+
+                // char '\0'
+                ptr += str.Length + 1;
+            }
+
+            return l.ToArray();
+        }
+
+        public static string[] ExtractMultiStringUtf8(IntPtr ptr)
+        {
+            var l = new List<string>();
+
+            while (true)
+            {
+                string str = PtrToStringUtf8(ptr);
+
+                if (str == null)
+                    break;
+ 
+                l.Add(str);
+            }
+
+            return l.ToArray();
+        }
+
+        public static unsafe string PtrToStringUtf8(IntPtr ptr)
+        {
+            byte* bytes = (byte*)ptr.ToPointer();
+            int size = 0;
+            while (bytes[size] != 0) ++size;
+
+            if (size == 0) return null;
+
+            byte[] buffer = new byte[size];
+            Marshal.Copy((IntPtr)ptr, buffer, 0, size);
+
+            ptr += size;
+
+            return Encoding.UTF8.GetString(buffer);
         }
     }
 }

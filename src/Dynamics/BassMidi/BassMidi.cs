@@ -13,6 +13,7 @@ namespace ManagedBass.Dynamics
     {
         const int BASS_MIDI_FONT_EX = 0x1000000;
         const string DllName = "bassmidi";
+        static IntPtr hLib;
 
         public const int ChorusChannel = -1,
                          ReverbChannel = -2,
@@ -22,7 +23,9 @@ namespace ManagedBass.Dynamics
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+
+        public static void Unload() => Extensions.Unload(hLib);
 
         #region Create Stream
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreate")]

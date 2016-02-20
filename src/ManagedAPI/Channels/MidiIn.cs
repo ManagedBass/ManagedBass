@@ -4,10 +4,11 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
-    // TODO: Won't work most probably
-    class MidiIn : IDisposable
+    public class MidiIn : IDisposable
     {
         public int DeviceId { get; }
+
+        public string DeviceName { get; }
 
         public MidiIn(int DeviceId)
         {
@@ -21,8 +22,6 @@ namespace ManagedBass
         public bool Start() => BassMidi.InStart(DeviceId);
 
         public bool Stop() => BassMidi.InStop(DeviceId);
-
-        public string DeviceName { get; }
 
         byte[] data;
 

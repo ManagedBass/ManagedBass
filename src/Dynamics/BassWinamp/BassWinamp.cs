@@ -14,12 +14,15 @@ namespace ManagedBass.Dynamics
     public static class BassWinamp
     {
         const string DllName = "bass_winamp";
+        static IntPtr hLib;
 
         /// <summary>
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+
+        public static void Unload() => Extensions.Unload(hLib);
 
         [DllImport(DllName, EntryPoint = "BASS_WINAMP_AboutPlugin")]
         public static extern void AboutPlugin(int handle, IntPtr win);
@@ -30,19 +33,16 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         static extern IntPtr BASS_WINAMP_FindPlugins(string directory, WinampFindPluginFlags flags);
 
-        public static IEnumerable<string> FindPlugins(string plugindirectory, WinampFindPluginFlags flags)
+        public static string[] FindPlugins(string plugindirectory, WinampFindPluginFlags flags)
         {
-            return Tags.ExtractMultiStringAnsi(BASS_WINAMP_FindPlugins(plugindirectory,
-                                                                       flags & (WinampFindPluginFlags.Input | WinampFindPluginFlags.Recursive)));
+            return Extensions.ExtractMultiStringAnsi(BASS_WINAMP_FindPlugins(plugindirectory,
+                                                                             flags & (WinampFindPluginFlags.Input | WinampFindPluginFlags.Recursive)));
         }
 
         [DllImport(DllName)]
         static extern IntPtr BASS_WINAMP_GetExtentions(int handle);
 
-        public static IEnumerable<string> GetExtentions(int handle)
-        {
-            return Tags.ExtractMultiStringAnsi(BASS_WINAMP_GetExtentions(handle));
-        }
+        public static string[] GetExtentions(int handle) => Extensions.ExtractMultiStringAnsi(BASS_WINAMP_GetExtentions(handle));
 
         [DllImport(DllName, EntryPoint = "BASS_WINAMP_GetIsSeekable")]
         public static extern bool IsSeekable(int handle);

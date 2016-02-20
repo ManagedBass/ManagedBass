@@ -67,6 +67,12 @@ namespace ManagedBass
         /// </summary>
         public static PlaybackDevice DefaultDevice => Devices.First((dev) => dev.DeviceInfo.IsDefault);
 
+        public static PlaybackDevice CurrentDevice
+        {
+            get { return Get(Bass.CurrentDevice); }
+            set { Bass.CurrentDevice = value.DeviceIndex; }
+        }
+
         /// <summary>
         /// Gets a DeviceInfo object containing information on the Device like Name, Type, IsEnabled, etc.
         /// </summary>

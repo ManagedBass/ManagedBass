@@ -3,7 +3,7 @@ using System;
 
 namespace ManagedBass
 {
-    class AsioDevice : IDisposable
+    public class AsioDevice : IDisposable
     {
         public int DeviceIndex { get; }
 
