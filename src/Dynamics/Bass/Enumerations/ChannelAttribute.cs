@@ -451,5 +451,21 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// </summary>
         OpusOriginalFrequency = 77824,
+
+        /// <summary>
+        /// BassDSD: The gain (in decibels) applied when converting to PCM.
+        /// </summary>
+        /// <remarks>
+        /// This attribute is only applicable when converting to PCM, and is unavailable when producing DSD-over-PCM or raw DSD data.
+        /// The default setting is determined by the <see cref="DSDGain" /> config option
+        /// </remarks>
+        DSDGain = 81920,
+
+        /// <summary>
+        /// BassDSD: The DSD sample rate.
+        /// </summary>
+        /// <remarks>This attribute is read-only, so cannot be modified via <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)" />.
+        /// </remarks>
+        DSDRate = 81921
     }
 }

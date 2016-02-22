@@ -94,7 +94,7 @@ namespace ManagedBass.Dynamics
         }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreateFileUser")]
-        public static extern int CreateStream(StreamSystem system, BassFlags flags, [In][Out] FileProcedures procs, IntPtr user = default(IntPtr), int freq = 44100);
+        public static extern int CreateStream(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user = default(IntPtr), int freq = 44100);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_MIDI_StreamCreateURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 44100);
@@ -139,7 +139,7 @@ namespace ManagedBass.Dynamics
         public static extern int StreamGetEvent(int handle, int chan, MidiEventType Event);
 
         [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamGetEvents(int handle, int track, int filter, [In][Out] MidiEvent[] events);
+        static extern int BASS_MIDI_StreamGetEvents(int handle, int track, int filter, [In, Out] MidiEvent[] events);
 
         public static MidiEvent[] StreamGetEvents(int handle, int track, int filter)
         {
@@ -185,7 +185,7 @@ namespace ManagedBass.Dynamics
         public static extern bool StreamGetMarker(int handle, MidiMarkerType type, int index, out MidiMarker mark);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetMarks")]
-        public static extern int StreamGetMarkers(int handle, int track, MidiMarkerType type, [In][Out] MidiMarker[] marks);
+        public static extern int StreamGetMarkers(int handle, int track, MidiMarkerType type, [In, Out] MidiMarker[] marks);
 
         public static MidiMarker[] StreamGetAllMarkers(int handle)
         {
@@ -323,7 +323,7 @@ namespace ManagedBass.Dynamics
         public static extern string FontGetPreset(int handle, int preset, int bank);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetPresets")]
-        public static extern bool FontGetPresets(int handle, [In][Out] int[] presets);
+        public static extern bool FontGetPresets(int handle, [In, Out] int[] presets);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetVolume")]
         public static extern float FontGetVolume(int handle);

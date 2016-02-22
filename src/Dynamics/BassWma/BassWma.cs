@@ -30,7 +30,7 @@ namespace ManagedBass.Dynamics
 
         #region CreateStream
         [DllImport(DllName, EntryPoint="BASS_WMA_StreamCreateFileUser")]
-        public static extern int CreateStream(StreamSystem system, BassFlags flags, [In][Out] FileProcedures procs, IntPtr user = default(IntPtr));
+        public static extern int CreateStream(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user = default(IntPtr));
         
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_WMA_StreamCreateFile(bool Memory, string File, long Offset, long Length, BassFlags Flags);

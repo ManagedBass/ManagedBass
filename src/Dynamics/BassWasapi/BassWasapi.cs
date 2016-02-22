@@ -107,7 +107,7 @@ namespace ManagedBass.Dynamics
         public extern static int GetData(IntPtr Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetData")]
-        public extern static int GetData([In][Out] float[] Buffer, int Length);
+        public extern static int GetData([In, Out] float[] Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_PutData")]
         public extern static int PutData(IntPtr Buffer, int Length);
@@ -160,7 +160,7 @@ namespace ManagedBass.Dynamics
         public extern static int GetLevel();
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetLevelEx")]
-        public static extern int GetLevel([In][Out] float[] Levels, float Length, LevelRetrievalFlags Flags);
+        public static extern int GetLevel([In, Out] float[] Levels, float Length, LevelRetrievalFlags Flags);
 
         [DllImport(DllName)]
         extern static int BASS_WASAPI_GetVersion();

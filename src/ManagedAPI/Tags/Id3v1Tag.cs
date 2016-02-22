@@ -29,7 +29,7 @@ namespace ManagedBass
 
         public byte genre = 147;
 
-        static string[] Genres = new string[148]
+        public static string[] Genres = new string[148]
             {
                 "Blues", "Classic Rock", "Country", "Dance", "Disco", "Funk", "Grunge", "Hip-Hop", "Jazz", "Metal",
                 "New Age", "Oldies", "Other", "Pop", "R&B", "Rap", "Reggae", "Rock", "Techno", "Industrial",

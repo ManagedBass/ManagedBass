@@ -4,12 +4,7 @@
     /// Types of what's returned by <see cref="Bass.ChannelGetTags" />.
     /// </summary>
     public enum TagType
-    {
-        /// <summary>
-        /// Unknown tags : not supported tags
-        /// </summary>
-        Unknown = -1,
-        
+    {        
         /// <summary>
         /// ID3v1 tags : A pointer to a 128 byte block is returned (see <see cref="ID3v1Tag"/>).
         /// See www.id3.org for details of the block's structure.
@@ -83,7 +78,7 @@
         WmaMeta = 11,
 
         /// <summary>
-        /// Apple CoreAudio codec info
+        /// Apple CoreAudio codec info (see <see cref="CACodecTag"/>).
         /// </summary>
         CoreAudioCodec = 11,
         
@@ -106,7 +101,7 @@
         MF = 13,
 
         /// <summary>
-        /// WAVE format : A pointer to a WAVEFORMATEXT structure is returned.
+        /// WAVE format : A pointer to a <see cref="WaveFormat"/> structure is returned.
         /// </summary>
         WaveFormat = 14,
 
@@ -118,32 +113,12 @@
         /// <summary>
         /// BWF/RF64 tags (Broadcast Audio Extension) : A pointer to a variable Length block is returned.
         /// See the EBU specification for details of the block's structure.
-        /// When reading BWF tags into a Tags.TAG_INFO structure
-        /// the following mapping is performed if no RIFF_INFO tags are present:
-        /// Description = Title (max. 256 chars)
-        /// Originator = Artist (max. 32 chars)
-        /// OriginatorReference = EncodedBy (max. 32 chars)
-        /// OriginationDate = Year (in format 'yyyy-mm-dd hh:mm:ss')
-        /// TimeReference = Track
-        /// UMID = Copyright (max. 64 chars)
-        /// CodingHistory = Comment
-        /// However, if RIFF_INFO tags are present the BWF tags are present in the NativeTags.
         /// </summary>
         RiffBext = 257,
         
         /// <summary>
         /// RIFF/BWF Radio Traffic Extension tags : A pointer to a variable Length block is returned.
         /// See the EBU specifications for details of the block's structure.
-        /// When reading BWF tags into a TAG_INFO structure 
-        /// the following mapping is performed if no RIFF_INFO tags are present:
-        /// Title = Title (max. 64 chars)
-        /// Artist = Artist (max. 64 chars)
-        /// Category = Grouping (max. 64 chars)
-        /// Classification = Mood (max. 64 chars)
-        /// ProducerAppID = Publisher (max. 64 chars)
-        /// ProducerAppVersion = EncodedBy (max. 64 chars)
-        /// TagText = Comment
-        /// However, if RIFF_INFO tags are present the CART tags are present in the NativeTags.
         /// </summary>
         RiffCart = 258,
 
@@ -189,14 +164,32 @@
         /// </summary>
         MidiTrack = 69632,
 
+        // TODO: FLAC PICTURE TAG
         /// <summary>
         /// + index# : FLACPicture structure.
         /// </summary>
         FlacPicture = 73728,
 
+        // TODO: ADX LOOP TAG
         /// <summary>
         /// ADX tags: A pointer to the ADX loop structure.
         /// </summary>
-        AdxLoop = 73728
+        AdxLoop = 73728,
+
+        /// <summary>
+        /// DSDIFF artist : ASCII string
+        /// </summary>
+        DSDArtist = 77824,
+
+        /// <summary>
+        /// DSDIFF title : ASCII string
+        /// </summary>
+        DSDTitle = 77825,
+
+        // TODO: DSDIF strucure
+        /// <summary>
+        /// + index, DSDIFF comment : A pointer to the DSDIFF comment tag structure.
+        /// </summary>
+        DSDComment = 78080
     }
 }

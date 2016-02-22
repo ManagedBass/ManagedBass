@@ -32,7 +32,7 @@ namespace ManagedBass.Dynamics
         delegate int DCreateStreamFileMemory(bool mem, IntPtr file, long offset, long length, BassFlags flags);
 
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
-        delegate int DCreateStreamUser(StreamSystem system, BassFlags flags, [In][Out] FileProcedures procs, IntPtr user);
+        delegate int DCreateStreamUser(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user);
 
         [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
         delegate int DCreateStreamURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User);

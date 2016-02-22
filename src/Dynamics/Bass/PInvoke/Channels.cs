@@ -633,7 +633,7 @@ namespace ManagedBass.Dynamics
         }
 
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetLevelEx")]
-        public static extern bool ChannelGetLevel(int handle, [In][Out] float[] levels, float length, LevelRetrievalFlags flags);
+        public static extern bool ChannelGetLevel(int handle, [In, Out] float[] levels, float length, LevelRetrievalFlags flags);
 
         public static float[] ChannelGetLevel(int handle, float length, LevelRetrievalFlags flags)
         {
@@ -658,16 +658,16 @@ namespace ManagedBass.Dynamics
         public static extern int ChannelGetData(int Handle, IntPtr Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
-        public static extern int ChannelGetData(int Handle, [In][Out] byte[] Buffer, int Length);
+        public static extern int ChannelGetData(int Handle, [In, Out] byte[] Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
-        public static extern int ChannelGetData(int Handle, [In][Out] short[] Buffer, int Length);
+        public static extern int ChannelGetData(int Handle, [In, Out] short[] Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
-        public static extern int ChannelGetData(int Handle, [In][Out] int[] Buffer, int Length);
+        public static extern int ChannelGetData(int Handle, [In, Out] int[] Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
-        public static extern int ChannelGetData(int Handle, [In][Out] float[] Buffer, int Length);
+        public static extern int ChannelGetData(int Handle, [In, Out] float[] Buffer, int Length);
         #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_ChannelUpdate")]

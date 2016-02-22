@@ -36,16 +36,16 @@ namespace ManagedBass.Dynamics
         public static extern bool SampleGetData(int Handle, IntPtr Buffer);
 
         [DllImport(DllName, EntryPoint = "BASS_SampleGetData")]
-        public static extern bool SampleGetData(int Handle, [In][Out] byte[] Buffer);
+        public static extern bool SampleGetData(int Handle, [In, Out] byte[] Buffer);
 
         [DllImport(DllName, EntryPoint = "BASS_SampleGetData")]
-        public static extern bool SampleGetData(int Handle, [In][Out] short[] Buffer);
+        public static extern bool SampleGetData(int Handle, [In, Out] short[] Buffer);
 
         [DllImport(DllName, EntryPoint = "BASS_SampleGetData")]
-        public static extern bool SampleGetData(int Handle, [In][Out] int[] Buffer);
+        public static extern bool SampleGetData(int Handle, [In, Out] int[] Buffer);
 
         [DllImport(DllName, EntryPoint = "BASS_SampleGetData")]
-        public static extern bool SampleGetData(int Handle, [In][Out] float[] Buffer);
+        public static extern bool SampleGetData(int Handle, [In, Out] float[] Buffer);
         #endregion
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace ManagedBass.Dynamics
         public static extern bool SampleSetInfo(int Handle, SampleInfo info);
 
         [DllImport(DllName)]
-        static extern int BASS_SampleGetChannels(int handle, [In][Out] int[] channels);
+        static extern int BASS_SampleGetChannels(int handle, [In, Out] int[] channels);
 
         public static int[] SampleGetChannels(int handle)
         {

@@ -55,6 +55,63 @@ namespace ManagedBass.Dynamics
         /// </summary>
         Float = 256,
 
+        /// <summary>
+        /// Enable pin-point accurate seeking (to the exact byte) on the MP3/MP2/MP1 stream or MOD music.
+        /// This also increases the time taken to create the stream, 
+        /// due to the entire file being pre-scanned for the seek points.  
+        /// Note: This flag is ONLY needed for files with a VBR, files with a CBR are always accurate.
+        /// </summary>
+        Prescan = 0x20000,
+
+        /// <summary>
+        /// Automatically free the music or stream's resources when it has reached the end, 
+        /// or when <see cref="Bass.ChannelStop"/> or <see cref="Bass.Stop"/> is called.
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        AutoFree = 0x40000,
+
+        /// <summary>
+        /// Restrict the download rate of the file to the rate required to sustain playback.
+        /// If this flag is not used, then the file will be downloaded as quickly as possible. 
+        /// This flag has no effect on "unbuffered" streams (Buffer=false).
+        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
+        /// </summary>
+        RestrictDownloadRate = 0x80000,
+
+        /// <summary>
+        /// Download and play the file in smaller chunks.
+        /// Uses a lot less memory than otherwise,
+        /// but it's not possible to seek or loop the stream - once it's ended,
+        /// the file must be opened again to play it again.
+        /// This flag will automatically be applied when the file Length is unknown.
+        /// This flag also has the effect of resticting the download rate.
+        /// This flag has no effect on "unbuffered" streams (Buffer=false).
+        /// </summary>
+        StreamDownloadBlocks = 0x100000,
+
+        /// <summary>
+        /// Decode the sample data, without outputting it. 
+        /// Use <see cref="Bass.ChannelGetData(int,IntPtr,int)"/> to retrieve decoded sample data.
+        /// <see cref="SoftwareMixing"/>/<see cref="Bass3D"/>/<see cref="FX"/>/<see cref="AutoFree"/> are all ignored when using this flag, as are the Speaker flags.
+        /// </summary>
+        Decode = 0x200000,
+
+        /// <summary>
+        /// Pass status info (HTTP/ICY tags) from the server to the <see cref="DownloadProcedure"/> callback during connection.
+        /// This can be useful to determine the reason for a failure.
+        /// </summary>
+        StreamStatus = 0x800000,
+
+        /// <summary>
+        /// Use an async look-ahead cache.
+        /// </summary>
+        AsyncFile = 0x40000000,
+
+        /// <summary>
+        /// File is a Unicode (16-bit characters) filename
+        /// </summary>
+        Unicode = 0x80000000,
+
         #region BassFx
         /// <summary>
         /// BassFx add-on: If in use, then you can do other stuff while detection's in process.
@@ -363,53 +420,6 @@ namespace ManagedBass.Dynamics
         RecordAGC = 0x4000,
         #endregion
 
-        /// <summary>
-        /// Enable pin-point accurate seeking (to the exact byte) on the MP3/MP2/MP1 stream or MOD music.
-        /// This also increases the time taken to create the stream, 
-        /// due to the entire file being pre-scanned for the seek points.  
-        /// Note: This flag is ONLY needed for files with a VBR, files with a CBR are always accurate.
-        /// </summary>
-        Prescan = 0x20000,
-
-        /// <summary>
-        /// Automatically free the music or stream's resources when it has reached the end, 
-        /// or when <see cref="Bass.ChannelStop"/> or <see cref="Bass.Stop"/> is called.
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        AutoFree = 0x40000,
-
-        /// <summary>
-        /// Restrict the download rate of the file to the rate required to sustain playback.
-        /// If this flag is not used, then the file will be downloaded as quickly as possible. 
-        /// This flag has no effect on "unbuffered" streams (Buffer=false).
-        /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
-        /// </summary>
-        RestrictDownloadRate = 0x80000,
-
-        /// <summary>
-        /// Download and play the file in smaller chunks.
-        /// Uses a lot less memory than otherwise,
-        /// but it's not possible to seek or loop the stream - once it's ended,
-        /// the file must be opened again to play it again.
-        /// This flag will automatically be applied when the file Length is unknown.
-        /// This flag also has the effect of resticting the download rate.
-        /// This flag has no effect on "unbuffered" streams (Buffer=false).
-        /// </summary>
-        StreamDownloadBlocks = 0x100000,
-
-        /// <summary>
-        /// Decode the sample data, without outputting it. 
-        /// Use <see cref="Bass.ChannelGetData(int,IntPtr,int)"/> to retrieve decoded sample data.
-        /// <see cref="SoftwareMixing"/>/<see cref="Bass3D"/>/<see cref="FX"/>/<see cref="AutoFree"/> are all ignored when using this flag, as are the Speaker flags.
-        /// </summary>
-        Decode = 0x200000,
-
-        /// <summary>
-        /// Pass status info (HTTP/ICY tags) from the server to the <see cref="DownloadProcedure"/> callback during connection.
-        /// This can be useful to determine the reason for a failure.
-        /// </summary>
-        StreamStatus = 0x800000,
-
         #region Speaker Assignment
         /// <summary>
         /// Front speakers (channel 1/2)
@@ -561,16 +571,7 @@ namespace ManagedBass.Dynamics
         SpeakerRearCenterRight = SpeakerRearCenter | SpeakerRight,
         #endregion
 
-        /// <summary>
-        /// Use an async look-ahead cache.
-        /// </summary>
-        AsyncFile = 0x40000000,
-
-        /// <summary>
-        /// File is a Unicode (16-bit characters) filename
-        /// </summary>
-        Unicode = 0x80000000,
-
+        #region BassAac
         /// <summary>
         /// BassAac add-on: use 960 samples per frame
         /// </summary>
@@ -579,6 +580,74 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// BassAac add-on: Downmatrix to Stereo
         /// </summary>
-        AacStereo = 0x400000
+        AacStereo = 0x400000,
+        #endregion
+
+        #region BassDSD
+        /// <summary>
+        /// BassDSD add-on: Produce DSD-over-PCM data (with 0x05/0xFA markers). DSD-over-PCM data is 24-bit, so the <see cref="Flaot"/> flag is required.
+        /// </summary>
+        DSDOverPCM = 1024,
+
+        /// <summary>
+        /// BassDSD add-on: Produce raw DSD data instead of PCM. The DSD data is in blocks of 8 bits (1 byte) per-channel with the MSB being first/oldest. 
+        /// DSD data is not playable by BASS, so the <see cref="Decode"/> flag is required.
+        /// </summary>
+        DSDRaw = 512,
+        #endregion
+
+        #region BassAc3
+        /// <summary>
+        /// BassAC3 add-on: downmix to stereo
+        /// </summary>
+        Ac3DownmixStereo = 512,
+
+        /// <summary>
+        /// BASS_AC3 add-on: downmix to quad
+        /// </summary>
+        Ac3DownmixQuad = 1024,
+
+        /// <summary>
+        /// BASS_AC3 add-on: downmix to dolby
+        /// </summary>
+        Ac3DownmixDolby = 1536,
+
+        /// <summary>
+        /// BASS_AC3 add-on: enable dynamic range compression
+        /// </summary>
+        Ac3DRC = 2048,
+        #endregion
+
+        #region BassDShow
+        /// <summary>
+        /// DSHOW add-on: Use this flag to disable audio processing.
+        /// </summary>
+        DShowNoAudioProcessing = 524288,
+
+        /// <summary>
+        /// DSHOW add-on: Use this flag to enable mixing video on a channel.
+        /// </summary>
+        DShowStreamMix = 16777216,
+
+        /// <summary>
+        /// DSHOW add-on: Use this flag to enable auto dvd functions(on mouse down, keys etc).
+        /// </summary>
+        DShowAutoDVD = 67108864,
+
+        /// <summary>
+        /// DSHOW add-on: Use this flag to restart the stream when it's finished.
+        /// </summary>
+        DShowLoop = 134217728,
+
+        /// <summary>
+        /// DSHOW add-on: Use this to enable video processing.
+        /// </summary>
+        DShowVideoProcessing = 131072,
+        #endregion
+
+        /// <summary>
+        /// BassWV add-on: Limit to stereo
+        /// </summary>
+        WVStereo = 4194304
     }
 }

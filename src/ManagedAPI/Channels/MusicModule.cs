@@ -1,6 +1,7 @@
 ﻿using ManagedBass.Dynamics;
 using System;
 using System.Runtime.InteropServices;
+using static System.Runtime.InteropServices.Marshal;
 
 namespace ManagedBass
 {
@@ -25,19 +26,13 @@ namespace ManagedBass
             GCPin.Free();
         }
 
-        public string Title => Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicName));
+        public string Title => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicName));
 
-        public string Message => Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicMessage));
+        public string Message => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicMessage));
 
-        public string Instrument(int Index)
-        {
-            return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicInstrument + Index));
-        }
+        public string Instrument(int Index) => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicInstrument + Index));
 
-        public string MusicSampleName(int index)
-        {
-            return Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicSample + index));
-        }
+        public string MusicSampleName(int index) => Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicSample + index));
 
         public byte[] MusicOrders
         {

@@ -239,7 +239,6 @@
     <Compile Include="ManagedAPI\Devices\Bass\PlaybackDevice.cs" />
     <Compile Include="ManagedAPI\Effects\Effect Base.cs" />
     <Compile Include="ManagedAPI\Writers\WmaFileWriter.cs" />
-    <Compile Include="ManagedAPI\Tags\Tags.cs" />
     <Compile Include="ManagedAPI\Devices\CDDrive.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ManagedAPI\Writers\IAudioFileWriter.cs" />
