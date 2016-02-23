@@ -74,30 +74,8 @@
         SplitBufferLength = 67088,
         PlayAudioFromMp4 = 67328,
         AacSupportMp4 = 67329,
-
-        // TODO: Implement Config
-        /// <summary>
-        /// BASSdsd add-on: the default sample rate when converting to PCM.
-        /// <para>freq (int): the sample rate.</para>
-        /// <para>This setting determines what sample rate is used by default when converting to PCM. The rate actually used may be different if the specified rate is not valid for a particular DSD rate, in which case it will be rounded up (or down if there are none higher) to the nearest valid rate; the valid rates are 1/8, 1/16, 1/32, etc. of the DSD rate down to a minimum of 44100 Hz.</para>
-        /// <para>The default setting is 88200 Hz. Changes only affect subsequently created streams, not any that already exist.</para>
-        /// </summary>
-        BASS_CONFIG_DSD_FREQ = 67584,
-
-        // TODO: Implement Config
-        /// <summary>
-        /// BASSWinamp add-on: Winamp input timeout.
-        /// <para>timeout (int): The time (in milliseconds) to wait until timing out, because the plugin is not using the output system.</para>
-        /// </summary>
-        BASS_CONFIG_WINAMP_INPUT_TIMEOUT = 67584,
-
-        // TODO: Implement Config
-        /// <summary>
-        /// BASSdsd add-on: the default gain applied when converting to PCM.
-        /// <para>gain (int): the gain in decibels.</para>
-        /// <para>This setting determines what gain is applied by default when converting to PCM. Changes only affect subsequently created streams, not any that already exist. An existing stream's gain can be changed via the <see cref="F:Un4seen.Bass.BASSAttribute.BASS_ATTRIB_DSD_GAIN" /> attribute.</para>
-        /// <para>The default setting is 6dB.</para>
-        /// </summary>
-        BASS_CONFIG_DSD_GAIN = 67585
+        DSDFrequency = 67584,
+        WinampInputTimeout = 67584,
+        DSDGain = 67585
     }
 }

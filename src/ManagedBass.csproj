@@ -177,6 +177,7 @@
     <Compile Include="Dynamics\Bass\Structures\SampleInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\BassInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\Vector3D.cs" />
+    <Compile Include="ManagedAPI\Effects\PanDSP.cs" />
     <Compile Include="ManagedAPI\Effects\DirectX8\DX_ID3DL2Reverb.cs" />
     <Compile Include="Dynamics\Plugin.cs" />
     <Compile Include="ManagedAPI\Effects\DirectX8\DXReverb.cs" />

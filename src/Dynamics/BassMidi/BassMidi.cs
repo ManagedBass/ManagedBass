@@ -213,12 +213,12 @@ namespace ManagedBass.Dynamics
         #region Configure
         /// <summary>
         /// Automatically compact all soundfonts following a configuration change?
-        /// compact (bool): If true, all soundfonts are compacted following a MIDI stream being freed, or a BassMidi.StreamSetFonts() call.
-        /// The compacting isn't performed immediately upon a MIDI stream being freed or BassMidi.StreamSetFonts() being called.
+        /// compact (bool): If true, all soundfonts are compacted following a MIDI stream being freed, or a <see cref="StreamSetFonts"/> call.
+        /// The compacting isn't performed immediately upon a MIDI stream being freed or <see cref="StreamSetFonts"/> being called.
         /// It's actually done 2 seconds later (in another thread), 
         /// so that if another MIDI stream starts using the soundfonts in the meantime, they aren't needlessly closed and reopened.
-        /// Samples that have been preloaded by BassMidi.FontLoad() are not affected by automatic compacting.
-        /// Other samples that have been preloaded by BassMidi.StreamLoadSamples() are affected though,
+        /// Samples that have been preloaded by <see cref="FontLoad"/> are not affected by automatic compacting.
+        /// Other samples that have been preloaded by <see cref="StreamLoadSamples"/> are affected though,
         /// so it is probably wise to disable this option when using that function.
         /// By default, this option is enabled.
         /// </summary>
@@ -232,8 +232,7 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// Automatically load matching soundfonts?
         /// autofont (bool): If true, BASSMIDI will try to load a soundfont matching the MIDI file.
-        /// This option only applies to local MIDI files, loaded using BassMidi.CreateStream()
-        /// (or Bass.StreamCreateFile() via the plugin system). 
+        /// This option only applies to local MIDI files, loaded using BassMidi (or via the plugin system). 
         /// BASSMIDI won't look for matching soundfonts for MIDI files loaded from the internet.
         /// By default, this option is enabled.
         /// </summary>
@@ -251,7 +250,7 @@ namespace ManagedBass.Dynamics
         /// When there are no voices available to play a new sample, the voice with the lowest volume will be killed to make way for it.
         /// The more voices that are used, the more CPU that is required. 
         /// So this option can be used to restrict that, for example on a less powerful system. 
-        /// The CPU usage of a MIDI stream can also be restricted via the ChannelAttribute.MidiCPU attribute.
+        /// The CPU usage of a MIDI stream can also be restricted via the <see cref="ChannelAttribute.MidiCPU"/> attribute.
         /// Changing this setting only affects subsequently created MIDI streams, not any that have already been created. 
         /// The default setting is 128 voices.
         /// Platform-specific
@@ -267,7 +266,7 @@ namespace ManagedBass.Dynamics
         /// The number of MIDI Input ports to make available
         /// ports (int): Number of Input ports... 0 (min) - 10 (max).
         /// MIDI Input ports allow MIDI data to be received from other software, not only MIDI devices. 
-        /// Once a port has been initialized via BassMidi.InInit(), the ALSA client and port IDs can be retrieved from BassMidi.InGetDeviceInfo(),
+        /// Once a port has been initialized via <see cref="InInit"/>, the ALSA client and port IDs can be retrieved from <see cref="InGetDeviceInfo(int, out MidiDeviceInfo)"/>,
         /// which other software can use to connect to the port and send data to it.
         /// Prior to initialization, an Input port will have a client ID of 0.
         /// The default is for 1 Input port to be available. 
@@ -282,9 +281,7 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// Default soundfont usage
         /// filename (string): Filename of the default soundfont to use (null = no default soundfont).
-        /// When setting the default soundfont, a copy is made of the filename, so it does not need to persist beyond the Bass.Configure(IntPtr) call.
-        /// If the specified soundfont cannot be loaded, the default soundfont setting will remain as it is. 
-        /// Bass.GetConfigPtr() can be used to confirm what that is.
+        /// If the specified soundfont cannot be loaded, the default soundfont setting will remain as it is.
         /// On Windows, the default is to use one of the Creative soundfonts (28MBGM.SF2 or CT8MGM.SF2 or CT4MGM.SF2 or CT2MGM.SF2),
         /// if present in the windows system directory.
         /// </summary>

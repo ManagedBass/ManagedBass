@@ -18,6 +18,7 @@ namespace MBassWPF
         public TempoChannel TempoChannel;
         DispatcherTimer ProgressBarTimer;
         string FilePath;
+        PanDSP pan;
 
         public static readonly DependencyProperty ReadyProperty = DependencyProperty.Register("Ready", typeof(bool), typeof(Deck), new UIPropertyMetadata(false));
         #endregion
@@ -105,10 +106,10 @@ namespace MBassWPF
 
         public double Balance
         {
-            get { return TempoChannel != null ? TempoChannel.Balance : 0; }
+            get { return pan != null ? pan.Pan : 0; }
             set
             {
-                if (TempoChannel != null) TempoChannel.Balance = value;
+                if (pan != null) pan.Pan = value;
 
                 OnPropertyChanged();
             }
@@ -221,6 +222,8 @@ namespace MBassWPF
             Stop();
 
             ReverseDecoder = new ReverseChannel(new ManagedFileChannel(FilePath, true), true) { Reverse = false };
+
+            pan = new PanDSP(ReverseDecoder.Handle);
 
             TempoChannel = new TempoChannel(ReverseDecoder);
 

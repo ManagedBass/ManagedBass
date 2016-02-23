@@ -26,6 +26,18 @@ namespace ManagedBass
             }
         }
 
+        public static T Clip<T>(this T Item, T MinValue, T MaxValue)
+            where T : IComparable<T>
+        {
+            if (Item.CompareTo(MaxValue) > 0)
+                return MaxValue;
+
+            if (Item.CompareTo(MinValue) < 0)
+                return MinValue;
+            
+            return Item;
+        }
+
         /// <summary>
         /// Converts <see cref="Resolution"/> to <see cref="BassFlags"/>
         /// </summary>

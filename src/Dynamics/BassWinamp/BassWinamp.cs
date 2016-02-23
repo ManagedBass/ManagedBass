@@ -24,6 +24,15 @@ namespace ManagedBass.Dynamics
 
         public static void Unload() => Extensions.Unload(hLib);
 
+        /// <summary>
+        /// Winamp input timeout (in milliseconds) to wait until timing out, because the plugin is not using the output system.
+        /// </summary>
+        public static int InputTimeout
+        {
+            get { return Bass.GetConfig(Configuration.WinampInputTimeout); }
+            set { Bass.Configure(Configuration.WinampInputTimeout, value); }
+        }
+
         [DllImport(DllName, EntryPoint = "BASS_WINAMP_AboutPlugin")]
         public static extern void AboutPlugin(int handle, IntPtr win);
 
