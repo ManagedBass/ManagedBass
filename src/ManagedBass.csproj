@@ -177,6 +177,7 @@
     <Compile Include="Dynamics\Bass\Structures\SampleInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\BassInfo.cs" />
     <Compile Include="Dynamics\Bass\Structures\Vector3D.cs" />
+    <Compile Include="ManagedAPI\Effects\GainDSP.cs" />
     <Compile Include="ManagedAPI\Effects\PanDSP.cs" />
     <Compile Include="ManagedAPI\Effects\DirectX8\DX_ID3DL2Reverb.cs" />
     <Compile Include="Dynamics\Plugin.cs" />
@@ -205,10 +206,17 @@
     <Compile Include="ManagedAPI\Channels\MixerStream.cs" />
     <Compile Include="ManagedAPI\Channels\SplitChannel.cs" />
     <Compile Include="ManagedAPI\Tags\ApeBinaryTag.cs" />
+    <Compile Include="ManagedAPI\Tags\DSDComment.cs" />
+    <Compile Include="ManagedAPI\Tags\ID3\Id3v2Tag.cs" />
     <Compile Include="ManagedAPI\Tags\BextTag.cs" />
     <Compile Include="ManagedAPI\Tags\CACodecTag.cs" />
     <Compile Include="ManagedAPI\Tags\CartTag.cs" />
-    <Compile Include="ManagedAPI\Tags\Id3v1Tag.cs" />
+    <Compile Include="ManagedAPI\Tags\Flac\FlacCueTrackIndex.cs" />
+    <Compile Include="ManagedAPI\Tags\Flac\CueSheetTrackType.cs" />
+    <Compile Include="ManagedAPI\Tags\Flac\FlacCueTrack.cs" />
+    <Compile Include="ManagedAPI\Tags\Flac\FlacCueTag.cs" />
+    <Compile Include="ManagedAPI\Tags\Flac\FlacPictureTag.cs" />
+    <Compile Include="ManagedAPI\Tags\ID3\Id3v1Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolution.cs" />
     <Compile Include="Return.cs" />

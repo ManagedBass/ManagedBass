@@ -11,11 +11,23 @@ namespace ManagedBass.Effects
     {
         public int Channel { get; }
 
-        public int Handle { get; }
+        public int Handle { get; private set; }
 
-        public int Priortity { get; }
+        int priority;
+        public int Priority
+        {
+            get { return priority; }
+            set
+            {
+                priority = value;
+                Bass.ChannelRemoveDSP(Channel, Handle);
+                Handle = Bass.ChannelSetDSP(Channel, DSPProc, Priority: priority);
+            }
+        }
 
         public bool IsAssigned { get; private set; }
+
+        public bool Bypass { get; set; } = false;
 
         public Resolution Resolution { get; }
 
@@ -29,9 +41,9 @@ namespace ManagedBass.Effects
 
             DSPProc = new DSPProcedure(OnDSP);
 
-            this.Priortity = Priortity;
+            priority = Priority;
 
-            Handle = Bass.ChannelSetDSP(Channel, DSPProc, IntPtr.Zero, Priority);
+            Handle = Bass.ChannelSetDSP(Channel, DSPProc, Priority: priority);
 
             Resolution = Bass.ChannelGetInfo(Channel).Resolution;
 
@@ -43,7 +55,8 @@ namespace ManagedBass.Effects
 
         void OnDSP(int handle, int channel, IntPtr Buffer, int Length, IntPtr User)
         {
-            if (IsAssigned) Callback(new BufferProvider(Buffer, Length));
+            if (IsAssigned && !Bypass)
+                Callback(new BufferProvider(Buffer, Length));
         }
 
         protected abstract void Callback(BufferProvider buffer);
