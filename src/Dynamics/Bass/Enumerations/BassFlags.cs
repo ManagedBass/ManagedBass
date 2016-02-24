@@ -585,7 +585,7 @@ namespace ManagedBass.Dynamics
 
         #region BassDSD
         /// <summary>
-        /// BassDSD add-on: Produce DSD-over-PCM data (with 0x05/0xFA markers). DSD-over-PCM data is 24-bit, so the <see cref="Flaot"/> flag is required.
+        /// BassDSD add-on: Produce DSD-over-PCM data (with 0x05/0xFA markers). DSD-over-PCM data is 24-bit, so the <see cref="Float"/> flag is required.
         /// </summary>
         DSDOverPCM = 1024,
 

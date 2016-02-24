@@ -206,6 +206,7 @@
     <Compile Include="ManagedAPI\Channels\MixerStream.cs" />
     <Compile Include="ManagedAPI\Channels\SplitChannel.cs" />
     <Compile Include="ManagedAPI\Tags\ApeBinaryTag.cs" />
+    <Compile Include="ManagedAPI\Tags\ADXLoopTag.cs" />
     <Compile Include="ManagedAPI\Tags\DSDComment.cs" />
     <Compile Include="ManagedAPI\Tags\ID3\Id3v2Tag.cs" />
     <Compile Include="ManagedAPI\Tags\BextTag.cs" />

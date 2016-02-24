@@ -213,8 +213,8 @@ namespace ManagedBass.Dynamics
         #region Configure
         /// <summary>
         /// Automatically compact all soundfonts following a configuration change?
-        /// compact (bool): If true, all soundfonts are compacted following a MIDI stream being freed, or a <see cref="StreamSetFonts"/> call.
-        /// The compacting isn't performed immediately upon a MIDI stream being freed or <see cref="StreamSetFonts"/> being called.
+        /// compact (bool): If true, all soundfonts are compacted following a MIDI stream being freed, or a <see cref="StreamSetFonts(int,MidiFont,int)"/> call.
+        /// The compacting isn't performed immediately upon a MIDI stream being freed or <see cref="StreamSetFonts(int,MidiFont,int)"/> being called.
         /// It's actually done 2 seconds later (in another thread), 
         /// so that if another MIDI stream starts using the soundfonts in the meantime, they aren't needlessly closed and reopened.
         /// Samples that have been preloaded by <see cref="FontLoad"/> are not affected by automatic compacting.
@@ -228,17 +228,13 @@ namespace ManagedBass.Dynamics
             set { Bass.Configure(Configuration.MidiCompact, value); }
         }
 
-        // TODO: Config AutoFont Update according to Documentation: int
         /// <summary>
         /// Automatically load matching soundfonts?
-        /// autofont (bool): If true, BASSMIDI will try to load a soundfont matching the MIDI file.
-        /// This option only applies to local MIDI files, loaded using BassMidi (or via the plugin system). 
-        /// BASSMIDI won't look for matching soundfonts for MIDI files loaded from the internet.
-        /// By default, this option is enabled.
+        /// If set to 1 (default), BASSMIDI will try to load a soundfont matching the MIDI file. If set to 2, the matching soundfont will also be used on all banks. 
         /// </summary>
-        public static bool AutoFont
+        public static int AutoFont
         {
-            get { return Bass.GetConfigBool(Configuration.MidiAutoFont); }
+            get { return Bass.GetConfig(Configuration.MidiAutoFont); }
             set { Bass.Configure(Configuration.MidiAutoFont, value); }
         }
 

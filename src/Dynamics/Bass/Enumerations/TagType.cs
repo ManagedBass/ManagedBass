@@ -164,13 +164,11 @@
         /// </summary>
         MidiTrack = 69632,
 
-        // TODO: FLAC PICTURE TAG
         /// <summary>
         /// + index# : FLACPicture structure.
         /// </summary>
         FlacPicture = 73728,
 
-        // TODO: ADX LOOP TAG
         /// <summary>
         /// ADX tags: A pointer to the ADX loop structure.
         /// </summary>
@@ -186,7 +184,6 @@
         /// </summary>
         DSDTitle = 77825,
 
-        // TODO: DSDIF strucure
         /// <summary>
         /// + index, DSDIFF comment : A pointer to the DSDIFF comment tag structure.
         /// </summary>
