@@ -23,7 +23,7 @@ namespace ManagedBass.Dynamics
     /// <para>On Windows, the availability of the latency and minbuf values depends on the <see cref="DeviceInitFlags.Latency"/> flag being used when <see cref="Bass.Init" /> was called.</para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public struct BassInfo
+    public class BassInfo
     {
         BASSInfoFlags flags;
         int hwsize;

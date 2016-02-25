@@ -20,7 +20,7 @@ namespace ManagedBass.Dynamics
     /// Do not call these functions from within a DSP callback:
     /// </para>
     /// <para>
-    /// <see cref="Bass.Stop" />, <see cref="Bass.Free" />, <see cref="Bass.MusicLoad(string,long,int,BassFlags,int)" />,
+    /// <see cref="Bass.Stop" />, <see cref="Bass.Free()" />, <see cref="Bass.MusicLoad(string,long,int,BassFlags,int)" />,
     /// <see cref="Bass.CreateStream(int,int,BassFlags,StreamProcedure,IntPtr)" /> (or any other stream creation functions).
     /// </para>
     /// <para>Also, do not call <see cref="Bass.ChannelRemoveDSP" /> with the same DSP Handle as received by the callback, 

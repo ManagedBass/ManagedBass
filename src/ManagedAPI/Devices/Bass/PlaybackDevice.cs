@@ -84,7 +84,7 @@ namespace ManagedBass
         /// <param name="Frequency">Frequency, defaults to 44100</param>
         /// <param name="flags">DeviceInitFlags used to specify options to init the device</param>
         /// <returns>A Return&lt;bool&gt; object containing success and error info</returns>
-        public Return<bool> Init(int Frequency = 44100, DeviceInitFlags flags = DeviceInitFlags.Default)
+        public bool Init(int Frequency = 44100, DeviceInitFlags flags = DeviceInitFlags.Default)
         {
             return Bass.Init(DeviceIndex, Frequency, flags);
         }

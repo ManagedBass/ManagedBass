@@ -248,19 +248,16 @@ namespace ManagedBass
         Mp4NoStream = 6000
     }
 
-    public class ManagedBassException : Exception
+    public class BassException : Exception
     {
-        public ManagedBassException()
-            : base(Bass.LastError.ToString())
+        internal BassException(Errors ErrorCode, string ExceptionPoint)
+            : base(string.Format("{0} occured at {1}", ErrorCode.ToString(), ExceptionPoint))
         {
-            this.ErrorCode = Bass.LastError;
+            this.ExceptionPoint = ExceptionPoint;
+            this.ErrorCode = ErrorCode;
         }
 
-        public ManagedBassException(string Message)
-            : base(Message + ": " + Bass.LastError)
-        {
-            this.ErrorCode = Bass.LastError;
-        }
+        public string ExceptionPoint { get; }
 
         public Errors ErrorCode { get; }
     }

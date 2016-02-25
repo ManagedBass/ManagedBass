@@ -22,7 +22,7 @@ namespace ManagedBass.Dynamics
         /// <param name="ClsID">Class identifier of the object to create, that will be used to initialize DirectSound... <see langword="null" /> = use default</param>
         /// <returns>If the device was successfully initialized, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.IllegalDevice">The device number specified is invalid.</exception>
-        /// <exception cref="Errors.Already">The device has already been initialized. You must call <see cref="Free" /> before you can initialize it again.</exception>
+        /// <exception cref="Errors.Already">The device has already been initialized. You must call <see cref="Free()" /> before you can initialize it again.</exception>
         /// <exception cref="Errors.DriverNotFound">There is no available device driver... the device may already be in use.</exception>
         /// <exception cref="Errors.UnsupportedSampleFormat">The specified format is not supported by the device. Try changing the <paramref name="Frequency" /> and <paramref name="Flags" /> parameters.</exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
@@ -68,9 +68,9 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// <para>On Linux and Windows CE, the length of the device's buffer can be set via the <see cref="PlaybackBufferLength" /> config option.</para>
         /// </remarks>
-        public static Return<bool> Init(int Device = DefaultDevice, int Frequency = 44100, DeviceInitFlags Flags = DeviceInitFlags.Default, IntPtr Win = default(IntPtr), IntPtr ClsID = default(IntPtr))
+        public static bool Init(int Device = DefaultDevice, int Frequency = 44100, DeviceInitFlags Flags = DeviceInitFlags.Default, IntPtr Win = default(IntPtr), IntPtr ClsID = default(IntPtr))
         {
-            return BASS_Init(Device, Frequency, Flags, Win, ClsID);
+            return Extensions.Checked(BASS_Init(Device, Frequency, Flags, Win, ClsID));
         }
 
         [DllImport(DllName, EntryPoint = "BASS_Start")]
@@ -83,10 +83,10 @@ namespace ManagedBass.Dynamics
         public static extern bool Stop();
 
         #region Free
-        [DllImport(DllName)]
-        static extern bool BASS_Free();
+        [DllImport(DllName, EntryPoint = "BASS_Free")]
+        public static extern bool Free();
 
-        public static Return<bool> Free(int Device) => BASS_SetDevice(Device) && BASS_Free();
+        public static bool Free(int Device) => BASS_SetDevice(Device) && Free();
         #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetDevice")]

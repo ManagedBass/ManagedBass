@@ -18,7 +18,7 @@ namespace ManagedBass.Dynamics
     /// <para>A <see cref="SyncFlags.Stalled"/> sync can also be set via <see cref="Bass.ChannelSetSync" />, to be triggered upon playback stalling or resuming.</para>
     /// <para>If you do return less than the requested amount of data, the number of bytes should still equate to a whole number of samples.</para>
     /// <para>Some functions can cause problems if called from within a stream (or DSP) function. Do not call these functions from within a stream callback:</para>
-    /// <para><see cref="Bass.ChannelStop" />, <see cref="Bass.Free" />, <see cref="Bass.MusicLoad(string,long,int,BassFlags,int)" />, <see cref="Bass.CreateStream(int,int,BassFlags,StreamProcedure,IntPtr)" /> or any other stream creation functions.</para>
+    /// <para><see cref="Bass.ChannelStop" />, <see cref="Bass.Free()" />, <see cref="Bass.MusicLoad(string,long,int,BassFlags,int)" />, <see cref="Bass.CreateStream(int,int,BassFlags,StreamProcedure,IntPtr)" /> or any other stream creation functions.</para>
     /// <para>Also, do not call <see cref="Bass.StreamFree" /> or <see cref="Bass.ChannelStop" /> with the same Handle as received by the callback.</para>
     /// <para>When streaming multi-channel sample data, the channel order of each sample is as follows:</para>
     /// <para>3 channels: left-front, right-front, center.</para>

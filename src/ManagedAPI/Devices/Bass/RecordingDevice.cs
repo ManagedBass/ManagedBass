@@ -66,7 +66,7 @@ namespace ManagedBass
         /// Initialize a Device for Recording
         /// </summary>
         /// <returns>A Return&lt;bool&gt; object containing success and error info</returns>
-        public Return<bool> Init() => Bass.RecordInit(DeviceIndex);
+        public bool Init() => Bass.RecordInit(DeviceIndex);
 
         /// <summary>
         /// Frees an initialized Device

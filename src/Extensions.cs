@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Runtime.CompilerServices;
 using static System.Runtime.InteropServices.Marshal;
 
 namespace ManagedBass
@@ -17,13 +18,7 @@ namespace ManagedBass
 
         static Extensions()
         {
-            switch (Environment.OSVersion.Platform)
-            {
-                case PlatformID.Win32NT:
-                case PlatformID.Win32Windows:
-                    IsWindows = true;
-                    break;
-            }
+            IsWindows = Environment.OSVersion.Platform.Is(PlatformID.Win32NT, PlatformID.Win32Windows);
         }
 
         public static T Clip<T>(this T Item, T MinValue, T MaxValue)
@@ -36,6 +31,27 @@ namespace ManagedBass
                 return MinValue;
             
             return Item;
+        }
+
+        public static bool Is<T>(this T Item, params T[] Args)
+        {
+            foreach (var arg in Args)
+                if (Item.Equals(arg))
+                    return true;
+
+            return false;
+        }
+
+        public static bool ThrowForErrors { get; set; } = false;
+
+        internal static T Checked<T>(T Return, [CallerMemberName] string Caller = "")
+        {
+            var lastError = Bass.LastError;
+
+            if (!ThrowForErrors || lastError != Errors.OK)
+                return Return;
+                
+            throw new BassException(lastError, Caller);
         }
 
         /// <summary>

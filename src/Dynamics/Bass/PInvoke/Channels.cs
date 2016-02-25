@@ -377,12 +377,6 @@ namespace ManagedBass.Dynamics
         /// // Length in Seconds
         /// double s = Bass.ChannelBytes2Seconds(channel, len);
         /// </code>
-        /// <code lang="vbnet">
-        /// ' Length in Bytes
-        /// Dim len As Long = Bass.ChannelGetLength(channel)
-        /// ' Length in Seconds
-        /// Dim s As Double = Bass.ChannelBytes2Seconds(channel, len)
-        /// </code>
         /// </example>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetLength")]
         public extern static long ChannelGetLength(int Handle, PositionFlags Mode = PositionFlags.Bytes);

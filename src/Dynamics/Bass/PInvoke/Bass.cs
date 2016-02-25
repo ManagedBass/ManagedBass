@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using static ManagedBass.Extensions;
 
 namespace ManagedBass.Dynamics
 {
@@ -35,10 +36,14 @@ namespace ManagedBass.Dynamics
         
         public static void Unload() => Extensions.Unload(hLib);
 
+        #region Update
+        [DllImport(DllName)]
+        static extern bool BASS_Update(int Length);
+
         /// <summary>
-        /// "Manually" updates the HSTREAM and HMUSIC channel buffers.
+        /// Updates the HSTREAM and HMUSIC channel playback buffers.
         /// </summary>
-        /// <param name="Length">The amount to render, in milliseconds.</param>
+        /// <param name="Length">The amount of data to render, in milliseconds.</param>
         /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.DataNotAvailable">Updating is already in progress.</exception>
         /// <remarks>
@@ -46,32 +51,37 @@ namespace ManagedBass.Dynamics
         /// The <paramref name="Length"/> parameter should include some safety margin, in case the next update cycle gets delayed. 
         /// For example, if calling this function every 100ms, 200 would be a reasonable <paramref name="Length"/> parameter.
         /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_Update")]
-        public static extern bool Update(int Length);
+        /// <seealso cref="ChannelUpdate"/>
+        /// <seealso cref="PlaybackBufferLength"/>
+        /// <seealso cref="UpdateThreads"/>
+        public static bool Update(int Length) => Checked(BASS_Update(Length));
+        #endregion
 
+        #region CPUUsage
         [DllImport(DllName)]
         static extern float BASS_GetCPU();
-
+        
         /// <summary>
         /// Retrieves the current CPU usage of BASS as a percentage of total CPU time.
         /// </summary>
         /// <remarks>
         /// <para>
         /// This function includes the time taken to render stream (HSTREAM) and MOD music (HMUSIC) channels during playback, and any DSP functions set on those channels.
-        /// Also, any FX that are not using the "with FX flag" DX8 effect implementation.
+        /// It slso includes any FX that are not using the "with FX flag" DX8 effect implementation.
         /// </para>
         /// <para>
         /// The rendering of some add-on stream formats may not be entirely included, if they use additional decoding threads.
         /// See the add-on documentation for details.
         /// </para>
         /// <para>
-        /// This function does not strictly tell the CPU usage, but rather how timely the Buffer updates are.
+        /// This function does not strictly tell the CPU usage, but rather how timely the processing is.
         /// For example, if it takes 10ms to render 100ms of data, that would be 10%.
         /// If the reported usage gets to 100%, that means the channel data is being played faster than it can be rendered, and Buffer underruns are likely to occur.
         /// </para>
         /// <para>
         /// If automatic updating is disabled, then the value returned by this function is only updated after each call to <see cref="Update" />.
         /// <see cref="ChannelUpdate" /> usage is not included.
+        /// The CPU usage of an individual channel is available via the <see cref="ChannelAttribute.CPUUsage"/> attribute.
         /// </para>
         /// <para><b>Platform-specific</b></para>
         /// <para>
@@ -80,67 +90,59 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// </remarks>
         public static double CPUUsage => BASS_GetCPU();
+        #endregion
 
+        #region Version
         [DllImport(DllName)]
         static extern int BASS_GetVersion();
 
+        /// <summary>
+        /// Retrieves the version of BASS that is loaded
+        /// </summary>
         public static Version Version => Extensions.GetVersion(BASS_GetVersion());
+        #endregion
 
-        [DllImport(DllName, EntryPoint = "BASS_GetInfo")]
-        public static extern bool GetInfo(out BassInfo Info);
+        #region Info
+        [DllImport(DllName)]
+        static extern bool BASS_GetInfo(out BassInfo Info);
 
+        /// <summary>
+        /// Retrieves information on the device being used.
+        /// </summary>
+        /// <param name="Info"><see cref="BassInfo"/> object to receive the information.</param>
+        /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.NotInitialized"><see cref="Init"/> has not been successfully called.</exception>
+        /// <remarks>
+        /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to. 
+        /// </remarks>
+        public static bool GetInfo(out BassInfo Info) => Checked(BASS_GetInfo(out Info));
+
+        /// <summary>
+        /// Retrieves information on the device being used.
+        /// </summary>
+        /// <returns><see cref="BassInfo"/> object with the retreived information. (null on Error)</returns>
+        /// <exception cref="Errors.NotInitialized"><see cref="Init"/> has not been successfully called.</exception>
+        /// <remarks>
+        /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to. 
+        /// </remarks>
         public static BassInfo Info
         {
             get
             {
                 BassInfo temp;
-                GetInfo(out temp);
-                return temp;
-            }
-        }
-
-        [DllImport(DllName, EntryPoint = "BASS_GetDSoundObject")]
-        public static extern IntPtr GetDSoundObject(DSInterface obj);
-
-        #region Plugin
-        [DllImport(DllName, EntryPoint = "BASS_PluginGetInfo")]
-        public static extern PluginInfo GetPluginInfo(int Handle);
-
-        [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_PluginLoad(string FileName, BassFlags Flags = BassFlags.Unicode);
-
-        public static int PluginLoad(string FileName) => BASS_PluginLoad(FileName);
-
-        [DllImport(DllName, EntryPoint = "BASS_PluginFree")]
-        public static extern bool PluginFree(int Handle);
-
-        public static IEnumerable<int> PluginLoadDirectory(string directory)
-        {
-            if (Directory.Exists(directory))
-            {
-                // Try to get Windows Plugins
-                var libs = Directory.GetFiles(directory, "bass*.dll");
-
-                // Try to get Linux/Android Plugins
-                if (libs == null || libs.Length == 0)
-                    libs = Directory.GetFiles(directory, "libbass*.so");
-
-                // Try to get OSX Plugins
-                if (libs == null || libs.Length == 0)
-                    libs = Directory.GetFiles(directory, "libbass*.dylib");
-
-                if (libs != null)
-                {
-                    foreach (var lib in libs)
-                    {
-                        int h = BASS_PluginLoad(lib);
-                        if (h != 0) yield return h;
-                    }
-                }
+                return GetInfo(out temp) ? temp : null;
             }
         }
         #endregion
+        
+        #region GetDSoundObject
+        [DllImport(DllName, EntryPoint = "BASS_GetDSoundObject")]
+        public static extern IntPtr GetDSoundObject(DSInterface obj);
 
+        [DllImport(DllName, EntryPoint = "BASS_GetDSoundObject")]
+        public static extern IntPtr GetDSoundObject(int channel);
+        #endregion
+        
         #region FX Parameters
         [DllImport(DllName, EntryPoint = "BASS_FXSetParameters")]
         public static extern bool FXSetParameters(int Handle, IntPtr param);

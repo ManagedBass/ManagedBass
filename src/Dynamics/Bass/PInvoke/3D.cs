@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using static ManagedBass.Extensions;
 
 namespace ManagedBass.Dynamics
 {
@@ -9,17 +10,27 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This must be called to apply any changes made with Set3D methods. 
-        /// It improves performance to have DirectSound do all the required recalculating at the same time like this, rather than recalculating after every little change is made.
+        /// This function must be called to apply any changes made with <see cref="Set3DFactors"/>, <see cref="Set3DPosition"/>, <see cref="ChannelSet3DAttributes"/> or <see cref="ChannelSet3DPosition"/>. 
+        /// This allows multiple changes to be synchronized, and also improves performance. 
         /// </para>
-        /// <para>This function applies 3D changes on all the initialized devices - there's no need to re-call it for each individual device when using multiple devices.</para>
+        /// <para>
+        /// This function applies 3D changes on all the initialized devices.
+        /// There's no need to re-call it for each individual device when using multiple devices.
+        /// </para>
         /// </remarks>
+        /// <seealso cref="ChannelSet3DAttributes"/>
+        /// <seealso cref="ChannelSet3DPosition"/>
+        /// <seealso cref="Set3DFactors"/>
+        /// <seealso cref="Set3DPosition"/>
         [DllImport(DllName, EntryPoint = "BASS_Apply3D")]
         public static extern void Apply3D();
 
+        #region Get3DFactors
+        [DllImport(DllName)]
+        static extern bool BASS_Get3DFactors(ref float Distance, ref float RollOff, ref float Doppler);
+
         /// <summary>
         /// Retrieves the factors that affect the calculations of 3D sound.
-        /// <para>This overload allows you to only get all three values at a time.</para>
         /// </summary>
         /// <param name="Distance">The distance factor.</param>
         /// <param name="RollOff">The rolloff factor.</param>
@@ -31,8 +42,16 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.No3D">The device was not initialized with 3D support.</exception>
         /// <remarks>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</remarks>
-        [DllImport(DllName, EntryPoint = "BASS_Get3DFactors")]
-        public static extern bool Get3DFactors(ref float Distance, ref float RollOff, ref float Doppler);
+        /// <seealso cref="Set3DFactors"/>
+        public static bool Get3DFactors(ref float Distance, ref float RollOff, ref float Doppler)
+        {
+            return Checked(BASS_Get3DFactors(ref Distance, ref RollOff, ref Doppler));
+        }
+        #endregion        
+
+        #region Set3DFactors
+        [DllImport(DllName)]
+        static extern bool BASS_Set3DFactors(float Distance, float RollOff, float Doppler);
 
         /// <summary>
         /// Sets the factors that affect the calculations of 3D sound.
@@ -45,7 +64,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Doppler">
         /// The doppler factor... 0.0 (min) - 10.0 (max), less than 0.0 = leave current... examples: 0.0 = no doppler, 1.0 = real world, 2.0 = 2x real.
         /// The doppler effect is the way a sound appears to change pitch when it is moving towards or away from you (say hello to Einstein!).
-        /// The listener and sound velocity settings are used to calculate this effect, this doppf value can be used to lessen or exaggerate the effect.
+        /// The listener and sound velocity settings are used to calculate this effect, this <paramref name="Doppler"/> value can be used to lessen or exaggerate the effect.
         /// </param>
         /// <returns>
         /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
@@ -57,8 +76,24 @@ namespace ManagedBass.Dynamics
         /// <para>As with all 3D functions, use <see cref="Apply3D" /> to apply the changes.</para>
         /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
         /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_Set3DFactors")]
-        public static extern bool Set3DFactors(float Distance, float RollOff, float Doppler);
+        /// <example>
+        /// Use yards as the distance measurement unit, while leaving the current rolloff and doppler factors untouched.
+        /// <code>
+        /// Bass.Set3DFactors(0.914, -1.0, -1.0);
+        /// Bass.Apply3D();
+        /// </code> 
+        /// </example>
+        /// <seealso cref="Apply3D"/>
+        /// <seealso cref="Get3DFactors"/>
+        public static bool Set3DFactors(float Distance, float RollOff, float Doppler)
+        {
+            return Checked(BASS_Set3DFactors(Distance, RollOff, Doppler));
+        }
+        #endregion
+
+        #region GetEAXParameters
+        [DllImport(DllName)]
+        static extern bool BASS_GetEAXParameters(ref EAXEnvironment Environment, ref float Volume, ref float Decay, ref float Damp);
 
         /// <summary>
         /// Retrieves the current type of EAX environment and it's parameters.
@@ -78,9 +113,19 @@ namespace ManagedBass.Dynamics
         /// <para><b>Platform-specific</b></para>
         /// <para>EAX and this function are only available on Windows</para>
         /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_GetEAXParameters")]
-        public static extern bool GetEAXParameters(ref EAXEnvironment Environment, ref float Volume, ref float Decay, ref float Damp);
-
+        /// <seealso cref="SetEAXParameters"/>
+        public static bool GetEAXParameters(ref EAXEnvironment Environment, ref float Volume, ref float Decay, ref float Damp)
+        {
+            return Checked(BASS_GetEAXParameters(ref Environment, ref Volume, ref Decay, ref Damp));
+        }
+        #endregion
+        
+        #region SetEAXParameters
+        /// <summary>
+        /// Sets the parameters of EAX from a Preset.
+        /// </summary>
+        /// <param name="Environment">The EAX Environment.</param>
+        /// <returns></returns>
         public static bool SetEAXPreset(EAXEnvironment Environment)
         {
             switch (Environment)
@@ -167,11 +212,14 @@ namespace ManagedBass.Dynamics
                     return false;
             }
         }
+                
+        [DllImport(DllName)]
+        static extern bool BASS_SetEAXParameters(EAXEnvironment Environment, float Volume, float Decay, float Damp);
 
         /// <summary>
         /// Sets the type of EAX environment and it's parameters.
         /// </summary>
-        /// <param name="Environment">The EAX environment... -1 = leave current, or one of the these <see cref="EAXEnvironment" />.</param>
+        /// <param name="Environment">The EAX environment.</param>
         /// <param name="Volume">The volume of the reverb... 0.0 (off) - 1.0 (max), less than 0.0 = leave current.</param>
         /// <param name="Decay">The time in seconds it takes the reverb to diminish by 60dB... 0.1 (min) - 20.0 (max), less than 0.0 = leave current.</param>
         /// <param name="Damp">The damping, high or low frequencies decay faster... 0.0 = high decays quickest, 1.0 = low/high decay equally, 2.0 = low decays quickest, less than 0.0 = leave current.</param>
@@ -183,16 +231,25 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.NoEAX">The current device does not support EAX.</exception>
         /// <remarks>
         /// <para>
-        /// Obviously, EAX functions have no effect if no EAX supporting device is used.
-        /// You can use <see cref="GetInfo" /> to check if the current device suports EAX.
-        /// EAX only affects 3D channels, but EAX functions do NOT require <see cref="Apply3D" /> to apply the changes.
+        /// The use of EAX requires that the output device supports EAX.
+        /// <see cref="GetInfo" /> can be used to check that.
+        /// EAX only affects 3D channels, but EAX functions do Not require <see cref="Apply3D" /> to apply the changes.
         /// </para>
         /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
         /// <para><b>Platform-specific</b></para>
         /// <para>This function is only available on Windows.</para>
         /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_SetEAXParameters")]
-        public static extern bool SetEAXParameters(EAXEnvironment Environment, float Volume, float Decay, float Damp);
+        /// <seealso cref="GetEAXParameters"/>
+        /// <seealso cref="ChannelAttribute.EaxMix"/>
+        public static bool SetEAXParameters(EAXEnvironment Environment, float Volume, float Decay, float Damp)
+        {
+            return Checked(BASS_SetEAXParameters(Environment, Volume, Decay, Damp));
+        }
+        #endregion
+        
+        #region Get3DPosition
+        [DllImport(DllName)]
+        static extern bool BASS_Get3DPosition(ref Vector3D Position, ref Vector3D Velocity, ref Vector3D Front, ref Vector3D Top);
 
         /// <summary>
         /// Retrieves the position, velocity, and orientation of the listener.
@@ -211,16 +268,25 @@ namespace ManagedBass.Dynamics
         /// <para>The <paramref name="Front" /> and <paramref name="Top" /> parameters must both be retrieved in a single call, they can not be retrieved individually.</para>
         /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
         /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_Get3DPosition")]
-        public static extern bool Get3DPosition(ref Vector3D Position, ref Vector3D Velocity, ref Vector3D Front, ref Vector3D Top);
+        /// <seealso cref="Set3DPosition"/>
+        /// <seealso cref="Vector3D"/>
+        public static bool Get3DPosition(ref Vector3D Position, ref Vector3D Velocity, ref Vector3D Front, ref Vector3D Top)
+        {
+            return Checked(Get3DPosition(ref Position, ref Velocity, ref Front, ref Top));
+        }
+        #endregion
+
+        #region Set3DPosition
+        [DllImport(DllName)]
+        static extern bool BASS_Set3DPosition(Vector3D Position, Vector3D Velocity, Vector3D Front, Vector3D Top);
 
         /// <summary>
         /// Sets the position, velocity, and orientation of the listener (i.e. the player).
         /// </summary>
-        /// <param name="Position">The position of the listener</param>
-        /// <param name="Velocity">The listener's velocity</param>
-        /// <param name="Front">The direction that the listener's front is pointing</param>
-        /// <param name="Top">The direction that the listener's top is pointing</param>
+        /// <param name="Position">The position of the listener... <see langword="null"/> = Leave Current.</param>
+        /// <param name="Velocity">The listener's velocity... <see langword="null"/> = Leave Current.</param>
+        /// <param name="Front">The direction that the listener's front is pointing... <see langword="null"/> = Leave Current.</param>
+        /// <param name="Top">The direction that the listener's top is pointing... <see langword="null"/> = Leave Current.</param>
         /// <returns>
         /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
@@ -231,25 +297,43 @@ namespace ManagedBass.Dynamics
         /// <para>The <paramref name="Front" /> and <paramref name="Top" /> parameters must both be set in a single call, they can not be set individually.</para>
         /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
         /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_Set3DPosition")]
-        public static extern bool Set3DPosition(Vector3D Position, Vector3D Velocity, Vector3D Front, Vector3D Top);
+        /// <seealso cref="Apply3D"/>
+        /// <seealso cref="Get3DPosition"/>
+        /// <seealso cref="Set3DFactors"/>
+        /// <seealso cref="Vector3D"/>
+        public static bool Set3DPosition(Vector3D Position, Vector3D Velocity, Vector3D Front, Vector3D Top)
+        {
+            return Checked(BASS_Set3DPosition(Position, Velocity, Front, Top));
+        }
+        #endregion
 
         /// <summary>
         /// The 3D algorithm for software mixed 3D channels.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// These algorithms only affect 3D channels that are being mixed in software.
-        /// <see cref="ChannelGetInfo(int,out ChannelInfo)"/> can be used to check whether a channel is being software mixed.
+        /// <see cref="ChannelGetInfo(int, out ChannelInfo)"/> can be used to check whether a channel is being software mixed.
+        /// </para>
+        /// <para>
         /// Changing the algorithm only affects subsequently created or loaded samples, musics, or streams; 
         /// it does not affect any that already exist.
+        /// </para>
+        /// <para><b>Platform-specific</b></para>
+        /// <para>
         /// On Windows, DirectX 7 or above is required for this option to have effect.
         /// On other platforms, only the <see cref="ManagedBass.Dynamics.Algorithm3D.Default"/> and <see cref="ManagedBass.Dynamics.Algorithm3D.Off"/> options are available.
+        /// </para>
         /// </remarks>
         public static Algorithm3D Algorithm3D
         {
             get { return (Algorithm3D)GetConfig(Configuration.Algorithm3D); }
             set { Configure(Configuration.Algorithm3D, (int)value); }
         }
+
+        #region ChannelGet3DAttributes
+        [DllImport(DllName)]
+        static extern bool BASS_ChannelGet3DAttributes(int Handle, ref Mode3D Mode, ref float Min, ref float Max, ref int iAngle, ref int oAngle, ref float OutVol);
 
         /// <summary>
         /// Retrieves the 3D attributes of a sample, stream, or MOD music channel with 3D functionality.
@@ -265,14 +349,25 @@ namespace ManagedBass.Dynamics
         /// <remarks>The <paramref name="iAngle"/> and <paramref name="oAngle"/> parameters must both be retrieved in a single call to this function (ie. you can't retrieve one without the other).</remarks>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.No3D">The channel does not have 3D functionality.</exception>
-        [DllImport(DllName, EntryPoint = "BASS_ChannelGet3DAttributes")]
-        public static extern bool ChannelGet3DAttributes(int Handle, ref Mode3D Mode, ref float Min, ref float Max, ref int iAngle, ref int oAngle, ref float OutVol);
+        /// <seealso cref="ChannelGet3DPosition"/>
+        /// <seealso cref="ChannelGetAttribute(int, ChannelAttribute, out float)"/>
+        /// <seealso cref="ChannelSet3DAttributes"/>
+        /// <seealso cref="ChannelAttribute.EaxMix"/>
+        public static bool ChannelGet3DAttributes(int Handle, ref Mode3D Mode, ref float Min, ref float Max, ref int iAngle, ref int oAngle, ref float OutVol)
+        {
+            return Checked(BASS_ChannelGet3DAttributes(Handle, ref Mode, ref Min, ref Max, ref iAngle, ref oAngle, ref OutVol));
+        }
+        #endregion
+
+        #region ChannelSet3DAttributes
+        [DllImport(DllName)]
+        static extern bool BASS_ChannelSet3DAttributes(int Handle, Mode3D Mode, float Min, float Max, int iAngle, int oAngle, float OutVol);
 
         /// <summary>
         /// Sets the 3D attributes of a sample, stream, or MOD music channel with 3D functionality.
         /// </summary>
         /// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM.</param>
-        /// <param name="Mode">The 3D processing mode... one of these flags, -1 = leave current (see <see cref="Mode3D" />)</param>
+        /// <param name="Mode">The 3D processing mode</param>
         /// <param name="Min">The minimum distance. The channel's volume is at maximum when the listener is within this distance... less than 0.0 = leave current.</param>
         /// <param name="Max">The maximum distance. The channel's volume stops decreasing when the listener is beyond this distance... less than 0.0 = leave current.</param>
         /// <param name="iAngle">The angle of the inside projection cone in degrees... 0 (no cone) - 360 (sphere), -1 = leave current.</param>
@@ -289,8 +384,19 @@ namespace ManagedBass.Dynamics
         /// If the inner and outer angles are 360 degrees, then the sound is transmitted equally in all directions.</para>
         /// <para>As with all 3D functions, use <see cref="Apply3D" /> to apply the changes made.</para>
         /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSet3DAttributes")]
-        public static extern bool ChannelSet3DAttributes(int Handle, Mode3D Mode, float Min, float Max, int iAngle, int oAngle, float OutVol);
+        /// <seealso cref="ChannelGet3DAttributes"/>
+        /// <seealso cref="ChannelSet3DPosition"/>
+        /// <seealso cref="ChannelSetAttribute(int, ChannelAttribute, float)"/>
+        /// <seealso cref="ChannelAttribute.EaxMix"/>
+        public static bool ChannelSet3DAttributes(int Handle, Mode3D Mode, float Min, float Max, int iAngle, int oAngle, float OutVol)
+        {
+            return Checked(BASS_ChannelSet3DAttributes(Handle, Mode, Min, Max, iAngle, oAngle, OutVol));
+        }
+        #endregion
+
+        #region ChannelGet3DPosition
+        [DllImport(DllName)]
+        static extern bool BASS_ChannelGet3DPosition(int Handle, ref Vector3D Position, ref Vector3D Orientation, ref Vector3D Velocity);
 
         /// <summary>
         /// Retrieves the 3D position of a sample, stream, or MOD music channel with 3D functionality.
@@ -302,9 +408,22 @@ namespace ManagedBass.Dynamics
         /// <returns>If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.No3D">The channel does not have 3D functionality.</exception>
-        [DllImport(DllName, EntryPoint = "BASS_ChannelGet3DPosition")]
-        public static extern bool ChannelGet3DPosition(int Handle, ref Vector3D Position, ref Vector3D Orientation, ref Vector3D Velocity);
+        /// <seealso cref="ChannelGet3DAttributes"/>
+        /// <seealso cref="ChannelGetAttribute(int, ChannelAttribute, out float)"/>
+        /// <seealso cref="ChannelSet3DPosition"/>
+        /// <seealso cref="Get3DFactors"/>
+        /// <seealso cref="Get3DPosition"/>
+        /// <seealso cref="Vector3D"/>
+        public static bool ChannelGet3DPosition(int Handle, ref Vector3D Position, ref Vector3D Orientation, ref Vector3D Velocity)
+        {
+            return Checked(BASS_ChannelGet3DPosition(Handle, ref Position, ref Orientation, ref Velocity));
+        }
+        #endregion
 
+        #region ChannelSet3DPosition
+        [DllImport(DllName)]
+        static extern bool BASS_ChannelSet3DPosition(int Handle, Vector3D Position, Vector3D Orientation, Vector3D Velocity);
+        
         /// <summary>
         /// Sets the 3D position of a sample, stream, or MOD music channel with 3D functionality.
         /// </summary>
@@ -316,7 +435,17 @@ namespace ManagedBass.Dynamics
         /// <remarks>As with all 3D functions, <see cref="Apply3D" /> must be called to apply the changes made.</remarks>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.No3D">The channel does not have 3D functionality.</exception>
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSet3DPosition")]
-        public static extern bool ChannelSet3DPosition(int Handle, Vector3D Position, Vector3D Orientation, Vector3D Velocity);
+        /// <seealso cref="Apply3D"/>
+        /// <seealso cref="ChannelGet3DPosition"/>
+        /// <seealso cref="ChannelSet3DAttributes"/>
+        /// <seealso cref="ChannelSetAttribute(int, ChannelAttribute, float)"/>
+        /// <seealso cref="Set3DFactors"/>
+        /// <seealso cref="Set3DPosition"/>
+        /// <seealso cref="Vector3D"/>
+        public static bool ChannelSet3DPosition(int Handle, Vector3D Position, Vector3D Orientation, Vector3D Velocity)
+        {
+            return Checked(BASS_ChannelSet3DPosition(Handle, Position, Orientation, Velocity));
+        }
+        #endregion
     }
 }

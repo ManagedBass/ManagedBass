@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BitHelper.cs" />
+    <Compile Include="Dynamics\Bass\PInvoke\Plugin.cs" />
     <Compile Include="ManagedAPI\Devices\AsioDevice.cs" />
     <Compile Include="ManagedAPI\Devices\Bass\RecordingDevice.cs" />
     <Compile Include="ManagedAPI\Devices\Wasapi\WasapiLoopbackDevice.cs" />
@@ -220,7 +221,6 @@
     <Compile Include="ManagedAPI\Tags\ID3\Id3v1Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolution.cs" />
-    <Compile Include="Return.cs" />
     <Compile Include="ManagedAPI\Writers\ACMEncodedFileWriter.cs" />
     <Compile Include="ManagedAPI\Writers\WaveFormat.cs" />
     <Compile Include="ManagedAPI\Writers\WaveFileWriter.cs" />

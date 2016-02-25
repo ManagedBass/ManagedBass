@@ -32,7 +32,7 @@ namespace ManagedBass
             }
         }
 
-        public Return<bool> Init(bool DedicatedThread = false)
+        public bool Init(bool DedicatedThread = false)
         {
             return BassAsio.Init(DeviceIndex, DedicatedThread ? AsioInitFlags.Thread : AsioInitFlags.None);
         }
