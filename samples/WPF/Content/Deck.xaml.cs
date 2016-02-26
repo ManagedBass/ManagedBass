@@ -234,15 +234,12 @@ namespace MBassWPF
 
             Reverse = false;
 
-            string title = Path.GetFileNameWithoutExtension(FilePath);
-            try { title = ID3v1Tag.Read(TempoChannel.Handle).Title; }
+            ID3v2Tag t = null;
+            try { t = ID3v2Tag.Read(TempoChannel.Handle); }
             catch { }
 
-            string artist = "Unknown Artist";
-            try { artist = ID3v1Tag.Read(TempoChannel.Handle).Artist; }
-            catch { }
-
-            Title.Content = title + " - " + artist;
+            Title.Content = (t != null ? t.Title : Path.GetFileNameWithoutExtension(FilePath)) + " - " 
+                             + (t != null ? t.Artist : "Unknown Artist");
 
             // Update all bindings
             DataContext = null;
