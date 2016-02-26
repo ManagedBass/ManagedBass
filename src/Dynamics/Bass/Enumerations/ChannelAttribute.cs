@@ -11,7 +11,7 @@ namespace ManagedBass.Dynamics
         /// The sample rate of a channel... 0 = original rate (when the channel was created).
         /// <para>
         /// This attribute applies to playback of the channel, and does not affect the
-        /// channel's sample data, so has no real effect on decoding channels. 
+        /// channel's sample data, so has no real effect on decoding channels.
         /// It is still adjustable though, so that it can be used by the BassMix add-on,
         /// and anything else that wants to use it.
         /// </para>
@@ -21,12 +21,12 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// <para>
         /// Increasing the sample rate of a stream or MOD music increases its CPU usage,
-        /// and reduces the Length of its playback Buffer in terms of time. 
+        /// and reduces the Length of its playback Buffer in terms of time.
         /// If you intend to raise the sample rate above the original rate, then you may also need
         /// to increase the Buffer Length via the <see cref="Bass.PlaybackBufferLength"/>
         /// config option to avoid break-ups in the sound.
         /// </para>
-        /// 
+        ///
         /// <para><b>Platform-specific</b></para>
         /// <para>On Windows, the sample rate will get rounded down to a whole number during playback.</para>
         /// </summary>
@@ -37,7 +37,7 @@ namespace ManagedBass.Dynamics
         /// <para>This can go above 1.0 on decoding channels.</para>
         /// <para>
         /// This attribute applies to playback of the channel, and does not affect the
-        /// channel's sample data, so has no real effect on decoding channels. 
+        /// channel's sample data, so has no real effect on decoding channels.
         /// It is still adjustable though, so that it can be used by the BassMix add-on,
         /// and anything else that wants to use it.
         /// </para>
@@ -52,16 +52,16 @@ namespace ManagedBass.Dynamics
         /// The panning/balance position of a channel... -1 (Full Left) to +1 (Full Right), 0 = Centre.
         /// <para>
         /// This attribute applies to playback of the channel, and does not affect the
-        /// channel's sample data, so has no real effect on decoding channels. 
+        /// channel's sample data, so has no real effect on decoding channels.
         /// It is still adjustable though, so that it can be used by the <see cref="BassMix"/> add-on,
         /// and anything else that wants to use it.
         /// </para>
         /// <para>
-        /// It is not possible to set the pan position of a 3D channel. 
+        /// It is not possible to set the pan position of a 3D channel.
         /// It is also not possible to set the pan position when using speaker assignment, but if needed,
         /// it can be done via a <see cref="DSPProcedure"/> instead (not on mono channels).
         /// </para>
-        /// 
+        ///
         /// <para><b>Platform-specific</b></para>
         /// <para>
         /// On Windows, this attribute has no effect when speaker assignment is used,
@@ -91,20 +91,20 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// Non-Windows: Disable playback buffering?... 0 = no, else yes..
         /// <para>
-        /// A playing channel is normally asked to render data to its playback Buffer in advance, 
+        /// A playing channel is normally asked to render data to its playback Buffer in advance,
         /// via automatic Buffer updates or the <see cref="Bass.Update"/> and <see cref="Bass.ChannelUpdate"/> functions,
         /// ready for mixing with other channels to produce the final mix that is given to the output device.
         /// </para>
         /// <para>
-        /// When this attribute is switched on (the default is off), that buffering is skipped and 
-        /// the channel will only be asked to produce data as it is needed during the generation of the final mix. 
+        /// When this attribute is switched on (the default is off), that buffering is skipped and
+        /// the channel will only be asked to produce data as it is needed during the generation of the final mix.
         /// This allows the lowest latency to be achieved, but also imposes tighter timing requirements
-        /// on the channel to produce its data and apply any DSP/FX (and run mixtime syncs) that are set on it; 
+        /// on the channel to produce its data and apply any DSP/FX (and run mixtime syncs) that are set on it;
         /// if too long is taken, there will be a break in the output, affecting all channels that are playing on the same device.
         /// </para>
         /// <para>
         /// The channel's data is still placed in its playback Buffer when this attribute is on,
-        /// which allows <see cref="Bass.ChannelGetData(int,IntPtr,int)"/> and <see cref="Bass.ChannelGetLevel(int)"/> to be used, although there is 
+        /// which allows <see cref="Bass.ChannelGetData(int,IntPtr,int)"/> and <see cref="Bass.ChannelGetLevel(int)"/> to be used, although there is
         /// likely to be less data available to them due to the Buffer being less full.
         /// </para>
         /// <para>This attribute can be changed mid-playback.</para>
@@ -116,9 +116,9 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The CPU usage of a channel. (in percentage).
         /// <para>
-        /// This attribute gives the percentage of CPU that the channel is using, 
-        /// including the time taken by decoding and DSP processing, and any FX that are 
-        /// not using the "with FX flag" DX8 effect implementation. 
+        /// This attribute gives the percentage of CPU that the channel is using,
+        /// including the time taken by decoding and DSP processing, and any FX that are
+        /// not using the "with FX flag" DX8 effect implementation.
         /// It does not include the time taken to add the channel's data to the final output mix during playback.
         /// The processing of some add-on stream formats may also not be entirely included,
         /// if they use additional decoding threads; see the add-on documentation for details.
@@ -128,9 +128,9 @@ namespace ManagedBass.Dynamics
         /// For example, if it takes 10ms to generate 100ms of data, that would be 10%.
         /// </para>
         /// <para>
-        /// If the reported usage exceeds 100%, that means the channel's data is taking longer to generate than to play. 
+        /// If the reported usage exceeds 100%, that means the channel's data is taking longer to generate than to play.
         /// The duration of the data is based on the channel's current sample rate (<see cref="ChannelAttribute.Frequency"/>).
-        /// A channel's CPU usage is updated whenever it generates data. 
+        /// A channel's CPU usage is updated whenever it generates data.
         /// That could be during a playback Buffer update cycle, or a <see cref="Bass.Update"/> call, or a <see cref="Bass.ChannelUpdate"/> call.
         /// For a decoding channel, it would be in a <see cref="Bass.ChannelGetData(int,IntPtr,int)"/> or <see cref="Bass.ChannelGetLevel(int)"/> call.
         /// </para>
@@ -146,26 +146,26 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// <para>
         /// When a channel has a different sample rate to what the output device is using,
-        /// the channel's sample data will need to be converted to match the output device's rate during playback. 
-        /// This attribute determines how that is done. 
+        /// the channel's sample data will need to be converted to match the output device's rate during playback.
+        /// This attribute determines how that is done.
         /// The linear interpolation option uses less CPU, but the sinc interpolation gives better sound quality (less aliasing),
-        /// with the quality and CPU usage increasing with the number of points. 
+        /// with the quality and CPU usage increasing with the number of points.
         /// A good compromise for lower spec systems could be to use sinc interpolation for music playback and linear interpolation for sound effects.
         /// </para>
         /// <para>
-        /// Whenever possible, a channel's sample rate should match the output device's rate to avoid the need for any sample rate conversion. 
+        /// Whenever possible, a channel's sample rate should match the output device's rate to avoid the need for any sample rate conversion.
         /// The device's sample rate could be used in <see cref="Bass.CreateStream(int,int,BassFlags,StreamProcedure,IntPtr)" />
         /// or <see cref="Bass.MusicLoad(string,long,int,BassFlags,int)" /> or <see cref="BassMidi" /> stream creation calls, for example.
         /// </para>
         /// <para>
-        /// The sample rate conversion occurs (when required) during playback, 
-        /// after the sample data has left the channel's playback Buffer, so it does not affect the data delivered by <see cref="Bass.ChannelGetData(int,IntPtr,int)" />. 
+        /// The sample rate conversion occurs (when required) during playback,
+        /// after the sample data has left the channel's playback Buffer, so it does not affect the data delivered by <see cref="Bass.ChannelGetData(int,IntPtr,int)" />.
         /// Although this attribute has no direct effect on decoding channels,
         /// it is still available so that it can be used by the <see cref="BassMix" /> add-on and anything else that wants to use it.
         /// </para>
         /// <para>
         /// This attribute can be set at any time, and changes take immediate effect.
-        /// A channel's initial setting is determined by the <see cref="Bass.SRCQuality" /> config option, 
+        /// A channel's initial setting is determined by the <see cref="Bass.SRCQuality" /> config option,
         /// or <see cref="Bass.SampleSRCQuality" /> in the case of a sample channel.
         /// </para>
         /// <para><b>Platform-specific</b></para>
@@ -190,17 +190,17 @@ namespace ManagedBass.Dynamics
 
         #region MOD Music
         /// <summary>
-        /// The amplification level of a MOD music... 0 (min) to 100 (max). 
+        /// The amplification level of a MOD music... 0 (min) to 100 (max).
         /// <para>This will be rounded down to a whole number.</para>
         /// <para>
-        /// As the amplification level get's higher, the sample data's range increases, and therefore, the resolution increases. 
+        /// As the amplification level get's higher, the sample data's range increases, and therefore, the resolution increases.
         /// But if the level is set too high, then clipping can occur, which can result in distortion of the sound.
         /// You can check the current level of a MOD music at any time by <see cref="Bass.ChannelGetLevel(int)"/>.
         /// By doing so, you can decide if a MOD music's amplification level needs adjusting.
         /// The default amplification level is 50.
         /// </para>
         /// <para>
-        /// During playback, the effect of changes to this attribute are not heard instantaneously, due to buffering. 
+        /// During playback, the effect of changes to this attribute are not heard instantaneously, due to buffering.
         /// To reduce the delay, use the <see cref="Bass.PlaybackBufferLength"/> config option to reduce the Buffer Length.
         /// </para>
         /// </summary>
@@ -229,12 +229,12 @@ namespace ManagedBass.Dynamics
         MusicPositionScaler = 258,
 
         /// <summary>
-        /// The BPM of a MOD music... 1 (min) to 255 (max). 
+        /// The BPM of a MOD music... 1 (min) to 255 (max).
         /// <para>
         /// This will be rounded down to a whole number.
         /// This attribute is a direct mapping of the MOD's BPM, so the value can be changed via effects in the MOD itself.
         /// Note that by changing this attribute, you are changing the playback Length.
-        /// During playback, the effect of changes to this attribute are not heard instantaneously, due to buffering. 
+        /// During playback, the effect of changes to this attribute are not heard instantaneously, due to buffering.
         /// To reduce the delay, use the <see cref="Bass.PlaybackBufferLength"/> config option to reduce the Buffer Length.
         /// </para>
         /// </summary>
@@ -245,8 +245,8 @@ namespace ManagedBass.Dynamics
         /// <para>
         /// This will be rounded down to a whole number.
         /// This attribute is a direct mapping of the MOD's speed, so the value can be changed via effects in the MOD itself.
-        /// The "speed" is the number of ticks per row. 
-        /// Setting it to 0, stops and ends the music. 
+        /// The "speed" is the number of ticks per row.
+        /// Setting it to 0, stops and ends the music.
         /// Note that by changing this attribute, you are changing the playback Length.
         /// During playback, the effect of changes to this attribute are not heard instantaneously, due to buffering.
         /// To reduce the delay, use the <see cref="Bass.PlaybackBufferLength"/> config option to reduce the Buffer Length.
@@ -258,11 +258,11 @@ namespace ManagedBass.Dynamics
         /// The global volume level of a MOD music... 0 (min) to 64 (max, 128 for IT format).
         /// <para>
         /// This will be rounded down to a whole number.
-        /// This attribute is a direct mapping of the MOD's global volume, so the value can be changed via effects in the MOD itself.  
+        /// This attribute is a direct mapping of the MOD's global volume, so the value can be changed via effects in the MOD itself.
         /// The "speed" is the number of ticks per row.
         /// Setting it to 0, stops and ends the music.
         /// Note that by changing this attribute, you are changing the playback Length.
-        /// During playback, the effect of changes to this attribute are not heard instantaneously, due to buffering. 
+        /// During playback, the effect of changes to this attribute are not heard instantaneously, due to buffering.
         /// To reduce the delay, use the <see cref="Bass.PlaybackBufferLength"/> config option to reduce the Buffer Length.
         /// </para>
         /// </summary>
@@ -271,8 +271,8 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The number of active channels in a MOD music.
         /// <para>
-        /// This attribute gives the number of channels (including virtual) that are currently active in the decoder, 
-        /// which may not match what is being heard during playback due to buffering. 
+        /// This attribute gives the number of channels (including virtual) that are currently active in the decoder,
+        /// which may not match what is being heard during playback due to buffering.
         /// To reduce the time difference, use the <see cref="Bass.PlaybackBufferLength"/> config option to reduce the Buffer Length.
         /// This attribute is read-only, so cannot be modified via <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)"/>.
         /// </para>
@@ -298,7 +298,7 @@ namespace ManagedBass.Dynamics
         /// <para>inst: The instrument to set the volume of... 0 = 1st instrument.</para>
         /// <para>
         /// The volume curve used by this attribute is always linear, eg. 0.5 = 50%.
-        /// The <see cref="Bass.LogarithmicVolumeCurve"/> config option setting has no effect on this. 
+        /// The <see cref="Bass.LogarithmicVolumeCurve"/> config option setting has no effect on this.
         /// The volume level of all instruments is initially 1 (full).
         /// For MOD formats that do not use instruments, read "sample" for "instrument".
         /// This attribute can also be used to count the number of instruments in a MOD music.
@@ -392,20 +392,20 @@ namespace ManagedBass.Dynamics
         /// For example, a limit of 50% would mean that the rendering would need to be at least 2x real-time speed.
         /// When the limit is exceeded, <see cref="BassMidi"/> will begin killing voices, starting with the  most quiet.
         /// When the CPU usage is limited, the stream's samples are loaded asynchronously
-        /// so that any loading delays (eg. due to slow disk) do not hold up the stream for too long. 
-        /// If a sample cannot be loaded in time, then it will be silenced 
-        /// until it is available and the stream will continue playing other samples as normal in the meantime.  
+        /// so that any loading delays (eg. due to slow disk) do not hold up the stream for too long.
+        /// If a sample cannot be loaded in time, then it will be silenced
+        /// until it is available and the stream will continue playing other samples as normal in the meantime.
         /// This does not affect sample loading via <see cref="BassMidi.StreamLoadSamples"/>, which always operates synchronously.
         /// By default, a MIDI stream will have no CPU limit.
         /// </para>
         /// </summary>
         MidiCPU = 73729,
-        
+
         /// <summary>
-        /// BASSMIDI: The number of MIDI channels in a MIDI stream... 1 (min) - 128 (max). 
+        /// BASSMIDI: The number of MIDI channels in a MIDI stream... 1 (min) - 128 (max).
         /// <para>
         /// For a MIDI file stream, the minimum is 16.
-        /// New channels are melodic by default. 
+        /// New channels are melodic by default.
         /// Any notes playing on a removed channel are immediately stopped.
         /// </para>
         /// </summary>
@@ -414,7 +414,7 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// BASSMIDI: The maximum number of samples to play at a time (polyphony) in a MIDI stream... 1 (min) - 1000 (max).
         /// <para>
-        /// If there are currently more voices active than the new limit, then some voices will be killed to meet the limit. 
+        /// If there are currently more voices active than the new limit, then some voices will be killed to meet the limit.
         /// The number of voices currently active is available via the Voices attribute.
         /// A MIDI stream will initially have a default number of voices as determined by the Voices config option.
         /// </para>
@@ -426,16 +426,16 @@ namespace ManagedBass.Dynamics
         /// <para>This attribute is read-only, so cannot be modified via <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)"/>.</para>
         /// </summary>
         MidiVoicesActive = 73732,
-        
+
         /// <summary>
         /// BASSMIDI: The volume level (0.0=silent, 1.0=normal/default) of a track in a MIDI file stream + track#.
         /// <para>track#: The track to set the volume of... 0 = first track.</para>
         /// <para>
         /// The volume curve used by this attribute is always linear, eg. 0.5 = 50%.
         /// The <see cref="Bass.LogarithmicVolumeCurve"/> config option setting has no effect on this.
-        /// During playback, the effect of changes to this attribute are not heard instantaneously, due to buffering. 
+        /// During playback, the effect of changes to this attribute are not heard instantaneously, due to buffering.
         /// To reduce the delay, use the <see cref="Bass.PlaybackBufferLength"/> config option to reduce the Buffer Length.
-        /// This attribute can also be used to count the number of tracks in a MIDI file stream. 
+        /// This attribute can also be used to count the number of tracks in a MIDI file stream.
         /// MIDI streams created via <see cref="BassMidi.CreateStream(int,BassFlags,int)"/> do not have any tracks.
         /// </para>
         /// </summary>
@@ -446,7 +446,7 @@ namespace ManagedBass.Dynamics
         /// BassOpus: The sample rate of an Opus stream's source material.
         /// <para>
         /// Opus streams always have a sample rate of 48000 Hz, and an Opus encoder will resample the source material to that if necessary.
-        /// This attribute presents the original sample rate, which may be stored in the Opus file header. 
+        /// This attribute presents the original sample rate, which may be stored in the Opus file header.
         /// This attribute is read-only, so cannot be modified via <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)" />.
         /// </para>
         /// </summary>

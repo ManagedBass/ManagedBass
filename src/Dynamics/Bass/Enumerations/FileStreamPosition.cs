@@ -6,7 +6,7 @@
     public enum FileStreamPosition
     {
         /// <summary>
-        /// Position that is to be decoded for playback next. 
+        /// Position that is to be decoded for playback next.
         /// This will be a bit ahead of the position actually being heard due to buffering.
         /// </summary>
         Current = 0,
@@ -17,7 +17,7 @@
         Download = 1,
 
         /// <summary>
-        /// End of the file, in other words the file Length. 
+        /// End of the file, in other words the file Length.
         /// When streaming in blocks, the file Length is unknown, so the download Buffer Length is returned instead.
         /// </summary>
         End = 2,
@@ -44,7 +44,7 @@
         Socket = 6,
 
         /// <summary>
-        /// The amount of data in the asynchronous file reading Buffer. 
+        /// The amount of data in the asynchronous file reading Buffer.
         /// This requires that the <see cref="BassFlags.AsyncFile"/> flag was used at the stream's creation.
         /// </summary>
         AsyncBuffer = 7,

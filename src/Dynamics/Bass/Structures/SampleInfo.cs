@@ -59,8 +59,8 @@ namespace ManagedBass.Dynamics
         public int Channels = 2;
 
         /// <summary>
-        /// Minimum time gap in milliseconds between creating channels using <see cref="Bass.SampleGetChannel" />. 
-        /// This can be used to prevent flanging effects caused by playing a sample multiple times very close to eachother. 
+        /// Minimum time gap in milliseconds between creating channels using <see cref="Bass.SampleGetChannel" />.
+        /// This can be used to prevent flanging effects caused by playing a sample multiple times very close to eachother.
         /// The default setting, when loading/creating a sample, is 0 (disabled).
         /// </summary>
         public int MinGap;

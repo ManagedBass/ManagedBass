@@ -16,7 +16,7 @@ namespace ManagedBass.Dynamics
         /// Generic
         /// </summary>
         Generic = 0,
-        
+
         /// <summary>
         /// Padded Cell
         /// </summary>
@@ -26,7 +26,7 @@ namespace ManagedBass.Dynamics
         /// Room
         /// </summary>
         Room = 2,
-        
+
         /// <summary>
         /// Bathroom
         /// </summary>
@@ -36,7 +36,7 @@ namespace ManagedBass.Dynamics
         /// Livingroom
         /// </summary>
         Livingroom = 4,
-        
+
         /// <summary>
         /// Stoneroom
         /// </summary>
@@ -61,7 +61,7 @@ namespace ManagedBass.Dynamics
         /// Arena
         /// </summary>
         Arena = 9,
-        
+
         /// <summary>
         /// Hangar
         /// </summary>

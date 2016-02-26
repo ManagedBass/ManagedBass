@@ -11,7 +11,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
         /// <param name="Info"><see cref="ChannelInfo" /> instance where to store the channel information at.</param>
         /// <returns>
-        /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. 
+        /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError"/> to get the error code.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
@@ -42,22 +42,22 @@ namespace ManagedBass.Dynamics
         /// DSPs with higher priority are called before those with lower.
         /// </param>
         /// <returns>
-        /// If succesful, then the new DSP's Handle is returned, else 0 is returned. 
+        /// If succesful, then the new DSP's Handle is returned, else 0 is returned.
         /// Use <see cref="LastError"/> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception> 
+        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <remarks>
         /// <para>The channel does not have to be playing to set a DSP function, they can be set before and while playing.</para>
         /// <para>
-        /// Equally, you can also remove them at any time. 
+        /// Equally, you can also remove them at any time.
         /// Use <see cref="ChannelRemoveDSP"/> to remove a DSP function.
         /// </para>
         /// <para>
-        /// Multiple DSP functions may be used per channel, in which case the order that the functions are called is determined by their priorities. 
+        /// Multiple DSP functions may be used per channel, in which case the order that the functions are called is determined by their priorities.
         /// Any DSPs that have the same priority are called in the order that they were added.
         /// </para>
         /// <para>
-        /// DSP functions can be applied to MOD musics and streams, but not samples. 
+        /// DSP functions can be applied to MOD musics and streams, but not samples.
         /// If you want to apply a DSP function to a sample, then you should stream the sample.
         /// </para>
         /// </remarks>
@@ -69,11 +69,11 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <param name="Handle">The channel Handle... a HCHANNEL / HMUSIC / HSTREAM / HRECORD Handle.</param>
         /// <param name="Restart">
-        /// Restart playback from the beginning? If Handle is a User stream, it's current Buffer contents are flushed. 
+        /// Restart playback from the beginning? If Handle is a User stream, it's current Buffer contents are flushed.
         /// If it's a MOD music, it's BPM/etc are automatically reset to their initial values.
         /// </param>
         /// <returns>
-        /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. 
+        /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError"/> to get the error code.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
@@ -81,8 +81,8 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.DecodingChannel">The channel is not playable, it's a "decoding channel".</exception>
         /// <exception cref="Errors.BufferLost">Should not happen... check that a valid window Handle was used with <see cref="Init"/>.</exception>
         /// <exception cref="Errors.NoHardwareVoicesAvailable">
-        /// No hardware voices are available (HCHANNEL only). 
-        /// This only occurs if the sample was loaded/created with the <see cref="BassFlags.VAM"/> flag, 
+        /// No hardware voices are available (HCHANNEL only).
+        /// This only occurs if the sample was loaded/created with the <see cref="BassFlags.VAM"/> flag,
         /// and <see cref="VAMMode.Hardware"/> is set in the sample's VAM mode,
         /// and there are no hardware voices available to play it.
         /// </exception>
@@ -98,7 +98,7 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <param name="Handle">The channel Handle... a HCHANNEL / HMUSIC / HSTREAM / HRECORD Handle.</param>
         /// <returns>
-        /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. 
+        /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
         /// <exception cref="Errors.NotPlaying">The channel is not playing (or <paramref name="Handle" /> is not a valid channel).</exception>
@@ -122,14 +122,14 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <remarks>
         /// <para>
-        /// Stopping a User stream (created with <see cref="CreateStream(int,int,BassFlags,StreamProcedure,IntPtr)" />) will clear its Buffer contents, 
+        /// Stopping a User stream (created with <see cref="CreateStream(int,int,BassFlags,StreamProcedure,IntPtr)" />) will clear its Buffer contents,
         /// and stopping a sample channel (HCHANNEL) will result in it being freed.
         /// Use <see cref="ChannelPause" /> instead if you wish to stop a User stream and then resume it from the same point.
         /// </para>
         /// <para>
-        /// When used with a "decoding channel" (<see cref="BassFlags.Decode"/> was used at creation), 
+        /// When used with a "decoding channel" (<see cref="BassFlags.Decode"/> was used at creation),
         /// this function will end the channel at its current position, so that it's not possible to decode any more data from it.
-        /// Any <see cref="SyncFlags.End"/> syncs that have been set on the channel will not be triggered by this, they are only triggered when reaching the natural end. 
+        /// Any <see cref="SyncFlags.End"/> syncs that have been set on the channel will not be triggered by this, they are only triggered when reaching the natural end.
         /// <see cref="ChannelSetPosition" /> can be used to reset the channel and start decoding again.
         /// </para>
         /// </remarks>
@@ -142,12 +142,12 @@ namespace ManagedBass.Dynamics
         /// <param name="Handle">The channel Handle... a HMUSIC, HSTREAM or HRECORD Handle.</param>
         /// <param name="Lock">If <see langword="false" />, unlock the channel, else lock it.</param>
         /// <returns>
-        /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. 
+        /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
         /// <remarks>
-        /// Locking a channel prevents other threads from performing most functions on it, including Buffer updates. 
-        /// Other threads wanting to access a locked channel will block until it is unlocked, so a channel should only be locked very briefly. 
+        /// Locking a channel prevents other threads from performing most functions on it, including Buffer updates.
+        /// Other threads wanting to access a locked channel will block until it is unlocked, so a channel should only be locked very briefly.
         /// A channel must be unlocked in the same thread that it was locked.
         /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_ChannelLock")]
@@ -161,8 +161,8 @@ namespace ManagedBass.Dynamics
         /// </returns>
         /// <remarks>
         /// <para>
-        /// When using this function with a decoding channel, <see cref="PlaybackState.Playing"/> will be returned while there is still data to decode. 
-        /// Once the end has been reached, <see cref="PlaybackState.Stopped"/> will be returned. 
+        /// When using this function with a decoding channel, <see cref="PlaybackState.Playing"/> will be returned while there is still data to decode.
+        /// Once the end has been reached, <see cref="PlaybackState.Stopped"/> will be returned.
         /// <see cref="PlaybackState.Stalled"/> is never returned for decoding channels;
         /// you can tell a decoding channel is stalled if <see cref="ChannelGetData(int,IntPtr,int)" /> returns less data than requested,
         /// and this function still returns <see cref="PlaybackState.Playing"/>.
@@ -177,7 +177,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Handle">The channel Handle... a HMUSIC or HSTREAM.</param>
         /// <param name="Channel">The Handle of the channel to have linked with it... a HMUSIC or HSTREAM.</param>
         /// <returns>
-        /// If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned. 
+        /// If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle">At least one of <paramref name="Handle" /> and <paramref name="Channel" /> is not a valid channel.</exception>
@@ -187,11 +187,11 @@ namespace ManagedBass.Dynamics
         /// <remarks>
         /// <para>
         /// Linked channels are started/stopped/paused/resumed together.
-        /// Links are one-way, for example, channel <paramref name="Channel" /> will be started by channel <paramref name="Handle" />, 
+        /// Links are one-way, for example, channel <paramref name="Channel" /> will be started by channel <paramref name="Handle" />,
         /// but not vice versa unless another link has been set in that direction.
         /// </para>
         /// <para>
-        /// If a linked channel has reached the end, it will not be restarted when a channel it is linked to is started. 
+        /// If a linked channel has reached the end, it will not be restarted when a channel it is linked to is started.
         /// If you want a linked channel to be restarted, you need to have resetted it's position using <see cref="ChannelSetPosition" /> beforehand.
         /// </para>
         /// <para><b>Platform-specific</b></para>
@@ -209,7 +209,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Handle">The channel Handle... a HMUSIC or HSTREAM.</param>
         /// <param name="Channel">The Handle of the channel to have unlinked with it... a HMUSIC or HSTREAM.</param>
         /// <returns>
-        /// If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned. 
+        /// If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
@@ -237,28 +237,28 @@ namespace ManagedBass.Dynamics
         /// Speaker assignment flags can also be toggled (HSTREAM/HMUSIC).
         /// </param>
         /// <param name="Mask">
-        /// The flags (as above) to modify. Flags that are not included in this are left as they are, so it can be set to 0 in order to just retrieve the current flags. 
+        /// The flags (as above) to modify. Flags that are not included in this are left as they are, so it can be set to 0 in order to just retrieve the current flags.
         /// To modify the speaker flags, any of the Speaker flags can be used in the mask (no need to include all of them).
         /// </param>
         /// <returns>
-        /// If successful, the channel's updated flags are returned, else -1 is returned. 
+        /// If successful, the channel's updated flags are returned, else -1 is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <remarks>
         /// <para>
-        /// Some flags may not be adjustable in some circumstances, so the return value should be checked to confirm any changes. 
-        /// The flags listed above are just the flags that can be modified, and there may be additional flags present in the return value. 
+        /// Some flags may not be adjustable in some circumstances, so the return value should be checked to confirm any changes.
+        /// The flags listed above are just the flags that can be modified, and there may be additional flags present in the return value.
         /// See the <see cref="ChannelInfo" /> documentation for a full list of flags.
         /// </para>
         /// <para>
-        /// Streams that are created by add-ons may have additional flags available. 
-        /// There is a limited number of possible flag values though, so some add-ons may use the same flag value for different things. 
-        /// This means that when using add-on specific flags with a stream created via the plugin system, 
+        /// Streams that are created by add-ons may have additional flags available.
+        /// There is a limited number of possible flag values though, so some add-ons may use the same flag value for different things.
+        /// This means that when using add-on specific flags with a stream created via the plugin system,
         /// it is a good idea to first confirm that the add-on is handling the stream, by checking its ctype via <see cref="ChannelGetInfo(int,out ChannelInfo)" />.
         /// </para>
         /// <para>
-        /// During playback, the effects of flag changes are not heard instantaneously, due to buffering. 
+        /// During playback, the effects of flag changes are not heard instantaneously, due to buffering.
         /// To reduce the delay, use the <see cref="PlaybackBufferLength" /> config option to reduce the Buffer Length.
         /// </para>
         /// </remarks>
@@ -289,14 +289,14 @@ namespace ManagedBass.Dynamics
 
         #region Channel Attributes
         /// <summary>
-        /// Retrieves the value of an attribute of a sample, stream or MOD music. 
+        /// Retrieves the value of an attribute of a sample, stream or MOD music.
         /// Can also get the sample rate of a recording channel.
         /// </summary>
         /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM or HRECORD.</param>
         /// <param name="Attribute">The attribute to set the value of (one of <see cref="ChannelAttribute" />)</param>
         /// <param name="Value">Reference to a float to receive the attribute value.</param>
         /// <returns>
-        /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. 
+        /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// <i>Some attributes may have additional error codes than those listed here, see the documentation</i>
         /// </returns>
@@ -336,7 +336,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Handle">The channel Handle... a HSTREAM, HMUSIC, or HRECORD.</param>
         /// <param name="FX">Handle of the effect to remove from the channel (return value of a previous <see cref="ChannelSetFX" /> call).</param>
         /// <returns>
-        /// If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned. 
+        /// If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle">At least one of <paramref name="Handle" /> and <paramref name="FX" /> is not valid.</exception>
@@ -354,7 +354,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM. HSAMPLE handles may also be used.</param>
         /// <param name="Mode">How to retrieve the Length (one of the <see cref="PositionFlags" /> flags).</param>
         /// <returns>
-        /// If succesful, then the channel's Length is returned, else -1 is returned. 
+        /// If succesful, then the channel's Length is returned, else -1 is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
@@ -388,11 +388,11 @@ namespace ManagedBass.Dynamics
         /// <param name="Type">Type of effect, one of <see cref="EffectType" />.</param>
         /// <param name="Priority">
         /// The priority of the new FX, which determines it's position in the DSP chain.
-        /// DSP/FX with higher priority are applied before those with lower. 
+        /// DSP/FX with higher priority are applied before those with lower.
         /// This parameter has no effect with DX8 effects when the "with FX flag" DX8 effect implementation is used.
         /// </param>
         /// <returns>
-        /// If succesful, then the new effect's Handle is returned, else 0 is returned. 
+        /// If succesful, then the new effect's Handle is returned, else 0 is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
@@ -405,7 +405,7 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         /// <remarks>
         /// <para>
-        /// Multiple effects may be used per channel. Use <see cref="ChannelRemoveFX" /> to remove an effect. 
+        /// Multiple effects may be used per channel. Use <see cref="ChannelRemoveFX" /> to remove an effect.
         /// Use <see cref="FXSetParameters" /> to set an effect's parameters.
         /// </para>
         /// <para>
@@ -413,7 +413,7 @@ namespace ManagedBass.Dynamics
         /// If you want to apply an effect to a sample, you could use a stream instead.
         /// </para>
         /// <para>
-        /// Depending on the DX8 effect implementation being used by the channel, the channel may have to be stopped before adding or removing DX8 effects on it. 
+        /// Depending on the DX8 effect implementation being used by the channel, the channel may have to be stopped before adding or removing DX8 effects on it.
         /// If necessary, that is done automatically and the channel is resumed afterwards.
         /// </para>
         /// <para><b>Platform-specific</b></para>
@@ -435,7 +435,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Procedure">The callback function which should be invoked with the sync.</param>
         /// <param name="User">User instance data to pass to the callback function.</param>
         /// <returns>
-        /// If succesful, then the new synchronizer's Handle is returned, else 0 is returned. 
+        /// If succesful, then the new synchronizer's Handle is returned, else 0 is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
@@ -443,7 +443,7 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.IllegalParameter">An illegal <paramref name="Parameter" /> was specified.</exception>
         /// <remarks>
         /// <para>
-        /// Multiple synchronizers may be used per channel, and they can be set before and while playing. 
+        /// Multiple synchronizers may be used per channel, and they can be set before and while playing.
         /// Equally, synchronizers can also be removed at any time, using <see cref="ChannelRemoveSync" />.
         /// If the <see cref="SyncFlags.Onetime"/> flag is used, then the sync is automatically removed after its first occurrence.
         /// </para>
@@ -452,7 +452,7 @@ namespace ManagedBass.Dynamics
         /// The <see cref="SyncFlags.Mixtime"/> flag can also be useful with a <see cref="SyncFlags.Seeking"/> sync, to reset DSP states after seeking.</para>
         /// <para>
         /// Several of the sync types are triggered in the process of rendering the channel's sample data;
-        /// for example, <see cref="SyncFlags.Position"/> and <see cref="SyncFlags.End"/> syncs, when the rendering reaches the sync position or the end, respectively. 
+        /// for example, <see cref="SyncFlags.Position"/> and <see cref="SyncFlags.End"/> syncs, when the rendering reaches the sync position or the end, respectively.
         /// Those sync types should be set before starting playback or pre-buffering (ie. before any rendering), to avoid missing any early sync events.
         /// </para>
         /// <para>With recording channels, <see cref="SyncFlags.Position"/> syncs are triggered just before the <see cref="RecordProcedure" /> receives the block of data containing the sync position.</para>
@@ -466,7 +466,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Handle">The channel Handle... a HMUSIC, HSTREAM or HRECORD.</param>
         /// <param name="Sync">Handle of the synchronizer to remove (return value of a previous <see cref="ChannelSetSync" /> call).</param>
         /// <returns>
-        /// If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned. 
+        /// If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
@@ -507,7 +507,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
         /// <param name="Mode">How to retrieve the position</param>
         /// <returns>
-        /// If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
+        /// If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code.
         /// If successful, the position is returned.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
@@ -535,25 +535,25 @@ namespace ManagedBass.Dynamics
         /// <remarks>
         /// <para>
         /// Setting the position of a MOD music in bytes (other than 0) requires that the <see cref="BassFlags.Prescan"/> flag was used in the <see cref="MusicLoad(string,long,int,BassFlags,int)" /> call.
-        /// When setting the position in orders/rows, the channel's byte position (as reported by <see cref="ChannelGetPosition" />) is reset to 0. 
+        /// When setting the position in orders/rows, the channel's byte position (as reported by <see cref="ChannelGetPosition" />) is reset to 0.
         /// This is because it's not possible to get the byte position of an order/row position - it's possible that a position may never be played in the normal cause of events, or it may be played multiple times.
         /// </para>
         /// <para>
-        /// When changing the position of a MOD music, and the <see cref="BassFlags.MusicPositionReset"/> flag is active on the channel, all notes that were playing before the position changed will be stopped. 
-        /// Otherwise, the notes will continue playing until they are stopped in the MOD music. 
-        /// When setting the position in bytes, the BPM, "speed" and "global volume" are updated to what they would normally be at the new position. 
-        /// Otherwise they are left as they were prior to the postion change, unless the seek position is 0 (the start), in which case they are also reset to the starting values (when using the <see cref="BassFlags.MusicPositionReset"/> flag). 
+        /// When changing the position of a MOD music, and the <see cref="BassFlags.MusicPositionReset"/> flag is active on the channel, all notes that were playing before the position changed will be stopped.
+        /// Otherwise, the notes will continue playing until they are stopped in the MOD music.
+        /// When setting the position in bytes, the BPM, "speed" and "global volume" are updated to what they would normally be at the new position.
+        /// Otherwise they are left as they were prior to the postion change, unless the seek position is 0 (the start), in which case they are also reset to the starting values (when using the <see cref="BassFlags.MusicPositionReset"/> flag).
         /// When the <see cref="BassFlags.MusicPositionResetEx"/> flag is active, the BPM, speed and global volume are reset with every seek.
         /// </para>
         /// <para>
-        /// For MP3/MP2/MP1 streams, unless the file is scanned via the <see cref="PositionFlags.Scan"/> or the <see cref="BassFlags.Prescan"/> flag at stream creation, seeking will be approximate but generally still quite accurate. 
+        /// For MP3/MP2/MP1 streams, unless the file is scanned via the <see cref="PositionFlags.Scan"/> or the <see cref="BassFlags.Prescan"/> flag at stream creation, seeking will be approximate but generally still quite accurate.
         /// Besides scanning, exact seeking can also be achieved with the <see cref="PositionFlags.DecodeTo"/> flag.
         /// </para>
         /// <para>Seeking in internet file (and "buffered" User file) streams is possible once the download has reached the requested position, so long as the file is not being streamed in blocks <see cref="BassFlags.StreamDownloadBlocks"/>.</para>
         /// <para>User streams (created with <see cref="CreateStream(int,int,BassFlags,StreamProcedure,IntPtr)" />) are not seekable, but it is possible to reset a User stream (including its Buffer contents) by setting its position to byte 0.</para>
         /// <para>The <see cref="PositionFlags.DecodeTo"/> flag can be used to seek forwards in streams that are not normally seekable, like custom streams or internet streams that are using the <see cref="BassFlags.StreamDownloadBlocks"/> flag, but it will only go as far as what is currently available; it will not wait for more data to be downloaded, for example. <see cref="ChannelGetPosition" /> can be used to confirm what the new position actually is.</para>
         /// <para>In some cases, particularly when the <see cref="PositionFlags.Inexact"/> flag is used, the new position may not be what was requested. <see cref="ChannelGetPosition" /> can be used to confirm what the new position actually is.</para>
-        /// <para>The <see cref="PositionFlags.Scan"/> flag works the same way as the <see cref="CreateStream(string,long,long,BassFlags)" /> <see cref="BassFlags.Prescan"/> flag, and can be used to delay the scanning until after the stream has been created. When a position beyond the end is requested, the call will fail (<see cref="Errors.InvalidPlaybackPosition"/> error code) but the seek table and exact Length will have been scanned. 
+        /// <para>The <see cref="PositionFlags.Scan"/> flag works the same way as the <see cref="CreateStream(string,long,long,BassFlags)" /> <see cref="BassFlags.Prescan"/> flag, and can be used to delay the scanning until after the stream has been created. When a position beyond the end is requested, the call will fail (<see cref="Errors.InvalidPlaybackPosition"/> error code) but the seek table and exact Length will have been scanned.
         /// When a file has been scanned, all seeking (even without the <see cref="PositionFlags.Scan"/> flag) within the scanned part of it will use the scanned infomation.</para>
         /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_ChannelSetPosition")]
@@ -606,10 +606,10 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.IllegalType"><paramref name="Attribute" /> is not valid.</exception>
         /// <remarks>
-        /// <para>This function is similar to <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)" />, except that the attribute is ramped to the value over the specified period of time. 
+        /// <para>This function is similar to <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)" />, except that the attribute is ramped to the value over the specified period of time.
         /// Another difference is that the value is not pre-checked. If it is invalid, the slide will simply end early.</para>
         /// <para>If an attribute is already sliding, then the old slide is stopped and replaced by the new one.</para>
-        /// <para><see cref="Bass.ChannelIsSliding" /> can be used to check if an attribute is currently sliding. A BASS_SYNC_SLIDE sync can also be set via <see cref="Bass.ChannelSetSync" />, to be triggered at the end of a slide. 
+        /// <para><see cref="Bass.ChannelIsSliding" /> can be used to check if an attribute is currently sliding. A BASS_SYNC_SLIDE sync can also be set via <see cref="Bass.ChannelSetSync" />, to be triggered at the end of a slide.
         /// The sync will not be triggered in the case of an existing slide being replaced by a new one.</para>
         /// <para>Attribute slides are unaffected by whether the channel is playing, paused or stopped. They carry on regardless.</para>
         /// </remarks>

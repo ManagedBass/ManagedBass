@@ -9,7 +9,7 @@ namespace ManagedBass.Dynamics
     /// <remarks>
     /// The plugin information does not change, so the returned pointer remains valid for as long as the plugin is loaded.
     /// <para>
-    /// The extension filter is for information only. 
+    /// The extension filter is for information only.
     /// A plugin will check the file contents rather than file extension, to verify that it is a supported format.
     /// </para>
     /// </remarks>
@@ -34,7 +34,7 @@ namespace ManagedBass.Dynamics
         /// File extension filter, in the form of "*.ext1;*.ext2;etc...".
         /// </summary>
         /// <remarks>
-        /// The extension filter is for information only. 
+        /// The extension filter is for information only.
         /// A plugin will check the file contents rather than file extension, to verify that it is a supported format.
         /// </remarks>
         public string FileExtensions => Marshal.PtrToStringAnsi(exts);

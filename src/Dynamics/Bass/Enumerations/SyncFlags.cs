@@ -92,13 +92,13 @@ namespace ManagedBass.Dynamics
         /// Sync when seeking (inc. looping and restarting).
         /// So it could be used to reset DSP/etc.
         /// param : position in bytes
-        /// data : 0=playback is unbroken, 1=if is it broken (eg. Buffer flushed). 
+        /// data : 0=playback is unbroken, 1=if is it broken (eg. Buffer flushed).
         /// The latter would be the time to reset DSP/etc.
         /// </summary>
         Seeking = 11,
 
         /// <summary>
-        /// Sync when a new logical bitstream begins in a chained OGG stream. 
+        /// Sync when a new logical bitstream begins in a chained OGG stream.
         /// Updated tags are available from <see cref="Bass.ChannelGetTags"/>.
         /// param : not used
         /// data : not used
@@ -115,14 +115,14 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// WINAMP add-on: Sync when bitrate is changed or retrieved from a winamp Input plug-in.
         /// param : not used
-        /// data : the bitrate retrieved from the winamp Input plug-in - 
+        /// data : the bitrate retrieved from the winamp Input plug-in -
         /// called when it is retrieved or changed (VBR MP3s, OGGs, etc).
         /// </summary>
         WinampBitRate = 100,
 
         #region BassCd
         /// <summary>
-        /// CD add-on: Sync when playback is stopped due to an error. 
+        /// CD add-on: Sync when playback is stopped due to an error.
         /// For example, the drive door being opened.
         /// param : not used
         /// data : the position that was being read from the CD track at the time.
@@ -156,7 +156,7 @@ namespace ManagedBass.Dynamics
         /// MIDI add-on: Sync when a lyric event is encountered.
         /// param : not used
         /// data : the marker index, which can be used in a <see cref="BassMidi.StreamGetMarker"/> call.
-        /// If the text begins with a '/' (slash) character, a new line should be started. 
+        /// If the text begins with a '/' (slash) character, a new line should be started.
         /// If it begins with a '\' (backslash) character, the display should be cleared.
         /// </summary>
         MidiLyric = 65538,
@@ -204,7 +204,7 @@ namespace ManagedBass.Dynamics
 
         #region BassWma
         /// <summary>
-        /// WMA add-on: Sync on a track change in a server-side playlist. 
+        /// WMA add-on: Sync on a track change in a server-side playlist.
         /// Updated tags are available via <see cref="Bass.ChannelGetTags"/>.
         /// param : not used
         /// data : not used
@@ -212,7 +212,7 @@ namespace ManagedBass.Dynamics
         WmaChange = 65792,
 
         /// <summary>
-        /// WMA add-on: Sync on a mid-stream tag change in a server-side playlist. 
+        /// WMA add-on: Sync on a mid-stream tag change in a server-side playlist.
         /// Updated tags are available via <see cref="Bass.ChannelGetTags"/>.
         /// param : not used
         /// data : not used - the updated metadata is available from <see cref="Bass.ChannelGetTags"/>.

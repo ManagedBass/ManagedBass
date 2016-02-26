@@ -30,9 +30,9 @@ namespace ManagedBass.Dynamics
         Loop = 4,
 
         /// <summary>
-        /// Use 3D functionality. 
+        /// Use 3D functionality.
         /// This is ignored if <see cref="DeviceInitFlags.Device3D"/> wasn't specified when calling <see cref="Bass.Init"/>.
-        /// 3D streams must be mono (chans=1). 
+        /// 3D streams must be mono (chans=1).
         /// The Speaker flags can not be used together with this flag.
         /// </summary>
         Bass3D = 8,
@@ -44,27 +44,27 @@ namespace ManagedBass.Dynamics
 
         /// <summary>
         /// Enable the old implementation of DirectX 8 effects.
-        /// Use <see cref="Bass.ChannelSetFX"/> to add effects to the stream. 
+        /// Use <see cref="Bass.ChannelSetFX"/> to add effects to the stream.
         /// Requires DirectX 8 or above.
         /// </summary>
         FX = 128,
 
         /// <summary>
-        /// Use 32-bit floating-point sample data (see Floating-Point Channels for details). 
+        /// Use 32-bit floating-point sample data (see Floating-Point Channels for details).
         /// WDM drivers or the <see cref="Decode"/> flag are required to use this flag.
         /// </summary>
         Float = 256,
 
         /// <summary>
         /// Enable pin-point accurate seeking (to the exact byte) on the MP3/MP2/MP1 stream or MOD music.
-        /// This also increases the time taken to create the stream, 
-        /// due to the entire file being pre-scanned for the seek points.  
+        /// This also increases the time taken to create the stream,
+        /// due to the entire file being pre-scanned for the seek points.
         /// Note: This flag is ONLY needed for files with a VBR, files with a CBR are always accurate.
         /// </summary>
         Prescan = 0x20000,
 
         /// <summary>
-        /// Automatically free the music or stream's resources when it has reached the end, 
+        /// Automatically free the music or stream's resources when it has reached the end,
         /// or when <see cref="Bass.ChannelStop"/> or <see cref="Bass.Stop"/> is called.
         /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
@@ -72,7 +72,7 @@ namespace ManagedBass.Dynamics
 
         /// <summary>
         /// Restrict the download rate of the file to the rate required to sustain playback.
-        /// If this flag is not used, then the file will be downloaded as quickly as possible. 
+        /// If this flag is not used, then the file will be downloaded as quickly as possible.
         /// This flag has no effect on "unbuffered" streams (Buffer=false).
         /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
@@ -90,7 +90,7 @@ namespace ManagedBass.Dynamics
         StreamDownloadBlocks = 0x100000,
 
         /// <summary>
-        /// Decode the sample data, without outputting it. 
+        /// Decode the sample data, without outputting it.
         /// Use <see cref="Bass.ChannelGetData(int,IntPtr,int)"/> to retrieve decoded sample data.
         /// <see cref="SoftwareMixing"/>/<see cref="Bass3D"/>/<see cref="FX"/>/<see cref="AutoFree"/> are all ignored when using this flag, as are the Speaker flags.
         /// </summary>
@@ -134,7 +134,7 @@ namespace ManagedBass.Dynamics
         FxTempoAlgorithmCubic = 1024,
 
         /// <summary>
-        /// BassFx add-on (<see cref="BassFx.TempoCreate"/>): 
+        /// BassFx add-on (<see cref="BassFx.TempoCreate"/>):
         /// Uses a 8-tap band-limited Shannon interpolation (complex, but not much better than cubic).
         /// </summary>
         FxTempoAlgorithmShannon = 2048,
@@ -147,8 +147,8 @@ namespace ManagedBass.Dynamics
 
         #region BassMidi
         /// <summary>
-        /// BASSMIDI add-on: Don't send a WAVE header to the encoder. 
-        /// If this flag is used then the sample format (mono 16-bit) 
+        /// BASSMIDI add-on: Don't send a WAVE header to the encoder.
+        /// If this flag is used then the sample format (mono 16-bit)
         /// must be passed to the encoder some other way, eg. via the command-line.
         /// </summary>
         MidiNoHeader = 1,
@@ -171,7 +171,7 @@ namespace ManagedBass.Dynamics
         MidiDecayEnd = 4096,
 
         /// <summary>
-        /// BASSMIDI add-on: Disable the MIDI reverb/chorus processing. 
+        /// BASSMIDI add-on: Disable the MIDI reverb/chorus processing.
         /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MidiNoFx = 8192,
@@ -191,23 +191,23 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// BASSMIDI add-on: Only release the oldest instance upon a note off event (<see cref="MidiEventType.Note"/> with velocity=0)
         /// when there are overlapping instances of the note.
-        /// Otherwise all instances are released. 
+        /// Otherwise all instances are released.
         /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MidiNoteOff1 = 65536,
 
         /// <summary>
-        /// BASSMIDI add-on: Map the file into memory. 
+        /// BASSMIDI add-on: Map the file into memory.
         /// This flag is ignored if the soundfont is packed as the sample data cannot be played directly from a mapping;
-        /// it needs to be decoded. 
+        /// it needs to be decoded.
         /// This flag is also ignored if the file is too large to be mapped into memory.
         /// </summary>
         MidiFontMemoryMap = 131072,
 
         /// <summary>
-        /// Use bank 127 in the soundfont for XG drum kits. 
-        /// When an XG drum kit is needed, bank 127 in soundfonts that have this flag set will be checked first, 
-        /// before falling back to bank 128 (the standard SF2 drum kit bank) if it is not available there. 
+        /// Use bank 127 in the soundfont for XG drum kits.
+        /// When an XG drum kit is needed, bank 127 in soundfonts that have this flag set will be checked first,
+        /// before falling back to bank 128 (the standard SF2 drum kit bank) if it is not available there.
         /// </summary>
         MidiFontXGDRUMS = 0x40000,
         #endregion
@@ -272,10 +272,10 @@ namespace ManagedBass.Dynamics
         MusicNonInterpolated = 0x10000,
 
         /// <summary>
-        /// Music: Stop the music when a backward jump effect is played. 
+        /// Music: Stop the music when a backward jump effect is played.
         /// This stops musics that never reach the end from going into endless loops.
-        /// Some MOD musics are designed to jump all over the place, 
-        /// so this flag would cause those to be stopped prematurely. 
+        /// Some MOD musics are designed to jump all over the place,
+        /// so this flag would cause those to be stopped prematurely.
         /// If this flag is used together with the <see cref="Loop"/> flag,
         /// then the music would not be stopped but any <see cref="SyncFlags.End"/> sync would be triggered.
         /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
@@ -283,7 +283,7 @@ namespace ManagedBass.Dynamics
         MusicStopBack = 0x80000,
 
         /// <summary>
-        /// Music: Don't load the samples. 
+        /// Music: Don't load the samples.
         /// This reduces the time taken to load the music, notably with MO3 files,
         /// which is useful if you just want to get the name and Length of the music without playing it.
         /// </summary>
@@ -325,27 +325,27 @@ namespace ManagedBass.Dynamics
 
         #region BassCd
         /// <summary>
-        /// BASSCD add-on: Read sub-channel data. 
-        /// 96 bytes of de-interleaved sub-channel data will be returned after each 2352 bytes of audio. 
-        /// This flag can not be used with the <see cref="Float"/> flag, 
+        /// BASSCD add-on: Read sub-channel data.
+        /// 96 bytes of de-interleaved sub-channel data will be returned after each 2352 bytes of audio.
+        /// This flag can not be used with the <see cref="Float"/> flag,
         /// and is ignored if the <see cref="Decode"/> flag is not used.
         /// </summary>
         CDSubChannel = 512,
 
         /// <summary>
         /// BASSCD add-on: Read sub-channel data, without using any hardware de-interleaving.
-        /// This is identical to the <see cref="CDSubChannel"/> flag, except that the 
+        /// This is identical to the <see cref="CDSubChannel"/> flag, except that the
         /// de-interleaving is always performed by BASSCD even if the drive is apparently capable of de-interleaving itself.
         /// </summary>
         CDSubchannelNoHW = 1024,
 
         /// <summary>
-        /// BASSCD add-on: Include C2 error info. 
+        /// BASSCD add-on: Include C2 error info.
         /// 296 bytes of C2 error info is returned after each 2352 bytes of audio (and optionally 96 bytes of sub-channel data).
         /// This flag cannot be used with the <see cref="Float"/> flag, and is ignored if the <see cref="Decode"/> flag is not used.
         /// The first 294 bytes contain the C2 error bits (one bit for each byte of audio),
-        /// followed by a byte containing the logical OR of all 294 bytes, 
-        /// which can be used to quickly check if there were any C2 errors. 
+        /// followed by a byte containing the logical OR of all 294 bytes,
+        /// which can be used to quickly check if there were any C2 errors.
         /// The final byte is just padding.
         /// Note that if you request both sub-channel data and C2 error info, the C2 info will come before the sub-channel data!
         /// </summary>
@@ -590,7 +590,7 @@ namespace ManagedBass.Dynamics
         DSDOverPCM = 1024,
 
         /// <summary>
-        /// BassDSD add-on: Produce raw DSD data instead of PCM. The DSD data is in blocks of 8 bits (1 byte) per-channel with the MSB being first/oldest. 
+        /// BassDSD add-on: Produce raw DSD data instead of PCM. The DSD data is in blocks of 8 bits (1 byte) per-channel with the MSB being first/oldest.
         /// DSD data is not playable by BASS, so the <see cref="Decode"/> flag is required.
         /// </summary>
         DSDRaw = 512,

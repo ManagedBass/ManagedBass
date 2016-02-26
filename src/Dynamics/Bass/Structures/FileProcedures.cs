@@ -7,7 +7,7 @@ namespace ManagedBass.Dynamics
     /// Table of callback functions used with <see cref="Bass.CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)" />.
     /// </summary>
     /// <remarks>
-    /// A copy is made of the procs callback function table, so it does not have to persist beyond this function call. 
+    /// A copy is made of the procs callback function table, so it does not have to persist beyond this function call.
     /// This means it is not required to pin the 'procs' instance, but it is still required to keep a reference as long as BASS uses the callback delegates in order to prevent the callbacks from being garbage collected.
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]

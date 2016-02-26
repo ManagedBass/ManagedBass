@@ -29,7 +29,7 @@ namespace ManagedBass.Dynamics
         MO3 = 256,
 
         /// <summary>
-        /// User sample stream. 
+        /// User sample stream.
         /// This can also be used as a flag to test if the channel is any kind of HSTREAM.
         /// </summary>
         Stream = 65536,
@@ -220,7 +220,7 @@ namespace ManagedBass.Dynamics
         Reverse = 127489,
 
         /// <summary>
-        /// MOD format music. 
+        /// MOD format music.
         /// This can also be used as a flag to test if the channel is any kind of HMUSIC.
         /// </summary>
         MOD = 131072,

@@ -10,8 +10,8 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This function must be called to apply any changes made with <see cref="Set3DFactors"/>, <see cref="Set3DPosition"/>, <see cref="ChannelSet3DAttributes"/> or <see cref="ChannelSet3DPosition"/>. 
-        /// This allows multiple changes to be synchronized, and also improves performance. 
+        /// This function must be called to apply any changes made with <see cref="Set3DFactors"/>, <see cref="Set3DPosition"/>, <see cref="ChannelSet3DAttributes"/> or <see cref="ChannelSet3DPosition"/>.
+        /// This allows multiple changes to be synchronized, and also improves performance.
         /// </para>
         /// <para>
         /// This function applies 3D changes on all the initialized devices.
@@ -47,7 +47,7 @@ namespace ManagedBass.Dynamics
         {
             return Checked(BASS_Get3DFactors(ref Distance, ref RollOff, ref Doppler));
         }
-        #endregion        
+        #endregion
 
         #region Set3DFactors
         [DllImport(DllName)]
@@ -81,7 +81,7 @@ namespace ManagedBass.Dynamics
         /// <code>
         /// Bass.Set3DFactors(0.914, -1.0, -1.0);
         /// Bass.Apply3D();
-        /// </code> 
+        /// </code>
         /// </example>
         /// <seealso cref="Apply3D"/>
         /// <seealso cref="Get3DFactors"/>
@@ -119,7 +119,7 @@ namespace ManagedBass.Dynamics
             return Checked(BASS_GetEAXParameters(ref Environment, ref Volume, ref Decay, ref Damp));
         }
         #endregion
-        
+
         #region SetEAXParameters
         /// <summary>
         /// Sets the parameters of EAX from a Preset.
@@ -212,7 +212,7 @@ namespace ManagedBass.Dynamics
                     return false;
             }
         }
-                
+
         [DllImport(DllName)]
         static extern bool BASS_SetEAXParameters(EAXEnvironment Environment, float Volume, float Decay, float Damp);
 
@@ -246,7 +246,7 @@ namespace ManagedBass.Dynamics
             return Checked(BASS_SetEAXParameters(Environment, Volume, Decay, Damp));
         }
         #endregion
-        
+
         #region Get3DPosition
         [DllImport(DllName)]
         static extern bool BASS_Get3DPosition(ref Vector3D Position, ref Vector3D Velocity, ref Vector3D Front, ref Vector3D Top);
@@ -316,7 +316,7 @@ namespace ManagedBass.Dynamics
         /// <see cref="ChannelGetInfo(int, out ChannelInfo)"/> can be used to check whether a channel is being software mixed.
         /// </para>
         /// <para>
-        /// Changing the algorithm only affects subsequently created or loaded samples, musics, or streams; 
+        /// Changing the algorithm only affects subsequently created or loaded samples, musics, or streams;
         /// it does not affect any that already exist.
         /// </para>
         /// <para><b>Platform-specific</b></para>
@@ -378,9 +378,9 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.No3D">The channel does not have 3D functionality.</exception>
         /// <exception cref="Errors.IllegalParameter">One or more of the attribute values is invalid.</exception>
         /// <remarks>
-        /// <para>The <paramref name="iAngle"/> and <paramref name="oAngle"/> parameters must both be set in a single call to this function (ie. you can't set one without the other). 
+        /// <para>The <paramref name="iAngle"/> and <paramref name="oAngle"/> parameters must both be set in a single call to this function (ie. you can't set one without the other).
         /// The <paramref name="iAngle"/> and <paramref name="oAngle"/> angles decide how wide the sound is projected around the orientation angle. Within the inside angle the volume level is the channel volume, as set with <see cref="ChannelSetAttribute(int,ChannelAttribute,float)" />.
-        /// Outside the outer angle, the volume changes according to the <paramref name="OutVol"/> value. Between the inner and outer angles, the volume gradually changes between the inner and outer volume levels. 
+        /// Outside the outer angle, the volume changes according to the <paramref name="OutVol"/> value. Between the inner and outer angles, the volume gradually changes between the inner and outer volume levels.
         /// If the inner and outer angles are 360 degrees, then the sound is transmitted equally in all directions.</para>
         /// <para>As with all 3D functions, use <see cref="Apply3D" /> to apply the changes made.</para>
         /// </remarks>
@@ -423,7 +423,7 @@ namespace ManagedBass.Dynamics
         #region ChannelSet3DPosition
         [DllImport(DllName)]
         static extern bool BASS_ChannelSet3DPosition(int Handle, Vector3D Position, Vector3D Orientation, Vector3D Velocity);
-        
+
         /// <summary>
         /// Sets the 3D position of a sample, stream, or MOD music channel with 3D functionality.
         /// </summary>

@@ -13,7 +13,7 @@
         Speakers = 33554432,
 
         /// <summary>
-        /// An audio endpoint Device that sends a line-level analog signal to 
+        /// An audio endpoint Device that sends a line-level analog signal to
         /// a line-Input jack on an audio adapter or that receives a line-level analog signal
         /// from a line-output jack on the adapter.
         /// </summary>
@@ -35,7 +35,7 @@
         Headset = 100663296,
 
         /// <summary>
-        /// The part of a telephone that is held in the hand and 
+        /// The part of a telephone that is held in the hand and
         /// that contains a speaker and a microphone for two-way communication.
         /// </summary>
         Handset = 117440512,
@@ -47,13 +47,13 @@
         Digital = 134217728,
 
         /// <summary>
-        /// An audio endpoint Device that connects to an audio adapter through 
+        /// An audio endpoint Device that connects to an audio adapter through
         /// a Sony/Philips Digital Interface (S/PDIF) connector.
         /// </summary>
         SPDIF = 150994944,
 
         /// <summary>
-        /// An audio endpoint Device that connects to an audio adapter through 
+        /// An audio endpoint Device that connects to an audio adapter through
         /// a High-Definition Multimedia Interface (HDMI) connector.
         /// </summary>
         HDMI = 167772160,

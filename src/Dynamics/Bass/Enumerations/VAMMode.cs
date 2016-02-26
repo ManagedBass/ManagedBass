@@ -4,7 +4,7 @@ namespace ManagedBass.Dynamics
 {
     /// <summary>
     /// Voice allocation management flags.
-    /// These flags enable hardware resource stealing... if the hardware has no	available voices, a currently playing Buffer will be stopped to make room for the new Buffer. 
+    /// These flags enable hardware resource stealing... if the hardware has no	available voices, a currently playing Buffer will be stopped to make room for the new Buffer.
     /// </summary>
     /// <remarks>
     /// NOTE: only samples loaded/created with the <see cref="BassFlags.VAM"/> flag are considered for termination by the DX7 voice management.
@@ -20,12 +20,12 @@ namespace ManagedBass.Dynamics
 
         /// <summary>
         /// Play the sample in software (ie. non-accelerated).
-        /// No other VAM flags may be used together with this flag.        
+        /// No other VAM flags may be used together with this flag.
         /// </summary>
         Software = 2,
 
         /// <summary>
-        /// If there are no free hardware voices, 
+        /// If there are no free hardware voices,
         /// the Buffer to be terminated will be the one with the least time left to play.
         /// </summary>
         TerminateTime = 4,
@@ -39,7 +39,7 @@ namespace ManagedBass.Dynamics
         TerminateDistance = 8,
 
         /// <summary>
-        /// If there are no free hardware voices, 
+        /// If there are no free hardware voices,
         /// the Buffer to be terminated will be the one with the lowest priority.
         /// </summary>
         TerminatePriority = 16,

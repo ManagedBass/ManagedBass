@@ -9,7 +9,7 @@ namespace ManagedBass.Dynamics
 {
     /// <summary>
     /// Wraps bass.dll.
-    /// 
+    ///
     /// <para>
     /// Supports: .mp3, .ogg, .wav, .mp2, .mp1, .aiff, .m2a, .mpa, .m1a, .mpg, .mpeg, .aif, .mp3pro, .bwf, .mus,
     /// .mod, .mo3, .s3m, .xm, .it, .mtm, .umx, .mdz, .s3z, .itz, .xmz
@@ -17,7 +17,7 @@ namespace ManagedBass.Dynamics
     /// </summary>
     /// <remarks>
     /// <para>
-    /// BASS is a multiplatform audio library. 
+    /// BASS is a multiplatform audio library.
     /// It's purpose is to provide the most powerful and efficient (yet easy to use),
     /// sample, stream, MOD music, and recording functions.
     /// All in a tiny DLL, under 100KB in size.
@@ -33,7 +33,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
         public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
-        
+
         public static void Unload() => Extensions.Unload(hLib);
 
         #region Update
@@ -47,8 +47,8 @@ namespace ManagedBass.Dynamics
         /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.DataNotAvailable">Updating is already in progress.</exception>
         /// <remarks>
-        /// When automatic updating is disabled, this function (or <see cref="ChannelUpdate" />) needs to be called to keep the playback buffers updated. 
-        /// The <paramref name="Length"/> parameter should include some safety margin, in case the next update cycle gets delayed. 
+        /// When automatic updating is disabled, this function (or <see cref="ChannelUpdate" />) needs to be called to keep the playback buffers updated.
+        /// The <paramref name="Length"/> parameter should include some safety margin, in case the next update cycle gets delayed.
         /// For example, if calling this function every 100ms, 200 would be a reasonable <paramref name="Length"/> parameter.
         /// </remarks>
         /// <seealso cref="ChannelUpdate"/>
@@ -60,7 +60,7 @@ namespace ManagedBass.Dynamics
         #region CPUUsage
         [DllImport(DllName)]
         static extern float BASS_GetCPU();
-        
+
         /// <summary>
         /// Retrieves the current CPU usage of BASS as a percentage of total CPU time.
         /// </summary>
@@ -85,7 +85,7 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// <para><b>Platform-specific</b></para>
         /// <para>
-        /// On Windows, the CPU usage does not include sample channels (HCHANNEL), which are mixed by the output device/drivers (hardware mixing) or Windows (software mixing). 
+        /// On Windows, the CPU usage does not include sample channels (HCHANNEL), which are mixed by the output device/drivers (hardware mixing) or Windows (software mixing).
         /// On other platforms, the CPU usage does include sample playback as well as the generation of the final output mix.
         /// </para>
         /// </remarks>
@@ -113,7 +113,7 @@ namespace ManagedBass.Dynamics
         /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.NotInitialized"><see cref="Init"/> has not been successfully called.</exception>
         /// <remarks>
-        /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to. 
+        /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to.
         /// </remarks>
         public static bool GetInfo(out BassInfo Info) => Checked(BASS_GetInfo(out Info));
 
@@ -123,7 +123,7 @@ namespace ManagedBass.Dynamics
         /// <returns><see cref="BassInfo"/> object with the retreived information. (null on Error)</returns>
         /// <exception cref="Errors.NotInitialized"><see cref="Init"/> has not been successfully called.</exception>
         /// <remarks>
-        /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to. 
+        /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to.
         /// </remarks>
         public static BassInfo Info
         {
@@ -134,7 +134,7 @@ namespace ManagedBass.Dynamics
             }
         }
         #endregion
-        
+
         #region GetDSoundObject
         [DllImport(DllName, EntryPoint = "BASS_GetDSoundObject")]
         public static extern IntPtr GetDSoundObject(DSInterface obj);
@@ -142,7 +142,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_GetDSoundObject")]
         public static extern IntPtr GetDSoundObject(int channel);
         #endregion
-        
+
         #region FX Parameters
         [DllImport(DllName, EntryPoint = "BASS_FXSetParameters")]
         public static extern bool FXSetParameters(int Handle, IntPtr param);

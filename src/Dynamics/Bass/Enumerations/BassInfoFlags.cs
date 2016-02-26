@@ -22,7 +22,7 @@ namespace ManagedBass.Dynamics
         EmulatedDrivers = 32,
 
         /// <summary>
-        /// The device driver has been certified by Microsoft. 
+        /// The device driver has been certified by Microsoft.
         /// This flag is always set on WDM drivers.
         /// </summary>
         Certified = 64,

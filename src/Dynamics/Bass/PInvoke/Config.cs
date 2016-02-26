@@ -32,7 +32,7 @@ namespace ManagedBass.Dynamics
         }
 
         static event IOSNotifyProcedure _iosnotify;
-        
+
         public static event IOSNotifyProcedure IOSNotification
         {
             add
@@ -59,12 +59,12 @@ namespace ManagedBass.Dynamics
         }
 
         /// <summary>
-        /// The Buffer Length in milliseconds. 
+        /// The Buffer Length in milliseconds.
         /// </summary>
         /// <remarks>
         /// <para>
         /// The minimum Length is 1ms above the update period (See <see cref="UpdatePeriod"/>),
-        /// the maximum is 5000 milliseconds. 
+        /// the maximum is 5000 milliseconds.
         /// If the Length specified is outside this range, it is automatically capped.
         /// The default Buffer Length is 500 milliseconds.
         /// Increasing the Length, decreases
@@ -72,13 +72,13 @@ namespace ManagedBass.Dynamics
         /// increases the latency for DSP/FX.
         /// </para>
         /// <para>
-        /// Small Buffer lengths are only required if the sound is going to be changing in real-time, for example, in a soft-synth. 
+        /// Small Buffer lengths are only required if the sound is going to be changing in real-time, for example, in a soft-synth.
         /// If you need to use a small Buffer, then the <see cref="BassInfo.MinBufferLength"/> should be used to get the recommended
-        /// minimum Buffer Length supported by the device and it's drivers. 
+        /// minimum Buffer Length supported by the device and it's drivers.
         /// Even at this default Length, it's still possible that the sound could break up on some systems,
         /// it's also possible that smaller buffers may be fine.
         /// So when using small buffers, you should have an option in your software for the User to finetune the Length used, for optimal performance.
-        /// Using this config option only affects the HMUSIC/HSTREAM channels that you create afterwards, not the ones that have already been created. 
+        /// Using this config option only affects the HMUSIC/HSTREAM channels that you create afterwards, not the ones that have already been created.
         /// So you can have channels with differing Buffer lengths by using this config option each time before creating them.
         /// If automatic updating is disabled, make sure you call <see cref="Update"/>
         /// frequently enough to keep the buffers updated.
@@ -109,7 +109,7 @@ namespace ManagedBass.Dynamics
         /// BASS creates one or more threads (determined by <see cref="UpdateThreads"/>)
         /// specifically to perform the updating, except when automatic updating is disabled
         /// (period=0) - then you must regularly call <see cref="Bass.Update"/> or <see cref="Bass.ChannelUpdate"/> instead.
-        /// This allows you to synchronize BASS's CPU usage with your program's. 
+        /// This allows you to synchronize BASS's CPU usage with your program's.
         /// For example, in a game loop you could call <see cref="Bass.Update"/>
         /// once per frame, which keeps all the processing in sync so that the frame rate is as smooth as possible.
         /// <see cref="Bass.Update"/> should be called at least around 8 times per second, even more often if the <see cref="PlaybackBufferLength"/>
@@ -127,10 +127,10 @@ namespace ManagedBass.Dynamics
         /// Global sample volume level... 0 (silent) - 10000 (full).
         /// </summary>
         /// <remarks>
-        /// This config option allows you to have control over the volume levels of all the samples, 
+        /// This config option allows you to have control over the volume levels of all the samples,
         /// which is useful for setup options (eg. separate music and fx volume controls).
-        /// A channel's final volume = channel volume * global volume / max volume. 
-        /// So, for example, if a stream channel's volume is 0.5 and the global stream volume is 8000, 
+        /// A channel's final volume = channel volume * global volume / max volume.
+        /// So, for example, if a stream channel's volume is 0.5 and the global stream volume is 8000,
         /// then effectively the stream's volume level is 0.4 (0.5 * 8000 / 10000 = 0.4).
         /// </remarks>
         public static int GlobalSampleVolume
@@ -143,10 +143,10 @@ namespace ManagedBass.Dynamics
         /// Global stream volume level... 0 (silent) - 10000 (full).
         /// </summary>
         /// <remarks>
-        /// This config option allows you to have control over the volume levels of all streams, 
+        /// This config option allows you to have control over the volume levels of all streams,
         /// which is useful for setup options (eg. separate music and fx volume controls).
-        /// A channel's final volume = channel volume * global volume / max volume. 
-        /// So, for example, if a stream channel's volume is 0.5 and the global stream volume is 8000, 
+        /// A channel's final volume = channel volume * global volume / max volume.
+        /// So, for example, if a stream channel's volume is 0.5 and the global stream volume is 8000,
         /// then effectively the stream's volume level is 0.4 (0.5 * 8000 / 10000 = 0.4).
         /// </remarks>
         public static int GlobalStreamVolume
@@ -159,10 +159,10 @@ namespace ManagedBass.Dynamics
         /// Global music volume level... 0 (silent) - 10000 (full).
         /// </summary>
         /// <remarks>
-        /// This config option allows you to have control over the volume levels of all the MOD musics, 
+        /// This config option allows you to have control over the volume levels of all the MOD musics,
         /// which is useful for setup options (eg. separate music and fx volume controls).
         /// A channel's final volume = channel volume * global volume / max volume.
-        /// So, for example, if a stream channel's volume is 0.5 and the global stream volume is 8000, 
+        /// So, for example, if a stream channel's volume is 0.5 and the global stream volume is 8000,
         /// then effectively the stream's volume level is 0.4 (0.5 * 8000 / 10000 = 0.4).
         /// </remarks>
         public static int GlobalMusicVolume
@@ -175,13 +175,13 @@ namespace ManagedBass.Dynamics
         /// Volume translation curve... false = Linear (Default), true = Logarithmic.
         /// </summary>
         /// <remarks>
-        /// DirectSound uses logarithmic volume and panning curves, which can be awkward to work with. 
+        /// DirectSound uses logarithmic volume and panning curves, which can be awkward to work with.
         /// For example, with a logarithmic curve, the audible difference between 10000 and 9000,
-        /// is not the same as between 9000 and 8000. 
-        /// With a linear "curve" the audible difference is spread equally across the whole range of values, 
+        /// is not the same as between 9000 and 8000.
+        /// With a linear "curve" the audible difference is spread equally across the whole range of values,
         /// so in the previous example the audible difference between 10000 and 9000,
         /// and between 9000 and 8000 would be identical.
-        /// When using the linear curve, the volume range is from 0% (silent) to 100% (full). 
+        /// When using the linear curve, the volume range is from 0% (silent) to 100% (full).
         /// When using the logarithmic curve, the volume range is from -100 dB (effectively silent) to 0 dB (full).
         /// For example, a volume level of 0.5 is 50% linear or -50 dB logarithmic.
         /// </remarks>
@@ -207,16 +207,16 @@ namespace ManagedBass.Dynamics
         /// Pass 32-bit floating-point sample data to all <see cref="DSPProcedure"/> callback functions.
         /// </summary>
         /// <remarks>
-        /// Normally DSP functions receive sample data in whatever format the channel is using, ie. it can be 8, 16 or 32-bit. 
-        /// But using this config option, BASS will convert 8/16-bit sample data to 32-bit floating-point before passing 
-        /// it to DSP functions, and then convert it back after all the DSP functions are done. 
-        /// As well as simplifying the DSP code (no need for 8/16-bit processing), 
+        /// Normally DSP functions receive sample data in whatever format the channel is using, ie. it can be 8, 16 or 32-bit.
+        /// But using this config option, BASS will convert 8/16-bit sample data to 32-bit floating-point before passing
+        /// it to DSP functions, and then convert it back after all the DSP functions are done.
+        /// As well as simplifying the DSP code (no need for 8/16-bit processing),
         /// this also means that there is no degradation of quality as sample data passes through a chain of DSP.
         /// This config option also applies to effects set via <see cref="Bass.ChannelSetFX"/>,
         /// except for DX8 effects when using the "With FX flag" DX8 effect implementation.
         /// Changing the setting while there are DSP or FX set could cause problems, so should be avoided.
         /// <para>
-        /// <b>Platform-specific</b>: On Android and Windows CE, 8.24 bit fixed-point is used instead of floating-point. 
+        /// <b>Platform-specific</b>: On Android and Windows CE, 8.24 bit fixed-point is used instead of floating-point.
         /// Floating-point DX8 effect processing requires DirectX 9 (or above) on Windows.
         /// </para>
         /// </remarks>
@@ -252,8 +252,8 @@ namespace ManagedBass.Dynamics
         /// <remarks>
         /// This will be rounded up to the nearest 4096 byte (4KB) boundary.
         /// This determines the amount of file data that can be read ahead of time with asynchronous file reading.
-        /// Changes only affect streams that are created afterwards, not any that already exist. 
-        /// So it is possible to have streams with differing Buffer lengths 
+        /// Changes only affect streams that are created afterwards, not any that already exist.
+        /// So it is possible to have streams with differing Buffer lengths
         /// by using this config option before creating each of them.
         /// When asynchronous file reading is enabled, the Buffer level is available from <see cref="Bass.StreamGetFilePosition"/>.
         /// </remarks>
@@ -267,7 +267,7 @@ namespace ManagedBass.Dynamics
         /// Gets the total number of HSTREAM/HSAMPLE/HMUSIC/HRECORD handles.
         /// </summary>
         /// <remarks>
-        /// The Handle count may not only include the app-created stuff but also internal stuff, 
+        /// The Handle count may not only include the app-created stuff but also internal stuff,
         /// eg. <see cref="BassWasapi.Init"/> will create a stream when the <see cref="WasapiInitFlags.Buffer"/> flag is used.
         /// </remarks>
         public static int HandleCount => GetConfig(Configuration.HandleCount);
@@ -304,9 +304,9 @@ namespace ManagedBass.Dynamics
         /// When streaming in blocks, this option determines the download Buffer Length.
         /// The effective Buffer Length can actually be a bit more than that specified,
         /// including data that has been read from the Buffer by the decoder but not yet decoded.
-        /// This config option also determines the buffering used by "buffered" User file streams 
+        /// This config option also determines the buffering used by "buffered" User file streams
         /// created with <see cref="CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)"/>.
-        /// The default Buffer Length is 5 seconds (5000 milliseconds). 
+        /// The default Buffer Length is 5 seconds (5000 milliseconds).
         /// The net Buffer Length should be larger than the Length of the playback Buffer (<see cref="PlaybackBufferLength"/>),
         /// otherwise the stream is likely to briefly stall soon after starting playback.
         /// Using this config option only affects streams created afterwards, not any that have already been created.
@@ -322,7 +322,7 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <remarks>
         /// When the output is paused using <see cref="Bass.Pause"/>, and this config option is enabled,
-        /// channels can't be played until the output is resumed using <see cref="Bass.Start"/>. 
+        /// channels can't be played until the output is resumed using <see cref="Bass.Start"/>.
         /// Attempts to play a channel will give a <see cref="Errors.OutputNotStarted"/> error.
         /// </remarks>
         public static int PauseNoPlay
@@ -338,9 +338,9 @@ namespace ManagedBass.Dynamics
         /// This setting determines what percentage of the Buffer Length (<see cref="NetBufferLength"/>)
         /// should be filled by <see cref="CreateStream(string,int,BassFlags,DownloadProcedure,IntPtr)"/>.
         /// Setting this lower (eg. 0) is useful if you want to display a "buffering progress" (using <see cref="Bass.StreamGetFilePosition"/>)
-        /// when opening internet streams, but note that this setting is just a minimum. 
+        /// when opening internet streams, but note that this setting is just a minimum.
         /// BASS will always pre-download a certain amount to verify the stream.
-        /// As well as internet streams, this config setting also applies to "buffered" User file streams 
+        /// As well as internet streams, this config setting also applies to "buffered" User file streams
         /// created with <see cref="CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)"/>.
         /// </remarks>
         public static int NetPreBuffer
@@ -366,7 +366,7 @@ namespace ManagedBass.Dynamics
         /// 2 = in <see cref="CreateStream(string,long,long,BassFlags)"/> and <see cref="CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)"/> too.
         /// </summary>
         /// <remarks>
-        /// When enabled, BASS will process PLS, M3U, WPL and ASX playlists, 
+        /// When enabled, BASS will process PLS, M3U, WPL and ASX playlists,
         /// going through each entry until it finds a URL that it can play.
         /// </remarks>
         public static int NetPlaylist
@@ -440,7 +440,7 @@ namespace ManagedBass.Dynamics
         /// <remarks>
         /// If the value specified is outside this range, it is automatically capped.
         /// Of the file formats supported as standard, this setting only affects the detection of MP3/MP2/MP1 formats,
-        /// but it may also be used by add-ons (see the documentation). 
+        /// but it may also be used by add-ons (see the documentation).
         /// For internet (and "buffered" User file) streams, a quarter of the Length is used, up to a minimum of 1000 bytes.
         /// The verification Length excludes any tags that may be at the start of the file.
         /// For internet (and "buffered" User file) streams, the <see cref="NetVerificationBytes"/> setting determines how much data is checked.
@@ -452,16 +452,16 @@ namespace ManagedBass.Dynamics
         }
 
         /// <summary>
-        /// The amount of data to check (in bytes) in order to verify/detect the file format of internet streams... 1000 (min) to 1000000 (max), 
+        /// The amount of data to check (in bytes) in order to verify/detect the file format of internet streams... 1000 (min) to 1000000 (max),
         /// or 0 = 25% of the <see cref="FileVerificationBytes"/> setting (with a minimum of 1000 bytes).
         /// </summary>
         /// <remarks>
         /// If the value specified is outside this range, it is automatically capped.
-        /// Of the file formats supported as standard, this setting only affects the detection of MP3/MP2/MP1 formats, 
-        /// but it may also be used by add-ons (see the documentation). 
-        /// The verification Length excludes any tags that may be found at the start of the file. 
+        /// Of the file formats supported as standard, this setting only affects the detection of MP3/MP2/MP1 formats,
+        /// but it may also be used by add-ons (see the documentation).
+        /// The verification Length excludes any tags that may be found at the start of the file.
         /// The default setting is 0, which means 25% of the <see cref="FileVerificationBytes"/> setting.
-        /// As well as internet streams, this config setting also applies to "buffered" User file streams 
+        /// As well as internet streams, this config setting also applies to "buffered" User file streams
         /// created with <see cref="CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)"/>.
         /// </remarks>
         public static int NetVerificationBytes
@@ -474,17 +474,17 @@ namespace ManagedBass.Dynamics
         /// Linux, Android and CE only: The output device Buffer Length in milliseconds.
         /// </summary>
         /// <remarks>
-        /// The device Buffer is where the final mix of all playing channels is placed, ready for the device to play. 
-        /// Its Length affects the latency of things like starting and stopping playback of a channel, 
-        /// so you will probably want to avoid setting it unnecessarily high, 
+        /// The device Buffer is where the final mix of all playing channels is placed, ready for the device to play.
+        /// Its Length affects the latency of things like starting and stopping playback of a channel,
+        /// so you will probably want to avoid setting it unnecessarily high,
         /// but setting it too short could result in breaks in the output.
         /// When using a large device Buffer, the <see cref="ChannelAttribute.NoBuffer"/> attribute could be used to skip the channel buffering stage,
         /// to avoid further increasing latency for real-time generated sound and/or DSP/FX changes.
         /// Changes to this config setting only affect subsequently initialized devices, not any that are already initialized.
-        /// This config option is only available on Linux, Android and Windows CE. 
+        /// This config option is only available on Linux, Android and Windows CE.
         /// The device's Buffer is determined automatically on other platforms.
         /// Platform-specific: On Linux, the driver may choose to use a different Buffer Length
-        /// if it decides that the specified Length is too short or long. 
+        /// if it decides that the specified Length is too short or long.
         /// The Buffer Length actually being used can be obtained with <see cref="BassInfo"/>,
         /// like this: <see cref="BassInfo.Latency"/> + <see cref="BassInfo.MinBufferLength"/> / 2.
         /// </remarks>
@@ -498,11 +498,11 @@ namespace ManagedBass.Dynamics
         /// Enable DirectSound's true play position mode on Windows Vista and newer? (default is true).
         /// </summary>
         /// <remarks>
-        /// Unless this option is enabled, the reported playback position will advance in 10ms steps on Windows Vista and newer. 
+        /// Unless this option is enabled, the reported playback position will advance in 10ms steps on Windows Vista and newer.
         /// As well as affecting the precision of <see cref="Bass.ChannelGetPosition"/>, this also affects the timing of non-mixtime syncs.
-        /// When this option is enabled, it allows finer position reporting but it also increases latency. 
-        /// Changes only affect channels that are created afterwards, not any that already exist. 
-        /// The <see cref="BassInfo.Latency"/> and <see cref="BassInfo.MinBufferLength"/> values 
+        /// When this option is enabled, it allows finer position reporting but it also increases latency.
+        /// Changes only affect channels that are created afterwards, not any that already exist.
+        /// The <see cref="BassInfo.Latency"/> and <see cref="BassInfo.MinBufferLength"/> values
         /// in the <see cref="BassInfo"/> structure reflect the setting at the time of the device's <see cref="Bass.Init"/> call.
         /// </remarks>
         public static bool VistaTruePlayPosition
@@ -530,19 +530,19 @@ namespace ManagedBass.Dynamics
         /// Windows-only: Include a "Default" entry in the output device list? (default is false).
         /// </summary>
         /// <remarks>
-        /// BASS does not usually include a "Default" entry in its device list, 
+        /// BASS does not usually include a "Default" entry in its device list,
         /// as that would ultimately map to one of the other devices and be a duplicate entry.
         /// When the default device is requested in a <see cref="Bass.Init"/> call (with device = -1),
-        /// BASS will check the default device at that time, and initialize it. 
+        /// BASS will check the default device at that time, and initialize it.
         /// But Windows 7 has the ability to automatically switch the default output to the new default device whenever it changes,
-        /// and in order for that to happen, the default device (rather than a specific device) needs to be used. 
+        /// and in order for that to happen, the default device (rather than a specific device) needs to be used.
         /// That is where this option comes in.
-        /// When enabled, the "Default" device will also become the default device to <see cref="Bass.Init"/> (with device = -1). 
+        /// When enabled, the "Default" device will also become the default device to <see cref="Bass.Init"/> (with device = -1).
         /// When the "Default" device is used, the <see cref="Bass.Volume"/> functions work a bit differently to usual;
         /// they deal with the "session" volume, which only affects the current process's output on the device, rather than the device's volume.
         /// This option can only be set before <see cref="Bass.GetDeviceInfo(int,out DeviceInfo)"/> or <see cref="Bass.Init"/> has been called.
         /// <para>
-        /// <b>Platform-specific</b>: This config option is only available on Windows. 
+        /// <b>Platform-specific</b>: This config option is only available on Windows.
         /// It is available on all Windows versions (not including CE), but only Windows 7 has the default output switching feature.
         /// </para>
         /// </remarks>
@@ -556,16 +556,16 @@ namespace ManagedBass.Dynamics
         /// Enable speaker assignment with panning/balance control on Windows Vista and newer?
         /// </summary>
         /// <remarks>
-        /// Panning/balance control via the <see cref="ChannelAttribute.Pan"/> attribute is not available 
-        /// when speaker assignment is used on Windows due to the way that the speaker assignment needs to be implemented there. 
-        /// The situation is improved with Windows Vista, and speaker assignment can generally 
+        /// Panning/balance control via the <see cref="ChannelAttribute.Pan"/> attribute is not available
+        /// when speaker assignment is used on Windows due to the way that the speaker assignment needs to be implemented there.
+        /// The situation is improved with Windows Vista, and speaker assignment can generally
         /// be done in a way that does permit panning/balance control to be used at the same time,
-        /// but there may still be some drivers that it does not work properly with, 
+        /// but there may still be some drivers that it does not work properly with,
         /// so it is disabled by default and can be enabled via this config option.
         /// Changes only affect channels that are created afterwards, not any that already exist.
         /// <para>
-        /// <b>Platform-specific</b>: This config option is only available on Windows. 
-        /// It is available on all Windows versions (not including CE), but only has effect on Windows Vista and newer. 
+        /// <b>Platform-specific</b>: This config option is only available on Windows.
+        /// It is available on all Windows versions (not including CE), but only has effect on Windows Vista and newer.
         /// Speaker assignment with panning/balance control is always possible on other platforms,
         /// where BASS generates the final mix.
         /// </para>
@@ -580,9 +580,9 @@ namespace ManagedBass.Dynamics
         /// Gets or Sets the Unicode character set in device information. If true, device information will be in UTF-8 form. Otherwise it will be ANSI.
         /// </summary>
         /// <remarks>
-        /// This config option determines what character set is used in the 
-        /// <see cref="DeviceInfo"/> structure and by the <see cref="Bass.RecordGetInputName"/> function. 
-        /// The default setting is ANSI, and it can only be changed before <see cref="Bass.GetDeviceInfo(int,out DeviceInfo)"/> or <see cref="Bass.Init"/> 
+        /// This config option determines what character set is used in the
+        /// <see cref="DeviceInfo"/> structure and by the <see cref="Bass.RecordGetInputName"/> function.
+        /// The default setting is ANSI, and it can only be changed before <see cref="Bass.GetDeviceInfo(int,out DeviceInfo)"/> or <see cref="Bass.Init"/>
         /// or <see cref="Bass.RecordGetDeviceInfo(int,out DeviceInfo)"/> or <see cref="Bass.RecordInit"/> has been called.
         /// <para><b>Platform-specific</b>: This config option is only available on Windows.</para>
         /// </remarks>
@@ -593,17 +593,17 @@ namespace ManagedBass.Dynamics
         }
 
         /// <summary>
-        /// Gets or Sets the default sample rate conversion quality... 
+        /// Gets or Sets the default sample rate conversion quality...
         /// 0 = linear interpolation,
         /// 1 = 8 point sinc interpolation (Default),
         /// 2 = 16 point sinc interpolation,
-        /// 3 = 32 point sinc interpolation. 
+        /// 3 = 32 point sinc interpolation.
         /// Other values are also accepted.
         /// </summary>
         /// <remarks>
-        /// This config option determines what sample rate conversion 
+        /// This config option determines what sample rate conversion
         /// quality new channels will initially have, except for sample channels (HCHANNEL),
-        /// which use the <see cref="SampleSRCQuality"/> setting.  
+        /// which use the <see cref="SampleSRCQuality"/> setting.
         /// A channel's sample rate conversion quality can subsequently
         /// be changed via the <see cref="ChannelAttribute.SampleRateConversion"/> attribute (see <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)"/>).
         /// </remarks>
@@ -618,13 +618,13 @@ namespace ManagedBass.Dynamics
         /// 0 = linear interpolation (Default),
         /// 1 = 8 point sinc interpolation,
         /// 2 = 16 point sinc interpolation,
-        /// 3 = 32 point sinc interpolation. 
+        /// 3 = 32 point sinc interpolation.
         /// Other values are also accepted.
         /// </summary>
         /// <remarks>
         /// This config option determines what sample rate conversion quality a new sample
         /// channel will initially have, following a <see cref="Bass.SampleGetChannel"/> call.
-        /// The channel's sample rate conversion quality can subsequently be changed 
+        /// The channel's sample rate conversion quality can subsequently be changed
         /// via the <see cref="ChannelAttribute.SampleRateConversion"/> attribute (see <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)"/>).
         /// </remarks>
         public static int SampleSRCQuality
@@ -661,7 +661,7 @@ namespace ManagedBass.Dynamics
         }
 
         /// <summary>
-        /// Do not stop the output device when nothing is playing on it? 
+        /// Do not stop the output device when nothing is playing on it?
         /// </summary>
         public static bool DeviceNonStop
         {

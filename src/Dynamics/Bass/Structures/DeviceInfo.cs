@@ -17,11 +17,11 @@ namespace ManagedBass.Dynamics
     /// </para>
     /// <para><b>Platform-specific</b></para>
     /// <para>
-    /// On Windows, <see cref="DeviceInfo.Driver"/> can reveal the Type of driver being used on systems that support both VxD and WDM drivers (Windows Me/98SE). 
+    /// On Windows, <see cref="DeviceInfo.Driver"/> can reveal the Type of driver being used on systems that support both VxD and WDM drivers (Windows Me/98SE).
     /// Further information can be obtained from the file via the GetFileVersionInfo function.
-    /// On Vista and newer, the device's endpoint ID is given rather than its driver filename. 
-    /// On OSX, driver is the device's UID, and on Linux it is the ALSA device name. 
-    /// It is unused on other platforms. 
+    /// On Vista and newer, the device's endpoint ID is given rather than its driver filename.
+    /// On OSX, driver is the device's UID, and on Linux it is the ALSA device name.
+    /// It is unused on other platforms.
     /// The device Type is only available on Windows (Vista and newer) and OSX.
     /// On Windows, DisplayPort devices will have <see cref="DeviceType.HDMI"/> rather than <see cref="DeviceType.DisplayPort"/>.
     /// </para>
@@ -63,7 +63,7 @@ namespace ManagedBass.Dynamics
         /// The device is already initialized.
         /// </summary>
         public bool IsInitialized => flags.HasFlag(DeviceInfoFlags.Initialized);
-        
+
         /// <summary>
         /// The device's Type.
         /// </summary>

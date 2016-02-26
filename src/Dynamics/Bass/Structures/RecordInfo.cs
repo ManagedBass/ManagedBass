@@ -10,9 +10,9 @@ namespace ManagedBass.Dynamics
     /// <para>If there is no DirectSound driver for the device (ie. it's being emulated), then the driver member will contain something like "WaveIn" instead of a filename.</para>
     /// <para><b>Platform-specific</b></para>
     /// <para>
-    /// The <see cref="IsCertified"/> and <see cref="SupportsDirectSound"/> members are only used on Windows. 
-    /// The <see cref="SupportedFormats"/> member is only used on Windows/OSX/iOS, and only for the device's channel count in the case of OSX and iOS. 
-    /// On Windows, it does not necessarily represent all of the formats supported by the device, just the "standard" ones. 
+    /// The <see cref="IsCertified"/> and <see cref="SupportsDirectSound"/> members are only used on Windows.
+    /// The <see cref="SupportedFormats"/> member is only used on Windows/OSX/iOS, and only for the device's channel count in the case of OSX and iOS.
+    /// On Windows, it does not necessarily represent all of the formats supported by the device, just the "standard" ones.
     /// <see cref="Frequency"/> is also only available on Windows/OSX/iOS, but not on Windows prior to Vista.
     /// </para>
     /// </remarks>

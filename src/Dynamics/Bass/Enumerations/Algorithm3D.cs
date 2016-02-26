@@ -11,12 +11,12 @@
         Default,
 
         /// <summary>
-        /// Uses normal left and right panning. 
-        /// The vertical axis is ignored except for scaling of volume due to distance. 
+        /// Uses normal left and right panning.
+        /// The vertical axis is ignored except for scaling of volume due to distance.
         /// <para>
-        /// Doppler shift and volume scaling are still applied, but the 3D filtering is not performed. 
-        /// This is the most CPU efficient software implementation, but provides no virtual 3D audio effect. 
-        /// Head Related Transfer Function processing will not be done. 
+        /// Doppler shift and volume scaling are still applied, but the 3D filtering is not performed.
+        /// This is the most CPU efficient software implementation, but provides no virtual 3D audio effect.
+        /// Head Related Transfer Function processing will not be done.
         /// Since only normal stereo panning is used, a channel using this algorithm may be accelerated by a 2D hardware voice if no free 3D hardware voices are available.
         /// </para>
         /// </summary>
@@ -32,9 +32,9 @@
         Full,
 
         /// <summary>
-        /// This algorithm gives a good 3D audio effect, and uses less CPU than the FULL mode. 
+        /// This algorithm gives a good 3D audio effect, and uses less CPU than the FULL mode.
         /// <para>
-        /// Requires Windows 98 2nd Edition or Windows 2000 that uses WDM drivers, 
+        /// Requires Windows 98 2nd Edition or Windows 2000 that uses WDM drivers,
         /// if this mode is not available then <see cref="Off"/> will be used instead.
         /// </para>
         /// </summary>

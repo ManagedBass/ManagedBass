@@ -3,7 +3,7 @@
     enum Configuration
     {
         PlaybackBufferLength = 0,
-        UpdatePeriod = 1,        
+        UpdatePeriod = 1,
         GlobalSampleVolume = 4,
         GlobalStreamVolume = 5,
         GlobalMusicVolume = 6,

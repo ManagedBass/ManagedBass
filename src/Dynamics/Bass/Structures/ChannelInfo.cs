@@ -10,7 +10,7 @@ namespace ManagedBass.Dynamics
     /// A "channel" can be a playing sample (HCHANNEL), a sample stream (HSTREAM), a MOD music (HMUSIC), or a recording (HRECORD).
     /// <para>Each "Channel" function can be used with one or more of these channel types.</para>
     /// <para>
-    /// The <see cref="BassFlags.SoftwareMixing"/> flag indicates whether or not the channel's sample data is being mixed into the final output by the hardware. 
+    /// The <see cref="BassFlags.SoftwareMixing"/> flag indicates whether or not the channel's sample data is being mixed into the final output by the hardware.
     /// It does not indicate (in the case of a stream or MOD music) whether the processing required to generate the sample data is being done by the hardware, this processing is always done in software.
     /// </para>
     /// <para>
@@ -58,9 +58,9 @@ namespace ManagedBass.Dynamics
         public ChannelType ChannelType => ctype;
 
         /// <summary>
-        /// The plugin that is handling the channel... 0 = not using a plugin. 
+        /// The plugin that is handling the channel... 0 = not using a plugin.
         /// <para>
-        /// Note this is only available with streams created using the plugin system via the standard BASS stream creation functions, not those created by add-on functions. 
+        /// Note this is only available with streams created using the plugin system via the standard BASS stream creation functions, not those created by add-on functions.
         /// Information on the plugin can be retrieved via <see cref="Bass.GetPluginInfo" />.
         /// </para>
         /// </summary>

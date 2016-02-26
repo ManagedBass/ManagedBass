@@ -61,11 +61,11 @@ namespace ManagedBass.Dynamics
         /// If the Length specified is outside this range, it is automatically capped.
         /// Unlike a playback Buffer, where the aim is to keep the Buffer full, a recording
         /// Buffer is kept as empty as possible and so this setting has no effect on latency.
-        /// The default recording Buffer Length is 2000 milliseconds. 
-        /// Unless processing of the recorded data could cause significant delays, or you want to 
+        /// The default recording Buffer Length is 2000 milliseconds.
+        /// Unless processing of the recorded data could cause significant delays, or you want to
         /// use a large recording period with Bass.StartRecording(), there should be no need to increase this.
-        /// Using this config option only affects the recording channels that are created afterwards, 
-        /// not any that have already been created. 
+        /// Using this config option only affects the recording channels that are created afterwards,
+        /// not any that have already been created.
         /// So you can have channels with differing Buffer lengths by using this config option each time before creating them.
         /// </summary>
         public static int RecordingBufferLength

@@ -9,11 +9,11 @@ namespace ManagedBass.Dynamics
     /// The DSCAPS_SECONDARY flags only indicate which sample formats are supported by hardware mixing.
     /// <para><b>Platform-specific</b></para>
     /// <para>
-    /// On Windows, it is possible for speakers to mistakenly be 2 with some devices/drivers when the device in fact supports more speakers. 
+    /// On Windows, it is possible for speakers to mistakenly be 2 with some devices/drivers when the device in fact supports more speakers.
     /// In that case, the <see cref="DeviceInitFlags.CPSpeakers"/> flag can be used (with <see cref="Bass.Init"/>) to use the Windows control panel setting,
     /// or the <see cref="DeviceInitFlags.ForcedSpeakerAssignment"/> flag can be used to force the enabling of speaker assignment to up to 8 speakers,
-    /// even though the device may not really support that many speakers. 
-    /// The result of assigning channels to nonexistent speakers is undefined; 
+    /// even though the device may not really support that many speakers.
+    /// The result of assigning channels to nonexistent speakers is undefined;
     /// they may be heard on other speakers or not heard at all.
     /// </para>
     /// <para>
@@ -84,10 +84,10 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// DirectSound version.
         /// <para>
-        /// 9 = DX9/8/7/5 features are available, 
-        /// 8 = DX8/7/5 features are available, 
+        /// 9 = DX9/8/7/5 features are available,
+        /// 8 = DX8/7/5 features are available,
         /// 7 = DX7/5 features are available,
-        /// 5 = DX5 features are available. 
+        /// 5 = DX5 features are available.
         /// 0 = none of the DX9/8/7/5 features are available.
         /// </para>
         /// </summary>
@@ -118,32 +118,32 @@ namespace ManagedBass.Dynamics
         /// The device driver has been certified by Microsoft. Always true for WDM drivers.
         /// </summary>
         public bool IsCertified => flags.HasFlag(BASSInfoFlags.Certified);
-        
+
         /// <summary>
         /// 16-bit samples are supported by hardware mixing.
         /// </summary>
         public bool Supports16BitSamples => flags.HasFlag(BASSInfoFlags.Secondary16Bit);
-        
+
         /// <summary>
         /// 8-bit samples are supported by hardware mixing.
         /// </summary>
         public bool Supports8BitSamples => flags.HasFlag(BASSInfoFlags.Secondary8Bit);
-        
+
         /// <summary>
         /// The device supports all sample rates between minrate and maxrate.
         /// </summary>
         public bool SupportsContinuousRate => flags.HasFlag(BASSInfoFlags.ContinuousRate);
-        
+
         /// <summary>
         /// The device's drivers has DirectSound support
         /// </summary>
         public bool SupportsDirectSound => !flags.HasFlag(BASSInfoFlags.EmulatedDrivers);
-        
+
         /// <summary>
         /// Mono samples are supported by hardware mixing.
         /// </summary>
         public bool SupportsMonoSamples => flags.HasFlag(BASSInfoFlags.Mono);
-        
+
         /// <summary>
         /// Stereo samples are supported by hardware mixing.
         /// </summary>
