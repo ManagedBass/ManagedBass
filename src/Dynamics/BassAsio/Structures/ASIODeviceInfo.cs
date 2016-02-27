@@ -7,7 +7,7 @@ namespace ManagedBass.Dynamics
     /// Used with <see cref="BassAsio.GetDeviceInfo(int,out AsioDeviceInfo)" /> to retrieve information on an asio device.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct AsioDeviceInfo
+    public class AsioDeviceInfo
     {
         IntPtr name;
         IntPtr driver;

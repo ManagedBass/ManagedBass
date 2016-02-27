@@ -67,8 +67,7 @@ namespace ManagedBass.Dynamics
         public static AsioDeviceInfo GetDeviceInfo(int device)
         {
             AsioDeviceInfo info;
-            GetDeviceInfo(device, out info);
-            return info;
+            return GetDeviceInfo(device, out info) ? info : null;
         }
 
         [DllImport(DllName, EntryPoint = "BASS_ASIO_GetInfo")]
@@ -92,8 +91,7 @@ namespace ManagedBass.Dynamics
             get
             {
                 AsioInfo info;
-                GetInfo(out info);
-                return info;
+                return GetInfo(out info) ? info : null;
             }
         }
 
@@ -161,8 +159,7 @@ namespace ManagedBass.Dynamics
         public static AsioChannelInfo ChannelGetInfo(bool input, int channel)
         {
             AsioChannelInfo info;
-            ChannelGetInfo(input, channel, out info);
-            return info;
+            return ChannelGetInfo(input, channel, out info) ? info : null;
         }
 
         [DllImport(DllName)]

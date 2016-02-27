@@ -22,13 +22,12 @@ namespace ManagedBass.Dynamics
         /// Retrieves information on a channel.
         /// </summary>
         /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
-        /// <returns>An instance of the <see cref="ChannelInfo" /> class.</returns>
+        /// <returns>An instance of the <see cref="ChannelInfo" /> class. (<see langword="null"/> on Error)</returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
         public static ChannelInfo ChannelGetInfo(int Handle)
         {
-            ChannelInfo temp;
-            ChannelGetInfo(Handle, out temp);
-            return temp;
+            ChannelInfo info;
+            return ChannelGetInfo(Handle, out info) ? info : null;
         }
 
         /// <summary>
@@ -331,24 +330,6 @@ namespace ManagedBass.Dynamics
         public extern static IntPtr ChannelGetTags(int Handle, TagType Tags);
 
         /// <summary>
-        /// Removes an effect on a stream, MOD music, or recording channel.
-        /// </summary>
-        /// <param name="Handle">The channel Handle... a HSTREAM, HMUSIC, or HRECORD.</param>
-        /// <param name="FX">Handle of the effect to remove from the channel (return value of a previous <see cref="ChannelSetFX" /> call).</param>
-        /// <returns>
-        /// If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
-        /// Use <see cref="LastError" /> to get the error code.
-        /// </returns>
-        /// <exception cref="Errors.InvalidHandle">At least one of <paramref name="Handle" /> and <paramref name="FX" /> is not valid.</exception>
-        /// <remarks>
-        /// Depending on the DX8 effect implementation being used by the channel, the channel may have to be stopped before removing a DX8 effect on it.
-        /// If necessary, that is done automatically and the channel is resumed afterwards.
-        /// <para><see cref="ChannelRemoveDSP" /> can also be used to remove effects.</para>
-        /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_ChannelRemoveFX")]
-        public extern static bool ChannelRemoveFX(int Handle, int FX);
-
-        /// <summary>
         /// Retrieves the playback Length of a channel.
         /// </summary>
         /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM. HSAMPLE handles may also be used.</param>
@@ -380,51 +361,6 @@ namespace ManagedBass.Dynamics
         /// </example>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetLength")]
         public extern static long ChannelGetLength(int Handle, PositionFlags Mode = PositionFlags.Bytes);
-
-        /// <summary>
-        /// Sets an effect on a stream, MOD music, or recording channel.
-        /// </summary>
-        /// <param name="Handle">The channel Handle... a HSTREAM, HMUSIC, or HRECORD.</param>
-        /// <param name="Type">Type of effect, one of <see cref="EffectType" />.</param>
-        /// <param name="Priority">
-        /// The priority of the new FX, which determines it's position in the DSP chain.
-        /// DSP/FX with higher priority are applied before those with lower.
-        /// This parameter has no effect with DX8 effects when the "with FX flag" DX8 effect implementation is used.
-        /// </param>
-        /// <returns>
-        /// If succesful, then the new effect's Handle is returned, else 0 is returned.
-        /// Use <see cref="LastError" /> to get the error code.
-        /// </returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
-        /// <exception cref="Errors.IllegalType">An illegal <paramref name="Type" /> was specified.</exception>
-        /// <exception cref="Errors.EffectsNotAvailable">DX8 effects are unavailable.</exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">
-        /// The channel's format is not supported by the effect.
-        /// It may be floating-point (without DX9) or more than stereo.
-        /// </exception>
-        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        /// <remarks>
-        /// <para>
-        /// Multiple effects may be used per channel. Use <see cref="ChannelRemoveFX" /> to remove an effect.
-        /// Use <see cref="FXSetParameters" /> to set an effect's parameters.
-        /// </para>
-        /// <para>
-        /// Effects can be applied to MOD musics and streams, but not samples.
-        /// If you want to apply an effect to a sample, you could use a stream instead.
-        /// </para>
-        /// <para>
-        /// Depending on the DX8 effect implementation being used by the channel, the channel may have to be stopped before adding or removing DX8 effects on it.
-        /// If necessary, that is done automatically and the channel is resumed afterwards.
-        /// </para>
-        /// <para><b>Platform-specific</b></para>
-        /// <para>
-        /// DX8 effects are a Windows feature requiring DirectX 8, or DirectX 9 for floating-point support.
-        /// On other platforms, they are emulated by BASS, except for the following which are currently unsupported: COMPRESSOR, GARGLE, and I3DL2REVERB.
-        /// On Windows CE, only PARAMEQ is supported.
-        /// </para>
-        /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSetFX")]
-        public extern static int ChannelSetFX(int Handle, EffectType Type, int Priority);
 
         /// <summary>
         /// Sets up a synchronizer on a MOD music, stream or recording channel.

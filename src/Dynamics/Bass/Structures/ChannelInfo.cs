@@ -19,7 +19,7 @@ namespace ManagedBass.Dynamics
     /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public struct ChannelInfo
+    public class ChannelInfo
     {
         int freq;
         int chans;

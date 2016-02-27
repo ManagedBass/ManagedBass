@@ -46,9 +46,12 @@ namespace ManagedBass
 
         internal static T Checked<T>(T Return, [CallerMemberName] string Caller = "")
         {
+            if (!ThrowForErrors)
+                return Return;
+
             var lastError = Bass.LastError;
 
-            if (!ThrowForErrors || lastError != Errors.OK)
+            if (lastError == Errors.OK)
                 return Return;
                 
             throw new BassException(lastError, Caller);

@@ -20,22 +20,22 @@ namespace ManagedBass
 
         IntPtr ptr;
         Version VersionInfo;
-                
-        public ID3v2Reader(IntPtr ptr)
-        {
-            TextFrames = new Dictionary<string, string>();
 
-            this.ptr = ptr;
+        public ID3v2Reader(IntPtr Pointer)
+        {
+            ptr = Pointer;
+
+            TextFrames = new Dictionary<string, string>();
 
             if (ReadText(3, TextEncodings.Ascii) != "ID3") // If don't contain ID3v2 tag
                 throw new DataMisalignedException("ID3v2 info not found");
-            
-            VersionInfo = ReadVersion(); // Read ID3v2 version           
-            Seek(1); // Flags
+
+            VersionInfo = new Version(2, ReadByte(), ReadByte()); // Read ID3v2 version           
+            ptr += 1; // Flags are skipped
 
             ReadAllFrames(ReadSize());
         }
-        
+
         void ReadAllFrames(int Length)
         {
             string FrameID;
@@ -59,7 +59,7 @@ namespace ManagedBass
                 }
 
                 // if readed byte is not zero. it must read as FrameID
-                Seek(-1);
+                ptr -= 1;
 
                 // ---------- Read Frame Header -----------------------
                 FrameID = ReadText(FrameIDLen, TextEncodings.Ascii);
@@ -70,9 +70,9 @@ namespace ManagedBass
 
                 bool Added = AddFrame(FrameID, FrameLength);
 
+                // if don't read this frame, we must go forward to read next frame
                 if (!Added)
-                    // if don't read this frame, we must go forward to read next frame
-                    Seek(FrameLength);
+                    ptr += FrameLength;
 
                 Length -= FrameLength + 10;
             }
@@ -83,7 +83,7 @@ namespace ManagedBass
             if (FrameID == null || !IsValidFrameID(FrameID))
                 return false;
 
-            if (IsTextFrame(FrameID))
+            if (FrameID[0].Is('T', 'W')) // Is Text Frame
             {
                 bool IsURL = FrameID[0] == 'W';
 
@@ -103,39 +103,32 @@ namespace ManagedBass
                 TextFrames.Add(FrameID, Text);
                 return true;
             }
-            
-            return false;
-        }
 
-        static bool IsTextFrame(string FrameID)
-        {
-            return FrameID[0] == 'T' || FrameID[0] == 'W';
+            return false;
         }
 
         static bool IsValidFrameID(string FrameID)
         {
-            if (FrameID == null)
+            if (FrameID == null || !FrameID.Length.Is(3, 4))
                 return false;
 
-            if (FrameID.Length != 4 && FrameID.Length != 3)
-                return false;
-            else foreach (char ch in FrameID)
-                    if (!Char.IsUpper(ch) && !char.IsDigit(ch))
-                        return false;
+            foreach (char ch in FrameID)
+                if (!Char.IsUpper(ch) && !char.IsDigit(ch))
+                    return false;
 
             return true;
         }
-                
-        public Dictionary<string, string> TextFrames { get; private set; }
+
+        public Dictionary<string, string> TextFrames { get; }
 
         #region Streaming
         string ReadText(int MaxLength, TextEncodings TEncoding)
         {
             if (MaxLength <= 0)
                 return "";
-            IntPtr Pos = ptr;
 
-            MemoryStream MStream = new MemoryStream();
+            var MStream = new MemoryStream();
+
             if (MaxLength >= 3)
             {
                 byte[] Buffer = new byte[3];
@@ -166,7 +159,7 @@ namespace ManagedBass
                 }
                 else ptr -= 3;
             }
-            bool Is2ByteSeprator = TEncoding == TextEncodings.UTF_16 || TEncoding == TextEncodings.UTF_16BE;
+            bool Is2ByteSeprator = TEncoding.Is(TextEncodings.UTF_16, TextEncodings.UTF_16BE);
 
             byte Buf;
             while (MaxLength > 0)
@@ -214,17 +207,16 @@ namespace ManagedBass
             if (Length > 4 || Length < 1)
                 throw (new ArgumentOutOfRangeException("ReadUInt method can read 1-4 byte(s)"));
 
-            byte[] Buf = new byte[Length];
-            byte[] RBuf = new byte[4];
+            byte[] Buf = new byte[Length],
+                   RBuf = new byte[4];
 
             Read(Buf, 0, Length);
 
             Buf.CopyTo(RBuf, 4 - Buf.Length);
             Array.Reverse(RBuf);
+
             return BitConverter.ToUInt32(RBuf, 0);
         }
-        
-        Version ReadVersion() { return new Version(2, ReadByte(), ReadByte()); }
 
         int ReadSize()
         {
@@ -250,14 +242,12 @@ namespace ManagedBass
                     return Encoding.Default;
             }
         }
-        
+
         void Read(byte[] buffer, int offset, int count)
         {
             Marshal.Copy(ptr, buffer, offset, count);
             ptr += count;
         }
-
-        void Seek(int offset) { ptr += offset; }
         #endregion
     }
 }

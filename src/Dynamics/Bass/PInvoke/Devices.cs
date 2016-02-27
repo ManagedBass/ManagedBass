@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using static ManagedBass.Extensions;
 
 namespace ManagedBass.Dynamics
 {
@@ -7,6 +8,7 @@ namespace ManagedBass.Dynamics
     {
         public const int NoSoundDevice = 0, DefaultDevice = -1;
 
+        #region Init
         [DllImport(DllName)]
         static extern bool BASS_Init(int Device, int Frequency, DeviceInitFlags Flags, IntPtr Win = default(IntPtr), IntPtr ClsID = default(IntPtr));
 
@@ -68,13 +70,37 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// <para>On Linux and Windows CE, the length of the device's buffer can be set via the <see cref="PlaybackBufferLength" /> config option.</para>
         /// </remarks>
+        /// <seealso cref="Free()"/>
+        /// <seealso cref="CPUUsage"/>
+        /// <seealso cref="GetDeviceInfo(int, out DeviceInfo)"/>
+        /// <seealso cref="GetDSoundObject(int)"/>
+        /// <seealso cref="GetInfo(out BassInfo)"/>
+        /// <seealso cref="MusicLoad(string, long, int, BassFlags, int)"/>
+        /// <seealso cref="CreateSample"/>
+        /// <seealso cref="SampleLoad(string, long, int, int, BassFlags)"/>
         public static bool Init(int Device = DefaultDevice, int Frequency = 44100, DeviceInitFlags Flags = DeviceInitFlags.Default, IntPtr Win = default(IntPtr), IntPtr ClsID = default(IntPtr))
         {
-            return Extensions.Checked(BASS_Init(Device, Frequency, Flags, Win, ClsID));
+            return Checked(BASS_Init(Device, Frequency, Flags, Win, ClsID));
         }
+        #endregion
 
-        [DllImport(DllName, EntryPoint = "BASS_Start")]
-        public static extern bool Start();
+        #region Start
+        [DllImport(DllName)]
+        static extern bool BASS_Start();
+
+        /// <summary>
+        /// Starts (or resumes) the output.
+        /// </summary>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.NotInitialised"><see cref="Init"/> has not been successfully called.</exception>
+        /// <remarks>
+        /// <para>The output is automatically started by <see cref="Init"/>, so there is no need to use this function unless you have stopped or paused the output.</para>
+        /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to.</para>
+        /// </remarks>
+        /// <seealso cref="Pause"/>
+        /// <seealso cref="Stop"/>
+        public static bool Start() => Checked(BASS_Start());
+        #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_Pause")]
         public static extern bool Pause();
@@ -144,9 +170,8 @@ namespace ManagedBass.Dynamics
 
         public static DeviceInfo GetDeviceInfo(int Device)
         {
-            DeviceInfo temp;
-            GetDeviceInfo(Device, out temp);
-            return temp;
+            DeviceInfo info;
+            return GetDeviceInfo(Device, out info) ? info : null;
         }
         #endregion
     }

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace ManagedBass.Dynamics
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct MidiFontInfo
+    public class MidiFontInfo
     {
         IntPtr name;
         IntPtr copyright;

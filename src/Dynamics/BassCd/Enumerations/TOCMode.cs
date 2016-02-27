@@ -3,7 +3,7 @@
 namespace ManagedBass.Dynamics
 {
     /// <summary>
-    /// The mode to use with <see cref="BassCd.GetTOC"/>.
+    /// The mode to use with <see cref="BassCd.GetTOC(int, TOCMode, out TOC)"/>.
     /// </summary>
     [Flags]
     public enum TOCMode
@@ -21,8 +21,8 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// + track#, Get the position of indexes (instead of tracks)
         /// <para>When this option is used, the 'first' and 'last' members of the TOC structure are index numbers, 
-        /// and the 'track' member of the TOCTrack structure is also an index number and the "lba" or "hmsf" member 
-        /// (depending on whether TOCMode.Time is used) is an offset from the start of the track</para>
+        /// and the 'track' member of the <see cref="TOCTrack"/> structure is also an index number and the "lba" or "hmsf" member 
+        /// (depending on whether "<see cref="Time"/>" is used) is an offset from the start of the track</para>
         /// </summary>
         Index = 512
     }

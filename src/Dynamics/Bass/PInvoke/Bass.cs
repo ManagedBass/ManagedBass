@@ -120,7 +120,7 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// Retrieves information on the device being used.
         /// </summary>
-        /// <returns><see cref="BassInfo"/> object with the retreived information. (null on Error)</returns>
+        /// <returns><see cref="BassInfo"/> object with the retreived information. (<see langword="null"/> on Error)</returns>
         /// <exception cref="Errors.NotInitialised"><see cref="Init"/> has not been successfully called.</exception>
         /// <remarks>
         /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to.
@@ -129,59 +129,41 @@ namespace ManagedBass.Dynamics
         {
             get
             {
-                BassInfo temp;
-                return GetInfo(out temp) ? temp : null;
+                BassInfo info;
+                return GetInfo(out info) ? info : null;
             }
         }
         #endregion
 
         #region GetDSoundObject
+        /// <summary>
+        /// Retrieves a pointer to a DirectSound object interface. (Available only on Windows) (Not much useful in .Net)
+        /// </summary>
+        /// <param name="obj">The interface to retrieve.</param>
+        /// <returns>
+        /// If successful, then a pointer to the requested object is returned, otherwise <see cref="IntPtr.Zero"/> is returned.
+        /// Use <see cref="LastError"/> to get the error code.
+        /// </returns>
         [DllImport(DllName, EntryPoint = "BASS_GetDSoundObject")]
         public static extern IntPtr GetDSoundObject(DSInterface obj);
 
+        /// <summary>
+        /// Retrieves a pointer to a DirectSound object interface. (Available only on Windows) (Not much useful in .Net)
+        /// </summary>
+        /// <param name="Channel">An HCHANNEL, HMUSIC or HSTREAM handle of which IDirectSoundBuffer is to be retrieved.</param>
+        /// <returns>
+        /// If successful, then a pointer to an IDirectSoundBuffer is returned, otherwise <see cref="IntPtr.Zero"/> is returned.
+        /// Use <see cref="LastError"/> to get the error code.
+        /// </returns>
         [DllImport(DllName, EntryPoint = "BASS_GetDSoundObject")]
-        public static extern IntPtr GetDSoundObject(int channel);
+        public static extern IntPtr GetDSoundObject(int Channel);
         #endregion
-
-        #region FX Parameters
-        [DllImport(DllName, EntryPoint = "BASS_FXSetParameters")]
-        public static extern bool FXSetParameters(int Handle, IntPtr param);
-
-        [DllImport(DllName, EntryPoint = "BASS_FXGetParameters")]
-        public static extern bool FXGetParameters(int Handle, IntPtr param);
-
-        [DllImport(DllName, EntryPoint = "BASS_FXReset")]
-        public static extern bool FXReset(int handle);
-        #endregion
-
+        
         #region Error Code
         [DllImport(DllName)]
         extern static Errors BASS_ErrorGetCode();
 
         public static Errors LastError => BASS_ErrorGetCode();
-        #endregion
-
-        #region Music
-        [DllImport(DllName, EntryPoint = "BASS_MusicFree")]
-        public extern static bool MusicFree(int Handle);
-
-        #region Music Load
-        [DllImport(DllName, CharSet = CharSet.Unicode)]
-        extern static int BASS_MusicLoad(bool mem, string file, long offset, int Length, BassFlags flags, int freq);
-
-        [DllImport(DllName)]
-        extern static int BASS_MusicLoad(bool mem, IntPtr file, long offset, int Length, BassFlags flags, int freq);
-
-        public static int MusicLoad(string File, long Offset, int Length, BassFlags Flags, int Frequency = 44100)
-        {
-            return BASS_MusicLoad(false, File, Offset, Length, Flags | BassFlags.Unicode, Frequency);
-        }
-
-        public static int MusicLoad(IntPtr Memory, long Offset, int Length, BassFlags Flags, int Frequency = 44100)
-        {
-            return BASS_MusicLoad(true, Memory, Offset, Length, Flags, Frequency);
-        }
-        #endregion
         #endregion
     }
 }

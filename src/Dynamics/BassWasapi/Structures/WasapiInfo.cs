@@ -3,7 +3,7 @@
 namespace ManagedBass.Dynamics
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct WasapiInfo
+    public class WasapiInfo
     {
         WasapiInitFlags initflags;
         int freq;
