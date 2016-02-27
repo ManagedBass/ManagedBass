@@ -70,7 +70,7 @@ namespace ManagedBass.Dynamics
         /// <remarks>
         /// This function flushes the internal buffers of the effect(s).
         /// Effects are automatically reset by <see cref="ChannelSetPosition"/>,
-        /// except when called from a "<see cref="SyncFlags.Mixtime"/>" <see cref="SyncProcedure"/>. 
+        /// except when called from a "<see cref="SyncFlags.Mixtime"/>" <see cref="SyncProcedure"/>.
         /// </remarks>
         public static bool FXReset(int Handle) => Checked(BASS_FXReset(Handle));
         #endregion

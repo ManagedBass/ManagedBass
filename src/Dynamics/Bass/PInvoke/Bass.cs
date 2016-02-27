@@ -158,7 +158,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_GetDSoundObject")]
         public static extern IntPtr GetDSoundObject(int Channel);
         #endregion
-        
+
         #region Error Code
         [DllImport(DllName)]
         extern static Errors BASS_ErrorGetCode();
