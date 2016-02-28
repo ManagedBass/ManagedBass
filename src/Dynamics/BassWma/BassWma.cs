@@ -188,8 +188,13 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeSetNotify")]
         public static extern bool EncodeSetNotify(int handle, ClientConnectProcedure proc, IntPtr user);
 
-        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeSetTag")]
-        public static extern bool EncodeSetTag(int handle, string tag, string value, int form);
+        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        static extern bool BASS_WMA_EncodeSetTag(int handle, string tag, string value, int form);
+
+        public static bool EncodeSetTag(int handle, string tag, string value)
+        {
+            return BASS_WMA_EncodeSetTag(handle, tag, value, 1); // form = 1 (Unicode)
+        }
 
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeGetClients")]
         public static extern int EncodeGetClients(int handle);
