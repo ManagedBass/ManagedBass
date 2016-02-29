@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace ManagedBass.Dynamics
 {
     /// <summary>
-    /// Used with <see cref="Bass.GetDeviceInfo(int,out DeviceInfo)" /> or <see cref="Bass.RecordGetDeviceInfo(int,out DeviceInfo)" /> to retrieve information on a device.
+    /// Used with <see cref="Bass.GetDeviceInfo(int,out DeviceInfo,bool)" /> or <see cref="Bass.RecordGetDeviceInfo(int,out DeviceInfo)" /> to retrieve information on a device.
     /// </summary>
     /// <remarks>
     /// <para>

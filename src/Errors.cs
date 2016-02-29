@@ -51,12 +51,12 @@ namespace ManagedBass
         InvalidPlaybackPosition = 7,
 
         /// <summary>
-        /// BASS_Init has not been successfully called
+        /// <see cref="Bass.Init"/> has not been successfully called
         /// </summary>
         NotInitialised = 8,
 
         /// <summary>
-        /// BASS_Start has not been successfully called
+        /// <see cref="Bass.Start"/> has not been successfully called
         /// </summary>
         OutputNotStarted = 9,
 

@@ -540,7 +540,7 @@ namespace ManagedBass.Dynamics
         /// When enabled, the "Default" device will also become the default device to <see cref="Bass.Init"/> (with device = -1).
         /// When the "Default" device is used, the <see cref="Bass.Volume"/> functions work a bit differently to usual;
         /// they deal with the "session" volume, which only affects the current process's output on the device, rather than the device's volume.
-        /// This option can only be set before <see cref="Bass.GetDeviceInfo(int,out DeviceInfo)"/> or <see cref="Bass.Init"/> has been called.
+        /// This option can only be set before <see cref="Bass.GetDeviceInfo(int,out DeviceInfo,bool)"/> or <see cref="Bass.Init"/> has been called.
         /// <para>
         /// <b>Platform-specific</b>: This config option is only available on Windows.
         /// It is available on all Windows versions (not including CE), but only Windows 7 has the default output switching feature.
@@ -582,7 +582,7 @@ namespace ManagedBass.Dynamics
         /// <remarks>
         /// This config option determines what character set is used in the
         /// <see cref="DeviceInfo"/> structure and by the <see cref="Bass.RecordGetInputName"/> function.
-        /// The default setting is ANSI, and it can only be changed before <see cref="Bass.GetDeviceInfo(int,out DeviceInfo)"/> or <see cref="Bass.Init"/>
+        /// The default setting is ANSI, and it can only be changed before <see cref="Bass.GetDeviceInfo(int,out DeviceInfo,bool)"/> or <see cref="Bass.Init"/>
         /// or <see cref="Bass.RecordGetDeviceInfo(int,out DeviceInfo)"/> or <see cref="Bass.RecordInit"/> has been called.
         /// <para><b>Platform-specific</b>: This config option is only available on Windows.</para>
         /// </remarks>

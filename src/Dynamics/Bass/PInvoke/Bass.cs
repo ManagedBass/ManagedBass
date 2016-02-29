@@ -163,6 +163,9 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         extern static Errors BASS_ErrorGetCode();
 
+        /// <summary>
+        /// Gets the Error that occured on the Last Bass function that was called.
+        /// </summary>
         public static Errors LastError => BASS_ErrorGetCode();
         #endregion
     }

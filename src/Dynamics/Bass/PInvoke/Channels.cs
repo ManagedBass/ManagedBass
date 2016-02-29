@@ -720,12 +720,45 @@ namespace ManagedBass.Dynamics
         public static extern int ChannelGetData(int Handle, [In, Out] float[] Buffer, int Length);
         #endregion
 
+        #region ChannelUpdate
         [DllImport(DllName)]
         static extern bool BASS_ChannelUpdate(int Handle, int Length);
 
+        /// <summary>
+		/// Updates the playback buffer of a stream or MOD music.
+		/// </summary>
+		/// <param name="Handle">The channel handle... a HMUSIC or HSTREAM.</param>
+		/// <param name="Length">
+        /// The amount to render, in milliseconds... 0 = default (2 x <see cref="UpdatePeriod" />).
+        /// This is capped at the space available in the buffer.
+        /// </param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para>
+        /// When starting playback of a stream or MOD music, after creating it or changing its position, there will be a slight delay while the initial data is decoded for playback. 
+		/// Usually the delay is not noticeable or important, but if you need playback to start instantly when you call <see cref="ChannelPlay" />, then use this function first. 
+		/// The length parameter should be at least equal to the <see cref="UpdatePeriod" />.
+        /// </para>
+		/// <para>
+        /// It may not always be possible to render the requested amount of data, in which case this function will still succeed. 
+		/// <see cref="ChannelGetData(int, IntPtr, int)" /> (<see cref="DataFlags.Available"/>) can be used to check how much data a channel has buffered for playback.
+        /// </para>
+		/// <para>
+        /// When automatic updating is disabled (<see cref="UpdatePeriod" /> = 0 or <see cref="UpdateThreads" /> = 0),
+        /// this function could be used instead of <see cref="Update" /> to implement different update periods for different channels,
+        /// instead of a single update period for all.
+        /// Unlike <see cref="Update" />, this function can also be used while automatic updating is enabled.
+        /// </para>
+		/// <para>The CPU usage of this function is not included in the <see cref="CPUUsage" /> reading.</para>
+		/// </remarks>
+        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.DataNotAvailable">Decoding channels do not have playback buffers.</exception>
+        /// <exception cref="Errors.Ended">The channel has ended.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static bool ChannelUpdate(int Handle, int Length)
         {
             return Checked(BASS_ChannelUpdate(Handle, Length));
         }
+        #endregion
     }
 }
