@@ -39,6 +39,7 @@
     <Compile Include="Dynamics\Bass\PInvoke\Music.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\FX.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\Plugin.cs" />
+    <Compile Include="ManagedAPI\Channels\MediaPlayer.cs" />
     <Compile Include="ManagedAPI\Devices\AsioDevice.cs" />
     <Compile Include="ManagedAPI\Devices\Bass\RecordingDevice.cs" />
     <Compile Include="ManagedAPI\Devices\Wasapi\WasapiLoopbackDevice.cs" />
