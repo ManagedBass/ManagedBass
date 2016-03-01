@@ -35,7 +35,8 @@ namespace ManagedBass.Dynamics
         public static DeviceInfo RecordGetDeviceInfo(int Device)
         {
             DeviceInfo info;
-            return RecordGetDeviceInfo(Device, out info) ? info : null;
+            RecordGetDeviceInfo(Device, out info);
+            return info;
         }
         #endregion
 
@@ -48,7 +49,8 @@ namespace ManagedBass.Dynamics
             get
             {
                 RecordInfo info;
-                return RecordGetInfo(out info) ? info : null;
+                RecordGetInfo(out info);
+                return info;
             }
         }
         #endregion

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace ManagedBass.Dynamics
 {
     [StructLayout(LayoutKind.Sequential)]
-    public class CDInfo
+    public struct CDInfo
     {
         IntPtr vendor;
         IntPtr product;

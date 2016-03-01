@@ -34,7 +34,8 @@ namespace ManagedBass.Dynamics
         public static ChannelInfo ChannelGetInfo(int Handle)
         {
             ChannelInfo info;
-            return ChannelGetInfo(Handle, out info) ? info : null;
+            ChannelGetInfo(Handle, out info);
+            return info;
         }
         #endregion
 

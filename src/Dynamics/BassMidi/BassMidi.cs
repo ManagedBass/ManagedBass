@@ -308,7 +308,8 @@ namespace ManagedBass.Dynamics
         public static MidiFontInfo FontGetInfo(int handle)
         {
             MidiFontInfo info;
-            return FontGetInfo(handle, out info) ? info : null;
+            FontGetInfo(handle, out info);
+            return info;
         }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetPreset")]
@@ -367,7 +368,8 @@ namespace ManagedBass.Dynamics
         public static MidiDeviceInfo InGetDeviceInfo(int device)
         {
             MidiDeviceInfo info;
-            return InGetDeviceInfo(device, out info) ? info : null;
+            InGetDeviceInfo(device, out info);
+            return info;
         }
 
         public static int InDeviceCount

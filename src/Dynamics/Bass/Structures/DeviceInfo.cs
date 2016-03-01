@@ -31,7 +31,7 @@ namespace ManagedBass.Dynamics
     /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public class DeviceInfo
+    public struct DeviceInfo
     {
         IntPtr name;
         IntPtr driver;

@@ -17,7 +17,7 @@ namespace ManagedBass.Dynamics
     /// </para>
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public class RecordInfo
+    public struct RecordInfo
     {
         RecordInfoFlags flags;
         int formats;

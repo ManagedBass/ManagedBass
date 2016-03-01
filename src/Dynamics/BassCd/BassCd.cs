@@ -128,7 +128,8 @@ namespace ManagedBass.Dynamics
         public static CDInfo GetDriveInfo(int Drive)
         {
             CDInfo info;
-            return GetDriveInfo(Drive, out info) ? info : null;
+            GetDriveInfo(Drive, out info);
+            return info;
         }
 
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreate")]
@@ -183,7 +184,8 @@ namespace ManagedBass.Dynamics
         public static TOC GetTOC(int Drive, TOCMode Mode)
         {
             TOC toc;
-            return GetTOC(Drive, Mode, out toc) ? toc : null;
+            GetTOC(Drive, Mode, out toc);
+            return toc;
         }
 
         [DllImport(DllName, EntryPoint = "BASS_CD_GetTracks")]

@@ -130,7 +130,8 @@ namespace ManagedBass.Dynamics
             get
             {
                 BassInfo info;
-                return GetInfo(out info) ? info : null;
+                GetInfo(out info);
+                return info;
             }
         }
         #endregion

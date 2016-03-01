@@ -323,7 +323,7 @@ namespace ManagedBass.Dynamics
 		/// A shared buffer is used for the Airplay receiver name information, which gets overwritten each time Airplay receiver information is requested, so it should be copied if needed. 
 		/// <see cref="EnableAirplayReceivers"/> can be used to change which of the receiver(s) are used.
         /// </param>
-        /// <returns>If successful, then an instance of the <see cref="DeviceInfo" /> class is returned, else <see langword="null" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <returns>An instance of the <see cref="DeviceInfo" /> class is returned. Use <see cref="LastError" /> to get the error code.</returns>
 		/// <remarks>
 		/// This function can be used to enumerate the available devices for a setup dialog. 
 		/// Device 0 is always the "no sound" device, so if you should start at device 1 if you only want to list real devices.
@@ -337,7 +337,8 @@ namespace ManagedBass.Dynamics
         public static DeviceInfo GetDeviceInfo(int Device, bool Airplay = false)
         {
             DeviceInfo info;
-            return GetDeviceInfo(Device, out info, Airplay) ? info : null;
+            GetDeviceInfo(Device, out info);
+            return info;
         }
         #endregion
     }

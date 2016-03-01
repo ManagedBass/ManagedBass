@@ -6,7 +6,7 @@ namespace ManagedBass.Dynamics
     /// Used with <see cref="BassAsio.Info" /> to retrieve information on the current device.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public class AsioInfo
+    public struct AsioInfo
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         char[] name;

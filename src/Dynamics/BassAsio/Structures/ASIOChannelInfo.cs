@@ -6,7 +6,7 @@ namespace ManagedBass.Dynamics
     /// Used with <see cref="BassAsio.ChannelGetInfo(bool,int,out AsioChannelInfo)" /> to retrieve information on the current device.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public class AsioChannelInfo
+    public struct AsioChannelInfo
     {
         int group;
         AsioSampleFormat format;

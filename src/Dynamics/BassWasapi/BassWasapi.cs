@@ -66,7 +66,8 @@ namespace ManagedBass.Dynamics
         public static WasapiDeviceInfo GetDeviceInfo(int Device)
         {
             WasapiDeviceInfo info;
-            return GetDeviceInfo(Device, out info) ? info : null;
+            GetDeviceInfo(Device, out info);
+            return info;
         }
 
         public static int DeviceCount
@@ -94,7 +95,8 @@ namespace ManagedBass.Dynamics
             get
             {
                 WasapiInfo info;
-                return GetInfo(out info) ? info : null;
+                GetInfo(out info);
+                return info;
             }
         }
 

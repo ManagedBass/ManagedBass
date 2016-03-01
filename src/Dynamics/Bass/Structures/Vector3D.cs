@@ -9,7 +9,7 @@ namespace ManagedBass.Dynamics
     /// The left-handed coordinate system is used.
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public class Vector3D
+    public struct Vector3D
     {
         /// <summary>
         /// +values=right, -values=left (default=0)

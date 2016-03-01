@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace ManagedBass.Dynamics
 {
     [StructLayout(LayoutKind.Sequential)]
-    public class WasapiDeviceInfo
+    public struct WasapiDeviceInfo
     {
         IntPtr name;
         IntPtr id;

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace ManagedBass.Dynamics
 {
     [StructLayout(LayoutKind.Sequential)]
-    public class MidiDeviceInfo
+    public struct MidiDeviceInfo
     {
         IntPtr name;
         int id;
