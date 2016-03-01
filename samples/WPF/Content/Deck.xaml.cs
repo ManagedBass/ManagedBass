@@ -14,10 +14,8 @@ namespace MBassWPF
     public partial class Deck : UserControl, INotifyPropertyChanged
     {
         #region Fields
-        ReverseChannel ReverseDecoder;
-        public TempoChannel TempoChannel;
+        MediaPlayerFX Player;
         DispatcherTimer ProgressBarTimer;
-        string FilePath;
         PanDSP pan;
 
         public static readonly DependencyProperty ReadyProperty = DependencyProperty.Register("Ready", typeof(bool), typeof(Deck), new UIPropertyMetadata(false));
@@ -32,10 +30,10 @@ namespace MBassWPF
 
         public double Position
         {
-            get { return TempoChannel != null ? TempoChannel.Position : 0; }
+            get { return Player.Position; }
             set
             {
-                if (TempoChannel != null) TempoChannel.Position = value;
+                Player.Position = value;
 
                 OnPropertyChanged();
             }
@@ -43,18 +41,18 @@ namespace MBassWPF
 
         public double Duration
         {
-            get { return TempoChannel != null ? TempoChannel.Duration : 0; }
+            get { return Player.Duration; }
             set { OnPropertyChanged(); }
         }
 
-        public double Volume { set { TempoChannel.Volume = value; } }
+        public double Volume { set { Player.Volume = value; } }
 
         public bool Reverse
         {
-            get { return ReverseDecoder != null ? ReverseDecoder.Reverse : false; }
+            get { return Player.Reverse; }
             set
             {
-                if (ReverseDecoder != null) ReverseDecoder.Reverse = value;
+                Player.Reverse = value;
 
                 OnPropertyChanged();
             }
@@ -62,10 +60,10 @@ namespace MBassWPF
 
         public bool Loop
         {
-            get { return TempoChannel != null ? TempoChannel.Loop : false; }
+            get { return Player.Loop; }
             set
             {
-                if (TempoChannel != null) TempoChannel.Loop = value;
+                Player.Loop = value;
 
                 OnPropertyChanged();
             }
@@ -73,10 +71,10 @@ namespace MBassWPF
 
         public double Tempo
         {
-            get { return TempoChannel != null ? TempoChannel.Tempo : 0; }
+            get { return Player.Tempo; }
             set
             {
-                if (TempoChannel != null) TempoChannel.Tempo = value;
+                Player.Tempo = value;
 
                 OnPropertyChanged();
             }
@@ -84,10 +82,10 @@ namespace MBassWPF
 
         public double Frequency
         {
-            get { return TempoChannel != null ? TempoChannel.Frequency : 44100; }
+            get { return Player.Frequency; }
             set
             {
-                if (TempoChannel != null) TempoChannel.Frequency = value;
+                Player.Frequency = value;
 
                 OnPropertyChanged();
             }
@@ -95,10 +93,10 @@ namespace MBassWPF
 
         public double Pitch
         {
-            get { return TempoChannel != null ? TempoChannel.Pitch : 0; }
+            get { return Player.Pitch; }
             set
             {
-                if (TempoChannel != null) TempoChannel.Pitch = value;
+                Player.Pitch = value;
 
                 OnPropertyChanged();
             }
@@ -203,6 +201,8 @@ namespace MBassWPF
 
         public Deck()
         {
+            Player = new MediaPlayerFX();
+
             InitializeComponent();
 
             DataContext = this;
@@ -210,35 +210,31 @@ namespace MBassWPF
             ProgressBarTimer = new DispatcherTimer(DispatcherPriority.Send) { Interval = TimeSpan.FromMilliseconds(100) };
             ProgressBarTimer.Tick += (s, e) =>
             {
-                if (TempoChannel.IsPlaying && !IsDragging)
+                if (Player.IsPlaying && !IsDragging)
                     OnPropertyChanged("Position");
             };
         }
 
         void Load(string FilePath)
         {
-            this.FilePath = FilePath;
-
             Stop();
 
-            ReverseDecoder = new ReverseChannel(new ManagedFileChannel(FilePath, true), true) { Reverse = false };
+            Player.Load(FilePath);
 
-            pan = new PanDSP(ReverseDecoder.Handle);
+            pan = new PanDSP(Player.Handle);
 
-            TempoChannel = new TempoChannel(ReverseDecoder);
-
-            ReverbEffect = new ReverbEffect(TempoChannel.Handle);
-            DistortionEffect = new DistortionEffect(TempoChannel.Handle);
+            ReverbEffect = new ReverbEffect(Player.Handle);
+            DistortionEffect = new DistortionEffect(Player.Handle);
 
             Ready = true;
 
             Reverse = false;
 
             ID3v2Tag t = null;
-            try { t = ID3v2Tag.Read(TempoChannel.Handle); }
+            try { t = ID3v2Tag.Read(Player.Handle); }
             catch { }
 
-            Title.Content = (t != null ? t.Title : Path.GetFileNameWithoutExtension(FilePath)) + " - " 
+            Title.Content = (t != null ? t.Title : Path.GetFileNameWithoutExtension(FilePath)) + " - "
                              + (t != null ? t.Artist : "Unknown Artist");
 
             // Update all bindings
@@ -251,10 +247,10 @@ namespace MBassWPF
             Frequency = 44100;
             Balance = Pitch = Tempo = 0;
 
-            TempoChannel.MediaEnded += (s, e) =>
+            Player.MediaEnded += (s, e) =>
                 {
                     Status.Content = "Stopped";
-                    TempoChannel.Stop();
+                    Player.Stop();
                     Position = Reverse ? Duration : 0;
                     ProgressBarTimer.Stop();
                     BPlay.Content = "/Resources/Play.png";
@@ -276,34 +272,31 @@ namespace MBassWPF
 
         public void Play(object sender = null, RoutedEventArgs e = null)
         {
-            if (TempoChannel != null)
+            if (BPlay.Content.ToString().Contains("Play"))
             {
-                if (BPlay.Content.ToString().Contains("Play"))
-                {
-                    if (Reverse && Position == 0)
-                        Position = Duration;
+                if (Reverse && Position == 0)
+                    Position = Duration;
 
-                    TempoChannel.Start();
+                Player.Start();
 
-                    Status.Content = "Playing";
-                    BPlay.Content = "/Resources/Pause.png";
-                    ProgressBarTimer.Start();
-                }
+                Status.Content = "Playing";
+                BPlay.Content = "/Resources/Pause.png";
+                ProgressBarTimer.Start();
+            }
 
-                else if (BPlay.Content.ToString().Contains("Pause"))
-                {
-                    TempoChannel.Pause();
+            else if (BPlay.Content.ToString().Contains("Pause"))
+            {
+                Player.Pause();
 
-                    Status.Content = "Paused";
-                    BPlay.Content = "/Resources/Play.png";
-                    ProgressBarTimer.Stop();
-                }
+                Status.Content = "Paused";
+                BPlay.Content = "/Resources/Play.png";
+                ProgressBarTimer.Stop();
             }
         }
 
         public void Stop(object sender = null, RoutedEventArgs e = null)
         {
-            if (TempoChannel != null && TempoChannel.Stop())
+            if (Player.Stop())
             {
                 Status.Content = "Stopped";
                 BPlay.Content = "/Resources/Play.png";
@@ -319,7 +312,7 @@ namespace MBassWPF
         {
             if (IsDragging)
             {
-                TempoChannel.Position = ((Slider)sender).Value;
+                Player.Position = ((Slider)sender).Value;
 
                 IsDragging = false;
             }
@@ -327,7 +320,7 @@ namespace MBassWPF
 
         void Slider_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) { IsDragging = true; }
 
-        void Slider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) { TempoChannel.Position = ((Slider)sender).Value; }
+        void Slider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) { Player.Position = ((Slider)sender).Value; }
         #endregion
 
         void UserControl_Drop(object sender, DragEventArgs e)
