@@ -11,7 +11,7 @@ namespace ManagedBass.Dynamics
     /// The sample data is in standard Windows PCM format, that is 8-bit samples are unsigned, 16-bit samples are signed, 32-bit floating-point samples range from -1 to +1.
     /// </param>
     /// <param name="Length">The number of bytes in the Buffer.</param>
-    /// <param name="User">The User instance data given when <see cref="Bass.RecordStart" /> was called.</param>
+    /// <param name="User">The User instance data given when <see cref="Bass.RecordStart(int, int, BassFlags, RecordProcedure, IntPtr)" /> was called.</param>
     /// <returns>Return <see langword="true" /> to stop recording, and anything else to continue recording.</returns>
     /// <remarks>
     /// <see cref="Bass.RecordFree" /> should not be used to free the recording device within a recording callback function.

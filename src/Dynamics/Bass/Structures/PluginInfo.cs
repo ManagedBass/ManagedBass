@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace ManagedBass.Dynamics
 {
     /// <summary>
-    /// Used with <see cref="Bass.GetPluginInfo" /> to retrieve information on a plugin.
+    /// Used with <see cref="Bass.PluginGetInfo" /> to retrieve information on a plugin.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct PluginInfo

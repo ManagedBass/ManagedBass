@@ -705,18 +705,115 @@ namespace ManagedBass.Dynamics
         #endregion
 
         #region Channel Get Data
-        [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
-        public static extern int ChannelGetData(int Handle, IntPtr Buffer, int Length);
-
+        [DllImport(DllName)]
+        static extern int BASS_ChannelGetData(int Handle, IntPtr Buffer, int Length);
+        
+		/// <summary>
+		/// Retrieves the immediate sample data (or an FFT representation of it) of a sample channel, stream, MOD music, or recording channel.
+		/// </summary>
+		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
+		/// <param name="Buffer">Location to write the data as an <see cref="IntPtr"/> (can be <see cref="IntPtr.Zero" /> when handle is a recording channel (HRECORD), to discard the requested amount of data from the recording buffer).
+		/// <para>Use <see cref="Marshal.AllocCoTaskMem"/> to allocate a memory buffer, use <see cref="Marshal.Copy(IntPtr, byte[], int, int)"/> to copy the buffer data from unmanaged BASS to your managed code and use <see cref="Marshal.FreeCoTaskMem"/> to free the memory buffer when not needed anymore.</para>
+		/// <para>Or make use of a <see cref="GCHandle"/> to receive data to a pinned managed object.</para>
+		/// </param>
+		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
+		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
+		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
+		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or <see cref="DataFlags.Fixed"/> flag).</para>
+		/// <para>When using the <see cref="DataFlags.Available"/> flag, the number of bytes in the channel's buffer is returned.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+        /// This function can only return as much data as has been written to the channel's buffer, so it may not always be possible to get the amount of data requested, especially if you request large amounts.
+        /// If you really do need large amounts, then increase the buffer lengths (<see cref="PlaybackBufferLength"/>).
+		/// The <see cref="DataFlags.Available"/> flag can be used to check how much data a channel's buffer contains at any time, including when stopped or stalled.
+        /// </para>
+		/// <para>When requesting data from a decoding channel, data is decoded directly from the channel's source (no playback buffer) and as much data as the channel has available can be decoded at a time.</para>
+		/// <para>When retrieving sample data, 8-bit samples are unsigned (0 to 255), 16-bit samples are signed (-32768 to 32767), 32-bit floating-point samples range from -1 to +1 (not clipped, so can actually be outside this range).
+        /// That is unless the <see cref="DataFlags.Float"/> flag is used, in which case, the sample data will be converted to 32-bit floating-point if it is not already, or if the <see cref="DataFlags.Fixed"/> flag is used, in which case the data will be coverted to 8.24 fixed-point.
+        /// </para>
+		/// <para>
+        /// Unless complex data is requested via the <see cref="DataFlags.FFTComplex"/> flag, the magnitudes of the first half of an FFT result are returned.
+		/// For example, with a 2048 sample FFT, there will be 1024 floating-point values returned.
+        /// If the <see cref="DataFlags.Fixed"/> flag is used, then the FFT values will be in 8.24 fixed-point form rather than floating-point.
+        /// Each value, or "bin", ranges from 0 to 1 (can actually go higher if the sample data is floating-point and not clipped).
+        /// The 1st bin contains the DC component, the 2nd contains the amplitude at 1/2048 of the channel's sample rate, followed by the amplitude at 2/2048, 3/2048, etc.
+		/// A Hann window is applied to the sample data to reduce leakage, unless the <see cref="DataFlags.FFTNoWindow"/> flag is used.
+        /// When a window is applied, it causes the DC component to leak into the next bin, but that can be removed (reduced to 0) by using the <see cref="DataFlags.FFTRemoveDC"/> flag.
+		/// Doing so slightly increases the processing required though, so it should only be done when needed, which is when a window is applied and the 2nd bin value is important.
+        /// </para>
+		/// <para>
+        /// Channels that have 2 or more sample channels (ie. stereo or above) may have FFT performed on each individual channel, using the <see cref="DataFlags.FFTIndividual"/> flag.
+        /// Without this flag, all of the channels are combined, and a single mono FFT is performed.
+        /// Performing the extra individual FFTs of course increases the amount of processing required.
+        /// The return values are interleaved in the same order as the channel's sample data, eg. stereo = left,right,left,etc.
+        /// </para>
+		/// <para>This function is most useful if you wish to visualize (eg. spectrum analyze) the sound.</para>
+		/// <para><b>Platform-specific:</b></para>
+		/// <para>The <see cref="DataFlags.Fixed"/> flag is only available on Android and Windows CE.</para>
+		/// </remarks>
+        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Ended">The channel has reached the end.</exception>
+        /// <exception cref="Errors.DataNotAvailable">The <see cref="DataFlags.Available"/> flag was used with a decoding channel.</exception>
+        /// <exception cref="Errors.BufferLost">Should not happen... check that a valid window handle was used with <see cref="Init" />.</exception>
+        public static int ChannelGetData(int Handle, IntPtr Buffer, int Length)
+        {
+            return Checked(BASS_ChannelGetData(Handle, Buffer, Length));
+        }
+        
+        /// <summary>
+		/// Retrieves the immediate sample data (or an FFT representation of it) of a sample channel, stream, MOD music, or recording channel.
+		/// </summary>
+		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
+		/// <param name="Buffer">Location to write the data as a <see cref="byte[]"/>.</param>
+		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
+		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
+		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
+		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or <see cref="DataFlags.Fixed"/> flag).</para>
+		/// <para>When using the <see cref="DataFlags.Available"/> flag, the number of bytes in the channel's buffer is returned.</para>
+		/// </returns>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
         public static extern int ChannelGetData(int Handle, [In, Out] byte[] Buffer, int Length);
 
+        /// <summary>
+		/// Retrieves the immediate sample data (or an FFT representation of it) of a sample channel, stream, MOD music, or recording channel.
+		/// </summary>
+		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
+		/// <param name="Buffer">Location to write the data as a <see cref="short[]"/>.</param>
+		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
+		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
+		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
+		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or <see cref="DataFlags.Fixed"/> flag).</para>
+		/// <para>When using the <see cref="DataFlags.Available"/> flag, the number of bytes in the channel's buffer is returned.</para>
+		/// </returns>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
         public static extern int ChannelGetData(int Handle, [In, Out] short[] Buffer, int Length);
 
+        /// <summary>
+		/// Retrieves the immediate sample data (or an FFT representation of it) of a sample channel, stream, MOD music, or recording channel.
+		/// </summary>
+		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
+		/// <param name="Buffer">Location to write the data as a <see cref="int[]"/>.</param>
+		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
+		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
+		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
+		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or <see cref="DataFlags.Fixed"/> flag).</para>
+		/// <para>When using the <see cref="DataFlags.Available"/> flag, the number of bytes in the channel's buffer is returned.</para>
+		/// </returns>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
         public static extern int ChannelGetData(int Handle, [In, Out] int[] Buffer, int Length);
 
+        /// <summary>
+		/// Retrieves the immediate sample data (or an FFT representation of it) of a sample channel, stream, MOD music, or recording channel.
+		/// </summary>
+		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
+		/// <param name="Buffer">Location to write the data as a <see cref="float[]"/>.</param>
+		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
+		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
+		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
+		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or <see cref="DataFlags.Fixed"/> flag).</para>
+		/// <para>When using the <see cref="DataFlags.Available"/> flag, the number of bytes in the channel's buffer is returned.</para>
+		/// </returns>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
         public static extern int ChannelGetData(int Handle, [In, Out] float[] Buffer, int Length);
         #endregion

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace ManagedBass.Dynamics
 {
     /// <summary>
-    /// Used with <see cref="Bass.GetPluginInfo" /> to retrieve information on the supported plugin formats.
+    /// Used with <see cref="Bass.PluginGetInfo" /> to retrieve information on the supported plugin formats.
     /// </summary>
     /// <remarks>
     /// The plugin information does not change, so the returned pointer remains valid for as long as the plugin is loaded.

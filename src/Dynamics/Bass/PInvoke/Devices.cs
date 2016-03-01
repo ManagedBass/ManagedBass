@@ -171,7 +171,9 @@ namespace ManagedBass.Dynamics
 		/// </summary>
 		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD. HSAMPLE handles may also be used.</param>
 		/// <returns>If successful, the device number is returned, else -1 is returned. Use <see cref="LastError" /> to get the error code.</returns>
-		/// <remarks>Recording devices are indicated by the HIWORD of the return value being 1, when this function is called with a HRECORD channel.</remarks>
+		/// <remarks>
+        /// Recording devices are indicated by the HIWORD of the return value being 1, when this function is called with a HRECORD channel.
+        /// </remarks>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
         public static int ChannelGetDevice(int Handle) => Checked(BASS_ChannelGetDevice(Handle));
         #endregion
@@ -215,7 +217,7 @@ namespace ManagedBass.Dynamics
                 int i;
                 DeviceInfo info;
 
-                for (i = 0; GetDeviceInfo(i, out info); i++) ;
+                for (i = 0; BASS_GetDeviceInfo(i, out info); i++) ;
 
                 return i;
             }
@@ -303,6 +305,7 @@ namespace ManagedBass.Dynamics
 		/// <remarks>
 		/// This function can be used to enumerate the available devices for a setup dialog. 
 		/// Device 0 is always the "no sound" device, so if you should start at device 1 if you only want to list real devices.
+        /// <para>This function does not use <see cref="BassException"/>.</para>
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
         /// On Linux, a "Default" device is hardcoded to device number 1, which uses the default output set in the ALSA config, and the real devices start at number 2.
@@ -312,7 +315,7 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.IllegalDevice">The device number specified is invalid.</exception>
         public static bool GetDeviceInfo(int Device, out DeviceInfo Info, bool Airplay = false)
         {
-            return Checked(BASS_GetDeviceInfo(Airplay ? Device | 0x1000000 : Device, out Info));
+            return BASS_GetDeviceInfo(Airplay ? Device | 0x1000000 : Device, out Info);
         }
 
         /// <summary>
@@ -337,7 +340,7 @@ namespace ManagedBass.Dynamics
         public static DeviceInfo GetDeviceInfo(int Device, bool Airplay = false)
         {
             DeviceInfo info;
-            GetDeviceInfo(Device, out info);
+            Checked(GetDeviceInfo(Device, out info));
             return info;
         }
         #endregion

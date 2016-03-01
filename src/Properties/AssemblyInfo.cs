@@ -7,4 +7,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyProduct ("ManagedBass")]
 [assembly: AssemblyCopyright ("(c) 2016 Mathew Sachin")]
 
-[assembly: AssemblyVersion ("0.15.0")]
+[assembly: AssemblyVersion ("0.16.0")]

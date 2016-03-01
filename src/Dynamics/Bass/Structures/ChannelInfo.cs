@@ -61,7 +61,7 @@ namespace ManagedBass.Dynamics
         /// The plugin that is handling the channel... 0 = not using a plugin.
         /// <para>
         /// Note this is only available with streams created using the plugin system via the standard BASS stream creation functions, not those created by add-on functions.
-        /// Information on the plugin can be retrieved via <see cref="Bass.GetPluginInfo" />.
+        /// Information on the plugin can be retrieved via <see cref="Bass.PluginGetInfo" />.
         /// </para>
         /// </summary>
         public int Plugin => plugin;

@@ -34,6 +34,9 @@ namespace ManagedBass.Dynamics
         /// </summary>
         public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
 
+        /// <summary>
+        /// Unloads the library from memory.
+        /// </summary>
         public static void Unload() => Extensions.Unload(hLib);
 
         #region Update
