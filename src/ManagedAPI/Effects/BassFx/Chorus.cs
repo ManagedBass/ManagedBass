@@ -14,7 +14,7 @@ namespace ManagedBass.Effects
         public float fRate = 200;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
-        public EffectType FXType { get { return EffectType.Chorus; } }
+        public EffectType FXType => EffectType.Chorus;
     }
 
     /// <summary>

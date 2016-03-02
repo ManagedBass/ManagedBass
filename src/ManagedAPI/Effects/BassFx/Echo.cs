@@ -13,7 +13,7 @@ namespace ManagedBass.Effects
         public bool bStereo = false;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
-        public EffectType FXType { get { return EffectType.Echo; } }
+        public EffectType FXType => EffectType.Echo;
     }
 
     public sealed class EchoEffect : Effect<EchoParameters>

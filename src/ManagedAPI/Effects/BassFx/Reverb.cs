@@ -15,7 +15,7 @@ namespace ManagedBass.Effects
         public int lMode = 0;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
-        public EffectType FXType { get { return EffectType.Freeverb; } }
+        public EffectType FXType => EffectType.Freeverb;
     }
 
     public sealed class ReverbEffect : Effect<ReverbParameters>

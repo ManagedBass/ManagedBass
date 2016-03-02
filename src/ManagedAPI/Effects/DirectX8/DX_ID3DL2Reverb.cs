@@ -19,7 +19,7 @@ namespace ManagedBass.Effects
         public float flDensity;              // [0.0, 100.0]     default: 100.0 %
         public float flHFReference;          // [20.0, 20000.0]  default: 5000.0 Hz
 
-        public EffectType FXType { get { return EffectType.DX_I3DL2Reverb; } }
+        public EffectType FXType => EffectType.DX_I3DL2Reverb;
     }
 
     public sealed class DX_ID3DL2ReverbEffect : Effect<DX_ID3DL2ReverbParameters>

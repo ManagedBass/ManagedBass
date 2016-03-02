@@ -10,7 +10,7 @@ namespace ManagedBass.Effects
         public float fBandwidth;
         public float fGain;
 
-        public EffectType FXType { get { return EffectType.DXParamEQ; } }
+        public EffectType FXType => EffectType.DXParamEQ;
     }
 
     public sealed class DXParamEQEffect : Effect<DXParamEQParameters>

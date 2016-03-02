@@ -14,7 +14,7 @@ namespace ManagedBass.Effects
         public float fDelay;
         public DXPhase lPhase;
 
-        public EffectType FXType { get { return EffectType.DXFlanger; } }
+        public EffectType FXType => EffectType.DXFlanger;
     }
 
     public sealed class DXFlangerEffect : Effect<DXFlangerParameters>

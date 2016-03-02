@@ -57,5 +57,17 @@ namespace ManagedBass
                 return Count;
             }
         }
+
+        public WasapiPlaybackDevice PlaybackDevice
+        {
+            get
+            {
+                foreach (var dev in WasapiPlaybackDevice.Devices)
+                    if (dev.DeviceInfo.ID == DeviceInfo.ID)
+                        return dev;
+
+                throw new Exception("Could not find a Playback Device.");
+            }
+        }
     }
 }

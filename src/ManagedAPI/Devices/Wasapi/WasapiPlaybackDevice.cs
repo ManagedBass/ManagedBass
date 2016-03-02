@@ -132,5 +132,17 @@ namespace ManagedBass
                 return Count;
             }
         }
+
+        public WasapiLoopbackDevice LoopbackDevice
+        {
+            get
+            {
+                foreach (var dev in WasapiLoopbackDevice.Devices)
+                    if (dev.DeviceInfo.ID == DeviceInfo.ID)
+                        return dev;
+
+                throw new Exception("Could not find a Loopback Device.");
+            }
+        }
     }
 }

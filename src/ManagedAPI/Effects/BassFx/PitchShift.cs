@@ -13,7 +13,7 @@ namespace ManagedBass.Effects
         
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
-        public EffectType FXType { get { return EffectType.PitchShift; } }
+        public EffectType FXType => EffectType.PitchShift;
     }
 
     public sealed class PitchShiftEffect : Effect<PitchShiftParameters>

@@ -13,7 +13,7 @@ namespace ManagedBass.Effects
         public float fRatio;
         public float fPredelay;
 
-        public EffectType FXType { get { return EffectType.DXCompressor; } }
+        public EffectType FXType => EffectType.DXCompressor;
     }
 
     public sealed class DXCompressorEffect : Effect<DXCompressorParameters>

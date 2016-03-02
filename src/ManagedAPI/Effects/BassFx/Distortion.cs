@@ -13,7 +13,7 @@ namespace ManagedBass.Effects
         public float fVolume = 0.3f;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
-        public EffectType FXType { get { return EffectType.Distortion; } }
+        public EffectType FXType => EffectType.Distortion;
     }
 
     public sealed class DistortionEffect : Effect<DistortionParameters>

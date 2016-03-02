@@ -77,7 +77,7 @@ namespace ManagedBass
             float[] Buffer = new float[Length];
             CreateSineWave(Buffer, StartAngle);
 
-            if (AS != null) AS.Dispose();
+            AS?.Dispose();
             AS = new AudioSample(4 * Length, Resolution: Resolution.Float);
             AS.WriteSampleData(Buffer);
             Handle = AS.Handle;

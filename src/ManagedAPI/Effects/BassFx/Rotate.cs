@@ -9,7 +9,7 @@ namespace ManagedBass.Effects
         public float fRate = 0;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
-        public EffectType FXType { get { return EffectType.Rotate; } }
+        public EffectType FXType => EffectType.Rotate;
     }
 
     public sealed class RotateEffect : Effect<RotateParameters>

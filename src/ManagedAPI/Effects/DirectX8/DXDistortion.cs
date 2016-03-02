@@ -12,7 +12,7 @@ namespace ManagedBass.Effects
         public float fPostEQBandwidth;
         public float fPreLowpassCutoff;
 
-        public EffectType FXType { get { return EffectType.DXDistortion; } }
+        public EffectType FXType => EffectType.DXDistortion;
     }
 
     public sealed class DXDistortionEffect : Effect<DXDistortionParameters>

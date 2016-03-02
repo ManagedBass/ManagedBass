@@ -43,7 +43,7 @@ namespace ManagedBass
             return base._Init(Frequency, Channels, Shared, UseEventSync, Buffer, Period);
         }
 
-        public static WasapiRecordingDevice DefaultDevice { get { return Devices.First((dev) => dev.DeviceInfo.IsDefault); } }
+        public static WasapiRecordingDevice DefaultDevice => Devices.First(dev => dev.DeviceInfo.IsDefault);
 
         public static int Count
         {

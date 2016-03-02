@@ -11,7 +11,7 @@ namespace ManagedBass.Effects
         public float fReverbTime;            // [0.001,3000.0]         default: 1000.0 ms
         public float fHighFreqRTRatio;       // [0.001,0.999]          default: 0.001
 
-        public EffectType FXType { get { return EffectType.DXReverb; } }
+        public EffectType FXType => EffectType.DXReverb;
     }
 
     public sealed class DXReverbEffect : Effect<DXReverbParameters>

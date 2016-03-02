@@ -14,7 +14,7 @@ namespace ManagedBass.Effects
         public float fDelay;
         public DXPhase lPhase;
 
-        public EffectType FXType { get { return EffectType.DXChorus; } }
+        public EffectType FXType => EffectType.DXChorus;
     }
 
     public sealed class DXChorusEffect : Effect<DXChorusParameters>

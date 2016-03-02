@@ -14,7 +14,7 @@ namespace ManagedBass.Effects
         public float fFreq = 50;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
-        public EffectType FXType { get { return EffectType.Phaser; } }
+        public EffectType FXType => EffectType.Phaser;
     }
 
     public sealed class PhaserEffect : Effect<PhaserParameters>

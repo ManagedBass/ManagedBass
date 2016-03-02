@@ -13,7 +13,7 @@ namespace ManagedBass.Effects
         public float fDelay = 0;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
-        public EffectType FXType { get { return EffectType.Damp; } }
+        public EffectType FXType => EffectType.Damp;
     }
 
     public sealed class DampEffect : Effect<DampParameters>

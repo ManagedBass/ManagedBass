@@ -14,7 +14,7 @@ namespace ManagedBass.Effects
         public float fFreq = 50;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
-        public EffectType FXType { get { return EffectType.AutoWah; } }
+        public EffectType FXType => EffectType.AutoWah;
     }
 
     /// <summary>

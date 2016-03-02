@@ -12,7 +12,7 @@ namespace ManagedBass.Effects
         public float fRightDelay;
         public bool lPanDelay;
 
-        public EffectType FXType { get { return EffectType.DXEcho; } }
+        public EffectType FXType => EffectType.DXEcho;
     }
 
     public sealed class DXEchoEffect : Effect<DXEchoParameters>

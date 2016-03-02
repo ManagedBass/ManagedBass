@@ -13,7 +13,7 @@ namespace ManagedBass.Effects
         public float fGain = 0;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
-        public EffectType FXType { get { return EffectType.PeakEQ; } }
+        public EffectType FXType => EffectType.PeakEQ;
     }
 
     public sealed class PeakEQEffect : Effect<PeakEQParameters>

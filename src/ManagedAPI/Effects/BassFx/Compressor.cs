@@ -13,7 +13,7 @@ namespace ManagedBass.Effects
         public float fRelease = 200f;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
-        public EffectType FXType { get { return EffectType.Compressor; } }
+        public EffectType FXType => EffectType.Compressor;
     }
 
     public sealed class CompressorEffect : Effect<CompressorParameters>

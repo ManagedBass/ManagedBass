@@ -35,7 +35,7 @@ namespace ManagedBass
 
         public bool Start()
         {
-            if (SilencePlayer != null) SilencePlayer.Start();
+            SilencePlayer?.Start();
 
             bool Result = Device.Start();
 
@@ -46,7 +46,7 @@ namespace ManagedBass
 
         public bool Stop()
         {
-            if (SilencePlayer != null) SilencePlayer.Stop();
+            SilencePlayer?.Stop();
 
             return Device.Stop();
         }
@@ -54,8 +54,7 @@ namespace ManagedBass
         public void Dispose()
         {
             Device.Dispose();
-            if (SilencePlayer != null)
-                SilencePlayer.Dispose();
+            SilencePlayer?.Dispose();
         }
 
         public event Action<BufferProvider> DataAvailable;

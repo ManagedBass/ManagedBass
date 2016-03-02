@@ -9,7 +9,7 @@ namespace ManagedBass.Effects
         public int dwRateHz; // Rate of modulation in hz
         public DXWaveform dwWaveShape;
 
-        public EffectType FXType { get { return EffectType.DXGargle; } }
+        public EffectType FXType => EffectType.DXGargle;
     }
 
     public sealed class DXGargleEffect : Effect<DXGargleParameters>

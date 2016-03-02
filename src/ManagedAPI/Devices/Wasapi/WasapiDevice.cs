@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using static ManagedBass.Dynamics.BassWasapi;
 
 namespace ManagedBass
 {
@@ -29,8 +30,8 @@ namespace ManagedBass
             {
                 if (!notifyRegistered)
                 {
-                    BassWasapi.CurrentDevice = DeviceIndex;
-                    notifyRegistered = BassWasapi.SetNotify(notifyproc);
+                    CurrentDevice = DeviceIndex;
+                    notifyRegistered = SetNotify(notifyproc);
                 }
 
                 _StateChanged += value;
@@ -42,8 +43,8 @@ namespace ManagedBass
                 if (_StateChanged == null
                     && notifyRegistered)
                 {
-                    BassWasapi.CurrentDevice = DeviceIndex;
-                    notifyRegistered = !BassWasapi.SetNotify(null);
+                    CurrentDevice = DeviceIndex;
+                    notifyRegistered = !SetNotify(null);
                 }
             }
         }
@@ -58,7 +59,7 @@ namespace ManagedBass
         #region Device Info
         public int DeviceIndex { get; }
 
-        public WasapiDeviceInfo DeviceInfo => BassWasapi.GetDeviceInfo(DeviceIndex);
+        public WasapiDeviceInfo DeviceInfo => GetDeviceInfo(DeviceIndex);
         #endregion
 
         #region Callback
@@ -75,25 +76,25 @@ namespace ManagedBass
 
         public void Dispose()
         {
-            BassWasapi.CurrentDevice = DeviceIndex;
-            BassWasapi.Free();
+            CurrentDevice = DeviceIndex;
+            Free();
         }
 
         #region Read
-        public int Read(IntPtr Buffer, int Length) => BassWasapi.GetData(Buffer, Length);
+        public int Read(IntPtr Buffer, int Length) => GetData(Buffer, Length);
 
-        public int Read(float[] Buffer, int Length) => BassWasapi.GetData(Buffer, Length);
+        public int Read(float[] Buffer, int Length) => GetData(Buffer, Length);
         #endregion
 
         #region Write
-        public void Write(IntPtr Buffer, int Length) => BassWasapi.PutData(Buffer, Length);
+        public void Write(IntPtr Buffer, int Length) => PutData(Buffer, Length);
 
-        public void Write(float[] Buffer, int Length) => BassWasapi.PutData(Buffer, Length);
+        public void Write(float[] Buffer, int Length) => PutData(Buffer, Length);
         #endregion
 
         public bool Lock(bool Lock = true)
         {
-            BassWasapi.CurrentDevice = DeviceIndex;
+            CurrentDevice = DeviceIndex;
             return BassWasapi.Lock(Lock);
         }
 
@@ -101,29 +102,29 @@ namespace ManagedBass
         {
             get
             {
-                BassWasapi.CurrentDevice = DeviceIndex;
-                return BassWasapi.GetMute();
+                CurrentDevice = DeviceIndex;
+                return GetMute();
             }
             set
             {
-                BassWasapi.CurrentDevice = DeviceIndex;
-                BassWasapi.SetMute(WasapiVolumeTypes.Device, value);
+                CurrentDevice = DeviceIndex;
+                SetMute(WasapiVolumeTypes.Device, value);
             }
         }
 
-        public double Level => BassWasapi.GetDeviceLevel(DeviceIndex);
+        public double Level => GetDeviceLevel(DeviceIndex);
 
         public double Volume
         {
             get
             {
-                BassWasapi.CurrentDevice = DeviceIndex;
-                return BassWasapi.GetVolume(WasapiVolumeTypes.Device | WasapiVolumeTypes.LinearCurve);
+                CurrentDevice = DeviceIndex;
+                return GetVolume(WasapiVolumeTypes.Device | WasapiVolumeTypes.LinearCurve);
             }
             set
             {
-                BassWasapi.CurrentDevice = DeviceIndex;
-                BassWasapi.SetVolume(WasapiVolumeTypes.Device | WasapiVolumeTypes.LinearCurve, (float)value);
+                CurrentDevice = DeviceIndex;
+                SetVolume(WasapiVolumeTypes.Device | WasapiVolumeTypes.LinearCurve, (float)value);
             }
         }
 
@@ -134,13 +135,13 @@ namespace ManagedBass
             var flags = Shared ? WasapiInitFlags.Shared : WasapiInitFlags.Exclusive;
             if (UseEventSync) flags |= WasapiInitFlags.EventDriven;
 
-            bool Result = BassWasapi.Init(DeviceIndex,
-                                          Frequency,
-                                          Channels,
-                                          flags,
-                                          Buffer,
-                                          Period,
-                                          proc);
+            bool Result = Init(DeviceIndex,
+                               Frequency,
+                               Channels,
+                               flags,
+                               Buffer,
+                               Period,
+                               proc);
 
             return Result;
         }
@@ -149,20 +150,20 @@ namespace ManagedBass
         {
             get
             {
-                BassWasapi.CurrentDevice = DeviceIndex;
+                CurrentDevice = DeviceIndex;
                 return BassWasapi.IsStarted;
             }
         }
 
         public bool Start()
         {
-            BassWasapi.CurrentDevice = DeviceIndex;
+            CurrentDevice = DeviceIndex;
             return BassWasapi.Start();
         }
 
         public bool Stop(bool Reset = true)
         {
-            BassWasapi.CurrentDevice = DeviceIndex;
+            CurrentDevice = DeviceIndex;
             return BassWasapi.Stop(Reset);
         }
 
