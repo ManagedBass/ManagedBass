@@ -28,7 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ManagedBass, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ManagedBass, Version=0.16.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\src\bin\Debug\ManagedBass.dll</HintPath>
     </Reference>
@@ -137,7 +137,6 @@
     <Resource Include="Resources\Stop.png" />
     <Resource Include="Resources\Record.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Add.ico" />
     <Resource Include="Resources\ShiftA.png" />

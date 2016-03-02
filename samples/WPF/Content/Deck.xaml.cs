@@ -30,7 +30,15 @@ namespace MBassWPF
 
         public double Position
         {
-            get { return Player.Position; }
+            get 
+            {
+                var t = Player.Position;
+
+                if (t == -1)
+                    return 0;
+
+                return t;
+            }
             set
             {
                 Player.Position = value;
@@ -41,7 +49,15 @@ namespace MBassWPF
 
         public double Duration
         {
-            get { return Player.Duration; }
+            get 
+            {
+                var t = Player.Duration;
+                
+                if (t == -1)
+                    return 0;
+                
+                return Player.Duration;
+            }
             set { OnPropertyChanged(); }
         }
 
@@ -203,6 +219,15 @@ namespace MBassWPF
         {
             Player = new MediaPlayerFX();
 
+            Player.MediaEnded += (s, e) =>
+            {
+                Status.Content = "Stopped";
+                Player.Stop();
+                Position = Reverse ? Duration : 0;
+                ProgressBarTimer.Stop();
+                BPlay.Content = "/Resources/Play.png";
+            };
+
             InitializeComponent();
 
             DataContext = this;
@@ -219,7 +244,8 @@ namespace MBassWPF
         {
             Stop();
 
-            Player.Load(FilePath);
+            if (!Player.Load(FilePath))
+                return;
 
             pan = new PanDSP(Player.Handle);
 
@@ -227,8 +253,6 @@ namespace MBassWPF
             DistortionEffect = new DistortionEffect(Player.Handle);
 
             Ready = true;
-
-            Reverse = false;
 
             ID3v2Tag t = null;
             try { t = ID3v2Tag.Read(Player.Handle); }
@@ -243,22 +267,8 @@ namespace MBassWPF
 
             BPlay.Content = "/Resources/Play.png";
             Status.Content = "Ready";
-
-            Frequency = 44100;
-            Balance = Pitch = Tempo = 0;
-
-            Player.MediaEnded += (s, e) =>
-                {
-                    Status.Content = "Stopped";
-                    Player.Stop();
-                    Position = Reverse ? Duration : 0;
-                    ProgressBarTimer.Stop();
-                    BPlay.Content = "/Resources/Play.png";
-                };
-
+            
             if (MusicLoaded != null) MusicLoaded();
-            //}
-            //catch { Error(); }
         }
 
         public event Action MusicLoaded;

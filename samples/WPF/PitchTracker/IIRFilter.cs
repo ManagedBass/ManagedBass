@@ -2,9 +2,9 @@
 
 namespace Pitch
 {
-    public enum IIRFilterType { None = 0, LP, HP, BP }
+    public enum IIRFilterType { None, LP, HP, BP }
 
-    public enum IIRProtoType { None = 0, Butterworth, Chebyshev, }
+    public enum IIRProtoType { None, Butterworth, Chebyshev, }
 
     /// <summary>
     /// Infinite impulse response filter (old style analog filters)
@@ -40,22 +40,22 @@ namespace Pitch
                 if (m_order < 1 || m_order > 16 ||
                     m_protoType == IIRProtoType.None ||
                     m_filterType == IIRFilterType.None ||
-                    m_sampleRate <= 0.0f ||
-                    m_fN <= 0.0f)
+                    m_sampleRate <= 0 ||
+                    m_fN <= 0)
                     return false;
 
                 switch (m_filterType)
                 {
                     case IIRFilterType.LP:
-                        if (m_fp2 <= 0.0f) return false;
+                        if (m_fp2 <= 0) return false;
                         break;
 
                     case IIRFilterType.BP:
-                        if (m_fp1 <= 0.0f || m_fp2 <= 0.0f || m_fp1 >= m_fp2) return false;
+                        if (m_fp1 <= 0 || m_fp2 <= 0 || m_fp1 >= m_fp2) return false;
                         break;
 
                     case IIRFilterType.HP:
-                        if (m_fp1 <= 0.0f) return false;
+                        if (m_fp1 <= 0) return false;
                         break;
                 }
 
@@ -154,9 +154,7 @@ namespace Pitch
         }
 
         bool IsOdd(int n) { return (n & 1) == 1; }
-
-        float Sqr(float value) { return value * value; }
-
+        
         double Sqr(double value) { return value * value; }
 
         /// <summary>
@@ -461,7 +459,7 @@ namespace Pitch
 
             for (int sampleIdx = 0; sampleIdx < nLen; sampleIdx++)
             {
-                double sum = 0.0f;
+                double sum = 0;
 
                 m_inHistory[m_histIdx] = srcBuf[srcPos + sampleIdx] + denormal;
 
@@ -477,7 +475,7 @@ namespace Pitch
 
         public float FilterSample(float inVal)
         {
-            double sum = 0.0f;
+            double sum = 0;
 
             m_inHistory[m_histIdx] = inVal;
 
@@ -501,8 +499,8 @@ namespace Pitch
             // Filter gain at uniform frequency intervals
             float[] g = new float[freqPoints];
             double theta, s, c, sac, sas, sbc, sbs;
-            float gMax = -100.0f;
-            float sc = 10.0f / (float)Math.Log(10.0f);
+            float gMax = -100;
+            float sc = 10 / (float)Math.Log(10);
             double t = Math.PI / (freqPoints - 1);
 
             for (int i = 0; i < freqPoints; i++)

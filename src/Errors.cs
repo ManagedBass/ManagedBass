@@ -3,6 +3,9 @@ using System;
 
 namespace ManagedBass
 {
+    /// <summary>
+    /// Bass Error Codes returned by <see cref="Bass.LastError" />.
+    /// </summary>
     public enum Errors
     {
         /// <summary>

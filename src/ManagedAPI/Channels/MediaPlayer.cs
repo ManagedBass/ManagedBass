@@ -6,15 +6,17 @@ namespace ManagedBass
     {
         public bool Load(string FileName)
         {
-            if (!IsDisposed)
-                Dispose();
+            try
+            {
+                if (Handle != 0)
+                    Bass.StreamFree(Handle);
+            }
+            catch { }
 
             int h = Bass.CreateStream(FileName);
 
             if (h == 0)
                 return false;
-
-            IsDisposed = false;
 
             Handle = h;
 
@@ -24,26 +26,37 @@ namespace ManagedBass
 
     public class MediaPlayerFX : Channel
     {
+        int TempoHandle;
+
         public bool Load(string FileName)
         {
-            if (!IsDisposed)
-                Dispose();
+            try
+            {
+                if (Handle != 0)
+                    Bass.StreamFree(Handle);
+            }
+            catch { }
 
             int h = Bass.CreateStream(FileName, Flags: BassFlags.Decode);
 
             if (h == 0)
                 return false;
 
-            try { h = BassFx.TempoCreate(h, BassFlags.Decode | BassFlags.FxFreeSource); }
-            catch { return false; }
+            h = BassFx.TempoCreate(h, BassFlags.Decode | BassFlags.FxFreeSource);
+            
+            if (h == 0)
+                return false;
 
-            h = BassFx.ReverseCreate(h, Bass.ChannelSeconds2Bytes(h, 1), BassFlags.FxFreeSource);
+            TempoHandle = h;
 
-            Reverse = false;
+            h = BassFx.ReverseCreate(h, 2, BassFlags.FxFreeSource);
 
-            IsDisposed = false;
+            if (h == 0)
+                return false;
 
             Handle = h;
+
+            Reverse = false;
 
             return true;
         }
@@ -56,14 +69,14 @@ namespace ManagedBass
 
         public double Pitch
         {
-            get { return Bass.ChannelGetAttribute(Handle, ChannelAttribute.Pitch); }
-            set { Bass.ChannelSetAttribute(Handle, ChannelAttribute.Pitch, value); }
+            get { return Bass.ChannelGetAttribute(TempoHandle, ChannelAttribute.Pitch); }
+            set { Bass.ChannelSetAttribute(TempoHandle, ChannelAttribute.Pitch, value); }
         }
 
         public double Tempo
         {
-            get { return Bass.ChannelGetAttribute(Handle, ChannelAttribute.Tempo); }
-            set { Bass.ChannelSetAttribute(Handle, ChannelAttribute.Tempo, value); }
+            get { return Bass.ChannelGetAttribute(TempoHandle, ChannelAttribute.Tempo); }
+            set { Bass.ChannelSetAttribute(TempoHandle, ChannelAttribute.Tempo, value); }
         }
     }
 }

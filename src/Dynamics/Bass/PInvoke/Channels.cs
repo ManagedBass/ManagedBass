@@ -765,7 +765,7 @@ namespace ManagedBass.Dynamics
 		/// Retrieves the immediate sample data (or an FFT representation of it) of a sample channel, stream, MOD music, or recording channel.
 		/// </summary>
 		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
-		/// <param name="Buffer">Location to write the data as a <see cref="byte[]"/>.</param>
+		/// <param name="Buffer">Location to write the data as a byte[].</param>
 		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
 		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
 		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
@@ -779,7 +779,7 @@ namespace ManagedBass.Dynamics
 		/// Retrieves the immediate sample data (or an FFT representation of it) of a sample channel, stream, MOD music, or recording channel.
 		/// </summary>
 		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
-		/// <param name="Buffer">Location to write the data as a <see cref="short[]"/>.</param>
+		/// <param name="Buffer">Location to write the data as a short[].</param>
 		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
 		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
 		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
@@ -793,7 +793,7 @@ namespace ManagedBass.Dynamics
 		/// Retrieves the immediate sample data (or an FFT representation of it) of a sample channel, stream, MOD music, or recording channel.
 		/// </summary>
 		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
-		/// <param name="Buffer">Location to write the data as a <see cref="int[]"/>.</param>
+		/// <param name="Buffer">Location to write the data as a int[].</param>
 		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
 		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
 		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
@@ -807,7 +807,7 @@ namespace ManagedBass.Dynamics
 		/// Retrieves the immediate sample data (or an FFT representation of it) of a sample channel, stream, MOD music, or recording channel.
 		/// </summary>
 		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
-		/// <param name="Buffer">Location to write the data as a <see cref="float[]"/>.</param>
+		/// <param name="Buffer">Location to write the data as a float[].</param>
 		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
 		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
 		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>

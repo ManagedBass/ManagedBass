@@ -1,5 +1,5 @@
-﻿using System;
-using ManagedBass.Dynamics;
+﻿using ManagedBass.Dynamics;
+using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -8,8 +8,6 @@ namespace ManagedBass
     public class Channel : IDisposable
     {
         #region Fields
-        public bool IsDisposed { get; protected set; }
-
         SynchronizationContext syncContext;
 
         bool RestartOnNextPlayback = false;
@@ -17,11 +15,7 @@ namespace ManagedBass
         int HCHANNEL;
         public virtual int Handle
         {
-            get
-            {
-                if (!IsDisposed) return HCHANNEL;
-                else throw new ObjectDisposedException(this.ToString());
-            }
+            get { return HCHANNEL; }
             protected set
             {
                 ChannelInfo info;
@@ -37,9 +31,7 @@ namespace ManagedBass
                 Resolution = info.Resolution;
                 OriginalResolution = info.OriginalResolution;
                 IsDecodingChannel = info.IsDecodingChannel;
-
-                IsDisposed = false;
-
+                
                 HCHANNEL = value;
 
                 Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, Free_Delegate);
@@ -57,7 +49,7 @@ namespace ManagedBass
             try
             {
                 Dispose();
-                IsDisposed = true;
+                HCHANNEL = 0;
 
                 var handler = Disposed;
 
@@ -168,7 +160,11 @@ namespace ManagedBass
 
         public bool Unlock() => Bass.ChannelLock(Handle, false);
 
-        public virtual void Dispose() { if (!IsDisposed) IsDisposed = Bass.StreamFree(Handle); }
+        public virtual void Dispose() 
+        { 
+            if (HCHANNEL != 0 && Bass.StreamFree(HCHANNEL))
+                HCHANNEL = 0;
+        }
 
         public override int GetHashCode() => Handle;
 

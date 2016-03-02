@@ -42,6 +42,9 @@ namespace ManagedBass
             return false;
         }
 
+        /// <summary>
+        /// Gets or Sets whether a <see cref="BassException"/> must be thrown on Error.
+        /// </summary>
         public static bool ThrowForErrors { get; set; } = false;
 
         internal static T Checked<T>(T Return, [CallerMemberName] string Caller = "")

@@ -88,7 +88,7 @@ namespace MBassWPF
 
             Content = FileName;
 
-            PreviewMouseLeftButtonDown += (s, e) => DragDrop.DoDragDrop(this, FileName, DragDropEffects.All);
+            PreviewMouseLeftButtonDown += (s, e) => DragDrop.DoDragDrop(this, FileName, DragDropEffects.Copy);
         }
 
         void SaveReverse(string FilePath)
@@ -96,7 +96,7 @@ namespace MBassWPF
             try
             {
                 var kind = MainWindow.SelectedWriterKind;
-                string SaveFilePath = Path.Combine(MainWindow.OutFolder, Path.GetFileNameWithoutExtension(FilePath) + " Reverse." + kind.ToString().ToLower());
+                string SaveFilePath = Path.Combine(MainWindow.OutFolder, Path.GetFileNameWithoutExtension(FilePath) + ".Reverse." + kind.ToString().ToLower());
 
                 // Using default Resolution.Short
                 IAudioFileWriter writer;
@@ -115,7 +115,9 @@ namespace MBassWPF
                         break;
                 }
 
-                new ReverseChannel(new FileChannel(FilePath, true), true).DecodeToFile(writer);
+                using (var fc = new FileChannel(FilePath, true))
+                using (var rc = new ReverseChannel(fc, true))
+                    rc.DecodeToFile(writer);
 
                 MessageBox.Show("Saved");
             }

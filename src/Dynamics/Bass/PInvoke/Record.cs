@@ -157,27 +157,76 @@ namespace ManagedBass.Dynamics
         #endregion
 
         #region Record Get Device Info
+        /// <summary>
+		/// Retrieves information on a recording device.
+		/// </summary>
+		/// <param name="Device">The device to get the information of... 0 = first.</param>
+		/// <param name="Info">A <see cref="DeviceInfo" /> object to retreive the information into.</param>
+		/// <returns>
+        /// If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
+        /// Use <see cref="LastError" /> to get the error code.
+        /// This function does not show <see cref="BassException"/>.
+        /// </returns>
+		/// <remarks>
+		/// This function can be used to enumerate the available recording devices for a setup dialog.
+		/// <para><b>Platform-specific</b></para>
+		/// <para>
+        /// Recording support requires DirectX 5 (or above) on Windows.
+        /// On Linux, a "Default" device is hardcoded to device number 0, which uses the default input set in the ALSA config.
+        /// </para>
+		/// </remarks>
+        /// <exception cref="Errors.IllegalDevice">The device number specified is invalid.</exception>
+        /// <exception cref="Errors.DirectX">A sufficient version of DirectX is not installed.</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordGetDeviceInfo")]
-        public static extern bool RecordGetDeviceInfo(int Device, out DeviceInfo info);
+        public static extern bool RecordGetDeviceInfo(int Device, out DeviceInfo Info);
 
+        /// <summary>
+		/// Retrieves information on a recording device.
+		/// </summary>
+		/// <param name="Device">The device to get the information of... 0 = first.</param>
+		/// <returns>An instance of the <see cref="DeviceInfo" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para><b>Platform-specific</b></para>
+		/// <para>
+        /// Recording support requires DirectX 5 (or above) on Windows.
+        /// On Linux, a "Default" device is hardcoded to device number 0, which uses the default input set in the ALSA config.
+        /// </para>
+		/// </remarks>
+        /// <exception cref="Errors.IllegalDevice">The device number specified is invalid.</exception>
+        /// <exception cref="Errors.DirectX">A sufficient version of DirectX is not installed.</exception>
         public static DeviceInfo RecordGetDeviceInfo(int Device)
         {
             DeviceInfo info;
-            RecordGetDeviceInfo(Device, out info);
+            Checked(RecordGetDeviceInfo(Device, out info));
             return info;
         }
         #endregion
 
         #region Record Get Info
+	    /// <summary>
+		/// Retrieves information on the recording device being used.
+		/// </summary>
+		/// <param name="info">A <see cref="RecordInfo" /> object to retrieve the information into.</param>
+		/// <returns>
+        /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
+        /// Use <see cref="LastError" /> to get the error code.
+        /// This function does not show <see cref="BassException"/>.
+        /// </returns>
+        /// <exception cref="Errors.NotInitialised"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordGetInfo")]
         public static extern bool RecordGetInfo(out RecordInfo info);
-
-        public static RecordInfo RecordingInfo
+        
+		/// <summary>
+		/// Retrieves information on the recording device being used.
+		/// </summary>
+		/// <returns>An instance of the <see cref="RecordInfo" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.NotInitialised"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
+		public static RecordInfo RecordingInfo
         {
             get
             {
                 RecordInfo info;
-                RecordGetInfo(out info);
+                Checked(RecordGetInfo(out info));
                 return info;
             }
         }

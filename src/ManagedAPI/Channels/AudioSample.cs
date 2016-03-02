@@ -57,6 +57,14 @@ namespace ManagedBass
         public bool WriteSampleData(int[] Buffer) { return Bass.SampleSetData(Sample, Buffer); }
         #endregion
 
-        public override void Dispose() { try { if (!IsDisposed) IsDisposed = Bass.SampleFree(Sample); } catch { } }
+        public override void Dispose() 
+        {
+            try 
+            {
+                if (Handle != 0 && Bass.SampleFree(Sample))
+                    Sample = 0;
+            }
+            catch { }
+        }
     }
 }
