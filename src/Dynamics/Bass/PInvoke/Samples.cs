@@ -1,15 +1,61 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using static ManagedBass.Extensions;
 
 namespace ManagedBass.Dynamics
 {
     public static partial class Bass
     {
-        [DllImport(DllName, EntryPoint = "BASS_SampleGetChannel")]
-        public static extern int SampleGetChannel(int sample, bool onlynew);
+        #region SampleGetChannel
+        [DllImport(DllName)]
+        static extern int BASS_SampleGetChannel(int Sample, bool OnlyNew);
 
-        [DllImport(DllName, EntryPoint = "BASS_SampleFree")]
-        public static extern bool SampleFree(int Handle);
+        /// <summary>
+        /// Creates/initializes a playback channel for a sample.
+        /// </summary>
+        /// <param name="Sample">Handle of the sample to play.</param>
+        /// <param name="OnlyNew">Do not recycle/override one of the sample's existing channels?</param>
+        /// <returns>If successful, the handle of the new channel is returned, else 0 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// Use <see cref="SampleGetInfo(int, ref SampleInfo)" /> and <see cref="SampleSetInfo(int, SampleInfo)" /> to set a sample's default attributes, which are used when creating a channel. 
+        /// After creation, a channel's attributes can be changed via <see cref="ChannelSetAttribute(int, ChannelAttribute, float)" />, <see cref="ChannelSet3DAttributes" /> and <see cref="ChannelSet3DPosition" />.
+        /// <see cref="Apply3D" /> should be called before starting playback of a 3D sample, even if you just want to use the default settings.
+        /// </para>
+        /// <para>
+        /// If a sample has a maximum number of simultaneous playbacks of 1 (the max parameter was 1 when calling <see cref="SampleLoad(string, long, int, int, BassFlags)" /> or <see cref="CreateSample" />), then the HCHANNEL handle returned will be identical to the HSAMPLE handle. 
+        /// That means you can use the HSAMPLE handle with functions that usually require a HCHANNEL handle, but you must still call this function first to initialize the channel.
+        /// </para>
+        /// <para>
+        /// A sample channel is automatically freed when it's overridden by a new channel, or when stopped manually via <see cref="ChannelStop" />, <see cref="SampleStop" /> or <see cref="Stop" />. 
+        /// If you wish to stop a channel and re-use it, it should be paused (<see cref="ChannelPause" />) instead of stopped. 
+        /// Determining whether a channel still exists can be done by trying to use the handle in a function call, eg. <see cref="ChannelGetAttribute(int, ChannelAttribute, out float)" />.
+        /// </para>
+        /// <para>When channel overriding has been enabled via an override flag and there are multiple candidates for overriding (eg. with identical volume), the oldest of them will be chosen to make way for the new channel.</para>
+        /// <para>
+        /// The new channel will have an initial state of being paused (<see cref="PlaybackState.Paused"/>).
+        /// This prevents the channel being claimed by another call of this function before it has been played, unless it gets overridden due to a lack of free channels.
+        /// </para>
+        /// <para>All of a sample's channels share the same sample data, and just have their own individual playback state information (volume/position/etc).</para>
+        /// </remarks>
+        /// <exception cref="Errors.InvalidHandle"><paramref name="Sample" /> is not a valid sample handle.</exception>
+        /// <exception cref="Errors.NoFreeChannelAvailable">The sample has no free channels... the maximum number of simultaneous playbacks has been reached, and no override flag was specified for the sample or onlynew = <see langword="true" />.</exception>
+        /// <exception cref="Errors.ConnectionTimedout">The sample's minimum time gap (<see cref="SampleInfo" />) has not yet passed since the last channel was created.</exception>
+        public static int SampleGetChannel(int Sample, bool OnlyNew) => Checked(BASS_SampleGetChannel(Sample, OnlyNew));
+        #endregion
+
+        #region SampleFree
+        [DllImport(DllName)]
+        static extern bool BASS_SampleFree(int Handle);
+
+        /// <summary>
+		/// Frees a sample's resources.
+		/// </summary>
+		/// <param name="Handle">The sample handle.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
+        public static bool SampleFree(int Handle) => Checked(BASS_SampleFree(Handle));
+        #endregion
 
         #region Sample Set Data
         [DllImport(DllName, EntryPoint = "BASS_SampleSetData")]
