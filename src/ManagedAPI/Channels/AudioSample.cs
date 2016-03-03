@@ -4,6 +4,9 @@ using static ManagedBass.Dynamics.Bass;
 
 namespace ManagedBass
 {
+    /// <summary>
+    /// Wraps a Bass Sample.
+    /// </summary>
     public class AudioSample : Channel
     {
         int Sample;

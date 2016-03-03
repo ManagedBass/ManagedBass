@@ -133,11 +133,11 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelFlags")]
         public static extern BassFlags ChannelFlags(int Handle, BassFlags Flags, BassFlags Mask);
 
-        public static bool ChannelHasFlag(int handle, BassFlags flag) { return ChannelFlags(handle, 0, 0).HasFlag(flag); }
+        public static bool ChannelHasFlag(int handle, BassFlags flag) => ChannelFlags(handle, 0, 0).HasFlag(flag);
 
-        public static bool ChannelAddFlag(int handle, BassFlags flag) { return ChannelFlags(handle, flag, flag).HasFlag(flag); }
+        public static bool ChannelAddFlag(int handle, BassFlags flag) => ChannelFlags(handle, flag, flag).HasFlag(flag);
 
-        public static bool ChannelRemoveFlag(int handle, BassFlags flag) { return !(ChannelFlags(handle, 0, flag).HasFlag(flag)); }
+        public static bool ChannelRemoveFlag(int handle, BassFlags flag) => !(ChannelFlags(handle, 0, flag).HasFlag(flag));
         #endregion
 
         #region Channel Get Data

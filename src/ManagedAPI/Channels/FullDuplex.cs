@@ -3,6 +3,9 @@ using ManagedBass.Dynamics;
 
 namespace ManagedBass
 {
+    /// <summary>
+    /// Provides audio from <see cref="WasapiRecordingDevice"/> or <see cref="WasapiLoopbackDevice"/> in a Bass Channel.
+    /// </summary>
     public class WasapiToBassFullDuplex : Channel
     {
         WasapiDevice WasapiDevice;

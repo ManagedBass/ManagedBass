@@ -44,10 +44,7 @@ namespace ManagedBass
         #region Download Completed
         SyncProcedure Down_Handler;
 
-        void OnDownloadCompleted(int handle, int channel, int data, IntPtr User)
-        {
-            DownloadComplete?.Invoke();
-        }
+        void OnDownloadCompleted(int handle, int channel, int data, IntPtr User) => DownloadComplete?.Invoke();
 
         public event Action DownloadComplete;
         #endregion

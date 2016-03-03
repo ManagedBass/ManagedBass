@@ -81,7 +81,7 @@ namespace ManagedBass
         /// Removes a Bass Channel from Wasapi Output Mixer.
         /// </summary>
         /// <returns>True on Success</returns>
-        public bool RemoveOutputSource(int Channel) { return BassMix.MixerRemoveChannel(Channel); }
+        public bool RemoveOutputSource(int Channel) => BassMix.MixerRemoveChannel(Channel);
 
         public override event Action<BufferProvider> Callback
         {

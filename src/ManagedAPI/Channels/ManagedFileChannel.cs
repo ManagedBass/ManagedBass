@@ -6,15 +6,24 @@ using System.Runtime.InteropServices;
 namespace ManagedBass
 {
     /// <summary>
-    /// Stream an audio file using .Net file handling
+    /// Stream an audio file using .Net file handling using <see cref="FileProcedures"/>.
     /// </summary>
     public class ManagedFileChannel : Channel
     {
         FileProcedures procs;
         FileStream Stream;
 
+        /// <summary>
+        /// Gets the path of the Loaded file
+        /// </summary>
         public string FileName { get; }
 
+        /// <summary>
+        /// Creates a new Instance of <see cref="ManagedFileChannel"/>.
+        /// </summary>
+        /// <param name="FileName">Path to the file to load.</param>
+        /// <param name="IsDecoder">Whether to create a Decoding Channel.</param>
+        /// <param name="Resolution">Channel Resolution to use.</param>
         public ManagedFileChannel(string FileName, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
             Stream = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read);

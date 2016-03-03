@@ -168,7 +168,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         static extern float BASS_ASIO_ChannelGetLevel(bool input, int channel);
 
-        public static double ChannelGetLevel(bool input, int channel) { return BASS_ASIO_ChannelGetLevel(input, channel); }
+        public static double ChannelGetLevel(bool input, int channel) => BASS_ASIO_ChannelGetLevel(input, channel);
 
         [DllImport(DllName, EntryPoint = "BASS_ASIO_ChannelGetRate")]
         public static extern double ChannelGetRate(bool input, int channel);
@@ -176,7 +176,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         static extern float BASS_ASIO_ChannelGetVolume(bool input, int channel);
 
-        public static double ChannelGetVolume(bool input, int channel) { return BASS_ASIO_ChannelGetVolume(input, channel); }
+        public static double ChannelGetVolume(bool input, int channel) => BASS_ASIO_ChannelGetVolume(input, channel);
 
         [DllImport(DllName, EntryPoint = "BASS_ASIO_ChannelIsActive")]
         public static extern AsioChannelActive ChannelIsActive(bool input, int channel);

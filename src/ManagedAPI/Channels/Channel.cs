@@ -6,6 +6,9 @@ using static ManagedBass.Dynamics.Bass;
 
 namespace ManagedBass
 {
+    /// <summary>
+    /// Represents a Bass Channel. Base class for all Streams, Music and Samples.
+    /// </summary>
     public class Channel : IDisposable
     {
         #region Fields
@@ -35,6 +38,7 @@ namespace ManagedBass
                 
                 HCHANNEL = value;
 
+                // Init Events
                 ChannelSetSync(Handle, SyncFlags.Free, 0, Free_Delegate);
                 ChannelSetSync(Handle, SyncFlags.End, 0, End_Delegate);
                 ChannelSetSync(Handle, SyncFlags.Stop, 0, Fail_Delegate);

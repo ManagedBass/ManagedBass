@@ -2,8 +2,16 @@
 
 namespace ManagedBass
 {
+    /// <summary>
+    /// A Reusable Channel which can Load files like a Player.
+    /// </summary>
     public class MediaPlayer : Channel
     {
+        /// <summary>
+        /// Loads a file into the player.
+        /// </summary>
+        /// <param name="FileName">Path to the file to Load.</param>
+        /// <returns><see langword="true"/> on succes, <see langword="false"/> on failure.</returns>
         public bool Load(string FileName)
         {
             try
@@ -24,10 +32,18 @@ namespace ManagedBass
         }
     }
 
+    /// <summary>
+    /// A Reusable Channel which can Load files like a Player including Tempo, Pitch and Reverse options.
+    /// </summary>
     public class MediaPlayerFX : Channel
     {
         int TempoHandle;
 
+        /// <summary>
+        /// Loads a file into the player.
+        /// </summary>
+        /// <param name="FileName">Path to the file to Load.</param>
+        /// <returns><see langword="true"/> on succes, <see langword="false"/> on failure.</returns>
         public bool Load(string FileName)
         {
             try
@@ -61,18 +77,27 @@ namespace ManagedBass
             return true;
         }
 
+        /// <summary>
+        /// Gets or Sets the Media playback direction.
+        /// </summary>
         public bool Reverse
         {
             get { return Bass.ChannelGetAttribute(Handle, ChannelAttribute.ReverseDirection) < 0; }
             set { Bass.ChannelSetAttribute(Handle, ChannelAttribute.ReverseDirection, value ? -1 : 1); }
         }
 
+        /// <summary>
+        /// Gets or Sets the Pitch in Semitones (-60 ... 0 ... 60).
+        /// </summary>
         public double Pitch
         {
             get { return Bass.ChannelGetAttribute(TempoHandle, ChannelAttribute.Pitch); }
             set { Bass.ChannelSetAttribute(TempoHandle, ChannelAttribute.Pitch, value); }
         }
 
+        /// <summary>
+        /// Gets or Sets the Tempo in Percentage (-95% ... 0 ... 5000%)
+        /// </summary>
         public double Tempo
         {
             get { return Bass.ChannelGetAttribute(TempoHandle, ChannelAttribute.Tempo); }

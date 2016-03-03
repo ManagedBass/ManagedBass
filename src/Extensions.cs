@@ -91,7 +91,7 @@ namespace ManagedBass
         /// <summary>
         /// Returns the <param name="n">n'th (max 15)</param> pair of Speaker Assignment Flags
         /// </summary>
-        public static BassFlags SpeakerN(int n) { return (BassFlags)(n << 24); }
+        public static BassFlags SpeakerN(int n) => (BassFlags)(n << 24);
 
         static bool? floatable = null;
 
@@ -129,19 +129,19 @@ namespace ManagedBass
         // ms = samples * 1000 / samplerate. 
         // bytes = samples * bits * channels / 8. 
 
-        public static long BytesToSamples(long bytes, int bits, int channels) { return ((bytes * 8) / bits) / channels; }
+        public static long BytesToSamples(long bytes, int bits, int channels) => ((bytes * 8) / bits) / channels;
 
-        public static long MilisecondsToSamples(int samplerate, long ms) { return (ms * samplerate) / 1000; }
+        public static long MilisecondsToSamples(int samplerate, long ms) => (ms * samplerate) / 1000;
 
-        public static long SamplesToBytes(long samples, int bits, int channels) { return (samples * bits * channels) / 8; }
+        public static long SamplesToBytes(long samples, int bits, int channels) => (samples * bits * channels) / 8;
 
-        public static long SamplesToMiliseconds(long samples, int samplerate) { return (samples * 1000) / samplerate; }
+        public static long SamplesToMiliseconds(long samples, int samplerate) => (samples * 1000) / samplerate;
 
-        public static long SamplesToSamplerate(long samples, long ms) { return (samples * 1000) / ms; }
+        public static long SamplesToSamplerate(long samples, long ms) => (samples * 1000) / ms;
 
-        public static double SamplesToSeconds(long samples, int samplerate) { return samples / (double)samplerate; }
+        public static double SamplesToSeconds(long samples, int samplerate) => samples / (double)samplerate;
 
-        public static long SecondsToSamples(double seconds, int samplerate) { return (long)(seconds * samplerate); }
+        public static long SecondsToSamples(double seconds, int samplerate) => (long)(seconds * samplerate);
 
         public static double BytesToSeconds(long bytes, int bits, int channels, int samplerate)
         {
@@ -154,7 +154,7 @@ namespace ManagedBass
         }
         #endregion
 
-        public static double BpmToSeconds(double bpm) { return 60 / bpm; }
+        public static double BpmToSeconds(double bpm) => 60 / bpm;
 
         public static int DbToLevel(double dB, int maxLevel)
         {
