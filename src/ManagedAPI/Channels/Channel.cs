@@ -49,7 +49,6 @@ namespace ManagedBass
         {
             try
             {
-                Dispose();
                 HCHANNEL = 0;
 
                 var handler = Disposed;
@@ -263,7 +262,7 @@ namespace ManagedBass
             set { ChannelSetAttribute(Handle, ChannelAttribute.Volume, value); }
         }
 
-        public double Position
+        public virtual double Position
         {
             get { return ChannelBytes2Seconds(Handle, ChannelGetPosition(Handle)); }
             set { ChannelSetPosition(Handle, ChannelSeconds2Bytes(Handle, value)); }
@@ -271,9 +270,9 @@ namespace ManagedBass
 
         public double Level => ChannelGetLevel(Handle);
 
-        public double Duration => ChannelBytes2Seconds(Handle, ChannelGetLength(Handle));
+        public virtual double Duration => ChannelBytes2Seconds(Handle, ChannelGetLength(Handle));
 
-        public bool Loop
+        public virtual bool Loop
         {
             get { return HasFlag(BassFlags.Loop); }
             set

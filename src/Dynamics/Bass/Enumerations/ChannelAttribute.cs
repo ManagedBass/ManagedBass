@@ -186,7 +186,7 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// The scanned info of a channel.
         /// </summary>
-        SacnnedInfo = 10,
+        ScannedInfo = 10,
 
         #region MOD Music
         /// <summary>
