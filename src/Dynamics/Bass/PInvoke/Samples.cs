@@ -41,7 +41,7 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.InvalidHandle"><paramref name="Sample" /> is not a valid sample handle.</exception>
         /// <exception cref="Errors.NoFreeChannelAvailable">The sample has no free channels... the maximum number of simultaneous playbacks has been reached, and no override flag was specified for the sample or onlynew = <see langword="true" />.</exception>
         /// <exception cref="Errors.ConnectionTimedout">The sample's minimum time gap (<see cref="SampleInfo" />) has not yet passed since the last channel was created.</exception>
-        public static int SampleGetChannel(int Sample, bool OnlyNew) => Checked(BASS_SampleGetChannel(Sample, OnlyNew));
+        public static int SampleGetChannel(int Sample, bool OnlyNew = false) => Checked(BASS_SampleGetChannel(Sample, OnlyNew));
         #endregion
 
         #region SampleFree
@@ -75,7 +75,7 @@ namespace ManagedBass.Dynamics
         #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_SampleCreate")]
-        public static extern int CreateSample(int Length, int freq, int chans, int max, BassFlags flags);
+        public static extern int CreateSample(int Length, int Frequency, int Channels, int Max, BassFlags Flags);
 
         #region Sample Get Data
         [DllImport(DllName, EntryPoint = "BASS_SampleGetData")]
@@ -94,6 +94,10 @@ namespace ManagedBass.Dynamics
         public static extern bool SampleGetData(int Handle, [In, Out] float[] Buffer);
         #endregion
 
+        #region SampleGetInfo
+        [DllImport(DllName)]
+        static extern bool BASS_SampleGetInfo(int Handle, ref SampleInfo Info);
+
         /// <summary>
         /// Retrieves a sample's default attributes and other information.
         /// </summary>
@@ -101,30 +105,88 @@ namespace ManagedBass.Dynamics
         /// <param name="Info">An instance of the <see cref="SampleInfo" /> class to store the sample information at.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
-        [DllImport(DllName, EntryPoint = "BASS_SampleGetInfo")]
-        public static extern bool SampleGetInfo(int Handle, ref SampleInfo Info);
+        public static bool SampleGetInfo(int Handle, ref SampleInfo Info) => Checked(BASS_SampleGetInfo(Handle, ref Info));
 
+        /// <summary>
+        /// Retrieves a sample's default attributes and other information.
+        /// </summary>
+        /// <param name="Handle">The sample handle.</param>
+        /// <returns>An instance of the <see cref="SampleInfo" /> class is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
         public static SampleInfo SampleGetInfo(int Handle)
         {
             SampleInfo temp = new SampleInfo();
             SampleGetInfo(Handle, ref temp);
             return temp;
         }
+        #endregion
 
-        [DllImport(DllName, EntryPoint = "BASS_SampleSetInfo")]
-        public static extern bool SampleSetInfo(int Handle, SampleInfo info);
+        #region SampleSetInfo
+        [DllImport(DllName)]
+        static extern bool BASS_SampleSetInfo(int Handle, SampleInfo Info);
 
+        /// <summary>
+		/// Sets a sample's default attributes.
+		/// </summary>
+		/// <param name="Handle">The sample handle.</param>
+		/// <param name="Info">An instance of the <see cref="SampleInfo" /> class containing the sample information to set.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para>
+        /// Use this function and <see cref="SampleGetInfo(int, ref SampleInfo)" /> to edit a sample's default attributes. 
+		/// Changing a sample's default attributes does not affect any existing channels, it only affects channels subsequently created via <see cref="SampleGetChannel" />. 
+		/// The exception is the VAM settings, changes to that apply to all the sample's channels at their next playback (<see cref="ChannelPlay" />). 
+		/// Use <see cref="ChannelSetAttribute(int, ChannelAttribute, float)" /> and <see cref="ChannelSet3DAttributes" /> to change the attributes of an existing sample channel.
+        /// </para>
+		/// <para>
+        /// The sample's maximum number of simultaneous playbacks can be changed via the <see cref="SampleInfo.Max"/> member.
+        /// If the new maximum is lower than the existing number of channels, the channels will remain existing until they are stopped.
+        /// </para>
+		/// <para>
+        /// <see cref="SampleInfo.Length"/>, <see cref="SampleInfo.OriginalResolution"/> and <see cref="SampleInfo.Channels"/> can't be modified - any changes are ignored.
+		/// <see cref="BassFlags.Byte"/>, <see cref="BassFlags.Mono"/>, <see cref="BassFlags.Bass3D"/>, <see cref="BassFlags.MuteMax"/>, <see cref="BassFlags.SoftwareMixing"/> and <see cref="BassFlags.VAM"/> also cannot be changed.
+        /// </para>
+		/// </remarks>
+        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
+        public static bool SampleSetInfo(int Handle, SampleInfo Info) => Checked(BASS_SampleSetInfo(Handle, Info));
+        #endregion
+
+        #region SampleGetChannels
         [DllImport(DllName)]
         static extern int BASS_SampleGetChannels(int handle, [In, Out] int[] channels);
 
-        public static int[] SampleGetChannels(int handle)
+        /// <summary>
+		/// Retrieves an array of a sample's existing channels.
+		/// </summary>
+		/// <param name="Handle">Handle of the sample.</param>
+		/// <returns>
+        /// If successful, the array of existing channels is returned (which might have zero elements), else <see langword="null" /> is returned.
+        /// Use <see cref="LastError" /> to get the error code.
+        /// </returns>
+		/// <remarks>
+        /// This overload only returns the existing channels in the array.
+		/// <para>If you need to determine whether a particular sample channel still exists, it is simplest to just try it in a function call.</para>
+		/// </remarks>
+        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid sample handle.</exception>
+        public static int[] SampleGetChannels(int Handle)
         {
-            var channels = new int[SampleGetInfo(handle).Max];
+            int count = Checked(BASS_SampleGetChannels(Handle, null));
 
-            BASS_SampleGetChannels(handle, channels);
+            if (count < 0) return null;
 
-            return channels;
+            var Return = new int[count];
+
+            count = Checked(BASS_SampleGetChannels(Handle, Return));
+
+            if (count < 0) return null;
+
+            return Return;
         }
+        #endregion
+        
+        #region SampleStop
+        [DllImport(DllName)]
+        static extern bool BASS_SampleStop(int Handle);
 
         /// <summary>
         /// Stops all instances of a sample.
@@ -133,8 +195,8 @@ namespace ManagedBass.Dynamics
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid sample handle.</exception>
         /// <remarks>If a sample is playing simultaneously multiple times, calling this function will stop them all, which is obviously simpler than calling <see cref="ChannelStop" /> multiple times.</remarks>
-        [DllImport(DllName, EntryPoint = "BASS_SampleStop")]
-        public static extern bool SampleStop(int Handle);
+        public static bool SampleStop(int Handle) => Checked(BASS_SampleStop(Handle));
+        #endregion
 
         #region Sample Load
         [DllImport(DllName, CharSet = CharSet.Unicode)]
@@ -143,12 +205,67 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName)]
         static extern int BASS_SampleLoad(bool mem, IntPtr file, long offset, int Length, int max, BassFlags flags);
 
+        [DllImport(DllName)]
+        static extern int BASS_SampleLoad(bool mem, byte[] file, long offset, int Length, int max, BassFlags flags);
+
+        [DllImport(DllName)]
+        static extern int BASS_SampleLoad(bool mem, float[] file, long offset, int Length, int max, BassFlags flags);
+        
+		/// <summary>
+		/// Loads a WAV, AIFF, MP3, MP2, MP1, OGG or plugin supported sample.
+		/// </summary>
+		/// <param name="File">The file name to load the sample from.</param>
+		/// <param name="Offset">File offset to load the sample from.</param>
+		/// <param name="Length">Data length... 0 = use all data up to the end of file. If length over-runs the end of the file, it'll automatically be lowered to the end of the file.</param>
+		/// <param name="MaxNoOfPlaybacks">Maximum number of simultaneous playbacks... 1 (min) - 65535 (max)... use one of the BASS_SAMPLE_OVER flags to choose the override decider, in the case of there being no free channel available for playback (ie. the sample is already playing max times).</param>
+		/// <param name="Flags">A combination of <see cref="BassFlags"/>.</param>
+		/// <returns>If successful, the loaded sample's handle is returned, else 0 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para>Additional format support is available via the plugin system (see <see cref="PluginLoad" />).</para>
+		/// <para>
+        /// Unless the <see cref="BassFlags.SoftwareMixing"/> flag is used, the sample will use hardware mixing if hardware resources are available.
+        /// Use <see cref="GetInfo(out BassInfo)" /> to see if there are hardware mixing resources available, and which sample formats are supported by the hardware. 
+		/// The <see cref="BassFlags.VAM"/> flag allows a sample to be played by both hardware and software, with the decision made when the sample is played rather than when it's loaded.
+        /// A sample's VAM options are set via <see cref="SampleSetInfo" />.
+        /// </para>
+		/// <para>To play a sample, first a channel must be obtained using <see cref="SampleGetChannel" />, which can then be played using <see cref="ChannelPlay" />.</para>
+		/// <para>If you want to play a large or one-off sample, then it would probably be better to stream it instead with <see cref="CreateStream(string, long, long, BassFlags)" />.</para>
+		/// <para><b>Platform-specific</b></para>
+		/// <para>
+        /// The <see cref="BassFlags.VAM"/> flag requires DirectX 7 (or above).
+        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
+        /// </para>
+		/// <para>
+        /// On Windows and Windows CE, ACM codecs are supported with compressed WAV files.
+        /// On iOS and OSX, CoreAudio codecs are supported, adding support for any file formats that have a codec installed.
+        /// </para>
+		/// </remarks>
+        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.NotAvailable">Sample functions are not available when using the "no sound" device.</exception>
+        /// <exception cref="Errors.IllegalParameter"><paramref name="MaxNoOfPlaybacks" /> and/or <paramref name="Length" /> is invalid.</exception>
+        /// <exception cref="Errors.FileOpen">The <paramref name="File" /> could not be opened.</exception>
+        /// <exception cref="Errors.UnsupportedFileFormat">The <paramref name="File" />'s format is not recognised/supported.</exception>
+        /// <exception cref="Errors.CodecNotAvailable">The file uses a codec that's not available/supported. This can apply to WAV and AIFF files, and also MP3 files when using the "MP3-free" BASS version.</exception>
+        /// <exception cref="Errors.UnsupportedSampleFormat">The sample format is not supported by the device/drivers. If the sample is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int SampleLoad(string File, long Offset, int Length, int MaxNoOfPlaybacks, BassFlags Flags)
         {
             return BASS_SampleLoad(false, File, Offset, Length, MaxNoOfPlaybacks, Flags | BassFlags.Unicode);
         }
 
         public static int SampleLoad(IntPtr Memory, long Offset, int Length, int MaxNoOfPlaybacks, BassFlags Flags)
+        {
+            return BASS_SampleLoad(true, Memory, Offset, Length, MaxNoOfPlaybacks, Flags);
+        }
+
+        public static int SampleLoad(byte[] Memory, long Offset, int Length, int MaxNoOfPlaybacks, BassFlags Flags)
+        {
+            return BASS_SampleLoad(true, Memory, Offset, Length, MaxNoOfPlaybacks, Flags);
+        }
+
+        public static int SampleLoad(float[] Memory, long Offset, int Length, int MaxNoOfPlaybacks, BassFlags Flags)
         {
             return BASS_SampleLoad(true, Memory, Offset, Length, MaxNoOfPlaybacks, Flags);
         }

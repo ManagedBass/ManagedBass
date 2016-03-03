@@ -166,7 +166,7 @@ namespace ManagedBass
         /// <summary>
         /// Requested data is not available
         /// </summary>
-        DataNotAvailable = 37,
+        NotAvailable = 37,
 
         /// <summary>
         /// The channel is a 'Decoding Channel'

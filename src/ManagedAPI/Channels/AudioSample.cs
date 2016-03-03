@@ -7,20 +7,18 @@ namespace ManagedBass
     /// <summary>
     /// Wraps a Bass Sample.
     /// </summary>
-    public class AudioSample : Channel
+    public class AudioSample
     {
         int Sample;
 
         public AudioSample(int Length, int Frequency = 44100, int Channels = 2, Resolution Resolution = Resolution.Short)
         {
             Sample = CreateSample(Length, Frequency, Channels, 1, Resolution.ToBassFlag());
-            Handle = SampleGetChannel(Sample, true);
         }
 
         public AudioSample(string FilePath, Resolution Resolution = Resolution.Short)
         {
             Sample = SampleLoad(FilePath, 0, 0, 1, Resolution.ToBassFlag());
-            Handle = SampleGetChannel(Sample, true);
         }
 
         public AudioSample(byte[] Memory, int Length, Resolution Resolution = Resolution.Short)
@@ -29,12 +27,13 @@ namespace ManagedBass
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
             Sample = SampleLoad(GCPin.AddrOfPinnedObject(), 0, Length, 1, Resolution.ToBassFlag());
-            Handle = SampleGetChannel(Sample, true);
 
             GCPin.Free();
         }
 
         public long Length => SampleGetInfo(Sample).Length;
+
+        public Channel CreateChannel(bool OnlyNew = false) => new Channel(SampleGetChannel(Sample, OnlyNew));
 
         #region Read Sample Data
         public bool ReadSampleData(IntPtr Buffer) => SampleGetData(Sample, Buffer);
@@ -60,11 +59,11 @@ namespace ManagedBass
         public bool WriteSampleData(int[] Buffer) => SampleSetData(Sample, Buffer);
         #endregion
 
-        public override void Dispose() 
+        public void Dispose() 
         {
             try 
             {
-                if (Handle != 0 && SampleFree(Sample))
+                if (SampleFree(Sample))
                     Sample = 0;
             }
             catch { }

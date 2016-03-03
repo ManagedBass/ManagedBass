@@ -200,7 +200,7 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.IllegalDevice"><paramref name="Device" /> is invalid.</exception>
         /// <exception cref="Errors.NotInitialised">The requested device has not been initialized.</exception>
         /// <exception cref="Errors.Already">The channel is already using the requested device.</exception>
-        /// <exception cref="Errors.DataNotAvailable">Only decoding channels are allowed to use the "no sound" device.</exception>
+        /// <exception cref="Errors.NotAvailable">Only decoding channels are allowed to use the "no sound" device.</exception>
         /// <exception cref="Errors.UnsupportedSampleFormat">
         /// The sample format is not supported by the device/drivers. 
         /// If the channel is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.
@@ -243,7 +243,7 @@ namespace ManagedBass.Dynamics
         /// and/or the <see cref="GlobalMusicVolume"/>, <see cref="GlobalSampleVolume"/> and <see cref="GlobalStreamVolume"/> config options should be used instead.</para>
         /// </remarks>
         /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
-        /// <exception cref="Errors.DataNotAvailable">There is no volume control when using the <see cref="NoSoundDevice">No Sound Device</see>.</exception>
+        /// <exception cref="Errors.NotAvailable">There is no volume control when using the <see cref="NoSoundDevice">No Sound Device</see>.</exception>
         /// <exception cref="Errors.IllegalParameter">Invalid volume.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static double Volume

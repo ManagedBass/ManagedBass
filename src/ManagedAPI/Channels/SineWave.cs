@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ManagedBass.Dynamics;
+using System;
 
 namespace ManagedBass
 {
@@ -9,7 +10,7 @@ namespace ManagedBass
     {
         double freq, amp, rate, sangle;
         int length;
-        AudioSample AS;
+        int Sample;
 
         public new double Frequency
         {
@@ -77,10 +78,12 @@ namespace ManagedBass
             float[] Buffer = new float[Length];
             CreateSineWave(Buffer, StartAngle);
 
-            AS?.Dispose();
-            AS = new AudioSample(4 * Length, Resolution: Resolution.Float);
-            AS.WriteSampleData(Buffer);
-            Handle = AS.Handle;
+            if (Sample != 0)
+                Bass.SampleFree(Sample);
+
+            Sample = Bass.CreateSample(4 * Length, 44100, 2, 1, BassFlags.Float);
+            Bass.SampleSetData(Sample, Buffer);
+            Handle = Bass.SampleGetChannel(Sample);
         }
 
         void CreateSineWave(float[] Buffer, double StartAngle = 0)

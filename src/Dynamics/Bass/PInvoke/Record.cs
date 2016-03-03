@@ -92,7 +92,7 @@ namespace ManagedBass.Dynamics
         /// An existing recording must be stopped before starting another one.
         /// Multiple simultaneous recordings can be made from the same device on Windows XP and Vista, but generally not on older Windows.
         /// </exception>
-        /// <exception cref="Errors.DataNotAvailable">
+        /// <exception cref="Errors.NotAvailable">
         /// The recording device is not available.
         /// Another application may already be recording with it, or it could be a half-duplex device and is currently being used for playback.
         /// </exception>

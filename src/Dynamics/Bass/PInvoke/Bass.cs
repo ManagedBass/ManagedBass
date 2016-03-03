@@ -48,7 +48,7 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <param name="Length">The amount of data to render, in milliseconds.</param>
         /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.DataNotAvailable">Updating is already in progress.</exception>
+        /// <exception cref="Errors.NotAvailable">Updating is already in progress.</exception>
         /// <remarks>
         /// When automatic updating is disabled, this function (or <see cref="ChannelUpdate" />) needs to be called to keep the playback buffers updated.
         /// The <paramref name="Length"/> parameter should include some safety margin, in case the next update cycle gets delayed.

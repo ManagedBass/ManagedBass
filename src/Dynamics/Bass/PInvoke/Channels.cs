@@ -401,7 +401,7 @@ namespace ManagedBass.Dynamics
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
-        /// <exception cref="Errors.DataNotAvailable">The Length is not available.</exception>
+        /// <exception cref="Errors.NotAvailable">The Length is not available.</exception>
         /// <remarks>
         /// <para>
         /// The exact Length of a stream will be returned once the whole file has been streamed, but until then it is not always possible to 100% accurately estimate the Length.
@@ -544,7 +544,7 @@ namespace ManagedBass.Dynamics
         /// If successful, the position is returned.
         /// </returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
-        /// <exception cref="Errors.DataNotAvailable">The requested position is not available.</exception>
+        /// <exception cref="Errors.NotAvailable">The requested position is not available.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         /// <remarks>With MOD music you might use the <see cref="BitHelper.LoWord" /> and <see cref="BitHelper.HiWord" /> methods to retrieve the order and the row values respectively.</remarks>
         public static long ChannelGetPosition(int Handle, PositionFlags Mode = PositionFlags.Bytes)
@@ -570,7 +570,7 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.NotFileStream">The stream is not a file stream.</exception>
         /// <exception cref="Errors.InvalidPlaybackPosition">The requested position is invalid, eg. beyond the end.</exception>
-        /// <exception cref="Errors.DataNotAvailable">The download has not yet reached the requested position.</exception>
+        /// <exception cref="Errors.NotAvailable">The download has not yet reached the requested position.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         /// <remarks>
         /// <para>
@@ -754,7 +754,7 @@ namespace ManagedBass.Dynamics
 		/// </remarks>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.Ended">The channel has reached the end.</exception>
-        /// <exception cref="Errors.DataNotAvailable">The <see cref="DataFlags.Available"/> flag was used with a decoding channel.</exception>
+        /// <exception cref="Errors.NotAvailable">The <see cref="DataFlags.Available"/> flag was used with a decoding channel.</exception>
         /// <exception cref="Errors.BufferLost">Should not happen... check that a valid window handle was used with <see cref="Init" />.</exception>
         public static int ChannelGetData(int Handle, IntPtr Buffer, int Length)
         {
@@ -850,7 +850,7 @@ namespace ManagedBass.Dynamics
 		/// <para>The CPU usage of this function is not included in the <see cref="CPUUsage" /> reading.</para>
 		/// </remarks>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
-        /// <exception cref="Errors.DataNotAvailable">Decoding channels do not have playback buffers.</exception>
+        /// <exception cref="Errors.NotAvailable">Decoding channels do not have playback buffers.</exception>
         /// <exception cref="Errors.Ended">The channel has ended.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static bool ChannelUpdate(int Handle, int Length)
