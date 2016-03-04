@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using ManagedBass.Dynamics;
 using static ManagedBass.Dynamics.Bass;
 
 namespace ManagedBass
@@ -23,12 +24,12 @@ namespace ManagedBass
 
         public AudioSample(byte[] Memory, int Length, Resolution Resolution = Resolution.Short)
         {
-            // Pin
-            var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
+            Sample = SampleLoad(Memory, Length, 1, Resolution.ToBassFlag());
+        }
 
-            Sample = SampleLoad(GCPin.AddrOfPinnedObject(), 0, Length, 1, Resolution.ToBassFlag());
-
-            GCPin.Free();
+        public AudioSample(float[] Memory, int Length)
+        {
+            Sample = SampleLoad(Memory, Length, 1, BassFlags.Float);
         }
 
         public long Length => SampleGetInfo(Sample).Length;

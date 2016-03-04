@@ -10,21 +10,28 @@ namespace ManagedBass
     {
         GCHandle GCPin;
 
-        public MemoryChannel(byte[] Memory, long Offset, long Length, bool IsDecoder = false)
+        public MemoryChannel(byte[] Memory, int Offset, long Length, bool IsDecoder = false)
         {
             GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
             Handle = Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution.Byte));
         }
 
-        public MemoryChannel(float[] Memory, long Offset, long Length, bool IsDecoder = false)
+        public MemoryChannel(float[] Memory, int Offset, long Length, bool IsDecoder = false)
         {
             GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
             Handle = Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution.Float));
         }
 
-        public MemoryChannel(short[] Memory, long Offset, long Length, bool IsDecoder = false)
+        public MemoryChannel(short[] Memory, int Offset, long Length, bool IsDecoder = false)
+        {
+            GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
+
+            Handle = Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution.Short));
+        }
+
+        public MemoryChannel(int[] Memory, int Offset, long Length, bool IsDecoder = false)
         {
             GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 

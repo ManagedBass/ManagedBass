@@ -23,13 +23,13 @@ namespace ManagedBass.Dynamics
             return BASS_StreamCreateFile(false, File, Offset, Length, Flags | BassFlags.Unicode);
         }
 
-        public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default)
+        public static int CreateStream(IntPtr Memory, int Offset, long Length, BassFlags Flags = BassFlags.Default)
         {
-            return BASS_StreamCreateFile(true, Memory, Offset, Length, Flags);
+            return BASS_StreamCreateFile(true, Memory + Offset, 0, Length, Flags);
         }
 
         #region From Array
-        static int CreateStreamObj(object Memory, long Offset, long Length, BassFlags Flags)
+        static int CreateStreamObj(object Memory, int Offset, long Length, BassFlags Flags)
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
@@ -41,22 +41,22 @@ namespace ManagedBass.Dynamics
             return Handle;
         }
 
-        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
+        public static int CreateStream(byte[] Memory, int Offset, long Length, BassFlags Flags)
         {
             return CreateStreamObj(Memory, Offset, Length, Flags);
         }
 
-        public static int CreateStream(short[] Memory, long Offset, long Length, BassFlags Flags)
+        public static int CreateStream(short[] Memory, int Offset, long Length, BassFlags Flags)
         {
             return CreateStreamObj(Memory, Offset, Length, Flags);
         }
 
-        public static int CreateStream(int[] Memory, long Offset, long Length, BassFlags Flags)
+        public static int CreateStream(int[] Memory, int Offset, long Length, BassFlags Flags)
         {
             return CreateStreamObj(Memory, Offset, Length, Flags);
         }
 
-        public static int CreateStream(float[] Memory, long Offset, long Length, BassFlags Flags)
+        public static int CreateStream(float[] Memory, int Offset, long Length, BassFlags Flags)
         {
             return CreateStreamObj(Memory, Offset, Length, Flags);
         }

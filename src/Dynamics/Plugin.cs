@@ -127,12 +127,12 @@ namespace ManagedBass.Dynamics
             else return Bass.CreateStream(FileName, Offset, Length, Flags);
         }
 
-        public int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default)
+        public int CreateStream(IntPtr Memory, int Offset, long Length, BassFlags Flags = BassFlags.Default)
         {
             EnsureFunction("BASS_" + ID + "_StreamCreateFile", ref MStreamCreateFileMemory);
 
             if (Extensions.IsWindows)
-                return MStreamCreateFileMemory(true, Memory, Offset, Length, Flags);
+                return MStreamCreateFileMemory(true, Memory + Offset, 0, Length, Flags);
             else return Bass.CreateStream(Memory, Offset, Length, Flags);
         }
 
@@ -160,7 +160,7 @@ namespace ManagedBass.Dynamics
         }
 
         #region From Array
-        int CreateStream(object Memory, long Offset, long Length, BassFlags Flags)
+        int _CreateStream(object Memory, int Offset, long Length, BassFlags Flags)
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
@@ -172,24 +172,24 @@ namespace ManagedBass.Dynamics
             return Handle;
         }
 
-        public int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
+        public int CreateStream(byte[] Memory, int Offset, long Length, BassFlags Flags)
         {
-            return CreateStream(Memory as object, Offset, Length, Flags);
+            return _CreateStream(Memory, Offset, Length, Flags);
         }
 
-        public int CreateStream(short[] Memory, long Offset, long Length, BassFlags Flags)
+        public int CreateStream(short[] Memory, int Offset, long Length, BassFlags Flags)
         {
-            return CreateStream(Memory as object, Offset, Length, Flags);
+            return _CreateStream(Memory, Offset, Length, Flags);
         }
 
-        public int CreateStream(int[] Memory, long Offset, long Length, BassFlags Flags)
+        public int CreateStream(int[] Memory, int Offset, long Length, BassFlags Flags)
         {
-            return CreateStream(Memory as object, Offset, Length, Flags);
+            return _CreateStream(Memory, Offset, Length, Flags);
         }
 
-        public int CreateStream(float[] Memory, long Offset, long Length, BassFlags Flags)
+        public int CreateStream(float[] Memory, int Offset, long Length, BassFlags Flags)
         {
-            return CreateStream(Memory as object, Offset, Length, Flags);
+            return _CreateStream(Memory, Offset, Length, Flags);
         }
         #endregion
 
