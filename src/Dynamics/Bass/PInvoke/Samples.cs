@@ -246,13 +246,7 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName)]
         static extern int BASS_SampleLoad(bool mem, IntPtr file, long offset, int Length, int max, BassFlags flags);
-
-        [DllImport(DllName)]
-        static extern int BASS_SampleLoad(bool mem, byte[] file, long offset, int Length, int max, BassFlags flags);
-
-        [DllImport(DllName)]
-        static extern int BASS_SampleLoad(bool mem, float[] file, long offset, int Length, int max, BassFlags flags);
-        
+                
 		/// <summary>
 		/// Loads a WAV, AIFF, MP3, MP2, MP1, OGG or plugin supported sample.
 		/// </summary>
@@ -302,6 +296,7 @@ namespace ManagedBass.Dynamics
 		/// <para>This overload uses an unmanaged IntPtr and implements loading a sample from memory.</para>
 		/// </summary>
 		/// <param name="Memory">An unmanaged IntPtr to the allocated memory block at which the sample data resides.</param>
+        /// <param name="Offset">File offset to load the sample from.</param>
 		/// <param name="Length">Data length. Should be set to the length of the data contained in memory.</param>
 		/// <param name="MaxNoOfPlaybacks">Maximum number of simultaneous playbacks... 1 (min) - 65535 (max)... use one of the override flags to choose the override decider, in the case of there being no free channel available for playback (ie. the sample is already playing max times).</param>
 		/// <param name="Flags">A combination of <see cref="BassFlags"/> flags.</param>
@@ -315,7 +310,7 @@ namespace ManagedBass.Dynamics
         /// A sample's VAM options are set via <see cref="SampleSetInfo" />.
         /// </para>
 		/// <para>To play a sample, first a channel must be obtained using <see cref="SampleGetChannel" />, which can then be played using <see cref="ChannelPlay" />.</para>
-		/// <para>If you want to play a large or one-off sample, then it would probably be better to stream it instead with <see cref="CreateStream(IntPtr, int, long, BassFlags)" />.</para>
+		/// <para>If you want to play a large or one-off sample, then it would probably be better to stream it instead with <see cref="CreateStream(IntPtr, long, long, BassFlags)" />.</para>
         /// <para>There is no need to pin the memory buffer for this method, since after loading a sample from memory, the memory can safely be discarded, as a copy is made.</para>
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
@@ -337,9 +332,9 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        public static int SampleLoad(IntPtr Memory, int Length, int MaxNoOfPlaybacks, BassFlags Flags)
+        public static int SampleLoad(IntPtr Memory, long Offset, int Length, int MaxNoOfPlaybacks, BassFlags Flags)
         {
-            return Checked(BASS_SampleLoad(true, Memory, 0, Length, MaxNoOfPlaybacks, Flags));
+            return Checked(BASS_SampleLoad(true, new IntPtr(Memory.ToInt32() + Offset), 0, Length, MaxNoOfPlaybacks, Flags));
         }
         
         /// <summary>
@@ -347,6 +342,7 @@ namespace ManagedBass.Dynamics
 		/// <para>This overload uses an unmanaged IntPtr and implements loading a sample from memory.</para>
 		/// </summary>
 		/// <param name="Memory">A byte[] with the sample data to load.</param>
+        /// <param name="Offset">File offset to load the sample from.</param>
 		/// <param name="Length">Data length. Should be set to the length of the data contained in memory.</param>
 		/// <param name="MaxNoOfPlaybacks">Maximum number of simultaneous playbacks... 1 (min) - 65535 (max)... use one of the override flags to choose the override decider, in the case of there being no free channel available for playback (ie. the sample is already playing max times).</param>
 		/// <param name="Flags">A combination of <see cref="BassFlags"/> flags.</param>
@@ -360,7 +356,7 @@ namespace ManagedBass.Dynamics
         /// A sample's VAM options are set via <see cref="SampleSetInfo" />.
         /// </para>
 		/// <para>To play a sample, first a channel must be obtained using <see cref="SampleGetChannel" />, which can then be played using <see cref="ChannelPlay" />.</para>
-		/// <para>If you want to play a large or one-off sample, then it would probably be better to stream it instead with <see cref="CreateStream(byte[], int, long, BassFlags)" />.</para>
+		/// <para>If you want to play a large or one-off sample, then it would probably be better to stream it instead with <see cref="CreateStream(byte[], long, long, BassFlags)" />.</para>
         /// <para>There is no need to pin the memory buffer for this method, since after loading a sample from memory, the memory can safely be discarded, as a copy is made.</para>
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
@@ -382,54 +378,15 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        public static int SampleLoad(byte[] Memory, int Length, int MaxNoOfPlaybacks, BassFlags Flags)
+        public static int SampleLoad(byte[] Memory, long Offset, int Length, int MaxNoOfPlaybacks, BassFlags Flags)
         {
-            return Checked(BASS_SampleLoad(true, Memory, 0, Length, MaxNoOfPlaybacks, Flags));
-        }
-        
-        /// <summary>
-		/// Loads a WAV, AIFF, MP3, MP2, MP1, OGG or plugin supported sample.
-		/// <para>This overload uses an unmanaged IntPtr and implements loading a sample from memory.</para>
-		/// </summary>
-		/// <param name="Memory">A float[] with the sample data to load.</param>
-		/// <param name="Length">Data length. Should be set to the length of the data contained in memory.</param>
-		/// <param name="MaxNoOfPlaybacks">Maximum number of simultaneous playbacks... 1 (min) - 65535 (max)... use one of the override flags to choose the override decider, in the case of there being no free channel available for playback (ie. the sample is already playing max times).</param>
-		/// <param name="Flags">A combination of <see cref="BassFlags"/> flags.</param>
-		/// <returns>If successful, the loaded sample's handle is returned, else 0 is returned. Use <see cref="LastError" /> to get the error code.</returns>
-		/// <remarks>
-		/// <para>Additional format support is available via the plugin system (see <see cref="PluginLoad" />).</para>
-		/// <para>
-        /// Unless the <see cref="BassFlags.SoftwareMixing"/> flag is used, the sample will use hardware mixing if hardware resources are available.
-        /// Use <see cref="GetInfo(out BassInfo)" /> to see if there are hardware mixing resources available, and which sample formats are supported by the hardware. 
-		/// The <see cref="BassFlags.VAM"/> flag allows a sample to be played by both hardware and software, with the decision made when the sample is played rather than when it's loaded.
-        /// A sample's VAM options are set via <see cref="SampleSetInfo" />.
-        /// </para>
-		/// <para>To play a sample, first a channel must be obtained using <see cref="SampleGetChannel" />, which can then be played using <see cref="ChannelPlay" />.</para>
-		/// <para>If you want to play a large or one-off sample, then it would probably be better to stream it instead with <see cref="CreateStream(float[], int, long, BassFlags)" />.</para>
-        /// <para>There is no need to pin the memory buffer for this method, since after loading a sample from memory, the memory can safely be discarded, as a copy is made.</para>
-		/// <para><b>Platform-specific</b></para>
-		/// <para>
-        /// The <see cref="BassFlags.VAM"/> flag requires DirectX 7 (or above).
-        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
-        /// </para>
-		/// <para>
-        /// On Windows and Windows CE, ACM codecs are supported with compressed WAV files.
-        /// On iOS and OSX, CoreAudio codecs are supported, adding support for any file formats that have a codec installed.
-        /// </para>
-		/// </remarks>
-		/// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
-        /// <exception cref="Errors.NotAvailable">Sample functions are not available when using the "no sound" device.</exception>
-        /// <exception cref="Errors.IllegalParameter"><paramref name="MaxNoOfPlaybacks" /> and/or <paramref name="Length" /> is invalid. Specifying <paramref name="Length" /> is mandatory when loading from memory.</exception>
-        /// <exception cref="Errors.FileOpen">The <paramref name="Memory" /> could not be opened.</exception>
-        /// <exception cref="Errors.UnsupportedFileFormat">The <paramref name="Memory" />'s format is not recognised/supported.</exception>
-        /// <exception cref="Errors.CodecNotAvailable">The file uses a codec that's not available/supported. This can apply to WAV and AIFF files, and also MP3 files when using the "MP3-free" BASS version.</exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">The sample format is not supported by the device/drivers. If the sample is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
-        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
-        /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
-        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        public static int SampleLoad(float[] Memory, int Length, int MaxNoOfPlaybacks, BassFlags Flags)
-        {
-            return Checked(BASS_SampleLoad(true, Memory, 0, Length, MaxNoOfPlaybacks, Flags));
+            var gch = GCHandle.Alloc(Memory, GCHandleType.Pinned);
+
+            var Return = SampleLoad(Memory, Offset, Length, MaxNoOfPlaybacks, Flags);
+
+            gch.Free();
+
+            return Return;
         }
         #endregion
     }

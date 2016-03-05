@@ -48,7 +48,7 @@ namespace ManagedBass.Dynamics
             return BASS_WMA_StreamCreateFile(true, Memory, Offset, Length, Flags);
         }
 
-        static int CreateStreamObj(object Memory, long Offset, long Length, BassFlags Flags)
+        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
@@ -58,35 +58,6 @@ namespace ManagedBass.Dynamics
             else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
 
             return Handle;
-        }
-
-        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
-        {
-            return CreateStreamObj(Memory, Offset, Length, Flags);
-        }
-
-        public static int CreateStream(short[] Memory, long Offset, long Length, BassFlags Flags)
-        {
-            return CreateStreamObj(Memory, Offset, Length, Flags);
-        }
-
-        public static int CreateStream(int[] Memory, long Offset, long Length, BassFlags Flags)
-        {
-            return CreateStreamObj(Memory, Offset, Length, Flags);
-        }
-
-        public static int CreateStream(float[] Memory, long Offset, long Length, BassFlags Flags)
-        {
-            return CreateStreamObj(Memory, Offset, Length, Flags);
-        }
-
-        public static int CreateStream(Stream Stream, int Offset, int Length, BassFlags Flags)
-        {
-            var buffer = new byte[Length];
-
-            Stream.Read(buffer, Offset, Length);
-
-            return CreateStream(buffer, 0, Length, Flags);
         }
         #endregion
 
@@ -107,7 +78,7 @@ namespace ManagedBass.Dynamics
             return BASS_WMA_StreamCreateFileAuth(true, Memory, 0, Length, Flags | BassFlags.Unicode, UserName, Password);
         }
 
-        static int CreateStreamObj(object Memory, long Length, BassFlags Flags, string UserName, string Password)
+        public static int CreateStream(byte[] Memory, long Length, BassFlags Flags, string UserName, string Password)
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
@@ -117,35 +88,6 @@ namespace ManagedBass.Dynamics
             else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
 
             return Handle;
-        }
-
-        public static int CreateStream(byte[] Memory, long Length, BassFlags Flags, string UserName, string Password)
-        {
-            return CreateStreamObj(Memory, Length, Flags, UserName, Password);
-        }
-
-        public static int CreateStream(short[] Memory, long Length, BassFlags Flags, string UserName, string Password)
-        {
-            return CreateStreamObj(Memory, Length, Flags, UserName, Password);
-        }
-
-        public static int CreateStream(int[] Memory, long Length, BassFlags Flags, string UserName, string Password)
-        {
-            return CreateStreamObj(Memory, Length, Flags, UserName, Password);
-        }
-
-        public static int CreateStream(float[] Memory, long Length, BassFlags Flags, string UserName, string Password)
-        {
-            return CreateStreamObj(Memory, Length, Flags, UserName, Password);
-        }
-
-        public static int CreateStream(Stream Stream, int Offset, int Length, BassFlags Flags, string UserName, string Password)
-        {
-            var buffer = new byte[Length];
-
-            Stream.Read(buffer, Offset, Length);
-
-            return CreateStream(buffer, Length, Flags, UserName, Password);
         }
         #endregion
 

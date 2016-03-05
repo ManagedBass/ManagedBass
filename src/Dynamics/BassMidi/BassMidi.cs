@@ -50,8 +50,7 @@ namespace ManagedBass.Dynamics
             return BASS_MIDI_StreamCreateFile(true, Memory, Offset, Length, Flags, Frequency);
         }
 
-        #region From Array
-        static int CreateStreamObj(object Memory, long Offset, long Length, BassFlags Flags, int Frequency)
+        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags, int Frequency = 44100)
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
@@ -61,36 +60,6 @@ namespace ManagedBass.Dynamics
             else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
 
             return Handle;
-        }
-
-        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags, int Frequency = 44100)
-        {
-            return CreateStreamObj(Memory, Offset, Length, Flags, Frequency);
-        }
-
-        public static int CreateStream(short[] Memory, long Offset, long Length, BassFlags Flags, int Frequency = 44100)
-        {
-            return CreateStreamObj(Memory, Offset, Length, Flags, Frequency);
-        }
-
-        public static int CreateStream(int[] Memory, long Offset, long Length, BassFlags Flags, int Frequency = 44100)
-        {
-            return CreateStreamObj(Memory, Offset, Length, Flags, Frequency);
-        }
-
-        public static int CreateStream(float[] Memory, long Offset, long Length, BassFlags Flags, int Frequency = 44100)
-        {
-            return CreateStreamObj(Memory, Offset, Length, Flags, Frequency);
-        }
-        #endregion
-
-        public static int CreateStream(Stream Stream, int Offset, int Length, BassFlags Flags = BassFlags.Default, int Frequency = 44100)
-        {
-            var buffer = new byte[Length];
-
-            Stream.Read(buffer, Offset, Length);
-
-            return CreateStream(buffer, 0, Length, Flags, Frequency);
         }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreateFileUser")]

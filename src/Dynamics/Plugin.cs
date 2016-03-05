@@ -159,8 +159,7 @@ namespace ManagedBass.Dynamics
             else return Bass.CreateStream(Url, Offset, Flags, Procedure, User);
         }
 
-        #region From Array
-        int _CreateStream(object Memory, int Offset, long Length, BassFlags Flags)
+        public int CreateStream(byte[] Memory, int Offset, long Length, BassFlags Flags)
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
@@ -170,36 +169,6 @@ namespace ManagedBass.Dynamics
             else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
 
             return Handle;
-        }
-
-        public int CreateStream(byte[] Memory, int Offset, long Length, BassFlags Flags)
-        {
-            return _CreateStream(Memory, Offset, Length, Flags);
-        }
-
-        public int CreateStream(short[] Memory, int Offset, long Length, BassFlags Flags)
-        {
-            return _CreateStream(Memory, Offset, Length, Flags);
-        }
-
-        public int CreateStream(int[] Memory, int Offset, long Length, BassFlags Flags)
-        {
-            return _CreateStream(Memory, Offset, Length, Flags);
-        }
-
-        public int CreateStream(float[] Memory, int Offset, long Length, BassFlags Flags)
-        {
-            return _CreateStream(Memory, Offset, Length, Flags);
-        }
-        #endregion
-
-        public int CreateStream(Stream Stream, int Offset, int Length, BassFlags Flags)
-        {
-            var buffer = new byte[Length];
-
-            Stream.Read(buffer, Offset, Length);
-
-            return CreateStream(buffer, 0, Length, Flags);
         }
         #endregion
 

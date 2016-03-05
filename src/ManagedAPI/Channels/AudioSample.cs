@@ -12,26 +12,21 @@ namespace ManagedBass
     {
         int Sample;
 
-        public AudioSample(int Length, int Frequency = 44100, int Channels = 2, Resolution Resolution = Resolution.Short)
+        public AudioSample(int Length, int Frequency = 44100, int Channels = 2, int MaxPlaybacks = 1, Resolution Resolution = Resolution.Short)
         {
-            Sample = CreateSample(Length, Frequency, Channels, 1, Resolution.ToBassFlag());
+            Sample = CreateSample(Length, Frequency, Channels, MaxPlaybacks, Resolution.ToBassFlag());
         }
 
-        public AudioSample(string FilePath, Resolution Resolution = Resolution.Short)
+        public AudioSample(string FilePath, long Offset = 0, int Length = 0, int MaxPlaybacks = 1, Resolution Resolution = Resolution.Short)
         {
-            Sample = SampleLoad(FilePath, 0, 0, 1, Resolution.ToBassFlag());
+            Sample = SampleLoad(FilePath, Offset, Length, MaxPlaybacks, Resolution.ToBassFlag());
         }
 
-        public AudioSample(byte[] Memory, int Length, Resolution Resolution = Resolution.Short)
+        public AudioSample(byte[] Memory, long Offset, int Length, int MaxPlaybacks = 1, Resolution Resolution = Resolution.Short)
         {
-            Sample = SampleLoad(Memory, Length, 1, Resolution.ToBassFlag());
+            Sample = SampleLoad(Memory, Offset, Length, MaxPlaybacks, Resolution.ToBassFlag());
         }
-
-        public AudioSample(float[] Memory, int Length)
-        {
-            Sample = SampleLoad(Memory, Length, 1, BassFlags.Float);
-        }
-
+        
         public long Length => SampleGetInfo(Sample).Length;
 
         public Channel CreateChannel(bool OnlyNew = false) => new Channel(SampleGetChannel(Sample, OnlyNew));
