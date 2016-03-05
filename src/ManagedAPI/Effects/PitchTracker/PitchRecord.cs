@@ -26,19 +26,19 @@ namespace Pitch
         /// <summary>
         /// The detected pitch
         /// </summary>
-        public double Pitch { get; set; }
+        public double Pitch { get; }
 
         /// <summary>
         /// The detected MIDI note, or 0 for no pitch
         /// </summary>
-        public int MidiNote { get; set; }
+        public int MidiNote { get; }
 
         /// <summary>
         /// The offset from the detected MIDI note in cents, from -50 to +50.
         /// </summary>
-        public int MidiCents { get; set; }
+        public int MidiCents { get; }
 
-        public string NoteName { get { return GetNoteName(MidiNote, true, true); } }
+        public string NoteName => GetNoteName(MidiNote, true, true);
         
         /// <summary>
         /// Get the MIDI note and cents of the pitch 

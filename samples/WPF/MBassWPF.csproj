@@ -60,12 +60,6 @@
     <Compile Include="Content\WasapiDeviceEnumerator.xaml.cs">
       <DependentUpon>WasapiDeviceEnumerator.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PitchTracker\CircularBuffer.cs" />
-    <Compile Include="PitchTracker\Extensions.cs" />
-    <Compile Include="PitchTracker\IIRFilter.cs" />
-    <Compile Include="PitchTracker\PitchDsp.cs" />
-    <Compile Include="PitchTracker\PitchRecord.cs" />
-    <Compile Include="PitchTracker\PitchTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\TimeConverter.cs" />
     <Page Include="Content\Recorder.xaml">

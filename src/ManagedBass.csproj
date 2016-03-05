@@ -211,6 +211,12 @@
     <Compile Include="ManagedAPI\Channels\Midi.cs" />
     <Compile Include="ManagedAPI\Channels\MixerStream.cs" />
     <Compile Include="ManagedAPI\Channels\SplitChannel.cs" />
+    <Compile Include="ManagedAPI\Effects\PitchTracker\CircularBuffer.cs" />
+    <Compile Include="ManagedAPI\Effects\PitchTracker\Extensions.cs" />
+    <Compile Include="ManagedAPI\Effects\PitchTracker\IIRFilter.cs" />
+    <Compile Include="ManagedAPI\Effects\PitchTracker\PitchDsp.cs" />
+    <Compile Include="ManagedAPI\Effects\PitchTracker\PitchRecord.cs" />
+    <Compile Include="ManagedAPI\Effects\PitchTracker\PitchTracker.cs" />
     <Compile Include="ManagedAPI\Tags\ApeBinaryTag.cs" />
     <Compile Include="ManagedAPI\Tags\ADXLoopTag.cs" />
     <Compile Include="ManagedAPI\Tags\DSDComment.cs" />

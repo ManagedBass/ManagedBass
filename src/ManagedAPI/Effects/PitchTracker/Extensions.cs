@@ -4,10 +4,6 @@ namespace Pitch
 {
     static class Extensions
     {
-        public static void Clear<T>(this T[] arr) { Array.Clear(arr, 0, arr.Length); }
-
-        public static void Clear<T>(this T[] buffer, int startIdx, int endIdx) { Array.Clear(buffer, startIdx, endIdx - startIdx + 1); }
-
         /// <summary>
         /// Copy the values from one Buffer to a different or the same Buffer. 
         /// It is safe to copy to the same Buffer, even if the areas overlap
@@ -17,21 +13,19 @@ namespace Pitch
             if (to == null || from.Length == 0 || to.Length == 0)
                 return;
 
-            var fromBegIdx = fromStart;
             var fromEndIdx = fromStart + length;
-            var toBegIdx = toStart;
             var toEndIdx = toStart + length;
 
-            if (fromBegIdx < 0)
+            if (fromStart < 0)
             {
-                toBegIdx -= fromBegIdx;
-                fromBegIdx = 0;
+                toStart -= fromStart;
+                fromStart = 0;
             }
 
-            if (toBegIdx < 0)
+            if (toStart < 0)
             {
-                fromBegIdx -= toBegIdx;
-                toBegIdx = 0;
+                fromStart -= toStart;
+                toStart = 0;
             }
 
             if (fromEndIdx >= from.Length)
@@ -46,16 +40,16 @@ namespace Pitch
                 toEndIdx = from.Length - 1;
             }
 
-            if (fromBegIdx < toBegIdx)
+            if (fromStart < toStart)
             {
                 // Shift right, so start at the right
-                for (int fromIdx = fromEndIdx, toIdx = toEndIdx; fromIdx >= fromBegIdx; fromIdx--, toIdx--)
+                for (int fromIdx = fromEndIdx, toIdx = toEndIdx; fromIdx >= fromStart; fromIdx--, toIdx--)
                     to[toIdx] = from[fromIdx];
             }
             else
             {
                 // Shift left, so start at the left
-                for (int fromIdx = fromBegIdx, toIdx = toBegIdx; fromIdx <= fromEndIdx; fromIdx++, toIdx++)
+                for (int fromIdx = fromStart, toIdx = toStart; fromIdx <= fromEndIdx; fromIdx++, toIdx++)
                     to[toIdx] = from[fromIdx];
             }
         }
@@ -63,9 +57,6 @@ namespace Pitch
         /// <summary>
         /// Fill the Buffer with the specified value
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="Buffer"></param>
-        /// <param name="?"></param>
         public static void Fill<T>(this T[] buffer, T value)
         {
             for (int idx = 0; idx < buffer.Length; idx++)

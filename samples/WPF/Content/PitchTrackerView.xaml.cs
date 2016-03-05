@@ -1,5 +1,5 @@
 ﻿using ManagedBass;
-using Pitch;
+using ManagedBass.Effects;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,14 +10,17 @@ namespace MBassWPF
     /// </summary>
     public partial class PitchTrackerView : UserControl
     {
-        PitchTracker pitchTracker;
+        PitchDSP pitchTracker;
         Recording R;
 
         public PitchTrackerView()
         {
             InitializeComponent();
 
-            pitchTracker = new PitchTracker() { SampleRate = 44100 };
+            R = new Recording(Resolution: Resolution.Float);
+
+            pitchTracker = new PitchDSP(R.Handle);
+            
             pitchTracker.PitchDetected += Record =>
             {
                 if (Record != null && Record.Pitch > 1)
@@ -28,21 +31,6 @@ namespace MBassWPF
                         Cents.Content = Record.MidiCents;
                     });
             };
-
-            R = new Recording(Resolution: Resolution.Float);
-            R.DataAvailable += R_DataAvailable;
-        }
-
-        float[] Buffer = null;
-
-        void R_DataAvailable(BufferProvider obj)
-        {
-            if (Buffer == null || Buffer.Length < obj.FloatLength)
-                Buffer = new float[obj.FloatLength];
-
-            obj.Read(Buffer);
-
-            pitchTracker.ProcessBuffer(Buffer, obj.FloatLength);
         }
 
         void DetectClick(object sender, RoutedEventArgs e)

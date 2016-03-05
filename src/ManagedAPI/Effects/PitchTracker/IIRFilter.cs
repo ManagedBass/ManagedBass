@@ -72,7 +72,6 @@ namespace Pitch
         public IIRProtoType Proto
         {
             get { return m_protoType; }
-
             set
             {
                 m_protoType = value;
@@ -86,7 +85,6 @@ namespace Pitch
         public IIRFilterType Type
         {
             get { return m_filterType; }
-
             set
             {
                 m_filterType = value;
@@ -97,7 +95,6 @@ namespace Pitch
         public int Order
         {
             get { return m_order; }
-
             set
             {
                 m_order = Math.Min(16, Math.Max(1, Math.Abs(value)));
@@ -111,7 +108,6 @@ namespace Pitch
         public float SampleRate
         {
             get { return m_sampleRate; }
-
             set
             {
                 m_sampleRate = value;
@@ -123,7 +119,6 @@ namespace Pitch
         public float FreqLow
         {
             get { return m_fp1; }
-
             set
             {
                 m_fp1 = value;
@@ -134,7 +129,6 @@ namespace Pitch
         public float FreqHigh
         {
             get { return m_fp2; }
-
             set
             {
                 m_fp2 = value;
@@ -145,7 +139,6 @@ namespace Pitch
         public float Ripple
         {
             get { return m_ripple; }
-
             set
             {
                 m_ripple = value;
@@ -153,9 +146,9 @@ namespace Pitch
             }
         }
 
-        bool IsOdd(int n) { return (n & 1) == 1; }
+        bool IsOdd(int n) => (n & 1) == 1;
         
-        double Sqr(double value) { return value * value; }
+        double Sqr(double value) => value * value;
 
         /// <summary>
         /// Determines poles and zeros of IIR filter
@@ -415,9 +408,11 @@ namespace Pitch
         /// </summary>
         public void Reset()
         {
-            if (m_inHistory != null) m_inHistory.Clear();
+            if (m_inHistory != null) 
+                Array.Clear(m_inHistory, 0, m_inHistory.Length);
 
-            if (m_outHistory != null) m_outHistory.Clear();
+            if (m_outHistory != null) 
+                Array.Clear(m_outHistory, 0, m_outHistory.Length);
 
             m_histIdx = 0;
         }
@@ -432,7 +427,7 @@ namespace Pitch
             if (m_inHistory == null || m_outHistory == null) return;
 
             m_inHistory.Fill(startValue);
-
+            
             if (m_inHistory != null)
             {
                 switch (m_filterType)
@@ -442,7 +437,7 @@ namespace Pitch
                         break;
 
                     default:
-                        m_outHistory.Clear();
+                        Array.Clear(m_outHistory, 0, m_outHistory.Length);
                         break;
                 }
             }

@@ -2,8 +2,6 @@
 
 namespace Pitch
 {
-    public delegate void PitchDetectedHandler(PitchRecord pitchRecord);
-
     /// <summary>
     /// Tracks pitch
     /// </summary>
@@ -22,7 +20,7 @@ namespace Pitch
         const int kAvgCount = 1;			        // number of average pitch samples to take
         const float kCircularBufSaveTime = 1.0f;    // Amount of samples to store in the history Buffer
 
-        PitchDsp m_dsp;
+        PitchProcessor m_dsp;
         CircularBuffer<float> m_circularBufferLo;
         CircularBuffer<float> m_circularBufferHi;
         double m_sampleRate;
@@ -42,7 +40,6 @@ namespace Pitch
         public PitchTracker(double SampleRate = 44100)
         {
             this.SampleRate = SampleRate;
-            Current = new PitchRecord(0);
         }
 
         #region Properties
@@ -53,7 +50,8 @@ namespace Pitch
         {
             set
             {
-                if (m_sampleRate == value) return;
+                if (m_sampleRate == value)
+                    return;
 
                 m_sampleRate = value;
                 Setup();
@@ -69,19 +67,18 @@ namespace Pitch
             {
                 var newValue = Math.Max(0.0001f, Math.Min(1.0f, value));
 
-                if (m_detectLevelThreshold == newValue) return;
+                if (m_detectLevelThreshold == newValue) 
+                    return;
 
                 m_detectLevelThreshold = newValue;
                 Setup();
             }
         }
-
-        public PitchRecord Current { get; set; }
-
+        
         /// <summary>
         /// Return the samples per pitch block
         /// </summary>
-        public int SamplesPerPitchBlock { get { return m_samplesPerPitchBlock; } }
+        public int SamplesPerPitchBlock => m_samplesPerPitchBlock;
 
         /// <summary>
         /// Get or set the number of pitch records per second (default is 50, or one record every 20ms)
@@ -99,18 +96,18 @@ namespace Pitch
         /// <summary>
         /// Get the current pitch position
         /// </summary>
-        public long CurrentPitchSamplePosition { get { return m_curPitchSamplePos; } }
+        public long CurrentPitchSamplePosition => m_curPitchSamplePos;
 
         /// <summary>
         /// Get the frequency step
         /// </summary>
-        public static double FrequencyStep { get { return Math.Pow(2.0, 1.0 / kOctaveSteps); } }
+        public static double FrequencyStep => Math.Pow(2.0, 1.0 / kOctaveSteps);
 
         /// <summary>
         /// Get the number of samples that the detected pitch is offset from the Input Buffer.
         /// This is just an estimate to sync up the samples and detected pitch
         /// </summary>
-        public int DetectSampleOffset { get { return (m_pitchBufSize + m_detectOverlapSamples) / 2; } }
+        public int DetectSampleOffset => (m_pitchBufSize + m_detectOverlapSamples) / 2;
         #endregion
 
         #region Methods
@@ -129,8 +126,8 @@ namespace Pitch
             m_circularBufferLo.Clear();
             m_circularBufferHi.Reset();
             m_circularBufferHi.Clear();
-            m_pitchBufLo.Clear();
-            m_pitchBufHi.Clear();
+            Array.Clear(m_pitchBufLo, 0, m_pitchBufLo.Length);
+            Array.Clear(m_pitchBufHi, 0, m_pitchBufHi.Length);
 
             m_circularBufferLo.StartPosition = -m_detectOverlapSamples;
             m_circularBufferLo.Available = m_detectOverlapSamples;
@@ -186,7 +183,7 @@ namespace Pitch
                         // Shift the buffers left by the overlapping amount
                         m_pitchBufLo.Copy(m_pitchBufLo, m_detectOverlapSamples, 0, m_pitchBufSize);
                         m_pitchBufHi.Copy(m_pitchBufHi, m_detectOverlapSamples, 0, m_pitchBufSize);
-                        
+
                         pitch2 = m_dsp.DetectPitch(m_pitchBufLo, m_pitchBufHi, m_pitchBufSize);
 
                         if (pitch2 > 0.0f)
@@ -198,7 +195,7 @@ namespace Pitch
                     }
 
                     // Log the pitch record
-                    OnPitchDetected(detectedPitch);
+                    PitchDetected?.Invoke(new PitchRecord(detectedPitch));
 
                     m_curPitchSamplePos += m_samplesPerPitchBlock;
                     m_curPitchIndex++;
@@ -215,7 +212,7 @@ namespace Pitch
         {
             if (m_sampleRate < 1) return;
 
-            m_dsp = new PitchDsp(m_sampleRate, MinimumDetectedFrequency, MaximumDetectedFrequency, m_detectLevelThreshold);
+            m_dsp = new PitchProcessor(m_sampleRate, MinimumDetectedFrequency, MaximumDetectedFrequency, m_detectLevelThreshold);
 
             m_iirFilterLoLo = new IIRFilter(IIRProtoType.Butterworth, IIRFilterType.HP, 5, (float)m_sampleRate);
             m_iirFilterLoLo.FreqLow = 45.0f;
@@ -241,19 +238,38 @@ namespace Pitch
             m_circularBufferHi = new CircularBuffer<float>((int)(kCircularBufSaveTime * m_sampleRate + 0.5f) + 10000);
         }
         #endregion
+        
+        public event Action<PitchRecord> PitchDetected;
+    }
+}
 
-        #region Events
-        /// <summary>
-        /// The pitch was detected - add the record
-        /// </summary>
-        /// <param name="pitch"></param>
-        void OnPitchDetected(float pitch) 
+namespace ManagedBass.Effects
+{
+    using Pitch;
+    using ManagedBass.Dynamics;
+
+    public class PitchDSP : DSP
+    {
+        PitchTracker pTracker;
+        float[] _buffer;
+
+        public PitchDSP(int Channel, int Priority = 0)
+            : base(Channel, Priority)
         {
-            Current = new PitchRecord(pitch);
-            if (this.PitchDetected != null) this.PitchDetected(Current); 
+            pTracker = new PitchTracker(Bass.ChannelGetInfo(Channel).Frequency);
+            pTracker.PitchDetected += (R) => PitchDetected?.Invoke(R);
         }
 
-        public event PitchDetectedHandler PitchDetected;
-        #endregion
+        public event Action<PitchRecord> PitchDetected;
+
+        protected override void Callback(BufferProvider buffer)
+        {
+            if (_buffer == null || _buffer.Length < buffer.FloatLength)
+                _buffer = new float[buffer.FloatLength];
+
+            buffer.Read(_buffer);
+
+            pTracker.ProcessBuffer(_buffer, buffer.FloatLength);
+        }
     }
 }

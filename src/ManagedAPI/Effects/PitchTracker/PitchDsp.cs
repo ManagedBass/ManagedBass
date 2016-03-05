@@ -2,7 +2,7 @@
 
 namespace Pitch
 {
-    public class PitchDsp
+    public class PitchProcessor
     {
         public static readonly double InverseLog2 = 1.0 / Math.Log10(2.0);
 
@@ -27,7 +27,7 @@ namespace Pitch
         int m_prevPitchIdx;
         float[] m_detectCurve;
 
-        public PitchDsp(double sampleRate, float minPitch, float maxPitch, float detectLevelThreshold)
+        public PitchProcessor(double sampleRate, float minPitch, float maxPitch, float detectLevelThreshold)
         {
             m_sampleRate = sampleRate;
             m_minPitch = minPitch;
@@ -63,22 +63,22 @@ namespace Pitch
         /// <summary>
         /// Get the max detected pitch
         /// </summary>
-        public float MaxPitch { get { return m_maxPitch; } }
+        public float MaxPitch => m_maxPitch;
 
         /// <summary>
         /// Get the min detected pitch
         /// </summary>
-        public float MinPitch { get { return m_minPitch; } }
+        public float MinPitch => m_minPitch;
 
         /// <summary>
         /// Get the max note
         /// </summary>
-        public int MaxNote { get { return (int)(PitchToMidiNote(m_maxPitch) + 0.5f) - 2; } }
+        public int MaxNote => (int)(PitchToMidiNote(m_maxPitch) + 0.5f) - 2;
 
         /// <summary>
         /// Get the min note
         /// </summary>
-        public int MinNote { get { return (int)(PitchToMidiNote(m_minPitch) + 0.5f) + 2; } }
+        public int MinNote => (int)(PitchToMidiNote(m_minPitch) + 0.5f) + 2;
 
         /// <summary>
         /// Detect the pitch
@@ -100,7 +100,7 @@ namespace Pitch
         /// </summary>
         float DetectPitchLo(float[] samplesLo, float[] samplesHi)
         {
-            m_detectCurve.Clear();
+            Array.Clear(m_detectCurve, 0, m_detectCurve.Length);
 
             const int skipSize = 8, peakScanSize = 23, peakScanSizeHalf = peakScanSize / 2;
 
@@ -120,7 +120,7 @@ namespace Pitch
                 {
                     if (!bufferSwitched)
                     {
-                        m_detectCurve.Clear(258 - peakScanSizeHalf, 258 + peakScanSizeHalf);
+                        Array.Clear(m_detectCurve, 258 - peakScanSizeHalf, peakScanSizeHalf + peakScanSizeHalf + 1);
                         bufferSwitched = true;
                     }
 
@@ -204,7 +204,7 @@ namespace Pitch
             var dir = 4;     // start going forward
             var curPos = kScanHiSize >> 1;	 // start at center of the scan range
 
-            m_peakBuf.Clear();
+            Array.Clear(m_peakBuf, 0, m_peakBuf.Length);
 
             float offset = m_pCourseFreqOffset[lowFreqIdx];
 
@@ -272,7 +272,7 @@ namespace Pitch
         /// Linear interpolation
         /// nFrac is based on 1.0 = 256
         /// </summary>
-        float InterpolateLinear(float y0, float y1, float frac) { return y0 * (1.0f - frac) + y1 * frac; }
+        float InterpolateLinear(float y0, float y1, float frac) => y0 * (1.0f - frac) + y1 * frac;
 
         /// <summary>
         /// Medium Low res SumAbsDiff
