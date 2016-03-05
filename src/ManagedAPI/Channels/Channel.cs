@@ -231,7 +231,7 @@ namespace ManagedBass
         /// Gets or Sets the Playback Frequency in Hertz.
         /// Default is 44100 Hz.
         /// </summary>
-        public double Frequency
+        public virtual double Frequency
         {
             get { return ChannelGetAttribute(Handle, ChannelAttribute.Frequency); }
             set { ChannelSetAttribute(Handle, ChannelAttribute.Frequency, value); }
@@ -243,24 +243,25 @@ namespace ManagedBass
         ///  1 Represents Completely Right.
         /// Default is 0.
         /// </summary>
-        public double Balance
+        public virtual double Balance
         {
             get { return ChannelGetAttribute(Handle, ChannelAttribute.Pan); }
             set { ChannelSetAttribute(Handle, ChannelAttribute.Pan, value); }
         }
         #endregion
 
-        public PlaybackDevice Device
+        public virtual PlaybackDevice Device
         {
             get { return PlaybackDevice.Get(ChannelGetDevice(Handle)); }
             set
             {
-                value.Init();
+                if (!value.DeviceInfo.IsInitialized)
+                    value.Init();
                 ChannelSetDevice(Handle, value.DeviceIndex);
             }
         }
         
-        public double Volume
+        public virtual double Volume
         {
             get { return ChannelGetAttribute(Handle, ChannelAttribute.Volume); }
             set { ChannelSetAttribute(Handle, ChannelAttribute.Volume, value); }
