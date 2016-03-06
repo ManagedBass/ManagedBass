@@ -49,10 +49,10 @@
                         HorizontalAlignment="Center">
                 <CheckBox Margin="10,0" 
                           Content="Reverse"
-                          IsChecked="{Binding Reverse}"/>
+                          IsChecked="{Binding Player.Reverse}"/>
                 <CheckBox Margin="10,0"
                           Content="Loop"
-                          IsChecked="{Binding Loop}"/>
+                          IsChecked="{Binding Player.Loop}"/>
                 <Button Content="/Resources/Play.png" 
                         Click="Play"
                         Name="BPlay"
@@ -85,29 +85,29 @@
                         <DockPanel>
                             <Label Content="Tempo:" 
                                    MouseDoubleClick="ResetTempo"/>
-                            <Slider ToolTip="{Binding Tempo}"
+                            <Slider ToolTip="{Binding Player.Tempo}"
                                     Margin="5" 
                                     Minimum="-95"
                                     Maximum="500" 
-                                    Value="{Binding Tempo, Mode=TwoWay}"/>
+                                    Value="{Binding Player.Tempo}"/>
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Frequency:"
                                    MouseDoubleClick="ResetFrequency"/>
-                            <Slider ToolTip="{Binding Frequency}"
+                            <Slider ToolTip="{Binding Player.Frequency}"
                                     Margin="5"
                                     Minimum="20000"
                                     Maximum="88100"
-                                    Value="{Binding Frequency, Mode=TwoWay}"/>
+                                    Value="{Binding Player.Frequency, Mode=TwoWay}"/>
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Pitch:" 
                                    MouseDoubleClick="ResetPitch"/>
-                            <Slider ToolTip="{Binding Pitch}"
+                            <Slider ToolTip="{Binding Player.Pitch}"
                                     Margin="5"
                                     Minimum="-60" 
                                     Maximum="60"
-                                    Value="{Binding Pitch, Mode=TwoWay}"/>
+                                    Value="{Binding Player.Pitch, Mode=TwoWay}"/>
                         </DockPanel>
                     </StackPanel>
                 </TabItem>

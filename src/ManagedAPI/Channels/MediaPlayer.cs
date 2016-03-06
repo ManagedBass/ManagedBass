@@ -1,11 +1,13 @@
 ﻿using ManagedBass.Dynamics;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace ManagedBass
 {
     /// <summary>
     /// A Reusable Channel which can Load files like a Player.
     /// </summary>
-    public class MediaPlayer : Channel
+    public class MediaPlayer : Channel, INotifyPropertyChanged
     {
         #region Frequency
         double? freq;
@@ -16,7 +18,10 @@ namespace ManagedBass
             set
             {
                 if (Bass.ChannelSetAttribute(Handle, ChannelAttribute.Frequency, value))
+                {
                     freq = value;
+                    OnPropertyChanged();
+                }
             }
         }
         #endregion
@@ -30,7 +35,10 @@ namespace ManagedBass
             set
             {
                 if (Bass.ChannelSetAttribute(Handle, ChannelAttribute.Pan, value))
+                {
                     pan = value;
+                    OnPropertyChanged();
+                }
             }
         }
         #endregion
@@ -44,10 +52,14 @@ namespace ManagedBass
             set
             {
                 if (!value.DeviceInfo.IsInitialized)
-                    value.Init();
+                    if (!value.Init())
+                        return;
 
                 if (Bass.ChannelSetDevice(Handle, value.DeviceIndex))
+                {
                     dev = value;
+                    OnPropertyChanged();
+                }
             }
         }
         #endregion
@@ -61,7 +73,10 @@ namespace ManagedBass
             set
             {
                 if (Bass.ChannelSetAttribute(Handle, ChannelAttribute.Volume, value))
+                {
                     vol = value;
+                    OnPropertyChanged();
+                }
             }
         }
         #endregion
@@ -74,10 +89,11 @@ namespace ManagedBass
             get { return loop.HasValue ? loop.Value : base.Loop; }
             set
             {
-                if (value) AddFlag(BassFlags.Loop);
-                else RemoveFlag(BassFlags.Loop);
-
-                loop = value;
+                if (value ? AddFlag(BassFlags.Loop) : RemoveFlag(BassFlags.Loop))
+                {
+                    loop = value;
+                    OnPropertyChanged();
+                }
             }
         }
         #endregion
@@ -98,6 +114,11 @@ namespace ManagedBass
 
             if (dev != null)
                 PlaybackDevice.CurrentDevice = dev;
+
+            var currentDev = Bass.CurrentDevice;
+
+            if (currentDev == -1 || !Bass.GetDeviceInfo(Bass.CurrentDevice).IsInitialized)
+                Bass.Init(currentDev);
 
             int h = Bass.CreateStream(FileName);
 
@@ -122,6 +143,13 @@ namespace ManagedBass
             if (loop.HasValue)
                 Loop = loop.Value;
         }
+
+        protected void OnPropertyChanged([CallerMemberName]string PropertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
     /// <summary>
@@ -143,7 +171,10 @@ namespace ManagedBass
             set
             {
                 if (Bass.ChannelSetAttribute(Handle, ChannelAttribute.ReverseDirection, value ? -1 : 1))
+                {
                     rev = value;
+                    OnPropertyChanged();
+                }
             }
         }
         #endregion
@@ -160,7 +191,10 @@ namespace ManagedBass
             set
             {
                 if (Bass.ChannelSetAttribute(TempoHandle, ChannelAttribute.Pitch, value))
+                {
                     pitch = value;
+                    OnPropertyChanged();
+                }
             }
         }
         #endregion
@@ -177,7 +211,10 @@ namespace ManagedBass
             set
             {
                 if (Bass.ChannelSetAttribute(TempoHandle, ChannelAttribute.Tempo, value))
+                {
                     tempo = value;
+                    OnPropertyChanged();
+                }
             }
         }
         #endregion
@@ -198,6 +235,11 @@ namespace ManagedBass
 
             if (dev != null)
                 PlaybackDevice.CurrentDevice = dev;
+
+            var currentDev = Bass.CurrentDevice;
+
+            if (currentDev == -1 || !Bass.GetDeviceInfo(Bass.CurrentDevice).IsInitialized)
+                Bass.Init(currentDev);
 
             int h = Bass.CreateStream(FileName, Flags: BassFlags.Decode);
 

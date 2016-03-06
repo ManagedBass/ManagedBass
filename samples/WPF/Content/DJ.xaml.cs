@@ -11,8 +11,6 @@ namespace MBassWPF
 {
     public partial class DJ : UserControl
     {
-        static DJ() { PlaybackDevice.DefaultDevice.Init(); }
-
         OpenFileDialog OFD;
 
         public DJ()

@@ -14,7 +14,7 @@ namespace MBassWPF
     public partial class Deck : UserControl, INotifyPropertyChanged
     {
         #region Fields
-        MediaPlayerFX Player;
+        public MediaPlayerFX Player { get; private set; }
         DispatcherTimer ProgressBarTimer;
         PanDSP pan;
 
@@ -62,62 +62,7 @@ namespace MBassWPF
         }
 
         public double Volume { set { Player.Volume = value; } }
-
-        public bool Reverse
-        {
-            get { return Player.Reverse; }
-            set
-            {
-                Player.Reverse = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public bool Loop
-        {
-            get { return Player.Loop; }
-            set
-            {
-                Player.Loop = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public double Tempo
-        {
-            get { return Player.Tempo; }
-            set
-            {
-                Player.Tempo = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public double Frequency
-        {
-            get { return Player.Frequency; }
-            set
-            {
-                Player.Frequency = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public double Pitch
-        {
-            get { return Player.Pitch; }
-            set
-            {
-                Player.Pitch = value;
-
-                OnPropertyChanged();
-            }
-        }
-
+        
         public double Balance
         {
             get { return pan != null ? pan.Pan : 0; }
@@ -223,7 +168,7 @@ namespace MBassWPF
             {
                 Status.Content = "Stopped";
                 Player.Stop();
-                Position = Reverse ? Duration : 0;
+                Position = Player.Reverse ? Duration : 0;
                 ProgressBarTimer.Stop();
                 BPlay.Content = "/Resources/Play.png";
             };
@@ -284,7 +229,7 @@ namespace MBassWPF
         {
             if (BPlay.Content.ToString().Contains("Play"))
             {
-                if (Reverse && Position == 0)
+                if (Player.Reverse && Position == 0)
                     Position = Duration;
 
                 Player.Start();
@@ -310,7 +255,7 @@ namespace MBassWPF
             {
                 Status.Content = "Stopped";
                 BPlay.Content = "/Resources/Play.png";
-                Position = Reverse ? Duration : 0;
+                Position = Player.Reverse ? Duration : 0;
                 ProgressBarTimer.Stop();
             }
         }
@@ -340,13 +285,13 @@ namespace MBassWPF
         }
 
         #region Reset
-        void ResetPitch(object sender, MouseButtonEventArgs e) { Pitch = 0; }
+        void ResetPitch(object sender, MouseButtonEventArgs e) { Player.Pitch = 0; }
 
-        void ResetFrequency(object sender, MouseButtonEventArgs e) { Frequency = 44100; }
+        void ResetFrequency(object sender, MouseButtonEventArgs e) { Player.Frequency = 44100; }
 
-        void ResetBalance(object sender, MouseButtonEventArgs e) { Balance = 0; }
+        void ResetBalance(object sender, MouseButtonEventArgs e) { Player.Balance = 0; }
 
-        void ResetTempo(object sender, MouseButtonEventArgs e) { Tempo = 0; }
+        void ResetTempo(object sender, MouseButtonEventArgs e) { Player.Tempo = 0; }
         #endregion
 
         #region INotifyPropertyChanged
