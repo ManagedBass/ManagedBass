@@ -97,13 +97,15 @@ namespace ManagedBass
             }
         }
         #endregion
+        
+        protected virtual int OnLoad(string FileName) => Bass.CreateStream(FileName);
 
         /// <summary>
         /// Loads a file into the player.
         /// </summary>
         /// <param name="FileName">Path to the file to Load.</param>
         /// <returns><see langword="true"/> on succes, <see langword="false"/> on failure.</returns>
-        public virtual bool Load(string FileName)
+        public bool Load(string FileName)
         {
             try
             {
@@ -120,7 +122,7 @@ namespace ManagedBass
             if (currentDev == -1 || !Bass.GetDeviceInfo(Bass.CurrentDevice).IsInitialized)
                 Bass.Init(currentDev);
 
-            int h = Bass.CreateStream(FileName);
+            int h = OnLoad(FileName);
 
             if (h == 0)
                 return false;
@@ -129,10 +131,12 @@ namespace ManagedBass
 
             InitProperties();
 
+            OnPropertyChanged(nameof(Duration));
+
             return true;
         }
 
-        protected void InitProperties()
+        protected virtual void InitProperties()
         {
             if (freq.HasValue)
                 Frequency = freq.Value;
@@ -153,7 +157,7 @@ namespace ManagedBass
     }
 
     /// <summary>
-    /// A Reusable Channel which can Load files like a Player including Tempo, Pitch and Reverse options.
+    /// A Reusable Channel which can Load files like a Player including Tempo, Pitch and Reverse options using BassFx.
     /// </summary>
     public class MediaPlayerFX : MediaPlayer
     {
@@ -218,59 +222,35 @@ namespace ManagedBass
             }
         }
         #endregion
-
-        /// <summary>
-        /// Loads a file into the player.
-        /// </summary>
-        /// <param name="FileName">Path to the file to Load.</param>
-        /// <returns><see langword="true"/> on succes, <see langword="false"/> on failure.</returns>
-        public override bool Load(string FileName)
+                
+        protected override int OnLoad(string FileName)
         {
-            try
-            {
-                if (Handle != 0)
-                    Bass.StreamFree(Handle);
-            }
-            catch { }
-
-            if (dev != null)
-                PlaybackDevice.CurrentDevice = dev;
-
-            var currentDev = Bass.CurrentDevice;
-
-            if (currentDev == -1 || !Bass.GetDeviceInfo(Bass.CurrentDevice).IsInitialized)
-                Bass.Init(currentDev);
-
             int h = Bass.CreateStream(FileName, Flags: BassFlags.Decode);
 
             if (h == 0)
-                return false;
+                return 0;
 
             h = BassFx.TempoCreate(h, BassFlags.Decode | BassFlags.FxFreeSource);
 
             if (h == 0)
-                return false;
+                return 0;
 
             TempoHandle = h;
 
-            h = BassFx.ReverseCreate(h, 2, BassFlags.FxFreeSource);
+            return BassFx.ReverseCreate(h, 2, BassFlags.FxFreeSource);
+        }
 
-            if (h == 0)
-                return false;
-
-            Handle = h;
-
+        protected override void InitProperties()
+        {
             Reverse = rev;
 
-            InitProperties();
+            base.InitProperties();
 
             if (tempo.HasValue)
                 Tempo = tempo.Value;
 
             if (pitch.HasValue)
                 Pitch = pitch.Value;
-
-            return true;
         }
     }
 }

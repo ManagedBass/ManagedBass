@@ -30,15 +30,7 @@ namespace MBassWPF
 
         public double Position
         {
-            get 
-            {
-                var t = Player.Position;
-
-                if (t == -1)
-                    return 0;
-
-                return t;
-            }
+            get { return Player.Position; }
             set
             {
                 Player.Position = value;
@@ -46,21 +38,7 @@ namespace MBassWPF
                 OnPropertyChanged();
             }
         }
-
-        public double Duration
-        {
-            get 
-            {
-                var t = Player.Duration;
-                
-                if (t == -1)
-                    return 0;
-                
-                return Player.Duration;
-            }
-            set { OnPropertyChanged(); }
-        }
-
+        
         public double Volume { set { Player.Volume = value; } }
         
         public double Balance
@@ -168,7 +146,7 @@ namespace MBassWPF
             {
                 Status.Content = "Stopped";
                 Player.Stop();
-                Position = Player.Reverse ? Duration : 0;
+                Position = Player.Reverse ? Player.Duration : 0;
                 ProgressBarTimer.Stop();
                 BPlay.Content = "/Resources/Play.png";
             };
@@ -230,7 +208,7 @@ namespace MBassWPF
             if (BPlay.Content.ToString().Contains("Play"))
             {
                 if (Player.Reverse && Position == 0)
-                    Position = Duration;
+                    Position = Player.Duration;
 
                 Player.Start();
 
@@ -255,7 +233,7 @@ namespace MBassWPF
             {
                 Status.Content = "Stopped";
                 BPlay.Content = "/Resources/Play.png";
-                Position = Player.Reverse ? Duration : 0;
+                Position = Player.Reverse ? Player.Duration : 0;
                 ProgressBarTimer.Stop();
             }
         }
@@ -289,7 +267,7 @@ namespace MBassWPF
 
         void ResetFrequency(object sender, MouseButtonEventArgs e) { Player.Frequency = 44100; }
 
-        void ResetBalance(object sender, MouseButtonEventArgs e) { Player.Balance = 0; }
+        void ResetBalance(object sender, MouseButtonEventArgs e) { pan.Pan = 0; }
 
         void ResetTempo(object sender, MouseButtonEventArgs e) { Player.Tempo = 0; }
         #endregion

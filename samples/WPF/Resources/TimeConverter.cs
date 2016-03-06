@@ -13,7 +13,7 @@ namespace MBassWPF
 
             double i = (double)value;
 
-            var TS = TimeSpan.FromSeconds(i);
+            var TS = TimeSpan.FromSeconds(i < 0 ? 0 : i);
 
             return TS.Hours == 0 ? string.Format("{0:D2}:{1:D2}", TS.Minutes, TS.Seconds)
                                  : string.Format("{0:D2}:{1:D2}:{2:D2}", TS.Hours, TS.Minutes, TS.Seconds);

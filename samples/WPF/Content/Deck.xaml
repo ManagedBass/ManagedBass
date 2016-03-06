@@ -32,7 +32,7 @@
                             Margin="5,0">
                     <TextBlock Text="{Binding Position, Converter={StaticResource TimeConverter}}"/>
                     <TextBlock Text="/"/>
-                    <TextBlock Text="{Binding Duration, Converter={StaticResource TimeConverter}}"/>
+                    <TextBlock Text="{Binding Player.Duration, Converter={StaticResource TimeConverter}}"/>
                 </StackPanel>
                 <Slider IsMoveToPointEnabled="True"
                         Margin="5,0" 
@@ -42,7 +42,7 @@
                         PreviewMouseLeftButtonDown="Slider_PreviewMouseLeftButtonDown" 
                         MouseLeftButtonUp="Slider_MouseLeftButtonUp" 
                         Value="{Binding Position}"
-                        Maximum="{Binding Duration}"/>
+                        Maximum="{Binding Player.Duration}"/>
             </DockPanel>
             <StackPanel Margin="3" 
                         Orientation="Horizontal" 
