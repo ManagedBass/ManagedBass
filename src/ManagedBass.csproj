@@ -203,7 +203,6 @@
     <Compile Include="ManagedAPI\Channels\ManagedFileChannel.cs" />
     <Compile Include="ManagedAPI\Channels\MidiIn.cs" />
     <Compile Include="ManagedAPI\Channels\TempoChannel.cs" />
-    <Compile Include="ManagedAPI\Channels\MemoryChannel.cs" />
     <Compile Include="ManagedAPI\Effects\PitchTracker\PitchDSP.cs" />
     <Compile Include="ManagedAPI\Encoder.cs" />
     <Compile Include="ManagedAPI\AudioCapture\Loopback.cs" />
