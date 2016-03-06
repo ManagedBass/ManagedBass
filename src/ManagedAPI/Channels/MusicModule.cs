@@ -12,17 +12,10 @@ namespace ManagedBass
             Handle = Bass.MusicLoad(FilePath, 0, 0, FlagGen(IsDecoder, Resolution), 0);
         }
 
-        MusicModule(byte[] Memory, int Length, bool IsDecoder = false)
+        MusicModule(byte[] Memory, int Length, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
             GCHandle GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
-            Handle = Bass.MusicLoad(GCPin.AddrOfPinnedObject(), 0, Length, FlagGen(IsDecoder, Resolution.Byte));
-            GCPin.Free();
-        }
-
-        public MusicModule(float[] Memory, int Length, bool IsDecoder = false)
-        {
-            GCHandle GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
-            Handle = Bass.MusicLoad(GCPin.AddrOfPinnedObject(), 0, Length, FlagGen(IsDecoder, Resolution.Float));
+            Handle = Bass.MusicLoad(GCPin.AddrOfPinnedObject(), 0, Length, FlagGen(IsDecoder, Resolution));
             GCPin.Free();
         }
 

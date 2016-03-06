@@ -11,6 +11,7 @@ namespace ManagedBass
             Handle = BassMix.CreateMixerStream(Frequency, NoOfChannels, FlagGen(IsDecoder, Resolution));
         }
 
+        #region Read
         public override int Read(IntPtr Buffer, int Length) => BassMix.ChannelGetData(Handle, Buffer, Length);
 
         public override int Read(byte[] Buffer, int Length) => BassMix.ChannelGetData(Handle, Buffer, Length);
@@ -20,6 +21,7 @@ namespace ManagedBass
         public override int Read(int[] Buffer, int Length) => BassMix.ChannelGetData(Handle, Buffer, Length);
 
         public override int Read(float[] Buffer, int Length) => BassMix.ChannelGetData(Handle, Buffer, Length);
+        #endregion
 
         public bool AddChannel(Channel channel) => AddChannel(channel.Handle);
 

@@ -10,39 +10,18 @@ namespace ManagedBass
     {
         GCHandle GCPin;
 
-        public MemoryChannel(byte[] Memory, int Offset, long Length, bool IsDecoder = false)
+        public MemoryChannel(byte[] Memory, int Offset, long Length, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
             GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
-            Handle = Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution.Byte));
+            Handle = Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution));
         }
-
-        public MemoryChannel(float[] Memory, int Offset, long Length, bool IsDecoder = false)
-        {
-            GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
-
-            Handle = Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution.Float));
-        }
-
-        public MemoryChannel(short[] Memory, int Offset, long Length, bool IsDecoder = false)
-        {
-            GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
-
-            Handle = Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution.Short));
-        }
-
-        public MemoryChannel(int[] Memory, int Offset, long Length, bool IsDecoder = false)
-        {
-            GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
-
-            Handle = Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution.Short));
-        }
-
+        
         public override void Dispose()
         {
             base.Dispose();
 
-			if (GCPin.IsAllocated) GCPin.Free();
+			if (GCPin != null && GCPin.IsAllocated) GCPin.Free();
         }
     }
 }

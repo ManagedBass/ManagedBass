@@ -57,6 +57,17 @@ namespace ManagedBass.Effects
             cents = (int)((note - fNote) * 100);
             return true;
         }
+
+        /// <summary>
+        /// Get the pitch from the MIDI note
+        /// </summary>
+        public static float MidiNoteToPitch(float note)
+        {
+            if (note < 33) 
+                return 0;
+
+            return (float)Math.Pow(10.0, (note - 33.0f) / InverseLog2 / 12.0f) * 55.0f;
+        }
         
         /// <summary>
         /// Format a midi note to text

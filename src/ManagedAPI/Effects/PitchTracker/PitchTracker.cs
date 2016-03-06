@@ -37,27 +37,13 @@ namespace ManagedBass.Effects
         IIRFilter m_iirFilterLoLo, m_iirFilterLoHi, m_iirFilterHiLo, m_iirFilterHiHi;
         #endregion
 
-        public PitchTracker(double SampleRate = 44100)
+        public PitchTracker(double SampleRate = 44100) 
         {
-            this.SampleRate = SampleRate;
+            m_sampleRate = SampleRate;
+            Setup();
         }
 
         #region Properties
-        /// <summary>
-        /// Set the sample rate
-        /// </summary>
-        public double SampleRate
-        {
-            set
-            {
-                if (m_sampleRate == value)
-                    return;
-
-                m_sampleRate = value;
-                Setup();
-            }
-        }
-
         /// <summary>
         /// Set the detect level threshold, The value must be between 0.0001f and 1.0f (-80 dB to 0 dB)
         /// </summary>

@@ -59,27 +59,7 @@ namespace ManagedBass.Effects
 
             for (int idx = 0; idx < kScanHiSize; idx++) m_scanHiOffset[idx] = (float)Math.Pow(kScanHiFreqStep, (kScanHiSize / 2) - idx);
         }
-
-        /// <summary>
-        /// Get the max detected pitch
-        /// </summary>
-        public float MaxPitch => m_maxPitch;
-
-        /// <summary>
-        /// Get the min detected pitch
-        /// </summary>
-        public float MinPitch => m_minPitch;
-
-        /// <summary>
-        /// Get the max note
-        /// </summary>
-        public int MaxNote => (int)(PitchToMidiNote(m_maxPitch) + 0.5f) - 2;
-
-        /// <summary>
-        /// Get the min note
-        /// </summary>
-        public int MinNote => (int)(PitchToMidiNote(m_minPitch) + 0.5f) + 2;
-
+        
         /// <summary>
         /// Detect the pitch
         /// </summary>
@@ -245,13 +225,16 @@ namespace ManagedBass.Effects
         /// <summary>
         /// Returns true if the level is above the specified value
         /// </summary>
-        public bool LevelIsAbove(float[] buffer, int len, float level)
+        bool LevelIsAbove(float[] buffer, int len, float level)
         {
-            if (buffer == null || buffer.Length == 0) return false;
+            if (buffer == null || buffer.Length == 0) 
+                return false;
 
             var endIdx = Math.Min(buffer.Length, len);
 
-            for (int idx = 0; idx < endIdx; idx++) if (Math.Abs(buffer[idx]) >= level) return true;
+            for (int idx = 0; idx < endIdx; idx++)
+                if (Math.Abs(buffer[idx]) >= level)
+                    return true;
 
             return false;
         }
@@ -323,31 +306,6 @@ namespace ManagedBass.Effects
             }
 
             return count / value;
-        }
-
-        /// <summary>
-        /// Get the pitch from the MIDI note
-        /// </summary>
-        /// <param name="pitch"></param>
-        /// <returns></returns>
-        public static float PitchToMidiNote(float pitch)
-        {
-            if (pitch < 20.0f) return 0.0f;
-
-            return (float)(12.0 * Math.Log10(pitch / 55.0) * InverseLog2) + 33.0f;
-        }
-
-        /// <summary>
-        /// Get the pitch from the MIDI note
-        /// </summary>
-        /// <param name="note"></param>
-        /// <returns></returns>
-        public float MidiNoteToPitch(float note)
-        {
-            if (note < 33.0f) return 0;
-
-            var pitch = (float)Math.Pow(10.0, (note - 33.0f) / InverseLog2 / 12.0f) * 55.0f;
-            return pitch <= m_maxPitch ? pitch : 0.0f;
         }
     }
 }
