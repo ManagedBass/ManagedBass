@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace Pitch
+namespace ManagedBass.Effects
 {
     public class PitchRecord
     {
         #region Constants
         static readonly double InverseLog2 = 1.0 / Math.Log10(2.0);
 
-        const int kMinMidiNote = 21;  // A0
-        const int kMaxMidiNote = 108; // C8
+        public const int MinMidiNoteA0 = 21,
+                         MaxMidiNoteC8 = 108;
         #endregion
 
         public PitchRecord(double Pitch)
@@ -21,6 +21,7 @@ namespace Pitch
             this.Pitch = Pitch;
             this.MidiNote = midiNote;
             this.MidiCents = midiCents;
+            this.NoteName = GetNoteName(MidiNote, true, true);
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace Pitch
         /// </summary>
         public int MidiCents { get; }
 
-        public string NoteName => GetNoteName(MidiNote, true, true);
+        public string NoteName { get; }
         
         /// <summary>
         /// Get the MIDI note and cents of the pitch 
@@ -62,9 +63,9 @@ namespace Pitch
         /// </summary>
         public static string GetNoteName(int note, bool sharps, bool showOctave)
         {
-            if (note < kMinMidiNote || note > kMaxMidiNote) return null;
+            if (note < MinMidiNoteA0 || note > MaxMidiNoteC8) return null;
 
-            note -= kMinMidiNote;
+            note -= MinMidiNoteA0;
 
             int octave = (note + 9) / 12;
             note = note % 12;

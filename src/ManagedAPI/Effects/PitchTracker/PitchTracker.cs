@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Pitch
+namespace ManagedBass.Effects
 {
     /// <summary>
     /// Tracks pitch
@@ -21,8 +21,8 @@ namespace Pitch
         const float kCircularBufSaveTime = 1.0f;    // Amount of samples to store in the history Buffer
 
         PitchProcessor m_dsp;
-        CircularBuffer<float> m_circularBufferLo;
-        CircularBuffer<float> m_circularBufferHi;
+        CircularBuffer m_circularBufferLo;
+        CircularBuffer m_circularBufferHi;
         double m_sampleRate;
         float m_detectLevelThreshold = 0.01f;       // -40dB
         int m_pitchRecordsPerSecond = 50;           // default is 50, or one record every 20ms
@@ -181,8 +181,8 @@ namespace Pitch
                     if (pitch1 > 0.0f)
                     {
                         // Shift the buffers left by the overlapping amount
-                        m_pitchBufLo.Copy(m_pitchBufLo, m_detectOverlapSamples, 0, m_pitchBufSize);
-                        m_pitchBufHi.Copy(m_pitchBufHi, m_detectOverlapSamples, 0, m_pitchBufSize);
+                        SafeCopy(m_pitchBufLo, m_pitchBufLo, m_detectOverlapSamples, 0, m_pitchBufSize);
+                        SafeCopy(m_pitchBufHi, m_pitchBufHi, m_detectOverlapSamples, 0, m_pitchBufSize);
 
                         pitch2 = m_dsp.DetectPitch(m_pitchBufLo, m_pitchBufHi, m_pitchBufSize);
 
@@ -206,6 +206,56 @@ namespace Pitch
         }
 
         /// <summary>
+        /// Copy the values from one Buffer to a different or the same Buffer. 
+        /// It is safe to copy to the same Buffer, even if the areas overlap
+        /// </summary>
+        static void SafeCopy<T>(T[] from, T[] to, int fromStart, int toStart, int length)
+        {
+            if (to == null || from.Length == 0 || to.Length == 0)
+                return;
+
+            var fromEndIdx = fromStart + length;
+            var toEndIdx = toStart + length;
+
+            if (fromStart < 0)
+            {
+                toStart -= fromStart;
+                fromStart = 0;
+            }
+
+            if (toStart < 0)
+            {
+                fromStart -= toStart;
+                toStart = 0;
+            }
+
+            if (fromEndIdx >= from.Length)
+            {
+                toEndIdx -= fromEndIdx - from.Length + 1;
+                fromEndIdx = from.Length - 1;
+            }
+
+            if (toEndIdx >= to.Length)
+            {
+                fromEndIdx -= toEndIdx - to.Length + 1;
+                toEndIdx = from.Length - 1;
+            }
+
+            if (fromStart < toStart)
+            {
+                // Shift right, so start at the right
+                for (int fromIdx = fromEndIdx, toIdx = toEndIdx; fromIdx >= fromStart; fromIdx--, toIdx--)
+                    to[toIdx] = from[fromIdx];
+            }
+            else
+            {
+                // Shift left, so start at the left
+                for (int fromIdx = fromStart, toIdx = toStart; fromIdx <= fromEndIdx; fromIdx++, toIdx++)
+                    to[toIdx] = from[fromIdx];
+            }
+        }
+
+        /// <summary>
         /// Setup
         /// </summary>
         void Setup()
@@ -214,16 +264,16 @@ namespace Pitch
 
             m_dsp = new PitchProcessor(m_sampleRate, MinimumDetectedFrequency, MaximumDetectedFrequency, m_detectLevelThreshold);
 
-            m_iirFilterLoLo = new IIRFilter(IIRProtoType.Butterworth, IIRFilterType.HP, 5, (float)m_sampleRate);
+            m_iirFilterLoLo = new IIRFilter(IIRFilterType.HP, 5, (float)m_sampleRate);
             m_iirFilterLoLo.FreqLow = 45.0f;
 
-            m_iirFilterLoHi = new IIRFilter(IIRProtoType.Butterworth, IIRFilterType.LP, 5, (float)m_sampleRate);
+            m_iirFilterLoHi = new IIRFilter(IIRFilterType.LP, 5, (float)m_sampleRate);
             m_iirFilterLoHi.FreqHigh = 280.0f;
 
-            m_iirFilterHiLo = new IIRFilter(IIRProtoType.Butterworth, IIRFilterType.HP, 5, (float)m_sampleRate);
+            m_iirFilterHiLo = new IIRFilter(IIRFilterType.HP, 5, (float)m_sampleRate);
             m_iirFilterHiLo.FreqLow = 45.0f;
 
-            m_iirFilterHiHi = new IIRFilter(IIRProtoType.Butterworth, IIRFilterType.LP, 5, (float)m_sampleRate);
+            m_iirFilterHiHi = new IIRFilter(IIRFilterType.LP, 5, (float)m_sampleRate);
             m_iirFilterHiHi.FreqHigh = 1500.0f;
 
             m_detectOverlapSamples = (int)(kDetectOverlapSec * m_sampleRate);
@@ -234,42 +284,11 @@ namespace Pitch
             m_pitchBufHi = new float[m_pitchBufSize + m_detectOverlapSamples];
             m_samplesPerPitchBlock = (int)Math.Round(m_sampleRate / m_pitchRecordsPerSecond);
 
-            m_circularBufferLo = new CircularBuffer<float>((int)(kCircularBufSaveTime * m_sampleRate + 0.5f) + 10000);
-            m_circularBufferHi = new CircularBuffer<float>((int)(kCircularBufSaveTime * m_sampleRate + 0.5f) + 10000);
+            m_circularBufferLo = new CircularBuffer((int)(kCircularBufSaveTime * m_sampleRate + 0.5f) + 10000);
+            m_circularBufferHi = new CircularBuffer((int)(kCircularBufSaveTime * m_sampleRate + 0.5f) + 10000);
         }
         #endregion
         
         public event Action<PitchRecord> PitchDetected;
-    }
-}
-
-namespace ManagedBass.Effects
-{
-    using Pitch;
-    using ManagedBass.Dynamics;
-
-    public class PitchDSP : DSP
-    {
-        PitchTracker pTracker;
-        float[] _buffer;
-
-        public PitchDSP(int Channel, int Priority = 0)
-            : base(Channel, Priority)
-        {
-            pTracker = new PitchTracker(Bass.ChannelGetInfo(Channel).Frequency);
-            pTracker.PitchDetected += (R) => PitchDetected?.Invoke(R);
-        }
-
-        public event Action<PitchRecord> PitchDetected;
-
-        protected override void Callback(BufferProvider buffer)
-        {
-            if (_buffer == null || _buffer.Length < buffer.FloatLength)
-                _buffer = new float[buffer.FloatLength];
-
-            buffer.Read(_buffer);
-
-            pTracker.ProcessBuffer(_buffer, buffer.FloatLength);
-        }
     }
 }

@@ -204,6 +204,7 @@
     <Compile Include="ManagedAPI\Channels\MidiIn.cs" />
     <Compile Include="ManagedAPI\Channels\TempoChannel.cs" />
     <Compile Include="ManagedAPI\Channels\MemoryChannel.cs" />
+    <Compile Include="ManagedAPI\Effects\PitchTracker\PitchDSP.cs" />
     <Compile Include="ManagedAPI\Encoder.cs" />
     <Compile Include="ManagedAPI\AudioCapture\Loopback.cs" />
     <Compile Include="ManagedAPI\Channels\ReverseChannel.cs" />
@@ -212,9 +213,8 @@
     <Compile Include="ManagedAPI\Channels\MixerStream.cs" />
     <Compile Include="ManagedAPI\Channels\SplitChannel.cs" />
     <Compile Include="ManagedAPI\Effects\PitchTracker\CircularBuffer.cs" />
-    <Compile Include="ManagedAPI\Effects\PitchTracker\Extensions.cs" />
     <Compile Include="ManagedAPI\Effects\PitchTracker\IIRFilter.cs" />
-    <Compile Include="ManagedAPI\Effects\PitchTracker\PitchDsp.cs" />
+    <Compile Include="ManagedAPI\Effects\PitchTracker\PitchProcessor.cs" />
     <Compile Include="ManagedAPI\Effects\PitchTracker\PitchRecord.cs" />
     <Compile Include="ManagedAPI\Effects\PitchTracker\PitchTracker.cs" />
     <Compile Include="ManagedAPI\Tags\ApeBinaryTag.cs" />

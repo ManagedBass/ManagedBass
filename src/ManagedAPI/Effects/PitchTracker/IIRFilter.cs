@@ -1,33 +1,34 @@
 ﻿using System;
 
-namespace Pitch
+namespace ManagedBass.Effects
 {
-    public enum IIRFilterType { None, LP, HP, BP }
-
-    public enum IIRProtoType { None, Butterworth, Chebyshev, }
-
+    enum IIRFilterType { LP, HP }
+    
     /// <summary>
     /// Infinite impulse response filter (old style analog filters)
     /// </summary>
-    public class IIRFilter
+    class IIRFilter
     {
         const int kHistMask = 31, kHistSize = 32;
 
         int m_order;
-        IIRProtoType m_protoType;
         IIRFilterType m_filterType;
 
-        float m_fp1, m_fp2, m_fN, m_ripple, m_sampleRate;
+        float m_fp1, m_fp2, m_fN, m_sampleRate;
         double[] m_real, m_imag, m_z, m_aCoeff, m_bCoeff, m_inHistory, m_outHistory;
         int m_histIdx;
         bool m_invertDenormal;
 
-        public IIRFilter(IIRProtoType Proto, IIRFilterType Type, int Order, float SampleRate) 
+        public IIRFilter(IIRFilterType Type, int Order, float SampleRate) 
         {
-            this.Proto = Proto;
-            this.Type = Type;
-            this.Order = Order;
-            this.SampleRate = SampleRate;
+            m_filterType = Type;
+
+            m_order = Math.Min(16, Math.Max(1, Math.Abs(Order)));
+            
+            m_sampleRate = SampleRate;
+            m_fN = 0.5f * m_sampleRate;
+
+            Design();
         }
 
         /// <summary>
@@ -38,8 +39,6 @@ namespace Pitch
             get
             {
                 if (m_order < 1 || m_order > 16 ||
-                    m_protoType == IIRProtoType.None ||
-                    m_filterType == IIRFilterType.None ||
                     m_sampleRate <= 0 ||
                     m_fN <= 0)
                     return false;
@@ -49,73 +48,16 @@ namespace Pitch
                     case IIRFilterType.LP:
                         if (m_fp2 <= 0) return false;
                         break;
-
-                    case IIRFilterType.BP:
-                        if (m_fp1 <= 0 || m_fp2 <= 0 || m_fp1 >= m_fp2) return false;
-                        break;
-
+                        
                     case IIRFilterType.HP:
                         if (m_fp1 <= 0) return false;
                         break;
                 }
 
-                // For bandpass, the order must be even
-                if (m_filterType == IIRFilterType.BP && (m_order & 1) != 0) return false;
-
                 return true;
             }
         }
-
-        /// <summary>
-        /// Set the filter prototype
-        /// </summary>
-        public IIRProtoType Proto
-        {
-            get { return m_protoType; }
-            set
-            {
-                m_protoType = value;
-                Design();
-            }
-        }
-
-        /// <summary>
-        /// Set the filter Type
-        /// </summary>
-        public IIRFilterType Type
-        {
-            get { return m_filterType; }
-            set
-            {
-                m_filterType = value;
-                Design();
-            }
-        }
-
-        public int Order
-        {
-            get { return m_order; }
-            set
-            {
-                m_order = Math.Min(16, Math.Max(1, Math.Abs(value)));
-
-                if (m_filterType == IIRFilterType.BP && IsOdd(m_order)) m_order++;
-
-                Design();
-            }
-        }
-
-        public float SampleRate
-        {
-            get { return m_sampleRate; }
-            set
-            {
-                m_sampleRate = value;
-                m_fN = 0.5f * m_sampleRate;
-                Design();
-            }
-        }
-
+        
         public float FreqLow
         {
             get { return m_fp1; }
@@ -135,17 +77,7 @@ namespace Pitch
                 Design();
             }
         }
-
-        public float Ripple
-        {
-            get { return m_ripple; }
-            set
-            {
-                m_ripple = value;
-                Design();
-            }
-        }
-
+        
         bool IsOdd(int n) => (n & 1) == 1;
         
         double Sqr(double value) => value * value;
@@ -164,8 +96,6 @@ namespace Pitch
             // Butterworth, Chebyshev parameters
             int n = m_order;
 
-            if (m_filterType == IIRFilterType.BP) n = n / 2;
-
             int ir = n % 2;
             int n1 = n + ir;
             int n2 = (3 * n + ir) / 2 - 1;
@@ -180,11 +110,7 @@ namespace Pitch
                 case IIRFilterType.HP:
                     f1 = m_fN - m_fp1;
                     break;
-
-                case IIRFilterType.BP:
-                    f1 = m_fp2 - m_fp1;
-                    break;
-
+                    
                 default:
                     f1 = 0.0;
                     break;
@@ -194,33 +120,15 @@ namespace Pitch
             double tansqw1 = Sqr(tanw1);
 
             // Real and Imaginary parts of low-pass poles
-            double t, a = 1.0, r = 1.0, i = 1.0;
+            double t, r = 1.0, i = 1.0;
 
             for (int k = n1; k <= n2; k++)
             {
                 t = 0.5 * (2 * k + 1 - ir) * Math.PI / (double)n;
 
-                switch (m_protoType)
-                {
-                    case IIRProtoType.Butterworth:
-                        double b3 = 1.0 - 2.0 * tanw1 * Math.Cos(t) + tansqw1;
-                        r = (1.0 - tansqw1) / b3;
-                        i = 2.0 * tanw1 * Math.Sin(t) / b3;
-                        break;
-
-                    case IIRProtoType.Chebyshev:
-                        double d = 1.0 - Math.Exp(-0.05 * m_ripple * ln10);
-                        double e = 1.0 / Math.Sqrt(1.0 / Sqr(1.0 - d) - 1.0);
-                        double x = Math.Pow(Math.Sqrt(e * e + 1.0) + e, 1.0 / (double)n);
-                        a = 0.5 * (x - 1.0 / x);
-                        double b = 0.5 * (x + 1.0 / x);
-                        double c3 = a * tanw1 * Math.Cos(t);
-                        double c4 = b * tanw1 * Math.Sin(t);
-                        double c5 = Sqr(1.0 - c3) + Sqr(c4);
-                        r = 2.0 * (1.0 - c3) / c5 - 1.0;
-                        i = 2.0 * c4 / c5;
-                        break;
-                }
+                double b3 = 1.0 - 2.0 * tanw1 * Math.Cos(t) + tansqw1;
+                r = (1.0 - tansqw1) / b3;
+                i = 2.0 * tanw1 * Math.Sin(t) / b3;
 
                 int m = 2 * (n2 - k) + 1;
                 m_real[m + ir] = r;
@@ -231,12 +139,8 @@ namespace Pitch
 
             if (IsOdd(n))
             {
-                if (m_protoType == IIRProtoType.Butterworth)
-                    r = (1.0 - tansqw1) / (1.0 + 2.0 * tanw1 + tansqw1);
-
-                if (m_protoType == IIRProtoType.Chebyshev)
-                    r = 2.0 / (1.0 + a * tanw1) - 1.0;
-
+                r = (1.0 - tansqw1) / (1.0 + 2.0 * tanw1 + tansqw1);
+                
                 m_real[1] = r;
                 m_imag[1] = 0.0;
             }
@@ -255,81 +159,6 @@ namespace Pitch
                         m_real[m] = -m_real[m];
                         m_z[m] = 1.0;
                     }
-                    break;
-
-                case IIRFilterType.BP:
-                    // Low-pass to bandpass transformation
-                    for (int m = 1; m <= n; m++)
-                    {
-                        m_z[m] = 1.0;
-                        m_z[m + n] = -1.0;
-                    }
-
-                    double f4 = 0.5 * Math.PI * m_fp1 / m_fN;
-                    double f5 = 0.5 * Math.PI * m_fp2 / m_fN;
-                    double aa = Math.Cos(f4 + f5) / Math.Cos(f5 - f4);
-                    double aR, aI, h1, h2, p1R, p2R, p1I, p2I;
-
-                    for (int m1 = 0; m1 <= (m_order - 1) / 2; m1++)
-                    {
-                        int m = 1 + 2 * m1;
-                        aR = m_real[m];
-                        aI = m_imag[m];
-
-                        if (Math.Abs(aI) < 0.0001)
-                        {
-                            h1 = 0.5 * aa * (1.0 + aR);
-                            h2 = Sqr(h1) - aR;
-                            if (h2 > 0.0)
-                            {
-                                p1R = h1 + Math.Sqrt(h2);
-                                p2R = h1 - Math.Sqrt(h2);
-                                p1I = 0.0;
-                                p2I = 0.0;
-                            }
-                            else
-                            {
-                                p1R = h1;
-                                p2R = h1;
-                                p1I = Math.Sqrt(Math.Abs(h2));
-                                p2I = -p1I;
-                            }
-                        }
-                        else
-                        {
-                            double fR = aa * 0.5 * (1.0 + aR);
-                            double fI = aa * 0.5 * aI;
-                            double gR = Sqr(fR) - Sqr(fI) - aR;
-                            double gI = 2 * fR * fI - aI;
-                            double sR = Math.Sqrt(0.5 * Math.Abs(gR + Math.Sqrt(Sqr(gR) + Sqr(gI))));
-                            double sI = gI / (2.0 * sR);
-                            p1R = fR + sR;
-                            p1I = fI + sI;
-                            p2R = fR - sR;
-                            p2I = fI - sI;
-                        }
-
-                        m_real[m] = p1R;
-                        m_real[m + 1] = p2R;
-                        m_imag[m] = p1I;
-                        m_imag[m + 1] = p2I;
-                    }
-
-                    if (IsOdd(n))
-                    {
-                        m_real[2] = m_real[n + 1];
-                        m_imag[2] = m_imag[n + 1];
-                    }
-
-                    for (int k = n; k >= 1; k--)
-                    {
-                        int m = 2 * k - 1;
-                        m_real[m] = m_real[k];
-                        m_real[m + 1] = m_real[k];
-                        m_imag[m] = Math.Abs(m_imag[k]);
-                        m_imag[m + 1] = -Math.Abs(m_imag[k]);
-                    }
-
                     break;
             }
         }
@@ -416,33 +245,7 @@ namespace Pitch
 
             m_histIdx = 0;
         }
-
-        /// <summary>
-        /// Reset the filter, and fill the appropriate history buffers with the specified value
-        /// </summary>
-        public void Reset(double startValue)
-        {
-            m_histIdx = 0;
-
-            if (m_inHistory == null || m_outHistory == null) return;
-
-            m_inHistory.Fill(startValue);
-            
-            if (m_inHistory != null)
-            {
-                switch (m_filterType)
-                {
-                    case IIRFilterType.LP:
-                        m_outHistory.Fill(startValue);
-                        break;
-
-                    default:
-                        Array.Clear(m_outHistory, 0, m_outHistory.Length);
-                        break;
-                }
-            }
-        }
-
+        
         /// <summary>
         /// Apply the filter to the Buffer
         /// </summary>
@@ -466,22 +269,6 @@ namespace Pitch
                 m_histIdx = (m_histIdx + 1) & kHistMask;
                 dstBuf[dstPos + sampleIdx] = (float)sum;
             }
-        }
-
-        public float FilterSample(float inVal)
-        {
-            double sum = 0;
-
-            m_inHistory[m_histIdx] = inVal;
-
-            for (int idx = 0; idx < m_aCoeff.Length; idx++) sum += m_aCoeff[idx] * m_inHistory[(m_histIdx - idx) & kHistMask];
-
-            for (int idx = 1; idx < m_bCoeff.Length; idx++) sum -= m_bCoeff[idx] * m_outHistory[(m_histIdx - idx) & kHistMask];
-
-            m_outHistory[m_histIdx] = sum;
-            m_histIdx = (m_histIdx + 1) & kHistMask;
-
-            return (float)sum;
         }
 
         /// <summary>

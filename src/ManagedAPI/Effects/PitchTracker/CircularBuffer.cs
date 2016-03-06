@@ -1,44 +1,27 @@
 ﻿using System;
 
-namespace Pitch
+namespace ManagedBass.Effects
 {
-    public class CircularBuffer<T> : IDisposable
+    class CircularBuffer : IDisposable
     {
         int m_bufSize, m_begBufOffset, m_availBuf;
-        T[] m_buffer;
+        float[] m_buffer;
         
-        public CircularBuffer(int bufCount) { Size = bufCount; }
+        public CircularBuffer(int bufCount) 
+        {            
+            m_bufSize = bufCount;
+            
+            if (m_bufSize > 0)
+                m_buffer = new float[m_bufSize];
+        }
 
-        public void Dispose() => Size = 0;
+        public void Dispose() => m_buffer = null;
 
         /// <summary>
         /// Reset to the beginning of the Buffer
         /// </summary>
         public void Reset() => StartPosition = m_begBufOffset = m_availBuf = 0;
-
-        /// <summary>
-        /// Set the Buffer to the specified size
-        /// </summary>
-        public int Size
-        {
-            get { return m_bufSize; }
-            set
-            {
-                Reset();
-
-                if (m_bufSize == value) 
-                    return;
-
-                if (m_buffer != null)
-                    m_buffer = null;
-
-                m_bufSize = value;
-
-                if (m_bufSize > 0)
-                    m_buffer = new T[m_bufSize];
-            }
-        }
-
+        
         /// <summary>
         /// Clear the Buffer
         /// </summary>
@@ -48,11 +31,6 @@ namespace Pitch
         /// Get or set the start position
         /// </summary>
         public long StartPosition { get; set; }
-
-        /// <summary>
-        /// Get the end position
-        /// </summary>
-        public long EndPosition => StartPosition + m_availBuf;
 
         /// <summary>
         /// Get or set the amount of avaliable space
@@ -66,7 +44,7 @@ namespace Pitch
         /// <summary>
         /// Write data into the Buffer
         /// </summary>
-        public int Write(T[] m_pInBuffer, int count)
+        public int Write(float[] m_pInBuffer, int count)
         {
             count = Math.Min(count, m_bufSize);
 
@@ -106,7 +84,7 @@ namespace Pitch
         /// <summary>
         /// Read from the Buffer
         /// </summary>
-        public bool Read(T[] outBuffer, long startRead, int readCount)
+        public bool Read(float[] outBuffer, long startRead, int readCount)
         {
             var endRead = (int)(startRead + readCount);
             var endAvail = (int)(StartPosition + m_availBuf);
