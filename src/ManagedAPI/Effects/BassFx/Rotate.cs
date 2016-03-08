@@ -22,6 +22,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fRate = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

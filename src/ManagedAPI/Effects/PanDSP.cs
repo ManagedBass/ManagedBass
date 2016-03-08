@@ -10,7 +10,12 @@
         public double Pan
         {
             get { return pan; }
-            set { pan = (float)value.Clip(-1, 1); }
+            set 
+            {
+                pan = (float)value.Clip(-1, 1);
+                
+                OnPropertyChanged();
+            }
         }
 
         protected override unsafe void Callback(BufferProvider buffer)

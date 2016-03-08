@@ -29,6 +29,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fGain = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -42,6 +44,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fRate = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -55,6 +59,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fTarget = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -68,6 +74,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fQuiet = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -81,6 +89,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fDelay = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

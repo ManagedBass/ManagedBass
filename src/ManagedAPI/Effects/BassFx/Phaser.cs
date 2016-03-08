@@ -1,4 +1,5 @@
 ﻿using ManagedBass.Dynamics;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass.Effects
@@ -21,6 +22,7 @@ namespace ManagedBass.Effects
     {
         public PhaserEffect(int Handle) : base(Handle) { }
 
+        #region Presets
         public void PhaseShift()
         {
             Parameters.fDryMix = 0.999f;
@@ -29,6 +31,8 @@ namespace ManagedBass.Effects
             Parameters.fRate = 1;
             Parameters.fRange = 4;
             Parameters.fFreq = 100;
+
+            OnPropertyChanged("");
             Update();
         }
 
@@ -40,6 +44,8 @@ namespace ManagedBass.Effects
             Parameters.fRate = 0.2f;
             Parameters.fRange = 6;
             Parameters.fFreq = 100;
+
+            OnPropertyChanged("");
             Update();
         }
 
@@ -51,6 +57,8 @@ namespace ManagedBass.Effects
             Parameters.fRate = 1;
             Parameters.fRange = 4.3f;
             Parameters.fFreq = 50;
+
+            OnPropertyChanged("");
             Update();
         }
 
@@ -62,6 +70,8 @@ namespace ManagedBass.Effects
             Parameters.fRate = 1;
             Parameters.fRange = 4;
             Parameters.fFreq = 40;
+
+            OnPropertyChanged("");
             Update();
         }
 
@@ -73,6 +83,8 @@ namespace ManagedBass.Effects
             Parameters.fRate = 1;
             Parameters.fRange = 7;
             Parameters.fFreq = 100;
+
+            OnPropertyChanged("");
             Update();
         }
 
@@ -84,6 +96,8 @@ namespace ManagedBass.Effects
             Parameters.fRate = 1;
             Parameters.fRange = 7;
             Parameters.fFreq = 400;
+
+            OnPropertyChanged("");
             Update();
         }
 
@@ -95,6 +109,8 @@ namespace ManagedBass.Effects
             Parameters.fRate = 1;
             Parameters.fRange = 7;
             Parameters.fFreq = 200;
+
+            OnPropertyChanged("");
             Update();
         }
 
@@ -106,8 +122,11 @@ namespace ManagedBass.Effects
             Parameters.fRate = 1;
             Parameters.fRange = 4;
             Parameters.fFreq = 60;
+
+            OnPropertyChanged("");
             Update();
         }
+        #endregion
 
         public double DryMix
         {
@@ -115,6 +134,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fDryMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -125,6 +146,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fFeedback = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -135,6 +158,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fFreq = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -145,6 +170,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fRange = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -155,6 +182,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fRate = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -165,6 +194,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fWetMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

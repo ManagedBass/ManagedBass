@@ -15,6 +15,20 @@
         <Label Content="Ready"
                Name="Status"
                DockPanel.Dock="Bottom"/>
+        <StackPanel DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Frequency"/>
+                <Label Name="Frequency" Content="--"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Note" Margin="0,0,28,0"/>
+                <Label Name="Note" Content="--"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Cents" Margin="0,0,24,0"/>
+                <Label Name="Cents" Content="--"/>
+            </StackPanel>
+        </StackPanel>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     DockPanel.Dock="Top">

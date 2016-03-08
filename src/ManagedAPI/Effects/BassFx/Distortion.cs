@@ -20,6 +20,7 @@ namespace ManagedBass.Effects
     {
         public DistortionEffect(int Handle) : base(Handle) { }
 
+        #region Presets
         public void Hard()
         {
             Parameters.fDrive = 1;
@@ -28,6 +29,7 @@ namespace ManagedBass.Effects
             Parameters.fFeedback = 0;
             Parameters.fVolume = 1;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -39,6 +41,7 @@ namespace ManagedBass.Effects
             Parameters.fFeedback = 0.1f;
             Parameters.fVolume = 1;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -50,6 +53,7 @@ namespace ManagedBass.Effects
             Parameters.fFeedback = 0.1f;
             Parameters.fVolume = 1;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -61,8 +65,10 @@ namespace ManagedBass.Effects
             Parameters.fFeedback = -0.18f;
             Parameters.fVolume = 0.25f;
 
+            OnPropertyChanged("");
             Update();
         }
+        #endregion
 
         /// <summary>
         /// Distortion Drive (0...5).
@@ -73,6 +79,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fDrive = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -86,6 +94,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fDryMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -99,6 +109,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fFeedback = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -112,6 +124,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fVolume = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -125,6 +139,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fWetMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

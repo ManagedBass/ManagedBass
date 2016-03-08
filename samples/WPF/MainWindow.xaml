@@ -15,6 +15,20 @@
                     <x:Type TypeName="local:WriterKind"/>
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
+            <Style TargetType="Button"
+                   BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Background"
+                        Value="Transparent"/>
+                <Setter Property="BorderThickness"
+                        Value="0.5"/>
+                <Setter Property="Padding"
+                        Value="5,0"/>
+            </Style>
+            <Style TargetType="TabItem"
+                   BasedOn="{StaticResource {x:Type TabItem}}">
+                <Setter Property="Background"
+                        Value="Transparent"/>
+            </Style>
         </DockPanel.Resources>
         <DockPanel DockPanel.Dock="Bottom"
                    Margin="0,5">
@@ -34,24 +48,11 @@
             </TabItem>
 
             <TabItem Header="Recording">
-                <Grid ShowGridLines="True">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    <DockPanel Grid.Row="1">
-                        <Label Content="Recording and Loopback"
+                <DockPanel Grid.Row="1">
+                    <Label Content="Recording and Loopback"
                                DockPanel.Dock="Top"/>
-                        <local:Recorder Padding="5,0"/>
-                    </DockPanel>
-
-                    <DockPanel Grid.Column="1">
-                        <Label Content="PitchTracker (adapted from pitchtracker.codeplex.com)"
-                               DockPanel.Dock="Top"/>
-                        <local:PitchTrackerView Padding="5,0"/>
-                    </DockPanel>
-                </Grid>
+                    <local:Recorder Padding="5,0"/>
+                </DockPanel>
             </TabItem>
 
             <TabItem Header="Device Enumerator">
@@ -80,7 +81,7 @@
                     </DockPanel>
                 </Grid>
             </TabItem>
-            
+
             <TabItem Header="CD">
                 <local:CD/>
             </TabItem>

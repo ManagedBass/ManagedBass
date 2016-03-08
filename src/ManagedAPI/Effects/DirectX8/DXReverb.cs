@@ -24,6 +24,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fInGain = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -34,6 +36,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fReverbMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -44,6 +48,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fReverbTime = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -54,6 +60,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fHighFreqRTRatio = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

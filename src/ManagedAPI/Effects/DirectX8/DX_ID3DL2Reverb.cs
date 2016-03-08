@@ -32,6 +32,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.lRoom = value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -42,6 +44,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.lRoomHF = value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -52,6 +56,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.flRoomRolloffFactor = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -62,6 +68,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.flDecayTime = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -72,6 +80,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.flDecayHFRatio = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -82,6 +92,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.lReflections = value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -92,6 +104,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.flReflectionsDelay = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -102,6 +116,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.lReverb = value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -112,6 +128,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.flReverbDelay = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -122,6 +140,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.flDiffusion = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -132,6 +152,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.flDensity = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -142,6 +164,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.flHFReference = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

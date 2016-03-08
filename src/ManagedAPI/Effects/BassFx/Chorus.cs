@@ -44,6 +44,7 @@ namespace ManagedBass.Effects
             Parameters.fMaxSweep = 5;
             Parameters.fRate = 1;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -56,6 +57,7 @@ namespace ManagedBass.Effects
             Parameters.fMaxSweep = 200;
             Parameters.fRate = 50;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -68,6 +70,7 @@ namespace ManagedBass.Effects
             Parameters.fMaxSweep = 100;
             Parameters.fRate = 25;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -80,6 +83,7 @@ namespace ManagedBass.Effects
             Parameters.fMaxSweep = 50;
             Parameters.fRate = 200;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -92,6 +96,7 @@ namespace ManagedBass.Effects
             Parameters.fMaxSweep = 400;
             Parameters.fRate = 200;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -104,6 +109,7 @@ namespace ManagedBass.Effects
             Parameters.fMaxSweep = 400;
             Parameters.fRate = 400;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -116,6 +122,7 @@ namespace ManagedBass.Effects
             Parameters.fMaxSweep = 2;
             Parameters.fRate = 1;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -128,6 +135,7 @@ namespace ManagedBass.Effects
             Parameters.fMaxSweep = 10;
             Parameters.fRate = 5;
 
+            OnPropertyChanged("");
             Update();
         }
         #endregion
@@ -141,6 +149,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fDryMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -154,6 +164,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fFeedback = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -167,6 +179,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fMaxSweep = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -180,6 +194,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fMinSweep = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -193,6 +209,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fRate = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -206,6 +224,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fWetMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

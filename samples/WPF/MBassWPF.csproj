@@ -54,9 +54,6 @@
     <Compile Include="Content\DeviceEnumerator.xaml.cs">
       <DependentUpon>DeviceEnumerator.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Content\PitchTrackerView.xaml.cs">
-      <DependentUpon>PitchTrackerView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Content\WasapiDeviceEnumerator.xaml.cs">
       <DependentUpon>WasapiDeviceEnumerator.xaml</DependentUpon>
     </Compile>
@@ -90,10 +87,6 @@
       <DependentUpon>DJ.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Content\PitchTrackerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Content\WasapiDeviceEnumerator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

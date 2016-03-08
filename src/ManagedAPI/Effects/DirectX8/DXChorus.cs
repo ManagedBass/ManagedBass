@@ -27,6 +27,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.lWaveform = value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -37,6 +39,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fWetDryMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -47,6 +51,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fDepth = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -57,6 +63,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fFeedback = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -67,6 +75,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fFrequency = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -77,6 +87,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fDelay = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -87,6 +99,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.lPhase = value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

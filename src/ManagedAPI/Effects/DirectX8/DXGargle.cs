@@ -22,6 +22,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.dwRateHz = value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -32,6 +34,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.dwWaveShape = value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

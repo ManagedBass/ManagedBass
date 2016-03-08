@@ -25,6 +25,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fWetDryMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -35,6 +37,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fFeedback = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -45,6 +49,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fLeftDelay = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -55,6 +61,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fRightDelay = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -65,6 +73,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.lPanDelay = value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

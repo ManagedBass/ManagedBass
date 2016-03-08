@@ -10,7 +10,12 @@
         public double Gain
         {
             get { return gain; }
-            set { gain = (float)value.Clip(0, 1024); }
+            set
+            {
+                gain = (float)value.Clip(0, 1024);
+
+                OnPropertyChanged();
+            }
         }
 
         protected override unsafe void Callback(BufferProvider buffer)

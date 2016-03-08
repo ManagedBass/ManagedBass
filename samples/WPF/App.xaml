@@ -9,7 +9,7 @@
                 <ResourceDictionary Source="Resources/Slider.xaml"/>
                 <ResourceDictionary Source="Resources/ScrollBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-        <local:TimeConverter x:Key="TimeConverter"/>
+            <local:TimeConverter x:Key="TimeConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

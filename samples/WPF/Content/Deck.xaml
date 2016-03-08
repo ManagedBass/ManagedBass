@@ -20,6 +20,17 @@
                 <Setter Property="VerticalAlignment"
                         Value="Center"/>
             </Style>
+            <Style TargetType="Button"
+                   BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="IsEnabled"
+                        Value="{Binding Ready}"/>
+                <Setter Property="Background"
+                        Value="Transparent"/>
+                <Setter Property="BorderThickness"
+                        Value="0.2"/>
+                <Setter Property="Padding"
+                        Value="5,0"/>
+            </Style>
         </DockPanel.Resources>
         <StackPanel DockPanel.Dock="Top">
             <Label Height="30"
@@ -58,17 +69,15 @@
                         Name="BPlay"
                         Template="{DynamicResource ImageButton}" 
                         Width="25" 
-                        Height="25"
-                        IsEnabled="{Binding Ready}"/>
+                        Height="25"/>
                 <Button Content="/Resources/Stop.png" 
                         Click="Stop"
                         Name="BStop" 
                         Template="{DynamicResource ImageButton}" 
                         Width="35" 
-                        Height="25" 
-                        IsEnabled="{Binding Ready}"/>
+                        Height="25"/>
             </StackPanel>
-            
+
             <TabControl Height="180"
                         BorderThickness="0">
                 <TabItem Header="Basic">
@@ -76,11 +85,11 @@
                         <DockPanel>
                             <Label Content="Balance:" 
                                    MouseDoubleClick="ResetBalance"/>
-                            <Slider ToolTip="{Binding Balance}"
+                            <Slider ToolTip="{Binding Pan.Pan}"
                                     Margin="5"
                                     Minimum="-1" 
                                     Maximum="1" 
-                                    Value="{Binding Balance, Mode=TwoWay}"/>
+                                    Value="{Binding Pan.Pan, Mode=TwoWay}"/>
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Tempo:" 
@@ -111,61 +120,162 @@
                         </DockPanel>
                     </StackPanel>
                 </TabItem>
-                
+
                 <TabItem Header="Reverb">
                     <StackPanel>
                         <CheckBox Margin="3"
-                                  IsChecked="{Binding Reverb}"
+                                  IsChecked="{Binding Reverb.IsActive}"
                                   Content="Is Active"/>
                         <DockPanel>
                             <Label Content="DryMix:"/>
-                            <Slider ToolTip="{Binding Reverb_DryMix}"
+                            <Slider ToolTip="{Binding Reverb.DryMix}"
                                     Margin="5"
                                     Minimum="0" 
                                     Maximum="1" 
-                                    Value="{Binding Reverb_DryMix, Mode=TwoWay}"/>
+                                    Value="{Binding Reverb.DryMix, Mode=TwoWay}"/>
                         </DockPanel>
 
                         <DockPanel>
                             <Label Content="WetMix:"/>
-                            <Slider ToolTip="{Binding Reverb_WetMix}"
+                            <Slider ToolTip="{Binding Reverb.WetMix}"
                                     Margin="5"
                                     Minimum="0" 
                                     Maximum="1" 
-                                    Value="{Binding Reverb_WetMix, Mode=TwoWay}"/>
+                                    Value="{Binding Reverb.WetMix, Mode=TwoWay}"/>
                         </DockPanel>
                         <DockPanel>
                             <Label Content="RoomSize:"/>
-                            <Slider ToolTip="{Binding Reverb_RoomSize}"
+                            <Slider ToolTip="{Binding Reverb.RoomSize}"
                                     Margin="5"
                                     Minimum="0" 
                                     Maximum="1" 
-                                    Value="{Binding Reverb_RoomSize, Mode=TwoWay}"/>
+                                    Value="{Binding Reverb.RoomSize, Mode=TwoWay}"/>
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Damp:"/>
-                            <Slider ToolTip="{Binding Reverb_Damp}"
+                            <Slider ToolTip="{Binding Reverb.Damp}"
                                     Margin="5"
                                     Minimum="0" 
                                     Maximum="1" 
-                                    Value="{Binding Reverb_Damp, Mode=TwoWay}"/>
+                                    Value="{Binding Reverb.Damp, Mode=TwoWay}"/>
                         </DockPanel>
                         <DockPanel>
                             <Label Content="Width:"/>
-                            <Slider ToolTip="{Binding Reverb_Width}"
+                            <Slider ToolTip="{Binding Reverb.Width}"
                                     Margin="5"
                                     Minimum="0" 
                                     Maximum="1" 
-                                    Value="{Binding Reverb_Width, Mode=TwoWay}"/>
+                                    Value="{Binding Reverb.Width, Mode=TwoWay}"/>
                         </DockPanel>
-                    </StackPanel>                    
+                    </StackPanel>
                 </TabItem>
-                
+
                 <TabItem Header="Distortion">
                     <StackPanel>
-                        <CheckBox Margin="3"
-                                  IsChecked="{Binding Distortion}"
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Margin="3"
+                                  IsChecked="{Binding Distortion.IsActive}"
                                   Content="Is Active"/>
+                            <Button Content="Soft"
+                                    Click="SoftDistortion"/>
+                            <Button Content="Medium"
+                                    Click="MediumDistortion"/>
+                            <Button Content="Hard"
+                                    Click="HardDistortion"/>
+                            <Button Content="VeryHard"
+                                    Click="VeryHardDistortion"/>
+                        </StackPanel>
+                        <DockPanel>
+                            <Label Content="Drive:"/>
+                            <Slider ToolTip="{Binding Distortion.Drive}"
+                                    Margin="5"
+                                    Minimum="0" 
+                                    Maximum="5" 
+                                    Value="{Binding Distortion.Drive, Mode=TwoWay}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="DryMix:"/>
+                            <Slider ToolTip="{Binding Distortion.DryMix}"
+                                    Margin="5"
+                                    Minimum="-5" 
+                                    Maximum="5" 
+                                    Value="{Binding Distortion.DryMix, Mode=TwoWay}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Feedback:"/>
+                            <Slider ToolTip="{Binding Distortion.Feedback}"
+                                    Margin="5"
+                                    Minimum="-1" 
+                                    Maximum="1" 
+                                    Value="{Binding Distortion.Feedback, Mode=TwoWay}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Volume:"/>
+                            <Slider ToolTip="{Binding Distortion.Volume}"
+                                    Margin="5"
+                                    Minimum="0" 
+                                    Maximum="2" 
+                                    Value="{Binding Distortion.Volume, Mode=TwoWay}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="WetMix:"/>
+                            <Slider ToolTip="{Binding Distortion.WetMix}"
+                                    Margin="5"
+                                    Minimum="-5" 
+                                    Maximum="5" 
+                                    Value="{Binding Distortion.WetMix, Mode=TwoWay}"/>
+                        </DockPanel>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="Echo">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Margin="3"
+                                  IsChecked="{Binding Echo.IsActive}"
+                                  Content="Is Active"/>
+                            <Button Content="Small"
+                                    Click="SmallEchoes"/>
+                            <Button Content="ManyVoices"
+                                    Click="ManyEchoes"/>
+                            <Button Content="Robotic"
+                                    Click="RoboticEchoes"/>
+                            <Button Content="Reverse"
+                                    Click="ReverseEchoes"/>
+                        </StackPanel>
+                        <DockPanel>
+                            <Label Content="DryMix:"/>
+                            <Slider ToolTip="{Binding Echo.DryMix}"
+                                    Margin="5"
+                                    Minimum="-2" 
+                                    Maximum="2" 
+                                    Value="{Binding Echo.DryMix, Mode=TwoWay}"/>
+                        </DockPanel>
+
+                        <DockPanel>
+                            <Label Content="WetMix:"/>
+                            <Slider ToolTip="{Binding Echo.WetMix}"
+                                    Margin="5"
+                                    Minimum="-2" 
+                                    Maximum="2" 
+                                    Value="{Binding Echo.WetMix, Mode=TwoWay}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Delay:"/>
+                            <Slider ToolTip="{Binding Echo.Delay}"
+                                    Margin="5"
+                                    Minimum="0" 
+                                    Maximum="6" 
+                                    Value="{Binding Echo.Delay, Mode=TwoWay}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Feedback:"/>
+                            <Slider ToolTip="{Binding Echo.Feedback}"
+                                    Margin="5"
+                                    Minimum="-1" 
+                                    Maximum="1" 
+                                    Value="{Binding Echo.Feedback, Mode=TwoWay}"/>
+                        </DockPanel>
                     </StackPanel>
                 </TabItem>
             </TabControl>

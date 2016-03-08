@@ -1,5 +1,7 @@
 ﻿using ManagedBass.Dynamics;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace ManagedBass.Effects
 {
@@ -7,7 +9,7 @@ namespace ManagedBass.Effects
     /// Base class for DSPs.
     /// Sets <see cref="Bass.FloatingPointDSP"/> to <see langword="true"/> so you need to implement the DSP only for 32-bit float audio.
     /// </summary>
-    public abstract class DSP : IDisposable
+    public abstract class DSP : IDisposable, INotifyPropertyChanged
     {
         public int Channel { get; }
 
@@ -22,16 +24,39 @@ namespace ManagedBass.Effects
                 priority = value;
                 Bass.ChannelRemoveDSP(Channel, Handle);
                 Handle = Bass.ChannelSetDSP(Channel, DSPProc, Priority: priority);
+
+                OnPropertyChanged();
             }
         }
 
-        public bool IsAssigned { get; private set; }
+        bool isAssigned;
+        public bool IsAssigned
+        {
+            get { return isAssigned; }
+            private set
+            {
+                isAssigned = value;
 
-        public bool Bypass { get; set; } = false;
+                OnPropertyChanged();
+            }
+        }
+
+        bool bypass = false;
+        public bool Bypass 
+        {
+            get { return bypass; }
+            set
+            {
+                bypass = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         public Resolution Resolution { get; }
 
         DSPProcedure DSPProc;
+        SyncProcedure freeproc;
 
         static DSP() { Bass.FloatingPointDSP = true; }
 
@@ -47,7 +72,9 @@ namespace ManagedBass.Effects
 
             Resolution = Bass.ChannelGetInfo(Channel).Resolution;
 
-            Bass.ChannelSetSync(Channel, SyncFlags.Free, 0, (a, b, c, d) => Dispose());
+            freeproc = (a, b, c, d) => Dispose();
+
+            Bass.ChannelSetSync(Channel, SyncFlags.Free, 0, freeproc);
 
             if (Handle != 0) IsAssigned = true;
             else throw new InvalidOperationException("DSP Assignment Failed");
@@ -66,5 +93,12 @@ namespace ManagedBass.Effects
             Bass.ChannelRemoveDSP(Channel, Handle);
             IsAssigned = false;
         }
+
+        protected void OnPropertyChanged([CallerMemberName]string PropertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

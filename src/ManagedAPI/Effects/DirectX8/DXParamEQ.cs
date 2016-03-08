@@ -23,6 +23,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fCenter = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -33,6 +35,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fBandwidth = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -43,6 +47,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fGain = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

@@ -25,6 +25,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fGain = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -35,6 +37,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fEdge = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -45,6 +49,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fPostEQCenterFrequency = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -55,6 +61,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fPostEQBandwidth = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -65,6 +73,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fPreLowpassCutoff = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

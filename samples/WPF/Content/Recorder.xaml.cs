@@ -1,4 +1,5 @@
 ﻿using ManagedBass;
+using ManagedBass.Effects;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -15,6 +16,7 @@ namespace MBassWPF
     /// </summary>
     public partial class Recorder : UserControl, INotifyPropertyChanged
     {
+        PitchDSP pitchTracker;
         public ObservableCollection<IDisposable> AvailableAudioSources { get; private set; }
 
         IAudioCaptureClient R;
@@ -84,6 +86,7 @@ namespace MBassWPF
                 Status.Content = "Stopped";
                 BPlay.Content = "/Resources/Record.png";
 
+                pitchTracker.Dispose();
                 R.Dispose();
 
                 R = null;
@@ -128,6 +131,22 @@ namespace MBassWPF
             R = isLoopback
                 ? (IAudioCaptureClient)new Loopback(dev as WasapiLoopbackDevice)
                 : new Recording(dev as RecordingDevice, Resolution: Resolution.Float);
+
+            if (!isLoopback)
+            {
+                pitchTracker = new PitchDSP((R as Recording).Handle);
+
+                pitchTracker.PitchDetected += Record =>
+                {
+                    if (Record != null && Record.Pitch > 1)
+                        Dispatcher.Invoke(() =>
+                        {
+                            Frequency.Content = Record.Pitch;
+                            Note.Content = Record.NoteName;
+                            Cents.Content = Record.MidiCents;
+                        });
+                };
+            }
 
             R.DataAvailable += L_DataAvailable;
             R.Start();

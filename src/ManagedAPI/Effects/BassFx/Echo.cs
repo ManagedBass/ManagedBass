@@ -10,7 +10,7 @@ namespace ManagedBass.Effects
         public float fWetMix = 0;
         public float fFeedback = 0;
         public float fDelay = 0;
-        public bool bStereo = false;
+        public int bStereo = 0;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
         public EffectType FXType => EffectType.Echo;
@@ -20,6 +20,7 @@ namespace ManagedBass.Effects
     {
         public EchoEffect(int Handle) : base(Handle) { }
 
+        #region Presets
         public void Small()
         {
             Parameters.fDryMix = 0.999f;
@@ -27,6 +28,7 @@ namespace ManagedBass.Effects
             Parameters.fFeedback = 0;
             Parameters.fDelay = 0.2f;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -37,6 +39,7 @@ namespace ManagedBass.Effects
             Parameters.fFeedback = 0.7f;
             Parameters.fDelay = 0.5f;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -47,6 +50,7 @@ namespace ManagedBass.Effects
             Parameters.fFeedback = -0.7f;
             Parameters.fDelay = 0.8f;
 
+            OnPropertyChanged("");
             Update();
         }
 
@@ -57,8 +61,10 @@ namespace ManagedBass.Effects
             Parameters.fFeedback = 0.5f;
             Parameters.fDelay = 0.1f;
 
+            OnPropertyChanged("");
             Update();
         }
+        #endregion
 
         /// <summary>
         /// Dry (unaffected) signal mix (-2...+2). 
@@ -69,6 +75,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fDryMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -82,6 +90,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fWetMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -95,6 +105,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fFeedback = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -108,6 +120,20 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fDelay = (float)value;
+
+                OnPropertyChanged();
+                Update();
+            }
+        }
+
+        public bool Stereo
+        {
+            get { return Parameters.bStereo != 0; }
+            set
+            {
+                Parameters.bStereo = value ? 1 : 0;
+
+                OnPropertyChanged();
                 Update();
             }
         }

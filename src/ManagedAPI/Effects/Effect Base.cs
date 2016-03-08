@@ -1,6 +1,8 @@
 ﻿using System;
 using ManagedBass.Dynamics;
 using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
+using System.ComponentModel;
 
 namespace ManagedBass.Effects
 {
@@ -10,11 +12,12 @@ namespace ManagedBass.Effects
     /// Wraps a Bass Effect such that you don't need to touch the Bass functions to Handle it.
     /// </summary>
     /// <typeparam name="T">Type of the <see cref="IEffectParameter"/></typeparam>
-    public abstract class Effect<T> : IDisposable where T : class, IEffectParameter, new()
+    public abstract class Effect<T> : IDisposable, INotifyPropertyChanged where T : class, IEffectParameter, new()
     {
         int Channel = 0, EffectHandle = 0;
         protected T Parameters = new T();
         GCHandle gch;
+        SyncProcedure freeproc;
 
         protected Effect(int Handle)
         {
@@ -22,7 +25,9 @@ namespace ManagedBass.Effects
 
             gch = GCHandle.Alloc(Parameters, GCHandleType.Pinned);
 
-            Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => Dispose());
+            freeproc = (a, b, c, d) => Dispose();
+
+            Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, freeproc);
         }
 
         /// <summary>
@@ -31,7 +36,12 @@ namespace ManagedBass.Effects
         public FXChannelFlags Channels
         {
             get { return (FXChannelFlags)typeof(T).GetField("lChannel").GetValue(Parameters); }
-            set { typeof(T).GetField("lChannel").SetValue(Parameters, value); }
+            set 
+            {
+                typeof(T).GetField("lChannel").SetValue(Parameters, value);
+                
+                OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -81,9 +91,18 @@ namespace ManagedBass.Effects
                         Update();
                     }
                     else if (!value && IsActive) if (Bass.ChannelRemoveFX(Channel, EffectHandle)) EffectHandle = 0;
+
+                    OnPropertyChanged();
                 }
             }
             get { return Channel != 0 && EffectHandle != 0; }
         }
+
+        protected void OnPropertyChanged([CallerMemberName]string PropertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

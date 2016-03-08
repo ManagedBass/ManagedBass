@@ -41,6 +41,8 @@ namespace ManagedBass.Effects
             Parameters.fRate = 2;
             Parameters.fRange = 4.3f;
             Parameters.fFreq = 50;
+
+            OnPropertyChanged("");
             Update();
         }
 
@@ -52,6 +54,8 @@ namespace ManagedBass.Effects
             Parameters.fRate = 5;
             Parameters.fRange = 5.3f;
             Parameters.fFreq = 50;
+
+            OnPropertyChanged("");
             Update();
         }
 
@@ -63,6 +67,8 @@ namespace ManagedBass.Effects
             Parameters.fRate = 5;
             Parameters.fRange = 4.3f;
             Parameters.fFreq = 500;
+
+            OnPropertyChanged("");
             Update();
         }
         #endregion
@@ -76,6 +82,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fDryMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -89,6 +97,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fFeedback = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -102,6 +112,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fFreq = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -115,6 +127,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fRange = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -128,6 +142,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fRate = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -141,6 +157,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fWetMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

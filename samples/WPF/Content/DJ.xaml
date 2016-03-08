@@ -7,10 +7,10 @@
             <DockPanel DockPanel.Dock="Top">
                 <this:Deck x:Name="DeckA"
                            DockPanel.Dock="Left"
-                           Width="250"/>
+                           Width="300"/>
                 <this:Deck x:Name="DeckB" 
                            DockPanel.Dock="Right"
-                           Width="250"/>
+                           Width="300"/>
                 <StackPanel VerticalAlignment="Bottom">
                     <StackPanel Orientation="Horizontal" 
                                 HorizontalAlignment="Center">

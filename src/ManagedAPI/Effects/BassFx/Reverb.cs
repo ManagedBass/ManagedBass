@@ -28,6 +28,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fDamp = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -38,6 +40,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fDryMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -48,6 +52,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fRoomSize = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -58,6 +64,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fWetMix = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -68,6 +76,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fWidth = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

@@ -29,6 +29,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fAttack = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -42,6 +44,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fRelease = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -55,6 +59,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fThreshold = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -68,6 +74,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fGain = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -81,6 +89,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fRatio = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }

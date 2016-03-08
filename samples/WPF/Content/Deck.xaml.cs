@@ -15,8 +15,11 @@ namespace MBassWPF
     {
         #region Fields
         public MediaPlayerFX Player { get; private set; }
+        public ReverbEffect Reverb { get; private set; }
+        public DistortionEffect Distortion { get; private set; }
+        public EchoEffect Echo { get; private set; }
         DispatcherTimer ProgressBarTimer;
-        PanDSP pan;
+        public PanDSP Pan { get; private set; }
 
         public static readonly DependencyProperty ReadyProperty = DependencyProperty.Register("Ready", typeof(bool), typeof(Deck), new UIPropertyMetadata(false));
         #endregion
@@ -38,104 +41,8 @@ namespace MBassWPF
                 OnPropertyChanged();
             }
         }
-        
+
         public double Volume { set { Player.Volume = value; } }
-        
-        public double Balance
-        {
-            get { return pan != null ? pan.Pan : 0; }
-            set
-            {
-                if (pan != null) pan.Pan = value;
-
-                OnPropertyChanged();
-            }
-        }
-        #endregion
-
-        #region Reverb
-        ReverbEffect ReverbEffect;
-
-        public bool Reverb
-        {
-            get { return ReverbEffect != null ? ReverbEffect.IsActive : false; }
-            set
-            {
-                if (ReverbEffect != null) ReverbEffect.IsActive = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public double Reverb_Damp
-        {
-            get { return ReverbEffect != null ? ReverbEffect.Damp : 0.5; }
-            set
-            {
-                if (ReverbEffect != null) ReverbEffect.Damp = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public double Reverb_DryMix
-        {
-            get { return ReverbEffect != null ? ReverbEffect.DryMix : 0; }
-            set
-            {
-                if (ReverbEffect != null) ReverbEffect.DryMix = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public double Reverb_WetMix
-        {
-            get { return ReverbEffect != null ? ReverbEffect.WetMix : 1; }
-            set
-            {
-                if (ReverbEffect != null) ReverbEffect.WetMix = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public double Reverb_RoomSize
-        {
-            get { return ReverbEffect != null ? ReverbEffect.RoomSize : 0.5; }
-            set
-            {
-                if (ReverbEffect != null) ReverbEffect.RoomSize = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public double Reverb_Width
-        {
-            get { return ReverbEffect != null ? ReverbEffect.Width : 1; }
-            set
-            {
-                if (ReverbEffect != null) ReverbEffect.Width = value;
-
-                OnPropertyChanged();
-            }
-        }
-        #endregion
-
-        #region Distortion
-        DistortionEffect DistortionEffect;
-
-        public bool Distortion
-        {
-            get { return DistortionEffect != null ? DistortionEffect.IsActive : false; }
-            set
-            {
-                if (DistortionEffect != null) DistortionEffect.IsActive = value;
-
-                OnPropertyChanged();
-            }
-        }
         #endregion
 
         public Deck()
@@ -170,10 +77,11 @@ namespace MBassWPF
             if (!Player.Load(FilePath))
                 return;
 
-            pan = new PanDSP(Player.Handle);
+            Pan = new PanDSP(Player.Handle);
 
-            ReverbEffect = new ReverbEffect(Player.Handle);
-            DistortionEffect = new DistortionEffect(Player.Handle);
+            Reverb = new ReverbEffect(Player.Handle);
+            Distortion = new DistortionEffect(Player.Handle);
+            Echo = new EchoEffect(Player.Handle);
 
             Ready = true;
 
@@ -190,8 +98,9 @@ namespace MBassWPF
 
             BPlay.Content = "/Resources/Play.png";
             Status.Content = "Ready";
-            
-            if (MusicLoaded != null) MusicLoaded();
+
+            if (MusicLoaded != null) 
+                MusicLoaded();
         }
 
         public event Action MusicLoaded;
@@ -267,7 +176,7 @@ namespace MBassWPF
 
         void ResetFrequency(object sender, MouseButtonEventArgs e) { Player.Frequency = 44100; }
 
-        void ResetBalance(object sender, MouseButtonEventArgs e) { pan.Pan = 0; }
+        void ResetBalance(object sender, MouseButtonEventArgs e) { Pan.Pan = 0; }
 
         void ResetTempo(object sender, MouseButtonEventArgs e) { Player.Tempo = 0; }
         #endregion
@@ -281,5 +190,21 @@ namespace MBassWPF
 
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
+
+        void SoftDistortion(object sender, RoutedEventArgs e) { Distortion.Soft(); }
+
+        void MediumDistortion(object sender, RoutedEventArgs e) { Distortion.Medium(); }
+
+        void HardDistortion(object sender, RoutedEventArgs e) { Distortion.Hard(); }
+
+        void VeryHardDistortion(object sender, RoutedEventArgs e) { Distortion.VeryHard(); }
+
+        void ManyEchoes(object sender, RoutedEventArgs e) { Echo.ManyEchoes(); }
+
+        void ReverseEchoes(object sender, RoutedEventArgs e) { Echo.ReverseEchoes(); }
+
+        void RoboticEchoes(object sender, RoutedEventArgs e) { Echo.RoboticVoice(); }
+
+        void SmallEchoes(object sender, RoutedEventArgs e) { Echo.Small(); }
     }
 }

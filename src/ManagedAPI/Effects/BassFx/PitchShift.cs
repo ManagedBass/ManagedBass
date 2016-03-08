@@ -26,6 +26,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fPitchShift = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -36,6 +38,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fSemitones = (float)value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -46,6 +50,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.lFFTsize = value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
@@ -56,6 +62,8 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.lOsamp = value;
+
+                OnPropertyChanged();
                 Update();
             }
         }
