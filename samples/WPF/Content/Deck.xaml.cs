@@ -18,6 +18,9 @@ namespace MBassWPF
         public ReverbEffect Reverb { get; private set; }
         public DistortionEffect Distortion { get; private set; }
         public EchoEffect Echo { get; private set; }
+        public AutoWahEffect AutoWah { get; private set; }
+        public RotateEffect Rotate { get; private set; }
+
         DispatcherTimer ProgressBarTimer;
         public PanDSP Pan { get; private set; }
 
@@ -82,6 +85,8 @@ namespace MBassWPF
             Reverb = new ReverbEffect(Player.Handle);
             Distortion = new DistortionEffect(Player.Handle);
             Echo = new EchoEffect(Player.Handle);
+            AutoWah = new AutoWahEffect(Player.Handle);
+            Rotate = new RotateEffect(Player.Handle);
 
             Ready = true;
 
@@ -191,6 +196,7 @@ namespace MBassWPF
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
+        #region Effect Presets
         void SoftDistortion(object sender, RoutedEventArgs e) { Distortion.Soft(); }
 
         void MediumDistortion(object sender, RoutedEventArgs e) { Distortion.Medium(); }
@@ -206,5 +212,12 @@ namespace MBassWPF
         void RoboticEchoes(object sender, RoutedEventArgs e) { Echo.RoboticVoice(); }
 
         void SmallEchoes(object sender, RoutedEventArgs e) { Echo.Small(); }
+
+        void SlowAutoWah(object sender, RoutedEventArgs e) { AutoWah.Slow(); }
+
+        void FastAutoWah(object sender, RoutedEventArgs e) { AutoWah.Fast(); }
+
+        void HiFastAutoWah(object sender, RoutedEventArgs e) { AutoWah.HiFast(); }
+        #endregion
     }
 }

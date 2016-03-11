@@ -118,6 +118,16 @@
                                     Maximum="60"
                                     Value="{Binding Player.Pitch, Mode=TwoWay}"/>
                         </DockPanel>
+                        <DockPanel>
+                            <CheckBox Margin="3"
+                                  IsChecked="{Binding Rotate.IsActive}"
+                                  Content="Rotate"/>
+                            <Slider ToolTip="{Binding Rotate.Rate}"
+                                    Margin="5"
+                                    Minimum="-10"
+                                    Maximum="10"
+                                    Value="{Binding Rotate.Rate, Mode=TwoWay}"/>
+                        </DockPanel>
                     </StackPanel>
                 </TabItem>
 
@@ -275,6 +285,71 @@
                                     Minimum="-1" 
                                     Maximum="1" 
                                     Value="{Binding Echo.Feedback, Mode=TwoWay}"/>
+                        </DockPanel>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="AutoWah">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Margin="3"
+                                  IsChecked="{Binding AutoWah.IsActive}"
+                                  Content="Is Active"/>
+                            <Button Content="Slow"
+                                    Click="SlowAutoWah"/>
+                            <Button Content="Fast"
+                                    Click="FastAutoWah"/>
+                            <Button Content="HiFast"
+                                    Click="HiFastAutoWah"/>
+                        </StackPanel>
+                        <DockPanel>
+                            <Label Content="DryMix:"/>
+                            <Slider ToolTip="{Binding AutoWah.DryMix}"
+                                    Margin="5"
+                                    Minimum="-2"
+                                    Maximum="2"
+                                    Value="{Binding AutoWah.DryMix, Mode=TwoWay}"/>
+                        </DockPanel>
+
+                        <DockPanel>
+                            <Label Content="WetMix:"/>
+                            <Slider ToolTip="{Binding AutoWah.WetMix}"
+                                    Margin="5"
+                                    Minimum="-2" 
+                                    Maximum="2" 
+                                    Value="{Binding AutoWah.WetMix, Mode=TwoWay}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Frequency:"/>
+                            <Slider ToolTip="{Binding AutoWah.Frequency}"
+                                    Margin="5"
+                                    Minimum="0" 
+                                    Maximum="1000" 
+                                    Value="{Binding AutoWah.Frequency, Mode=TwoWay}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Feedback:"/>
+                            <Slider ToolTip="{Binding AutoWah.Feedback}"
+                                    Margin="5"
+                                    Minimum="-1" 
+                                    Maximum="1" 
+                                    Value="{Binding AutoWah.Feedback, Mode=TwoWay}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Range:"/>
+                            <Slider ToolTip="{Binding AutoWah.Range}"
+                                    Margin="5"
+                                    Minimum="0" 
+                                    Maximum="10" 
+                                    Value="{Binding AutoWah.Range, Mode=TwoWay}"/>
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Rate:"/>
+                            <Slider ToolTip="{Binding AutoWah.Rate}"
+                                    Margin="5"
+                                    Minimum="0" 
+                                    Maximum="10" 
+                                    Value="{Binding AutoWah.Rate, Mode=TwoWay}"/>
                         </DockPanel>
                     </StackPanel>
                 </TabItem>
