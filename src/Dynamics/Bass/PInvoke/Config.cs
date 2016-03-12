@@ -33,6 +33,7 @@ namespace ManagedBass.Dynamics
 
         static event IOSNotifyProcedure _iosnotify;
 
+        // TODO: Verify Event
         public static event IOSNotifyProcedure IOSNotification
         {
             add

@@ -3,6 +3,9 @@ using ManagedBass.Dynamics;
 
 namespace ManagedBass.Effects
 {
+    /// <summary>
+    /// Used with <see cref="AutoWahEffect"/>.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class AutoWahParameters : IEffectParameter
     {
@@ -33,6 +36,9 @@ namespace ManagedBass.Effects
         public AutoWahEffect(int Handle) : base(Handle) { }
 
         #region Presets
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void Slow()
         {
             Parameters.fDryMix = 0.5f;
@@ -46,6 +52,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void Fast()
         {
             Parameters.fDryMix = 0.5f;
@@ -59,6 +68,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void HiFast()
         {
             Parameters.fDryMix = 0.5f;

@@ -108,10 +108,7 @@ namespace ManagedBass.Dynamics
         #region Future
         [DllImport(DllName)]
         static extern bool BASS_ASIO_Future(AsioFuture selector, IntPtr param);
-
-        [Obsolete("Use AsioFuture enum overload.")]
-        public static bool Future(int Selector, IntPtr Param) => Checked(BASS_ASIO_Future((AsioFuture)Selector, Param));
-
+        
         /// <summary>
 		/// Provides access to the driver's 'future' function.
 		/// </summary>

@@ -4,6 +4,9 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Effects
 {
+    /// <summary>
+    /// Used with <see cref="ReverbEffect"/>.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class ReverbParameters : IEffectParameter
     {
@@ -22,6 +25,9 @@ namespace ManagedBass.Effects
     {
         public ReverbEffect(int Handle) : base(Handle) { }
 
+        /// <summary>
+		/// Damping factor (0.0...1.0, def. 0.5).
+		/// </summary>
         public double Damp
         {
             get { return Parameters.fDamp; }
@@ -33,7 +39,10 @@ namespace ManagedBass.Effects
                 Update();
             }
         }
-
+        
+		/// <summary>
+		/// Dry (unaffected) signal mix (0.0...1.0, def. 0).
+		/// </summary>
         public double DryMix
         {
             get { return Parameters.fDryMix; }
@@ -45,7 +54,10 @@ namespace ManagedBass.Effects
                 Update();
             }
         }
-
+        
+		/// <summary>
+		/// Room size (0.0...1.0, def. 0.5).
+		/// </summary>
         public double RoomSize
         {
             get { return Parameters.fRoomSize; }
@@ -57,7 +69,10 @@ namespace ManagedBass.Effects
                 Update();
             }
         }
-
+        
+		/// <summary>
+		/// Wet (affected) signal mix (0.0...3.0, def. 1.0).
+		/// </summary>
         public double WetMix
         {
             get { return Parameters.fWetMix; }
@@ -69,7 +84,11 @@ namespace ManagedBass.Effects
                 Update();
             }
         }
-
+        
+		/// <summary>
+		/// Stereo width (0.0...1.0, def. 1.0).
+		/// </summary>
+		/// <remarks>It should at least be 4 for moderate scaling ratios. A value of 32 is recommended for best quality (better quality = higher CPU usage).</remarks>
         public double Width
         {
             get { return Parameters.fWidth; }

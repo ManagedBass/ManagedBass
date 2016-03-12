@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Effects
 {
+    /// <summary>
+    /// Used with <see cref="BQFEffect"/>.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class BQFParameters : IEffectParameter
     {

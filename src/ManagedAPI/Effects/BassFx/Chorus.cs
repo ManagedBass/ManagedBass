@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Effects
 {
+    /// <summary>
+    /// Used with <see cref="ChorusEffect"/>.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class ChorusParameters : IEffectParameter
     {
@@ -35,6 +38,9 @@ namespace ManagedBass.Effects
         public ChorusEffect(int Handle) : base(Handle) { }
 
         #region Presets
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void Flanger()
         {
             Parameters.fDryMix = 1;
@@ -48,6 +54,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void Exaggerated()
         {
             Parameters.fDryMix = 0.7f;
@@ -61,6 +70,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void MotorCycle()
         {
             Parameters.fDryMix = 0.9f;
@@ -74,6 +86,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void Devil()
         {
             Parameters.fDryMix = 0.9f;
@@ -87,6 +102,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void ManyVoices()
         {
             Parameters.fDryMix = 0.9f;
@@ -100,6 +118,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void BackChipmunk()
         {
             Parameters.fDryMix = 0.9f;
@@ -113,6 +134,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void Water()
         {
             Parameters.fDryMix = 0.9f;
@@ -126,6 +150,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void Airplane()
         {
             Parameters.fDryMix = 0.3f;

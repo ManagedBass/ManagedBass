@@ -4,6 +4,9 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Effects
 {
+    /// <summary>
+    /// Used with <see cref="PhaserEffect"/>.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class PhaserParameters : IEffectParameter
     {
@@ -23,6 +26,9 @@ namespace ManagedBass.Effects
         public PhaserEffect(int Handle) : base(Handle) { }
 
         #region Presets
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void PhaseShift()
         {
             Parameters.fDryMix = 0.999f;
@@ -36,6 +42,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void SlowInvertPhaseShiftWithFeedback()
         {
             Parameters.fDryMix = 0.999f;
@@ -49,6 +58,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void BasicPhase()
         {
             Parameters.fDryMix = 0.999f;
@@ -62,6 +74,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void PhaseWithFeedback()
         {
             Parameters.fDryMix = 0.999f;
@@ -75,6 +90,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void Medium()
         {
             Parameters.fDryMix = 0.999f;
@@ -88,6 +106,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void Fast()
         {
             Parameters.fDryMix = 0.999f;
@@ -101,6 +122,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void InvertWithInvertFeedback()
         {
             Parameters.fDryMix = 0.999f;
@@ -114,6 +138,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void TremoloWah()
         {
             Parameters.fDryMix = 0.999f;
@@ -128,6 +155,9 @@ namespace ManagedBass.Effects
         }
         #endregion
 
+        /// <summary>
+		/// Dry (unaffected) signal mix (-2...+2). Default = 0.
+		/// </summary>
         public double DryMix
         {
             get { return Parameters.fDryMix; }
@@ -139,7 +169,10 @@ namespace ManagedBass.Effects
                 Update();
             }
         }
-
+        
+		/// <summary>
+		/// Feedback (-1...+1). Default = 0.
+		/// </summary>
         public double Feedback
         {
             get { return Parameters.fFeedback; }
@@ -151,7 +184,10 @@ namespace ManagedBass.Effects
                 Update();
             }
         }
-
+        
+		/// <summary>
+		/// Base frequency of sweep range (0&lt;...1000). Default = 0.
+		/// </summary>
         public double Frequency
         {
             get { return Parameters.fFreq; }
@@ -163,7 +199,10 @@ namespace ManagedBass.Effects
                 Update();
             }
         }
-
+        
+		/// <summary>
+		/// Sweep range inoctaves (0&lt;...&lt;10). Default = 0.
+		/// </summary>
         public double Range
         {
             get { return Parameters.fRange; }
@@ -175,7 +214,10 @@ namespace ManagedBass.Effects
                 Update();
             }
         }
-
+        
+		/// <summary>
+		/// Rate of sweep in cycles per second (0&lt;...&lt;10). Default = 0.
+		/// </summary>
         public double Rate
         {
             get { return Parameters.fRate; }
@@ -187,7 +229,10 @@ namespace ManagedBass.Effects
                 Update();
             }
         }
-
+        
+		/// <summary>
+		/// Wet (affected) signal mix (-2...+2). Default = 0.
+		/// </summary>
         public double WetMix
         {
             get { return Parameters.fWetMix; }

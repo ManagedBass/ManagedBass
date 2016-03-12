@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Effects
 {
+    /// <summary>
+    /// Used with <see cref="DistortionEffect"/>.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class DistortionParameters : IEffectParameter
     {
@@ -21,6 +24,9 @@ namespace ManagedBass.Effects
         public DistortionEffect(int Handle) : base(Handle) { }
 
         #region Presets
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void Hard()
         {
             Parameters.fDrive = 1;
@@ -33,6 +39,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void VeryHard()
         {
             Parameters.fDrive = 5;
@@ -45,6 +54,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void Medium()
         {
             Parameters.fDrive = 0.2f;
@@ -57,6 +69,9 @@ namespace ManagedBass.Effects
             Update();
         }
 
+        /// <summary>
+        /// Set up a Preset.
+        /// </summary>
         public void Soft()
         {
             Parameters.fDrive = 0;

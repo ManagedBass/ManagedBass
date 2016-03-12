@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Effects
 {
+    /// <summary>
+    /// Used with <see cref="CompressorEffect"/>.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class CompressorParameters : IEffectParameter
     {
