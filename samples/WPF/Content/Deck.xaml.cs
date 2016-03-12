@@ -21,6 +21,14 @@ namespace MBassWPF
         public AutoWahEffect AutoWah { get; private set; }
         public RotateEffect Rotate { get; private set; }
 
+        public PeakEQEffect ParamEQ400 { get; private set; }
+        public PeakEQEffect ParamEQ620 { get; private set; }
+        public PeakEQEffect ParamEQ960 { get; private set; }
+        public PeakEQEffect ParamEQ1500 { get; private set; }
+        public PeakEQEffect ParamEQ2400 { get; private set; }
+        public PeakEQEffect ParamEQ3700 { get; private set; }
+        public PeakEQEffect ParamEQ6200 { get; private set; }
+
         DispatcherTimer ProgressBarTimer;
         public PanDSP Pan { get; private set; }
 
@@ -87,6 +95,49 @@ namespace MBassWPF
             Echo = new EchoEffect(Player.Handle);
             AutoWah = new AutoWahEffect(Player.Handle);
             Rotate = new RotateEffect(Player.Handle);
+            
+            ParamEQ400 = new PeakEQEffect(Player.Handle)
+            {
+                Bandwidth = 2.5,
+                Center = 400,
+                IsActive = true
+            };
+            ParamEQ620 = new PeakEQEffect(Player.Handle)
+            {
+                Bandwidth = 2.5,
+                Center = 620,
+                IsActive = true
+            };
+            ParamEQ960 = new PeakEQEffect(Player.Handle)
+            {
+                Bandwidth = 2.5,
+                Center = 960,
+                IsActive = true
+            };
+            ParamEQ1500 = new PeakEQEffect(Player.Handle)
+            {
+                Bandwidth = 2.5,
+                Center = 1500,
+                IsActive = true
+            };
+            ParamEQ2400 = new PeakEQEffect(Player.Handle)
+            {
+                Bandwidth = 2.5,
+                Center = 2400,
+                IsActive = true
+            };
+            ParamEQ3700 = new PeakEQEffect(Player.Handle)
+            {
+                Bandwidth = 2.5,
+                Center = 3700,
+                IsActive = true
+            };
+            ParamEQ6200 = new PeakEQEffect(Player.Handle)
+            {
+                Bandwidth = 2.5,
+                Center = 6200,
+                IsActive = true
+            };
 
             Ready = true;
 
