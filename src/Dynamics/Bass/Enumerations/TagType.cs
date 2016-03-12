@@ -188,5 +188,7 @@
         /// + index, DSDIFF comment : A pointer to the DSDIFF comment tag structure.
         /// </summary>
         DSDComment = 78080
+
+        // TODO: Bass 2.4.12: BASS_TAG_MUSIC_AUTH
     }
 }

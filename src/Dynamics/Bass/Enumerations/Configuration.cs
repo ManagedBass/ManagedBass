@@ -77,5 +77,7 @@
         DSDFrequency = 67584,
         WinampInputTimeout = 67584,
         DSDGain = 67585
+
+        // TODO: Bass 2.4.12: BASS_CONFIG_FLOAT
     }
 }

@@ -649,5 +649,7 @@ namespace ManagedBass.Dynamics
         /// BassWV add-on: Limit to stereo
         /// </summary>
         WVStereo = 4194304
+
+        // TODO: Bass 2.4.12: BASS_MUSIC_FT2PAN
     }
 }

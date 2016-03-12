@@ -77,5 +77,7 @@ namespace ManagedBass.Dynamics
         /// flag: return floating-point sample data
         /// </summary>
         Float = 1073741824
+
+        // TODO: Bass 2.4.12: BASS_DATA_FFT32768
     }
 }

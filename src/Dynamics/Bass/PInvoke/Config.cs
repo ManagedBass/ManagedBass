@@ -375,6 +375,7 @@ namespace ManagedBass.Dynamics
             set { Configure(Configuration.NetPlaylist, value); }
         }
 
+        // TODO: Bass 2.4.12 makes a copy of string
         /// <summary>
         /// The "User-Agent" request header sent to servers.
         /// </summary>
@@ -395,6 +396,7 @@ namespace ManagedBass.Dynamics
             }
         }
 
+        // TODO: Bass 2.4.12 makes a copy of string
         /// <summary>
         /// Proxy server settings (in the form of "User:pass@server:port"... null = don't use a proxy). "" (empty string) = use the OS's default proxy settings.
         /// </summary>

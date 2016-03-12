@@ -157,5 +157,7 @@ namespace ManagedBass.Dynamics
             return Checked(BASS_ChannelRemoveFX(Handle, FX));
         }
         #endregion
+
+        //TODO: Bass 2.4.12: BASS_FXSetPriority
     }
 }

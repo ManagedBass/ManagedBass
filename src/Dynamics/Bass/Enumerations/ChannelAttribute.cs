@@ -466,6 +466,8 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <remarks>This attribute is read-only, so cannot be modified via <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)" />.
         /// </remarks>
-        DSDRate = 81921
+        DSDRate = 81921,
+
+        // TODO: Bass 2.4.12: BASS_ATTRIB_BITRATE, BASS_ATTRIB_NORAMP
     }
 }
