@@ -253,6 +253,11 @@ namespace ManagedBass.Dynamics
         MusicFT2Mod = 0x2000,
 
         /// <summary>
+        /// Apply FastTracker 2 panning to XM files.
+        /// </summary>
+        MusicFT2PAN = 0x2000,
+
+        /// <summary>
         /// Music: Play .MOD file as ProTracker 1 would.
         /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
@@ -649,7 +654,5 @@ namespace ManagedBass.Dynamics
         /// BassWV add-on: Limit to stereo
         /// </summary>
         WVStereo = 4194304
-
-        // TODO: Bass 2.4.12: BASS_MUSIC_FT2PAN
     }
 }

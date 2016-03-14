@@ -5,7 +5,6 @@ namespace ManagedBass.Dynamics
 {
     public static partial class Bass
     {
-        static IntPtr _netAgent, _netProxy;
         static IOSNotifyProcedure iosnproc = (status) => _iosnotify?.Invoke(status);
 
         [DllImport(DllName, EntryPoint = "BASS_SetConfig")]
@@ -57,6 +56,24 @@ namespace ManagedBass.Dynamics
         {
             get { return GetConfigBool(Configuration.MFDisable); }
             set { Configure(Configuration.MFDisable, value); }
+        }
+
+        public static bool Float
+        {
+            get { return GetConfigBool(Configuration.Float); }
+            set { Configure(Configuration.Float, value); }
+        }
+
+        public static bool IOSNoCategory
+        {
+            get { return GetConfigBool(Configuration.IOSNoCategory); }
+            set { Configure(Configuration.IOSNoCategory, value); }
+        }
+
+        public static bool IOSSpeaker
+        {
+            get { return GetConfigBool(Configuration.IOSSpeaker); }
+            set { Configure(Configuration.IOSSpeaker, value); }
         }
 
         /// <summary>
@@ -376,7 +393,6 @@ namespace ManagedBass.Dynamics
             set { Configure(Configuration.NetPlaylist, value); }
         }
 
-        // TODO: Bass 2.4.12 makes a copy of string
         /// <summary>
         /// The "User-Agent" request header sent to servers.
         /// </summary>
@@ -385,19 +401,14 @@ namespace ManagedBass.Dynamics
             get { return Marshal.PtrToStringAnsi(GetConfigPtr(Configuration.NetAgent)); }
             set
             {
-                if (_netAgent != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(_netAgent);
-                    _netAgent = IntPtr.Zero;
-                }
+                IntPtr ptr = Marshal.StringToHGlobalAnsi(value);
+                
+                Bass.Configure(Configuration.NetAgent, ptr);
 
-                _netAgent = Marshal.StringToHGlobalAnsi(value);
-
-                Configure(Configuration.NetAgent, _netAgent);
+                Marshal.FreeHGlobal(ptr);
             }
         }
 
-        // TODO: Bass 2.4.12 makes a copy of string
         /// <summary>
         /// Proxy server settings (in the form of "User:pass@server:port"... null = don't use a proxy). "" (empty string) = use the OS's default proxy settings.
         /// </summary>
@@ -411,15 +422,11 @@ namespace ManagedBass.Dynamics
             get { return Marshal.PtrToStringAnsi(GetConfigPtr(Configuration.NetProxy)); }
             set
             {
-                if (_netProxy != IntPtr.Zero)
-                {
-                    Marshal.FreeHGlobal(_netProxy);
-                    _netProxy = IntPtr.Zero;
-                }
+                IntPtr ptr = Marshal.StringToHGlobalAnsi(value);
+                
+                Bass.Configure(Configuration.NetProxy, ptr);
 
-                _netProxy = Marshal.StringToHGlobalAnsi(value);
-
-                Configure(Configuration.NetProxy, _netProxy);
+                Marshal.FreeHGlobal(ptr);
             }
         }
 

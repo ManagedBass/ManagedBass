@@ -6,42 +6,47 @@ namespace ManagedBass.Dynamics
     /// Flags to be used with <see cref="Bass.ChannelGetData(int,IntPtr,int)" />.
     /// </summary>
     [Flags]
-    public enum DataFlags
+    public enum DataFlags : uint
     {
         /// <summary>
         /// 256 sample FFT (returns 128 floating-point values)
         /// </summary>
-        FFT256 = -2147483648,
+        FFT256 = 0x80000000,
 
         /// <summary>
         /// 512 sample FFT (returns 256 floating-point values)
         /// </summary>
-        FFT512 = -2147483647,
+        FFT512 = 0x80000001,
 
         /// <summary>
         /// 1024 sample FFT (returns 512 floating-point values)
         /// </summary>
-        FFT1024 = -2147483646,
+        FFT1024 = 0x80000002,
 
         /// <summary>
         /// 2048 sample FFT (returns 1024 floating-point values)
         /// </summary>
-        FFT2048 = -2147483645,
+        FFT2048 = 0x80000003,
 
         /// <summary>
         /// 4096 sample FFT (returns 2048 floating-point values)
         /// </summary>
-        FFT4096 = -2147483644,
+        FFT4096 = 0x80000004,
 
         /// <summary>
         /// 8192 sample FFT (returns 4096 floating-point values)
         /// </summary>
-        FFT8192 = -2147483643,
+        FFT8192 = 0x80000005,
 
         /// <summary>
         /// 16384 sample FFT (returns 8192 floating-point values)
         /// </summary>
-        FFT16384 = -2147483642,
+        FFT16384 = 0x80000006,
+
+        /// <summary>
+        /// 32768 FFT
+        /// </summary>
+        FFT32768 = 0x80000007,
 
         /// <summary>
         /// Query how much data is buffered
@@ -71,13 +76,11 @@ namespace ManagedBass.Dynamics
         /// <summary>
         /// flag: return 8.24 fixed-point data
         /// </summary>
-        Fixed = 536870912,
+        Fixed = 0x20000000,
 
         /// <summary>
         /// flag: return floating-point sample data
         /// </summary>
-        Float = 1073741824
-
-        // TODO: Bass 2.4.12: BASS_DATA_FFT32768
+        Float = 0x40000000,
     }
 }

@@ -468,6 +468,14 @@ namespace ManagedBass.Dynamics
         /// </remarks>
         DSDRate = 81921,
 
-        // TODO: Bass 2.4.12: BASS_ATTRIB_BITRATE, BASS_ATTRIB_NORAMP
+        /// <summary>
+        /// The average bitrate of a file stream. 
+        /// </summary>
+        Bitrate = 12,
+
+        /// <summary>
+        /// Disable playback ramping? 
+        /// </summary>
+        NoRamp = 11
     }
 }

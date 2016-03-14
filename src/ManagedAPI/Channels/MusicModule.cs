@@ -21,6 +21,8 @@ namespace ManagedBass
 
         public string Title => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicName));
 
+        public string Author => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicAuth));
+
         public string Message => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicMessage));
 
         public string Instrument(int Index) => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicInstrument + Index));

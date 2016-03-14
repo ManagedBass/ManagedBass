@@ -30,8 +30,6 @@
         IncludeDefaultDevice = 36,
         NetReadTimeOut = 37,
         VistaSpeakerAssignment = 38,
-
-        // TODO: Implement Config
         IOSSpeaker = 39,
         MFDisable = 40,
         HandleCount = 41,
@@ -44,10 +42,9 @@
         MFVideo = 48,
         Airplay = 49,
         DevNonStop = 50,
-
-        // TODO: Implement Config
         IOSNoCategory = 51,
         NetVerificationBytes = 52,
+        Float = 54,
         AC3DynamicRangeCompression = 65537,
         WmaNetPreBuffer = 65793,
         WmaBassFileHandling = 65795,
@@ -76,8 +73,6 @@
         AacSupportMp4 = 67329,
         DSDFrequency = 67584,
         WinampInputTimeout = 67584,
-        DSDGain = 67585
-
-        // TODO: Bass 2.4.12: BASS_CONFIG_FLOAT
+        DSDGain = 67585,
     }
 }

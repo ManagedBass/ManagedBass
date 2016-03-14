@@ -187,8 +187,11 @@
         /// <summary>
         /// + index, DSDIFF comment : A pointer to the DSDIFF comment tag structure.
         /// </summary>
-        DSDComment = 78080
+        DSDComment = 78080,
 
-        // TODO: Bass 2.4.12: BASS_TAG_MUSIC_AUTH
+        /// <summary>
+        /// MOD author : UTF-8 string
+        /// </summary>
+        MusicAuth = 0x10003
     }
 }

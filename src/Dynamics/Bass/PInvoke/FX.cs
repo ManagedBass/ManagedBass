@@ -158,6 +158,20 @@ namespace ManagedBass.Dynamics
         }
         #endregion
 
-        //TODO: Bass 2.4.12: BASS_FXSetPriority
+        #region FXSetPriority
+        [DllImport(DllName)]
+        static extern bool BASS_FXSetPriority(int handle, int priority);
+
+        /// <summary>
+        /// Sets the priority of an effect or DSP function, which determines its position in the DSP chain. 
+        /// </summary>
+        /// <param name="Handle">The DSP/FX handle... a HDSP or HFX.</param>
+        /// <param name="Priority">The new priority of the DSP/FX.</param>
+        /// <returns>If successful, <see langword="true"/> is returned, else <see langword="false"/> is returned. Use <see cref="LastError"/> to get the error code.</returns>
+        /// <remarks>If there are multiple DSP/FX with the same priority value, they will be applied in the order in which they were given that priority.</remarks>
+        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle"/> is invalid.</exception>
+        /// <exception cref="Errors.NotAvailable">Priority is not supported on DX8 effects when the "with FX flag" DX8 effect implementation is used.</exception>
+        public static bool FXSetPriority(int Handle, int Priority) => Checked(BASS_FXSetPriority(Handle, Priority));
+        #endregion
     }
 }
