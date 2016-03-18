@@ -21,11 +21,8 @@ namespace ManagedBass.Effects
             get { return priority; }
             set
             {
-                priority = value;
-                Bass.ChannelRemoveDSP(Channel, Handle);
-                Handle = Bass.ChannelSetDSP(Channel, DSPProc, Priority: priority);
-
-                OnPropertyChanged();
+                if (Bass.FXSetPriority(Handle, value))
+                    priority = value;
             }
         }
 

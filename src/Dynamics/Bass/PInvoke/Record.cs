@@ -165,7 +165,7 @@ namespace ManagedBass.Dynamics
 		/// <returns>
         /// If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
-        /// This function does not show <see cref="BassException"/>.
+        /// This function does not throw <see cref="BassException"/>.
         /// </returns>
 		/// <remarks>
 		/// This function can be used to enumerate the available recording devices for a setup dialog.
@@ -210,7 +210,7 @@ namespace ManagedBass.Dynamics
 		/// <returns>
         /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
-        /// This function does not show <see cref="BassException"/>.
+        /// This function does not throw <see cref="BassException"/>.
         /// </returns>
         /// <exception cref="Errors.NotInitialised"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordGetInfo")]
