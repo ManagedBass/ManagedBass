@@ -24,7 +24,7 @@ namespace ManagedBass.Effects
 	/// </remarks>
     public sealed class RotateEffect : Effect<RotateParameters>
     {
-        public RotateEffect(int Handle) : base(Handle) { }
+        public RotateEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
         
 		/// <summary>
 		/// Rotation rate/speed in Hz (A negative rate can be used for reverse direction).

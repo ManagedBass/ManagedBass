@@ -35,7 +35,7 @@ namespace ManagedBass.Effects
     /// </remarks>
     public sealed class ChorusEffect : Effect<ChorusParameters>
     {
-        public ChorusEffect(int Handle) : base(Handle) { }
+        public ChorusEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         #region Presets
         /// <summary>

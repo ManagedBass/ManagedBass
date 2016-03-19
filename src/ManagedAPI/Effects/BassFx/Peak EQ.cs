@@ -3,8 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Effects
 {
-    // TODO: Add Effect.Priority as property and in constructor defaulted to 0.
-
     /// <summary>
     /// Used with <see cref="PeakEQEffect"/>.
     /// </summary>
@@ -24,7 +22,7 @@ namespace ManagedBass.Effects
     [System.Obsolete("Use PeakEQ instead.")]
     public sealed class PeakEQEffect : Effect<PeakEQParameters>
     {
-        public PeakEQEffect(int Handle) : base(Handle) { }
+        public PeakEQEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         /// <summary>
         /// Bandwidth in octaves (0.1...4...n), Q is not in use (Bandwidth has priority over Q). Default = 1 (0=not in use).

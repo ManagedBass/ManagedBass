@@ -15,7 +15,7 @@ namespace ManagedBass.Effects
 
     public sealed class DXParamEQEffect : Effect<DXParamEQParameters>
     {
-        public DXParamEQEffect(int Handle) : base(Handle) { }
+        public DXParamEQEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         public double Center
         {

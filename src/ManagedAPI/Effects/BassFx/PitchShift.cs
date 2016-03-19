@@ -27,7 +27,7 @@ namespace ManagedBass.Effects
 	/// </remarks>
     public sealed class PitchShiftEffect : Effect<PitchShiftParameters>
     {
-        public PitchShiftEffect(int Handle) : base(Handle) { }
+        public PitchShiftEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
         
 		/// <summary>
 		/// A factor value which is between 0.5 (one octave down) and 2 (one octave up) (1 won't change the pitch, default).

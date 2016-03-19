@@ -24,7 +24,7 @@ namespace ManagedBass.Effects
 
     public sealed class DX_ID3DL2ReverbEffect : Effect<DX_ID3DL2ReverbParameters>
     {
-        public DX_ID3DL2ReverbEffect(int Handle) : base(Handle) { }
+        public DX_ID3DL2ReverbEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         public int Room
         {

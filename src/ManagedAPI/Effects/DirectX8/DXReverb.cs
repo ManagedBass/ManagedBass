@@ -16,7 +16,7 @@ namespace ManagedBass.Effects
 
     public sealed class DXReverbEffect : Effect<DXReverbParameters>
     {
-        public DXReverbEffect(int Handle) : base(Handle) { }
+        public DXReverbEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         public double InGain
         {

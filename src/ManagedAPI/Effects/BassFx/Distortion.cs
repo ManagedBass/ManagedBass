@@ -21,7 +21,7 @@ namespace ManagedBass.Effects
 
     public sealed class DistortionEffect : Effect<DistortionParameters>
     {
-        public DistortionEffect(int Handle) : base(Handle) { }
+        public DistortionEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         #region Presets
         /// <summary>

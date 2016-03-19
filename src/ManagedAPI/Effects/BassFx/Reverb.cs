@@ -23,7 +23,7 @@ namespace ManagedBass.Effects
 
     public sealed class ReverbEffect : Effect<ReverbParameters>
     {
-        public ReverbEffect(int Handle) : base(Handle) { }
+        public ReverbEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         /// <summary>
 		/// Damping factor (0.0...1.0, def. 0.5).

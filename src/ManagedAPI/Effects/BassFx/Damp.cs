@@ -21,7 +21,7 @@ namespace ManagedBass.Effects
 
     public sealed class DampEffect : Effect<DampParameters>
     {
-        public DampEffect(int Handle) : base(Handle) { }
+        public DampEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         /// <summary>
         /// Amplification level (0...1...n, linear). 

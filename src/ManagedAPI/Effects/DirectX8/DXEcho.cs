@@ -17,7 +17,7 @@ namespace ManagedBass.Effects
 
     public sealed class DXEchoEffect : Effect<DXEchoParameters>
     {
-        public DXEchoEffect(int Handle) : base(Handle) { }
+        public DXEchoEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         public double WetDryMix
         {

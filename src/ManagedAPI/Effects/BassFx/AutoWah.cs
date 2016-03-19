@@ -33,7 +33,7 @@ namespace ManagedBass.Effects
     /// </remarks>
     public sealed class AutoWahEffect : Effect<AutoWahParameters>
     {
-        public AutoWahEffect(int Handle) : base(Handle) { }
+        public AutoWahEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         #region Presets
         /// <summary>

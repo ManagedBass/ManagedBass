@@ -18,7 +18,7 @@ namespace ManagedBass.Effects
 
     public sealed class DXCompressorEffect : Effect<DXCompressorParameters>
     {
-        public DXCompressorEffect(int Handle) : base(Handle) { }
+        public DXCompressorEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         public double Gain
         {

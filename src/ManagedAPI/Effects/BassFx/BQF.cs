@@ -28,7 +28,7 @@ namespace ManagedBass.Effects
     /// </remarks>
     public class BQFEffect : Effect<BQFParameters>
     {
-        public BQFEffect(int Handle, BQFType BQFType) : base(Handle) { Parameters.lFilter = BQFType; }
+        public BQFEffect(int Handle, BQFType BQFType, int Priority = 0) : base(Handle, Priority) { Parameters.lFilter = BQFType; }
 
         /// <summary>
         /// Gain in dB (-15...0...+15). Default 0dB (used only for PEAKINGEQ and Shelving filters).
@@ -39,6 +39,21 @@ namespace ManagedBass.Effects
             set
             {
                 Parameters.fGain = (float)value;
+
+                OnPropertyChanged();
+                Update();
+            }
+        }
+
+        /// <summary>
+        /// BQF Effect Kind.
+        /// </summary>
+        public BQFType EffectType
+        {
+            get { return Parameters.lFilter; }
+            set
+            {
+                Parameters.lFilter = value;
 
                 OnPropertyChanged();
                 Update();

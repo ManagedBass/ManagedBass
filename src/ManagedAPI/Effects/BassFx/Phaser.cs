@@ -23,7 +23,7 @@ namespace ManagedBass.Effects
 
     public sealed class PhaserEffect : Effect<PhaserParameters>
     {
-        public PhaserEffect(int Handle) : base(Handle) { }
+        public PhaserEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         #region Presets
         /// <summary>

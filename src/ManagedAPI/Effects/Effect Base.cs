@@ -19,15 +19,31 @@ namespace ManagedBass.Effects
         GCHandle gch;
         SyncProcedure freeproc;
 
-        protected Effect(int Handle)
+        protected Effect(int Handle, int Priority)
         {
             this.Channel = Handle;
+            this.priority = Priority;
 
             gch = GCHandle.Alloc(Parameters, GCHandleType.Pinned);
 
             freeproc = (a, b, c, d) => Dispose();
 
             Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, freeproc);
+        }
+
+        int priority;
+
+        /// <summary>
+        /// Priority of the Effect in DSP chain.
+        /// </summary>
+        public int Priority
+        {
+            get { return priority; }
+            set
+            {
+                if (IsActive && Bass.FXSetPriority(EffectHandle, value))
+                    priority = value;
+            }
         }
 
         /// <summary>

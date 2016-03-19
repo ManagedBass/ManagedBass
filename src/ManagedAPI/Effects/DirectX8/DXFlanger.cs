@@ -19,7 +19,7 @@ namespace ManagedBass.Effects
 
     public sealed class DXFlangerEffect : Effect<DXFlangerParameters>
     {
-        public DXFlangerEffect(int Handle) : base(Handle) { }
+        public DXFlangerEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         public double WetDryMix
         {

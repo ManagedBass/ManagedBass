@@ -19,7 +19,7 @@ namespace ManagedBass.Effects
 
     public sealed class DXChorusEffect : Effect<DXChorusParameters>
     {
-        public DXChorusEffect(int Handle) : base(Handle) { }
+        public DXChorusEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         public DXWaveform Waveform
         {

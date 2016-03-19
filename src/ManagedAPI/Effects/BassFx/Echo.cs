@@ -37,7 +37,7 @@ namespace ManagedBass.Effects
 	/// </remarks>
     public sealed class EchoEffect : Effect<EchoParameters>
     {
-        public EchoEffect(int Handle) : base(Handle) { }
+        public EchoEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         #region Presets
         /// <summary>

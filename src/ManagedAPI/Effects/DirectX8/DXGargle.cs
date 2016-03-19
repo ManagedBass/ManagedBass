@@ -14,7 +14,7 @@ namespace ManagedBass.Effects
 
     public sealed class DXGargleEffect : Effect<DXGargleParameters>
     {
-        public DXGargleEffect(int Handle) : base(Handle) { }
+        public DXGargleEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         public int Rate
         {

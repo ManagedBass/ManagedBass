@@ -17,7 +17,7 @@ namespace ManagedBass.Effects
 
     public sealed class DXDistortionEffect : Effect<DXDistortionParameters>
     {
-        public DXDistortionEffect(int Handle) : base(Handle) { }
+        public DXDistortionEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
         public double Gain
         {
