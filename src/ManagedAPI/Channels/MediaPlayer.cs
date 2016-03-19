@@ -1,4 +1,5 @@
 ﻿using ManagedBass.Dynamics;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -133,8 +134,12 @@ namespace ManagedBass
 
             OnPropertyChanged(nameof(Duration));
 
+            MediaLoaded?.Invoke(h);
+
             return true;
         }
+
+        public event Action<int> MediaLoaded;
 
         protected virtual void InitProperties()
         {

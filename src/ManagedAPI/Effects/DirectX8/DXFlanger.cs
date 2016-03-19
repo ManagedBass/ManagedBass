@@ -21,6 +21,8 @@ namespace ManagedBass.Effects
     {
         public DXFlangerEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public DXFlangerEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         public double WetDryMix
         {
             get { return Parameters.fWetDryMix; }

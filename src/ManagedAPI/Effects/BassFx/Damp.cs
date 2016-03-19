@@ -23,6 +23,8 @@ namespace ManagedBass.Effects
     {
         public DampEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public DampEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         /// <summary>
         /// Amplification level (0...1...n, linear). 
         /// </summary>

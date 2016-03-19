@@ -23,6 +23,8 @@ namespace ManagedBass.Effects
     {
         public CompressorEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public CompressorEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         /// <summary>
         /// Time in ms before compression reaches its full value, in the range from 0.01 to 500. Default = 20.
         /// </summary>

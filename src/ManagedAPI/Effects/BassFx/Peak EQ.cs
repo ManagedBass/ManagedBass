@@ -24,6 +24,8 @@ namespace ManagedBass.Effects
     {
         public PeakEQEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public PeakEQEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         /// <summary>
         /// Bandwidth in octaves (0.1...4...n), Q is not in use (Bandwidth has priority over Q). Default = 1 (0=not in use).
         /// In most cases users should use the minimum of 0.5 octave.

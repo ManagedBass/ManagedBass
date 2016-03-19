@@ -18,6 +18,8 @@ namespace ManagedBass.Effects
     {
         public DXReverbEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public DXReverbEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         public double InGain
         {
             get { return Parameters.fInGain; }

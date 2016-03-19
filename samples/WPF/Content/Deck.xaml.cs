@@ -63,6 +63,12 @@ namespace MBassWPF
                 BPlay.Content = "/Resources/Play.png";
             };
 
+            Reverb = new ReverbEffect(Player);
+            Distortion = new DistortionEffect(Player);
+            Echo = new EchoEffect(Player);
+            AutoWah = new AutoWahEffect(Player);
+            Rotate = new RotateEffect(Player);
+
             InitializeComponent();
 
             DataContext = this;
@@ -83,12 +89,6 @@ namespace MBassWPF
                 return;
 
             Pan = new PanDSP(Player.Handle);
-
-            Reverb = new ReverbEffect(Player.Handle);
-            Distortion = new DistortionEffect(Player.Handle);
-            Echo = new EchoEffect(Player.Handle);
-            AutoWah = new AutoWahEffect(Player.Handle);
-            Rotate = new RotateEffect(Player.Handle);
 
             EQ = new PeakEQ(Player.Handle);
             EQ.AddBand(400);

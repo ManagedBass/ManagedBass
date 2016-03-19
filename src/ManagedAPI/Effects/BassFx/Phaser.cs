@@ -25,6 +25,8 @@ namespace ManagedBass.Effects
     {
         public PhaserEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public PhaserEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         #region Presets
         /// <summary>
         /// Set up a Preset.

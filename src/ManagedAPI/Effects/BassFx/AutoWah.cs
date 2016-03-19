@@ -35,6 +35,8 @@ namespace ManagedBass.Effects
     {
         public AutoWahEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public AutoWahEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         #region Presets
         /// <summary>
         /// Set up a Preset.

@@ -17,6 +17,8 @@ namespace ManagedBass.Effects
     {
         public DXParamEQEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public DXParamEQEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         public double Center
         {
             get { return Parameters.fCenter; }

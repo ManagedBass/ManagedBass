@@ -19,6 +19,8 @@ namespace ManagedBass.Effects
     {
         public DXEchoEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public DXEchoEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         public double WetDryMix
         {
             get { return Parameters.fWetDryMix; }

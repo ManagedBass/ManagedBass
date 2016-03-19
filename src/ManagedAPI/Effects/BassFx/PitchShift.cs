@@ -29,6 +29,8 @@ namespace ManagedBass.Effects
     {
         public PitchShiftEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
         
+        public PitchShiftEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
 		/// <summary>
 		/// A factor value which is between 0.5 (one octave down) and 2 (one octave up) (1 won't change the pitch, default).
 		/// </summary>

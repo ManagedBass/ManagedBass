@@ -14,10 +14,11 @@ namespace ManagedBass.Effects
     /// <typeparam name="T">Type of the <see cref="IEffectParameter"/></typeparam>
     public abstract class Effect<T> : IDisposable, INotifyPropertyChanged where T : class, IEffectParameter, new()
     {
-        int Channel = 0, EffectHandle = 0;
+        int Channel, EffectHandle, hfsync;
         protected T Parameters = new T();
         GCHandle gch;
         SyncProcedure freeproc;
+        bool mediaPlayer, wasActive;
 
         protected Effect(int Handle, int Priority)
         {
@@ -28,9 +29,27 @@ namespace ManagedBass.Effects
 
             freeproc = (a, b, c, d) => Dispose();
 
-            Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, freeproc);
+            hfsync = Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, freeproc);
         }
 
+        protected Effect(MediaPlayer player, int Priority) : this(player.Handle, Priority)
+        {
+            mediaPlayer = true;
+
+            player.MediaLoaded += NewHandle =>
+                {
+                    if (wasActive)
+                        IsActive = false;
+
+                    Bass.ChannelRemoveSync(Channel, hfsync);
+
+                    Channel = NewHandle;
+                    hfsync = Bass.ChannelSetSync(NewHandle, SyncFlags.Free, 0, freeproc);
+
+                    IsActive = wasActive;
+                };
+        }
+        
         int priority;
 
         /// <summary>
@@ -65,10 +84,18 @@ namespace ManagedBass.Effects
         /// </summary>
         public void Dispose()
         {
-            if (IsActive) IsActive = false;
-            Parameters = null;
+            if (IsActive)
+            {
+                IsActive = false;
+
+                wasActive = true;
+            }
+            else wasActive = false;
+
             Channel = EffectHandle = 0;
-            gch.Free();
+
+            if (!mediaPlayer)
+                gch.Free();
         }
 
         /// <summary>
@@ -76,7 +103,8 @@ namespace ManagedBass.Effects
         /// </summary>
         protected void Update()
         {
-            if (IsActive) Bass.FXSetParameters(EffectHandle, gch.AddrOfPinnedObject());
+            if (IsActive) 
+                Bass.FXSetParameters(EffectHandle, gch.AddrOfPinnedObject());
         }
 
         /// <summary>

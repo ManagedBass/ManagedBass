@@ -16,6 +16,8 @@ namespace ManagedBass.Effects
     {
         public DXGargleEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public DXGargleEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         public int Rate
         {
             get { return Parameters.dwRateHz; }

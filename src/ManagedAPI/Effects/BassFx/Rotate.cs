@@ -26,6 +26,8 @@ namespace ManagedBass.Effects
     {
         public RotateEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
         
+        public RotateEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
 		/// <summary>
 		/// Rotation rate/speed in Hz (A negative rate can be used for reverse direction).
 		/// </summary>

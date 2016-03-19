@@ -23,6 +23,8 @@ namespace ManagedBass.Effects
     {
         public DistortionEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public DistortionEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         #region Presets
         /// <summary>
         /// Set up a Preset.

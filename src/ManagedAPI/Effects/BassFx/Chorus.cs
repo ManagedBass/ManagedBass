@@ -37,6 +37,8 @@ namespace ManagedBass.Effects
     {
         public ChorusEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public ChorusEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         #region Presets
         /// <summary>
         /// Set up a Preset.

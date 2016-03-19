@@ -19,6 +19,8 @@ namespace ManagedBass.Effects
     {
         public DXDistortionEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public DXDistortionEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         public double Gain
         {
             get { return Parameters.fGain; }

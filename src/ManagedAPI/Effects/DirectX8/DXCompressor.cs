@@ -20,6 +20,8 @@ namespace ManagedBass.Effects
     {
         public DXCompressorEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public DXCompressorEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         public double Gain
         {
             get { return Parameters.fGain; }

@@ -26,6 +26,8 @@ namespace ManagedBass.Effects
     {
         public DX_ID3DL2ReverbEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public DX_ID3DL2ReverbEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         public int Room
         {
             get { return Parameters.lRoom; }

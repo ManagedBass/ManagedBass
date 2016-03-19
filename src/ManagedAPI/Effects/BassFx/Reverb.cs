@@ -25,6 +25,8 @@ namespace ManagedBass.Effects
     {
         public ReverbEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public ReverbEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         /// <summary>
 		/// Damping factor (0.0...1.0, def. 0.5).
 		/// </summary>

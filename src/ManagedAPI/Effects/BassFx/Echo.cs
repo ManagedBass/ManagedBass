@@ -39,6 +39,8 @@ namespace ManagedBass.Effects
     {
         public EchoEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public EchoEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         #region Presets
         /// <summary>
         /// Set up a Preset.

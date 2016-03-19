@@ -21,6 +21,8 @@ namespace ManagedBass.Effects
     {
         public DXChorusEffect(int Handle, int Priority = 0) : base(Handle, Priority) { }
 
+        public DXChorusEffect(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         public DXWaveform Waveform
         {
             get { return Parameters.lWaveform; }

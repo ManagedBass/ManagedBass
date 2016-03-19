@@ -30,6 +30,8 @@ namespace ManagedBass.Effects
     {
         public BQFEffect(int Handle, BQFType BQFType, int Priority = 0) : base(Handle, Priority) { Parameters.lFilter = BQFType; }
 
+        public BQFEffect(MediaPlayer player, BQFType BQFType, int Priority = 0) : base(player, Priority) { Parameters.lFilter = BQFType; }
+
         /// <summary>
         /// Gain in dB (-15...0...+15). Default 0dB (used only for PEAKINGEQ and Shelving filters).
         /// </summary>
