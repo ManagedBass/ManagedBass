@@ -6,6 +6,8 @@
 
         public GainDSP(int Channel, int Priority = 0) : base(Channel, Priority) { }
 
+        public GainDSP(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         float gain = 1;
         public double Gain
         {

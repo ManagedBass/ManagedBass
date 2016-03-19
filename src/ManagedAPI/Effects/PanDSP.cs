@@ -6,6 +6,8 @@
 
         public PanDSP(int Channel, int Priority = 0) : base(Channel, Priority) { }
 
+        public PanDSP(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+
         float pan = 0;
         public double Pan
         {

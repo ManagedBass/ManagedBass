@@ -63,6 +63,8 @@ namespace MBassWPF
                 BPlay.Content = "/Resources/Play.png";
             };
 
+            Pan = new PanDSP(Player);
+
             Reverb = new ReverbEffect(Player);
             Distortion = new DistortionEffect(Player);
             Echo = new EchoEffect(Player);
@@ -87,8 +89,6 @@ namespace MBassWPF
 
             if (!Player.Load(FilePath))
                 return;
-
-            Pan = new PanDSP(Player.Handle);
 
             EQ = new PeakEQ(Player.Handle);
             EQ.AddBand(400);

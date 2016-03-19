@@ -11,7 +11,7 @@ namespace ManagedBass.Effects
     /// </summary>
     public abstract class DSP : IDisposable, INotifyPropertyChanged
     {
-        public int Channel { get; }
+        public int Channel { get; private set; }
 
         public int Handle { get; private set; }
 
@@ -50,14 +50,14 @@ namespace ManagedBass.Effects
             }
         }
 
-        public Resolution Resolution { get; }
+        public Resolution Resolution { get; private set; }
 
         DSPProcedure DSPProc;
         SyncProcedure freeproc;
 
         static DSP() { Bass.FloatingPointDSP = true; }
 
-        public DSP(int Channel, int Priority = 0)
+        protected DSP(int Channel, int Priority)
         {
             this.Channel = Channel;
 
@@ -73,8 +73,32 @@ namespace ManagedBass.Effects
 
             Bass.ChannelSetSync(Channel, SyncFlags.Free, 0, freeproc);
 
-            if (Handle != 0) IsAssigned = true;
+            if (Handle != 0) 
+                IsAssigned = true;
             else throw new InvalidOperationException("DSP Assignment Failed");
+        }
+
+        protected DSP(MediaPlayer player, int Priority)
+        {
+            DSPProc = new DSPProcedure(OnDSP);
+
+            priority = Priority;
+
+            Reassign(player.Handle);
+
+            player.MediaLoaded += Reassign;
+        }
+
+        void Reassign(int h)
+        {
+            Channel = h;
+
+            Handle = Bass.ChannelSetDSP(Channel, DSPProc, Priority: priority);
+
+            Resolution = Bass.ChannelGetInfo(Channel).Resolution;
+
+            if (Handle != 0) 
+                IsAssigned = true;
         }
 
         void OnDSP(int handle, int channel, IntPtr Buffer, int Length, IntPtr User)

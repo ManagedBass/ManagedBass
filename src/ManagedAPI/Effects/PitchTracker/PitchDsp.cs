@@ -12,7 +12,14 @@ namespace ManagedBass.Effects
             : base(Channel, Priority)
         {
             pTracker = new PitchTracker(Bass.ChannelGetInfo(Channel).Frequency);
-            pTracker.PitchDetected += (R) => PitchDetected?.Invoke(R);
+            pTracker.PitchDetected += R => PitchDetected?.Invoke(R);
+        }
+
+        public PitchDSP(MediaPlayer player, int Priority = 0)
+            : base(player, Priority)
+        {
+            pTracker = new PitchTracker(Bass.ChannelGetInfo(Channel).Frequency);
+            pTracker.PitchDetected += R => PitchDetected?.Invoke(R);
         }
 
         public event Action<PitchRecord> PitchDetected;
