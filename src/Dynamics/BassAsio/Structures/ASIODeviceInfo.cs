@@ -12,16 +12,18 @@ namespace ManagedBass.Dynamics
         IntPtr name;
         IntPtr driver;
 
+        string PtrToString(IntPtr ptr) => BassAsio.Unicode ? Marshal.PtrToStringUni(ptr) : Marshal.PtrToStringAnsi(ptr);
+
         /// <summary>
         /// The description of the device.
         /// </summary>
-        public string Name => Marshal.PtrToStringAnsi(name);
+        public string Name => PtrToString(name);
 
         /// <summary>
         /// The filename of the driver being used.
         /// <para>Further information can be obtained from the file using the GetFileVersionInfo Win32 API function.</para>
         /// </summary>
-        public string Driver => Marshal.PtrToStringAnsi(driver);
+        public string Driver => PtrToString(driver);
 
         public override string ToString() => Name;
     }

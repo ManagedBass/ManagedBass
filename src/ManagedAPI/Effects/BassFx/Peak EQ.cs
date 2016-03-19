@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Effects
 {
+    // TODO: Add Effect.Priority as property and in constructor defaulted to 0.
+
     /// <summary>
     /// Used with <see cref="PeakEQEffect"/>.
     /// </summary>
@@ -19,6 +21,7 @@ namespace ManagedBass.Effects
         public EffectType FXType => EffectType.PeakEQ;
     }
 
+    [System.Obsolete("Use PeakEQ instead.")]
     public sealed class PeakEQEffect : Effect<PeakEQParameters>
     {
         public PeakEQEffect(int Handle) : base(Handle) { }
@@ -98,6 +101,53 @@ namespace ManagedBass.Effects
                 OnPropertyChanged();
                 Update();
             }
+        }
+    }
+    
+    public sealed class PeakEQ
+    {
+        PeakEQParameters parameters;
+        int Handle;
+        int Channel;
+        GCHandle gch;
+
+        public PeakEQ(int Channel, double Q = 0, double Bandwith = 2.5)
+        {
+            this.Channel = Channel;
+
+            Handle = Bass.ChannelSetFX(Channel, EffectType.PeakEQ, 0);
+
+            parameters = new PeakEQParameters()
+            {
+                lBand = -1,
+                fQ = (float)Q,
+                fBandwidth = (float)Bandwith
+            };
+
+            gch = GCHandle.Alloc(parameters, GCHandleType.Pinned);
+        }
+
+        public int AddBand(double CenterFrequency)
+        {
+            ++parameters.lBand;
+
+            parameters.fCenter = (float)CenterFrequency;
+            parameters.fGain = 0;
+
+            Bass.FXSetParameters(Handle, gch.AddrOfPinnedObject());
+
+            return parameters.lBand;
+        }
+
+        public void UpdateBand(int Band, double Gain)
+        {
+            parameters.lBand = Band;
+
+            Bass.FXGetParameters(Handle, gch.AddrOfPinnedObject());
+
+            parameters.fGain = (float)Gain;
+
+            Bass.FXSetParameters(Handle, gch.AddrOfPinnedObject());
         }
     }
 }

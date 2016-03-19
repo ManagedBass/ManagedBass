@@ -136,64 +136,56 @@
                         <DockPanel>
                             <Label Content="400"
                                    Width="40"/>
-                            <Slider ToolTip="{Binding ParamEQ400.Gain}"
-                                    Margin="5"
+                            <Slider Margin="5"
                                     Minimum="-15" 
                                     Maximum="15"
-                                    Value="{Binding ParamEQ400.Gain, Mode=TwoWay}"/>
+                                    Tag="0"
+                                    ValueChanged="EQChange"/>
                         </DockPanel>
                         <DockPanel>
                             <Label Content="620"
                                    Width="40"/>
-                            <Slider ToolTip="{Binding ParamEQ620.Gain}"
-                                    Margin="5"
+                            <Slider Margin="5"
                                     Minimum="-15" 
                                     Maximum="15"
-                                    Value="{Binding ParamEQ620.Gain, Mode=TwoWay}"/>
+                                    Tag="1"
+                                    ValueChanged="EQChange"/>
                         </DockPanel>
                         <DockPanel>
                             <Label Content="1500"
                                    Width="40"/>
-                            <Slider ToolTip="{Binding ParamEQ1500.Gain}"
-                                    Margin="5"
+                            <Slider Margin="5"
                                     Minimum="-15" 
                                     Maximum="15"
-                                    Value="{Binding ParamEQ1500.Gain, Mode=TwoWay}"/>
+                                    Tag="2"
+                                    ValueChanged="EQChange"/>
                         </DockPanel>
                         <DockPanel>
                             <Label Content="2400"
                                    Width="40"/>
-                            <Slider ToolTip="{Binding ParamEQ2400.Gain}"
-                                    Margin="5"
+                            <Slider Margin="5"
                                     Minimum="-15" 
                                     Maximum="15"
-                                    Value="{Binding ParamEQ2400.Gain, Mode=TwoWay}"/>
+                                    Tag="3"
+                                    ValueChanged="EQChange"/>
                         </DockPanel>
                         <DockPanel>
                             <Label Content="3700"
                                    Width="40"/>
-                            <Slider ToolTip="{Binding ParamEQ3700.Gain}"
-                                    Margin="5"
+                            <Slider Margin="5"
                                     Minimum="-15" 
                                     Maximum="15"
-                                    Value="{Binding ParamEQ3700.Gain, Mode=TwoWay}"/>
+                                    Tag="4"
+                                    ValueChanged="EQChange"/>
                         </DockPanel>
                         <DockPanel>
                             <Label Content="6200"
                                    Width="40"/>
-                            <Slider ToolTip="{Binding ParamEQ6200.Gain}"
-                                    Margin="5"
+                            <Slider Margin="5"
                                     Minimum="-15" 
                                     Maximum="15"
-                                    Value="{Binding ParamEQ6200.Gain, Mode=TwoWay}"/>
-                        </DockPanel>
-                        <DockPanel>
-                            <Label Content="1500"/>
-                            <Slider ToolTip="{Binding ParamEQ1500.Gain}"
-                                    Margin="5"
-                                    Minimum="-15" 
-                                    Maximum="15"
-                                    Value="{Binding ParamEQ1500.Gain, Mode=TwoWay}"/>
+                                    Tag="5"
+                                    ValueChanged="EQChange"/>
                         </DockPanel>
                     </StackPanel>
                 </TabItem>
