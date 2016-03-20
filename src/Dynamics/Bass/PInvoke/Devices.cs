@@ -8,10 +8,6 @@ namespace ManagedBass.Dynamics
     {
         public const int NoSoundDevice = 0, DefaultDevice = -1;
 
-        #region Init
-        [DllImport(DllName)]
-        static extern bool BASS_Init(int Device, int Frequency, DeviceInitFlags Flags, IntPtr Win = default(IntPtr), IntPtr ClsID = default(IntPtr));
-
         /// <summary>
         /// Initializes an output device.
         /// </summary>
@@ -78,16 +74,9 @@ namespace ManagedBass.Dynamics
         /// <seealso cref="MusicLoad(string, long, int, BassFlags, int)"/>
         /// <seealso cref="CreateSample"/>
         /// <seealso cref="SampleLoad(string, long, int, int, BassFlags)"/>
-        public static bool Init(int Device = DefaultDevice, int Frequency = 44100, DeviceInitFlags Flags = DeviceInitFlags.Default, IntPtr Win = default(IntPtr), IntPtr ClsID = default(IntPtr))
-        {
-            return Checked(BASS_Init(Device, Frequency, Flags, Win, ClsID));
-        }
-        #endregion
-
-        #region Start
-        [DllImport(DllName)]
-        static extern bool BASS_Start();
-
+        [DllImport(DllName, EntryPoint = "BASS_Init")]
+        public static extern bool Init(int Device, int Frequency = 44100, DeviceInitFlags Flags = DeviceInitFlags.Default, IntPtr Win = default(IntPtr), IntPtr ClsID = default(IntPtr));
+        
         /// <summary>
         /// Starts (or resumes) the output.
         /// </summary>
@@ -99,13 +88,9 @@ namespace ManagedBass.Dynamics
         /// </remarks>
         /// <seealso cref="Pause"/>
         /// <seealso cref="Stop"/>
-        public static bool Start() => Checked(BASS_Start());
-        #endregion
+        [DllImport(DllName, EntryPoint = "BASS_Start")]
+        public static extern bool Start();
 
-        #region Pause
-        [DllImport(DllName)]
-        static extern bool BASS_Pause();
-        
         /// <summary>
 		/// Stops the output, pausing all musics/samples/streams.
 		/// </summary>
@@ -115,13 +100,9 @@ namespace ManagedBass.Dynamics
 		/// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
 		/// </remarks>
         /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
-        public static bool Pause() => Checked(BASS_Pause());
-        #endregion
-
-        #region Stop
-        [DllImport(DllName)]
-        static extern bool BASS_Stop();
-
+        [DllImport(DllName, EntryPoint = "BASS_Pause")]
+        public static extern bool Pause();
+        
         /// <summary>
 		/// Stops the output, stopping all musics/samples/streams.
 		/// </summary>
@@ -131,13 +112,10 @@ namespace ManagedBass.Dynamics
 		/// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
 		/// </remarks>
         /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
-        public static bool Stop() => Checked(BASS_Stop());
-        #endregion
+        [DllImport(DllName, EntryPoint = "BASS_Stop")]
+        public static extern bool Stop();
 
         #region Free
-        [DllImport(DllName)]
-        static extern bool BASS_Free();
-
         /// <summary>
 		/// Frees all resources used by the output device, including all it's samples, streams, and MOD musics.
 		/// </summary>
@@ -147,7 +125,8 @@ namespace ManagedBass.Dynamics
 		/// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
 		/// </remarks>
         /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
-        public static bool Free() => Checked(BASS_Free());
+        [DllImport(DllName, EntryPoint = "BASS_Free")]
+        public static extern bool Free();
 
         /// <summary>
 		/// Frees all resources used by the output device, including all it's samples, streams, and MOD musics.
@@ -159,12 +138,8 @@ namespace ManagedBass.Dynamics
 		/// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
 		/// </remarks>
         /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
-        public static bool Free(int Device) => Checked(BASS_SetDevice(Device)) && Free();
+        public static bool Free(int Device) => BASS_SetDevice(Device) && Free();
         #endregion
-
-        #region ChannelGetDevice
-        [DllImport(DllName)]
-        static extern int BASS_ChannelGetDevice(int Handle);
 
         /// <summary>
 		/// Retrieves the device that the channel is using.
@@ -175,12 +150,8 @@ namespace ManagedBass.Dynamics
         /// Recording devices are indicated by the HIWORD of the return value being 1, when this function is called with a HRECORD channel.
         /// </remarks>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
-        public static int ChannelGetDevice(int Handle) => Checked(BASS_ChannelGetDevice(Handle));
-        #endregion
-
-        #region ChannelSetDevice
-        [DllImport(DllName)]
-        static extern bool BASS_ChannelSetDevice(int Handle, int Device);
+        [DllImport(DllName, EntryPoint = "BASS_ChannelGetDevice")]
+        public static extern int ChannelGetDevice(int Handle);
 
         /// <summary>
 		/// Changes the device that a stream, MOD music or sample is using.
@@ -207,8 +178,8 @@ namespace ManagedBass.Dynamics
         /// </exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        public static bool ChannelSetDevice(int Handle, int Device) => Checked(BASS_ChannelSetDevice(Handle, Device));
-        #endregion
+        [DllImport(DllName, EntryPoint = "BASS_ChannelSetDevice")]
+        public static extern bool ChannelSetDevice(int Handle, int Device);
 
         public static int DeviceCount
         {
@@ -248,8 +219,12 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static double Volume
         {
-            get { return Checked(BASS_GetVolume()); }
-            set { Checked(BASS_SetVolume((float)value)); }
+            get { return BASS_GetVolume(); }
+            set 
+            {
+                if (!BASS_SetVolume((float)value))
+                    throw new InvalidOperationException();
+            }
         }
         #endregion
 
@@ -283,8 +258,12 @@ namespace ManagedBass.Dynamics
         /// </remarks>
         public static int CurrentDevice
         {
-            get { return Checked(BASS_GetDevice()); }
-            set { Checked(BASS_SetDevice(value)); }
+            get { return BASS_GetDevice(); }
+            set 
+            {
+                if (!BASS_SetDevice(value))
+                    throw new InvalidOperationException(); 
+            }
         }
         #endregion
 
@@ -304,7 +283,6 @@ namespace ManagedBass.Dynamics
 		/// <returns>
         /// If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
-        /// This function does not throw <see cref="BassException"/>.
         /// </returns>
 		/// <remarks>
 		/// This function can be used to enumerate the available devices for a setup dialog. 
@@ -344,7 +322,7 @@ namespace ManagedBass.Dynamics
         public static DeviceInfo GetDeviceInfo(int Device, bool Airplay = false)
         {
             DeviceInfo info;
-            Checked(GetDeviceInfo(Device, out info));
+            GetDeviceInfo(Device, out info);
             return info;
         }
         #endregion

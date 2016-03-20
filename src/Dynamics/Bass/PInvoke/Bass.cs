@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using static ManagedBass.Extensions;
 
 namespace ManagedBass.Dynamics
 {
@@ -39,10 +38,6 @@ namespace ManagedBass.Dynamics
         /// </summary>
         public static void Unload() => Extensions.Unload(hLib);
 
-        #region Update
-        [DllImport(DllName)]
-        static extern bool BASS_Update(int Length);
-
         /// <summary>
         /// Updates the HSTREAM and HMUSIC channel playback buffers.
         /// </summary>
@@ -57,8 +52,8 @@ namespace ManagedBass.Dynamics
         /// <seealso cref="ChannelUpdate"/>
         /// <seealso cref="PlaybackBufferLength"/>
         /// <seealso cref="UpdateThreads"/>
-        public static bool Update(int Length) => Checked(BASS_Update(Length));
-        #endregion
+        [DllImport(DllName, EntryPoint = "BASS_Update")]
+        public static extern bool Update(int Length);
 
         #region CPUUsage
         [DllImport(DllName)]
@@ -106,9 +101,6 @@ namespace ManagedBass.Dynamics
         #endregion
 
         #region Info
-        [DllImport(DllName)]
-        static extern bool BASS_GetInfo(out BassInfo Info);
-
         /// <summary>
         /// Retrieves information on the device being used.
         /// </summary>
@@ -118,7 +110,8 @@ namespace ManagedBass.Dynamics
         /// <remarks>
         /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to.
         /// </remarks>
-        public static bool GetInfo(out BassInfo Info) => Checked(BASS_GetInfo(out Info));
+        [DllImport(DllName, EntryPoint = "BASS_GetInfo")]
+        public static extern bool GetInfo(out BassInfo Info);
 
         /// <summary>
         /// Retrieves information on the device being used.

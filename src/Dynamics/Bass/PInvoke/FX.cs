@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static ManagedBass.Extensions;
 
 namespace ManagedBass.Dynamics
 {
     public static partial class Bass
     {
-        #region FXSetParameters
-        [DllImport(DllName)]
-        static extern bool BASS_FXSetParameters(int Handle, IntPtr param);
-
         /// <summary>
         /// Sets the parameters of an effect
         /// </summary>
@@ -24,16 +19,9 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         /// <seealso cref="ChannelSetFX"/>
         /// <seealso cref="FXGetParameters"/>
-        public static bool FXSetParameters(int Handle, IntPtr param)
-        {
-            return Checked(BASS_FXSetParameters(Handle, param));
-        }
-        #endregion
-
-        #region FXGetParameters
-        [DllImport(DllName)]
-        static extern bool BASS_FXGetParameters(int Handle, IntPtr param);
-
+        [DllImport(DllName, EntryPoint = "BASS_FXSetParameters")]
+        public static extern bool FXSetParameters(int Handle, IntPtr param);
+        
         /// <summary>
         /// Retrieves the parameters of an effect
         /// </summary>
@@ -46,15 +34,8 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle"/> is not valid.</exception>
         /// <seealso cref="ChannelSetFX"/>
         /// <seealso cref="FXSetParameters"/>
-        public static bool FXGetParameters(int Handle, IntPtr param)
-        {
-            return Checked(BASS_FXGetParameters(Handle, param));
-        }
-        #endregion
-
-        #region FXReset
-        [DllImport(DllName)]
-        static extern bool BASS_FXReset(int Handle);
+        [DllImport(DllName, EntryPoint = "BASS_FXGetParameters")]
+        public static extern bool FXGetParameters(int Handle, IntPtr param);
 
         /// <summary>
         /// Resets the state of an effect or all effects on a channel.
@@ -72,12 +53,8 @@ namespace ManagedBass.Dynamics
         /// Effects are automatically reset by <see cref="ChannelSetPosition"/>,
         /// except when called from a "<see cref="SyncFlags.Mixtime"/>" <see cref="SyncProcedure"/>.
         /// </remarks>
-        public static bool FXReset(int Handle) => Checked(BASS_FXReset(Handle));
-        #endregion
-
-        #region ChannelSetFX
-        [DllImport(DllName)]
-        extern static int BASS_ChannelSetFX(int Handle, EffectType Type, int Priority);
+        [DllImport(DllName, EntryPoint = "BASS_FXReset")]
+        public static extern bool FXReset(int Handle);
 
         /// <summary>
         /// Sets an effect on a stream, MOD music, or recording channel.
@@ -126,15 +103,8 @@ namespace ManagedBass.Dynamics
         /// <seealso cref="FXGetParameters"/>
         /// <seealso cref="FXSetParameters"/>
         /// <seealso cref="ChannelSetDSP"/>
-        public static int ChannelSetFX(int Handle, EffectType Type, int Priority)
-        {
-            return Checked(BASS_ChannelSetFX(Handle, Type, Priority));
-        }
-        #endregion
-
-        #region ChannelRemoveFX
-        [DllImport(DllName)]
-        extern static bool BASS_ChannelRemoveFX(int Handle, int FX);
+        [DllImport(DllName, EntryPoint = "BASS_ChannelSetFX")]
+        public extern static int ChannelSetFX(int Handle, EffectType Type, int Priority);
 
         /// <summary>
         /// Removes an effect from a stream, MOD music, or recording channel.
@@ -152,15 +122,8 @@ namespace ManagedBass.Dynamics
         /// <para><see cref="ChannelRemoveDSP" /> can also be used to remove effects.</para>
         /// </remarks>
         /// <seealso cref="ChannelSetFX"/>
-        public static bool ChannelRemoveFX(int Handle, int FX)
-        {
-            return Checked(BASS_ChannelRemoveFX(Handle, FX));
-        }
-        #endregion
-
-        #region FXSetPriority
-        [DllImport(DllName)]
-        static extern bool BASS_FXSetPriority(int handle, int priority);
+        [DllImport(DllName, EntryPoint = "BASS_ChannelRemoveFX")]
+        public extern static bool ChannelRemoveFX(int Handle, int FX);
 
         /// <summary>
         /// Sets the priority of an effect or DSP function, which determines its position in the DSP chain. 
@@ -171,7 +134,7 @@ namespace ManagedBass.Dynamics
         /// <remarks>If there are multiple DSP/FX with the same priority value, they will be applied in the order in which they were given that priority.</remarks>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle"/> is invalid.</exception>
         /// <exception cref="Errors.NotAvailable">Priority is not supported on DX8 effects when the "with FX flag" DX8 effect implementation is used.</exception>
-        public static bool FXSetPriority(int Handle, int Priority) => Checked(BASS_FXSetPriority(Handle, Priority));
-        #endregion
+        [DllImport(DllName, EntryPoint = "BASS_FXSetPriority")]
+        public static extern bool FXSetPriority(int handle, int priority);
     }
 }

@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static ManagedBass.Extensions;
 
 namespace ManagedBass.Dynamics
 {
     public static partial class Bass
     {
-        #region RecordInit
-        [DllImport(DllName)]
-        extern static bool BASS_RecordInit(int Device);
-
         /// <summary>
         /// Initializes a recording device.
         /// </summary>
@@ -37,12 +32,8 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.IllegalDevice"><paramref name="Device" /> is invalid.</exception>
         /// <exception cref="Errors.Already">The device has already been initialized. <see cref="RecordFree" /> must be called before it can be initialized again.</exception>
         /// <exception cref="Errors.DriverNotFound">There is no available device driver.</exception>
-        public static bool RecordInit(int Device = DefaultDevice) => Checked(BASS_RecordInit(Device));
-        #endregion
-
-        #region RecordFree
-        [DllImport(DllName)]
-        extern static bool BASS_RecordFree();
+        [DllImport(DllName, EntryPoint = "BASS_RecordInit")]
+        public extern static bool RecordInit(int Device = DefaultDevice);
 
         /// <summary>
 		/// Frees all resources used by the recording device.
@@ -53,39 +44,36 @@ namespace ManagedBass.Dynamics
 		/// <para>When using multiple recording devices, the current thread's device setting (as set with <see cref="CurrentRecordingDevice" />) determines which device this function call applies to.</para>
 		/// </remarks>
         /// <exception cref="Errors.NotInitialised"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
-        public static bool RecordFree() => Checked(BASS_RecordFree());
-        #endregion
+        [DllImport(DllName, EntryPoint = "BASS_RecordFree")]
+        public extern static bool RecordFree();
 
         #region RecordStart
-        [DllImport(DllName)]
-        extern static int BASS_RecordStart(int freq, int chans, BassFlags flags, RecordProcedure proc, IntPtr User);
-
         /// <summary>
-		/// Starts recording.
-		/// </summary>
-		/// <param name="freq">The sample rate to record at.</param>
-		/// <param name="chans">The number of channels... 1 = mono, 2 = stereo, etc.</param>
-		/// <param name="flags">Any combination of <see cref="BassFlags.Byte"/>, <see cref="BassFlags.Float"/> and <see cref="BassFlags.RecordPause"/>.</param>
-		/// <param name="proc">The user defined function to receive the recorded sample data... can be <see langword="null" /> if you do not wish to use a callback.</param>
-		/// <param name="User">User instance data to pass to the callback function.</param>
-		/// <returns>If successful, the new recording's handle is returned, else <see langword="false" /> is returned. Use <see cref="LastError"/> to get the error code.</returns>
-		/// <remarks>
-		/// Use <see cref="ChannelStop" /> to stop the recording, and <see cref="ChannelPause" /> to pause it.
+        /// Starts recording.
+        /// </summary>
+        /// <param name="freq">The sample rate to record at.</param>
+        /// <param name="chans">The number of channels... 1 = mono, 2 = stereo, etc.</param>
+        /// <param name="flags">Any combination of <see cref="BassFlags.Byte"/>, <see cref="BassFlags.Float"/> and <see cref="BassFlags.RecordPause"/>.</param>
+        /// <param name="proc">The user defined function to receive the recorded sample data... can be <see langword="null" /> if you do not wish to use a callback.</param>
+        /// <param name="User">User instance data to pass to the callback function.</param>
+        /// <returns>If successful, the new recording's handle is returned, else <see langword="false" /> is returned. Use <see cref="LastError"/> to get the error code.</returns>
+        /// <remarks>
+        /// Use <see cref="ChannelStop" /> to stop the recording, and <see cref="ChannelPause" /> to pause it.
         /// Recording can also be started in a paused state (via the <see cref="BassFlags.RecordPause"/> flag), allowing DSP/FX to be set on it before any data reaches the callback function.
-		/// <para>The sample data will generally arrive from the recording device in blocks rather than in a continuous stream, so when specifying a very short period between callbacks, some calls may be skipped due to there being no new data available since the last call.</para>
-		/// <para>
+        /// <para>The sample data will generally arrive from the recording device in blocks rather than in a continuous stream, so when specifying a very short period between callbacks, some calls may be skipped due to there being no new data available since the last call.</para>
+        /// <para>
         /// When not using a callback (proc = <see langword="null" />), the recorded data is instead retrieved via <see cref="ChannelGetData(int, IntPtr, int)" />.
         /// To keep latency at a minimum, the amount of data in the recording buffer should be monitored (also done via <see cref="ChannelGetData(int, IntPtr, int)" />, with the <see cref="DataFlags.Available"/> flag) to check that there is not too much data;
-		/// freshly recorded data will only be retrieved after the older data in the buffer is.
+        /// freshly recorded data will only be retrieved after the older data in the buffer is.
         /// </para>
-		/// <para><b>Platform-specific</b></para>
-		/// <para>
+        /// <para><b>Platform-specific</b></para>
+        /// <para>
         /// Multiple simultaneous recordings can be made from the same device on Windows XP and later, but generally not on older Windows.
         /// Multiple simultaneous recordings are possible on iOS and OSX, but may not always be on Linux or Windows CE.
-		/// On OSX and iOS, the device is instructed (when possible) to deliver data at the period set in the HIWORD of flags, even when a callback function is not used.
+        /// On OSX and iOS, the device is instructed (when possible) to deliver data at the period set in the HIWORD of flags, even when a callback function is not used.
         /// On other platforms, it is up the the system when data arrives from the device.
         /// </para>
-		/// </remarks>
+        /// </remarks>
         /// <exception cref="Errors.NotInitialised"><see cref="RecordInit" /> has not been successfully called.</exception>
         /// <exception cref="Errors.DeviceBusy">
         /// The device is busy.
@@ -102,11 +90,9 @@ namespace ManagedBass.Dynamics
         /// </exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        public static int RecordStart(int freq, int chans, BassFlags flags, RecordProcedure proc, IntPtr User = default(IntPtr))
-        {
-            return Checked(BASS_RecordStart(freq, chans, flags, proc, User));
-        }
-
+        [DllImport(DllName, EntryPoint = "BASS_RecordStart")]
+        public extern static int RecordStart(int freq, int chans, BassFlags flags, RecordProcedure proc, IntPtr User = default(IntPtr));
+        
         /// <summary>
 		/// Starts recording.
 		/// </summary>
@@ -151,8 +137,12 @@ namespace ManagedBass.Dynamics
         /// <seealso cref="RecordInit"/>
         public static int CurrentRecordingDevice
         {
-            get { return Checked(BASS_RecordGetDevice()); }
-            set { Checked(BASS_RecordSetDevice(value)); }
+            get { return BASS_RecordGetDevice(); }
+            set 
+            {
+                if (!BASS_RecordSetDevice(value))
+                    throw new InvalidOperationException(); 
+            }
         }
         #endregion
 
@@ -165,7 +155,6 @@ namespace ManagedBass.Dynamics
 		/// <returns>
         /// If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
-        /// This function does not throw <see cref="BassException"/>.
         /// </returns>
 		/// <remarks>
 		/// This function can be used to enumerate the available recording devices for a setup dialog.
@@ -197,7 +186,7 @@ namespace ManagedBass.Dynamics
         public static DeviceInfo RecordGetDeviceInfo(int Device)
         {
             DeviceInfo info;
-            Checked(RecordGetDeviceInfo(Device, out info));
+            RecordGetDeviceInfo(Device, out info);
             return info;
         }
         #endregion
@@ -210,7 +199,6 @@ namespace ManagedBass.Dynamics
 		/// <returns>
         /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
-        /// This function does not throw <see cref="BassException"/>.
         /// </returns>
         /// <exception cref="Errors.NotInitialised"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordGetInfo")]
@@ -226,7 +214,7 @@ namespace ManagedBass.Dynamics
             get
             {
                 RecordInfo info;
-                Checked(RecordGetInfo(out info));
+                RecordGetInfo(out info);
                 return info;
             }
         }

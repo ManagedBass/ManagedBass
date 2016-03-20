@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static ManagedBass.Extensions;
 
 namespace ManagedBass.Dynamics
 {
     public static partial class Bass
     {
-        #region SampleGetChannel
-        [DllImport(DllName)]
-        static extern int BASS_SampleGetChannel(int Sample, bool OnlyNew);
-
         /// <summary>
         /// Creates/initializes a playback channel for a sample.
         /// </summary>
@@ -41,12 +36,8 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.InvalidHandle"><paramref name="Sample" /> is not a valid sample handle.</exception>
         /// <exception cref="Errors.NoFreeChannelAvailable">The sample has no free channels... the maximum number of simultaneous playbacks has been reached, and no override flag was specified for the sample or onlynew = <see langword="true" />.</exception>
         /// <exception cref="Errors.ConnectionTimedout">The sample's minimum time gap (<see cref="SampleInfo" />) has not yet passed since the last channel was created.</exception>
-        public static int SampleGetChannel(int Sample, bool OnlyNew = false) => Checked(BASS_SampleGetChannel(Sample, OnlyNew));
-        #endregion
-
-        #region SampleFree
-        [DllImport(DllName)]
-        static extern bool BASS_SampleFree(int Handle);
+        [DllImport(DllName, EntryPoint = "BASS_SampleGetChannel")]
+        public static extern int SampleGetChannel(int Sample, bool OnlyNew = false);
 
         /// <summary>
 		/// Frees a sample's resources.
@@ -54,8 +45,8 @@ namespace ManagedBass.Dynamics
 		/// <param name="Handle">The sample handle.</param>
 		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
-        public static bool SampleFree(int Handle) => Checked(BASS_SampleFree(Handle));
-        #endregion
+        [DllImport(DllName, EntryPoint = "BASS_SampleFree")]
+        public static extern bool SampleFree(int Handle);
 
         #region Sample Set Data
         [DllImport(DllName, EntryPoint = "BASS_SampleSetData")]
@@ -74,10 +65,6 @@ namespace ManagedBass.Dynamics
         public static extern bool SampleSetData(int Handle, float[] Buffer);
         #endregion
         
-        #region CreateSample
-        [DllImport(DllName)]
-        static extern int BASS_SampleCreate(int Length, int Frequency, int Channels, int Max, BassFlags Flags);
-
         /// <summary>
 		/// Initiates the creation of a user generated sample.
 		/// </summary>
@@ -113,12 +100,9 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        public static int CreateSample(int Length, int Frequency, int Channels, int Max, BassFlags Flags)
-        {
-            return Checked(BASS_SampleCreate(Length, Frequency, Channels, Max, Flags));
-        }
-        #endregion
-
+        [DllImport(DllName, EntryPoint = "BASS_SampleCreate")]
+        public static extern int CreateSample(int Length, int Frequency, int Channels, int Max, BassFlags Flags);
+        
         #region Sample Get Data
         [DllImport(DllName, EntryPoint = "BASS_SampleGetData")]
         public static extern bool SampleGetData(int Handle, IntPtr Buffer);
@@ -137,9 +121,6 @@ namespace ManagedBass.Dynamics
         #endregion
 
         #region SampleGetInfo
-        [DllImport(DllName)]
-        static extern bool BASS_SampleGetInfo(int Handle, ref SampleInfo Info);
-
         /// <summary>
         /// Retrieves a sample's default attributes and other information.
         /// </summary>
@@ -147,7 +128,8 @@ namespace ManagedBass.Dynamics
         /// <param name="Info">An instance of the <see cref="SampleInfo" /> class to store the sample information at.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
-        public static bool SampleGetInfo(int Handle, ref SampleInfo Info) => Checked(BASS_SampleGetInfo(Handle, ref Info));
+        [DllImport(DllName, EntryPoint = "BASS_SampleGetInfo")]
+        public static extern bool SampleGetInfo(int Handle, ref SampleInfo Info);
 
         /// <summary>
         /// Retrieves a sample's default attributes and other information.
@@ -162,10 +144,6 @@ namespace ManagedBass.Dynamics
             return temp;
         }
         #endregion
-
-        #region SampleSetInfo
-        [DllImport(DllName)]
-        static extern bool BASS_SampleSetInfo(int Handle, SampleInfo Info);
 
         /// <summary>
 		/// Sets a sample's default attributes.
@@ -190,8 +168,8 @@ namespace ManagedBass.Dynamics
         /// </para>
 		/// </remarks>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
-        public static bool SampleSetInfo(int Handle, SampleInfo Info) => Checked(BASS_SampleSetInfo(Handle, Info));
-        #endregion
+        [DllImport(DllName, EntryPoint = "BASS_SampleSetInfo")]
+        public static extern bool SampleSetInfo(int Handle, SampleInfo Info);
 
         #region SampleGetChannels
         [DllImport(DllName)]
@@ -212,24 +190,22 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid sample handle.</exception>
         public static int[] SampleGetChannels(int Handle)
         {
-            int count = Checked(BASS_SampleGetChannels(Handle, null));
+            int count = BASS_SampleGetChannels(Handle, null);
 
-            if (count < 0) return null;
+            if (count < 0)
+                return null;
 
             var Return = new int[count];
 
-            count = Checked(BASS_SampleGetChannels(Handle, Return));
+            count = BASS_SampleGetChannels(Handle, Return);
 
-            if (count < 0) return null;
+            if (count < 0)
+                return null;
 
             return Return;
         }
         #endregion
         
-        #region SampleStop
-        [DllImport(DllName)]
-        static extern bool BASS_SampleStop(int Handle);
-
         /// <summary>
         /// Stops all instances of a sample.
         /// </summary>
@@ -237,8 +213,8 @@ namespace ManagedBass.Dynamics
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid sample handle.</exception>
         /// <remarks>If a sample is playing simultaneously multiple times, calling this function will stop them all, which is obviously simpler than calling <see cref="ChannelStop" /> multiple times.</remarks>
-        public static bool SampleStop(int Handle) => Checked(BASS_SampleStop(Handle));
-        #endregion
+        [DllImport(DllName, EntryPoint = "BASS_SampleStop")]
+        public static extern bool SampleStop(int Handle);
 
         #region Sample Load
         [DllImport(DllName, CharSet = CharSet.Unicode)]
@@ -288,7 +264,7 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int SampleLoad(string File, long Offset, int Length, int MaxNoOfPlaybacks, BassFlags Flags)
         {
-            return Checked(BASS_SampleLoad(false, File, Offset, Length, MaxNoOfPlaybacks, Flags | BassFlags.Unicode));
+            return BASS_SampleLoad(false, File, Offset, Length, MaxNoOfPlaybacks, Flags | BassFlags.Unicode);
         }
 
         /// <summary>
@@ -334,7 +310,7 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int SampleLoad(IntPtr Memory, long Offset, int Length, int MaxNoOfPlaybacks, BassFlags Flags)
         {
-            return Checked(BASS_SampleLoad(true, new IntPtr(Memory.ToInt32() + Offset), 0, Length, MaxNoOfPlaybacks, Flags));
+            return BASS_SampleLoad(true, new IntPtr(Memory.ToInt32() + Offset), 0, Length, MaxNoOfPlaybacks, Flags);
         }
         
         /// <summary>

@@ -182,9 +182,9 @@ namespace ManagedBass
 
             InitProperties();
 
-            OnPropertyChanged(nameof(Duration));
-
             MediaLoaded?.Invoke(h);
+
+            OnPropertyChanged("");
 
             return true;
         }
@@ -203,7 +203,7 @@ namespace ManagedBass
                 Loop = loop.Value;
         }
 
-        protected void OnPropertyChanged([CallerMemberName]string PropertyName = "")
+        protected void OnPropertyChanged([CallerMemberName] string PropertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }

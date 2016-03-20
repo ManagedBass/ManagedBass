@@ -114,6 +114,14 @@ namespace ManagedBass
 
         public double CPUUsage => ChannelGetAttribute(Handle, ChannelAttribute.CPUUsage);
 
+        static Channel()
+        {
+            var currentDev = Bass.CurrentDevice;
+
+            if (currentDev == -1 || !Bass.GetDeviceInfo(Bass.CurrentDevice).IsInitialized)
+                Bass.Init(currentDev);
+        }
+
         protected Channel()
         {
             syncContext = SynchronizationContext.Current;

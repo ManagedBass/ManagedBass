@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using static ManagedBass.Extensions;
 
 namespace ManagedBass.Dynamics
 {
     public static partial class Bass
     {
-        #region PluginGetInfo
-        [DllImport(DllName)]
-        static extern PluginInfo BASS_PluginGetInfo(int Handle);
-        
-		/// <summary>
+        /// <summary>
 		/// Retrieves information on a plugin.
 		/// </summary>
 		/// <param name="Handle">The plugin handle - or 0 to retrieve native BASS information.</param>
@@ -21,9 +16,9 @@ namespace ManagedBass.Dynamics
 		/// <para>Note: There is no guarantee that the check is complete or might contain formats not being supported on your particular OS/machine (due to additional or missing audio codecs).</para>
 		/// </remarks>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
-        public static PluginInfo PluginGetInfo(int Handle) => Checked(BASS_PluginGetInfo(Handle));
-        #endregion
-
+        [DllImport(DllName, EntryPoint = "BASS_PluginGetInfo")]
+        public static extern PluginInfo PluginGetInfo(int Handle);
+        
         #region PluginLoad
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_PluginLoad(string FileName, BassFlags Flags = BassFlags.Unicode);
@@ -60,12 +55,8 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.FileOpen">The <paramref name="FileName" /> could not be opened.</exception>
         /// <exception cref="Errors.UnsupportedFileFormat">The <paramref name="FileName" /> is not a plugin.</exception>
         /// <exception cref="Errors.Already">The <paramref name="FileName" /> is already plugged in.</exception>
-        public static int PluginLoad(string FileName) => Checked(BASS_PluginLoad(FileName));
+        public static int PluginLoad(string FileName) => BASS_PluginLoad(FileName);
         #endregion
-
-        #region PluginFree
-        [DllImport(DllName)]
-        static extern bool BASS_PluginFree(int Handle);
 
         /// <summary>
 		/// Unplugs an add-on.
@@ -77,8 +68,8 @@ namespace ManagedBass.Dynamics
         /// Samples loaded by the plugin are unaffected as the plugin has nothing to do with them once they are loaded (the sample data is already fully decoded).
 		/// </remarks>
         /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
-        public static bool PluginFree(int Handle) => Checked(BASS_PluginFree(Handle));
-        #endregion
+        [DllImport(DllName, EntryPoint = "BASS_PluginFree")]
+        public static extern bool PluginFree(int Handle);
 
         /// <summary>
 		/// Loads all BASS add-ons (bass*.dll or libbass*.so or libbass*.dylib) contained in the specified directory.
