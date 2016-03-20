@@ -43,6 +43,7 @@ namespace ManagedBass
             if (buffer == null || buffer.Length < qLength)
                 buffer = new float[qLength];
 
+            // Looping
             if (Reverse)
             {
                 diff = pos - Length;

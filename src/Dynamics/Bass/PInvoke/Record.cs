@@ -280,8 +280,16 @@ namespace ManagedBass.Dynamics
             return (InputTypeFlags)(n & 0xff0000);
         }
 
-        [DllImport(DllName, EntryPoint = "BASS_RecordGetInputName")]
-        public extern static string RecordGetInputName(int input);
+        [DllImport(DllName)]
+        extern static IntPtr BASS_RecordGetInputName(int input);
+
+        public static string RecordGetInputName(int input)
+        {
+            var ptr = BASS_RecordGetInputName(input);
+
+            return UnicodeDeviceInformation ? Marshal.PtrToStringUni(ptr)
+                                            : Marshal.PtrToStringAnsi(ptr);
+        }
 
         [DllImport(DllName, EntryPoint = "BASS_RecordSetInput")]
         public extern static bool RecordSetInput(int input, InputFlags setting, float volume);

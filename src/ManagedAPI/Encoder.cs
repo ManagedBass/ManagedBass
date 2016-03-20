@@ -56,7 +56,7 @@ namespace ManagedBass
         {
             // Get the Length of the ACMFormat structure
             int SuggestedFormatLength = BassEnc.GetACMFormat(0);
-            IntPtr ACMFormat = Marshal.AllocHGlobal(SuggestedFormatLength);
+            var ACMFormat = Marshal.AllocHGlobal(SuggestedFormatLength);
 
             // Retrieve ACMFormat and Init Encoding
             if (BassEnc.GetACMFormat(Channel, ACMFormat, SuggestedFormatLength, null,
@@ -65,12 +65,13 @@ namespace ManagedBass
                                      encoding) != 0)
                 Handle = BassEnc.EncodeStartACM(Channel, ACMFormat, flags | EncodeFlags.AutoFree, FileName);
 
-            else throw new BassException(Bass.LastError, "GetACMFormat Failed");
+            else throw new BassException(Bass.LastError, "GetACMFormat");
 
             // Free the ACMFormat structure
             Marshal.FreeHGlobal(ACMFormat);
 
-            if (Handle == 0) throw new BassException(Bass.LastError, "EncoderStartACM Failed");
+            if (Handle == 0)
+                throw new BassException(Bass.LastError, "EncoderStartACM");
         }
     }
 }
