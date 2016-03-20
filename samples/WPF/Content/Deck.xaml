@@ -33,10 +33,20 @@
             </Style>
         </DockPanel.Resources>
         <StackPanel DockPanel.Dock="Top">
-            <Label Height="30"
-                   Name="Title"
-                   Foreground="#B7000000"
-                   FontSize="12" />
+            <StackPanel Orientation="Horizontal">
+                <Label Height="30"
+                       Content="{Binding Player.Title}"
+                       Foreground="#B7000000"
+                       FontSize="12" />
+                <Label Height="30"
+                       Content=":"
+                       Foreground="#B7000000"
+                       FontSize="12" />
+                <Label Height="30"
+                       Content="{Binding Player.Artist}"
+                       Foreground="#B7000000"
+                       FontSize="12" />
+            </StackPanel>
             <DockPanel>
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Right"

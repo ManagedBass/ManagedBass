@@ -1,6 +1,7 @@
 ﻿using ManagedBass.Dynamics;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 
 namespace ManagedBass
@@ -101,6 +102,37 @@ namespace ManagedBass
         
         protected virtual int OnLoad(string FileName) => Bass.CreateStream(FileName);
 
+        string title = "", artist = "", album = "";
+        public string Title 
+        {
+            get { return title; }
+            private set
+            {
+                title = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Artist
+        {
+            get { return artist; }
+            private set
+            {
+                artist = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public string Album
+        {
+            get { return album; }
+            private set
+            {
+                album = value;
+                OnPropertyChanged();
+            }
+        }
+
         /// <summary>
         /// Loads a file into the player.
         /// </summary>
@@ -129,6 +161,24 @@ namespace ManagedBass
                 return false;
 
             Handle = h;
+
+            ID3v1Tag tags = null;
+
+            try { tags = ID3v1Tag.Read(Handle); }
+            catch { }
+            
+            if (tags != null)
+            {
+                Title = !string.IsNullOrWhiteSpace(tags.Title) ? tags.Title 
+                                                               : Path.GetFileNameWithoutExtension(FileName);
+                Artist = tags.Artist;
+                Album = tags.Album;
+            }
+            else
+            {
+                Title = Path.GetFileNameWithoutExtension(FileName);
+                Artist = Album = "";
+            }
 
             InitProperties();
 

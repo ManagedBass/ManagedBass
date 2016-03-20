@@ -101,17 +101,6 @@ namespace MBassWPF
 
             Ready = true;
 
-            ID3v2Tag t = null;
-            try { t = ID3v2Tag.Read(Player.Handle); }
-            catch { }
-
-            Title.Content = (t != null ? t.Title : Path.GetFileNameWithoutExtension(FilePath)) + " - "
-                             + (t != null ? t.Artist : "Unknown Artist");
-
-            // Update all bindings
-            DataContext = null;
-            DataContext = this;
-
             BPlay.Content = "/Resources/Play.png";
             Status.Content = "Ready";
 
@@ -120,14 +109,7 @@ namespace MBassWPF
         }
 
         public event Action MusicLoaded;
-
-        void Error()
-        {
-            Title.Content = "Error";
-            Status.Content = "Error";
-            Ready = false;
-        }
-
+        
         public void Play(object sender = null, RoutedEventArgs e = null)
         {
             if (BPlay.Content.ToString().Contains("Play"))
