@@ -34,7 +34,7 @@ namespace ManagedBass.Dynamics
         /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.No3D">The device was not initialized with 3D support.</exception>
         /// <remarks>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</remarks>
         /// <seealso cref="Set3DFactors"/>
@@ -58,7 +58,7 @@ namespace ManagedBass.Dynamics
         /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.No3D">The device was not initialized with 3D support.</exception>
         /// <remarks>
         /// <para>As with all 3D functions, use <see cref="Apply3D" /> to apply the changes.</para>
@@ -87,7 +87,7 @@ namespace ManagedBass.Dynamics
         /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NoEAX">The current device does not support EAX.</exception>
         /// <remarks>
         /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.
@@ -201,7 +201,7 @@ namespace ManagedBass.Dynamics
         /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NoEAX">The current device does not support EAX.</exception>
         /// <remarks>
         /// <para>
@@ -229,7 +229,7 @@ namespace ManagedBass.Dynamics
         /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.No3D">The device was not initialized with 3D support.</exception>
         /// <remarks>
         /// <para>The <paramref name="Front" /> and <paramref name="Top" /> parameters must both be retrieved in a single call, they can not be retrieved individually.</para>
@@ -251,7 +251,7 @@ namespace ManagedBass.Dynamics
         /// If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.No3D">The device was not initialized with 3D support.</exception>
         /// <remarks>
         /// <para>The <paramref name="Front" /> and <paramref name="Top" /> parameters must both be set in a single call, they can not be set individually.</para>
@@ -300,7 +300,7 @@ namespace ManagedBass.Dynamics
         /// <param name="OutVol">The delta-volume outside the outer projection cone.</param>
         /// <returns>If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <remarks>The <paramref name="iAngle"/> and <paramref name="oAngle"/> parameters must both be retrieved in a single call to this function (ie. you can't retrieve one without the other).</remarks>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.No3D">The channel does not have 3D functionality.</exception>
         /// <seealso cref="ChannelGet3DPosition"/>
         /// <seealso cref="ChannelGetAttribute(int, ChannelAttribute, out float)"/>
@@ -320,9 +320,9 @@ namespace ManagedBass.Dynamics
         /// <param name="oAngle">The angle of the outside projection cone in degrees... 0 (no cone) - 360 (sphere), -1 = leave current.</param>
         /// <param name="OutVol">The delta-volume outside the outer projection cone... 0 (silent) - 100 (same as inside the cone), -1 = leave current.</param>
         /// <returns>If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.No3D">The channel does not have 3D functionality.</exception>
-        /// <exception cref="Errors.IllegalParameter">One or more of the attribute values is invalid.</exception>
+        /// <exception cref="Errors.Parameter">One or more of the attribute values is invalid.</exception>
         /// <remarks>
         /// <para>The <paramref name="iAngle"/> and <paramref name="oAngle"/> parameters must both be set in a single call to this function (ie. you can't set one without the other).
         /// The <paramref name="iAngle"/> and <paramref name="oAngle"/> angles decide how wide the sound is projected around the orientation angle. Within the inside angle the volume level is the channel volume, as set with <see cref="ChannelSetAttribute(int,ChannelAttribute,float)" />.
@@ -345,7 +345,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Orientation">Orientation of the sound.</param>
         /// <param name="Velocity">Velocity of the sound.</param>
         /// <returns>If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.No3D">The channel does not have 3D functionality.</exception>
         /// <seealso cref="ChannelGet3DAttributes"/>
         /// <seealso cref="ChannelGetAttribute(int, ChannelAttribute, out float)"/>
@@ -365,7 +365,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Velocity">Velocity of the sound. This is only used to calculate the doppler effect, and has no effect on the sound's position.</param>
         /// <returns>If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <remarks>As with all 3D functions, <see cref="Apply3D" /> must be called to apply the changes made.</remarks>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.No3D">The channel does not have 3D functionality.</exception>
         /// <seealso cref="Apply3D"/>
         /// <seealso cref="ChannelGet3DPosition"/>

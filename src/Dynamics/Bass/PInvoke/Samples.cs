@@ -33,9 +33,9 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// <para>All of a sample's channels share the same sample data, and just have their own individual playback state information (volume/position/etc).</para>
         /// </remarks>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Sample" /> is not a valid sample handle.</exception>
-        /// <exception cref="Errors.NoFreeChannelAvailable">The sample has no free channels... the maximum number of simultaneous playbacks has been reached, and no override flag was specified for the sample or onlynew = <see langword="true" />.</exception>
-        /// <exception cref="Errors.ConnectionTimedout">The sample's minimum time gap (<see cref="SampleInfo" />) has not yet passed since the last channel was created.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Sample" /> is not a valid sample handle.</exception>
+        /// <exception cref="Errors.NoChannel">The sample has no free channels... the maximum number of simultaneous playbacks has been reached, and no override flag was specified for the sample or onlynew = <see langword="true" />.</exception>
+        /// <exception cref="Errors.Timeout">The sample's minimum time gap (<see cref="SampleInfo" />) has not yet passed since the last channel was created.</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleGetChannel")]
         public static extern int SampleGetChannel(int Sample, bool OnlyNew = false);
 
@@ -44,7 +44,7 @@ namespace ManagedBass.Dynamics
 		/// </summary>
 		/// <param name="Handle">The sample handle.</param>
 		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleFree")]
         public static extern bool SampleFree(int Handle);
 
@@ -93,10 +93,10 @@ namespace ManagedBass.Dynamics
         /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">Sample functions are not available when using the "no sound" device.</exception>
-        /// <exception cref="Errors.IllegalParameter"><paramref name="Max" /> is invalid.</exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">The sample format is not supported by the device/drivers. If the sample is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Max" /> is invalid.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If the sample is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
@@ -127,7 +127,7 @@ namespace ManagedBass.Dynamics
         /// <param name="Handle">The sample handle.</param>
         /// <param name="Info">An instance of the <see cref="SampleInfo" /> class to store the sample information at.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleGetInfo")]
         public static extern bool SampleGetInfo(int Handle, ref SampleInfo Info);
 
@@ -136,11 +136,12 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <param name="Handle">The sample handle.</param>
         /// <returns>An instance of the <see cref="SampleInfo" /> class is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         public static SampleInfo SampleGetInfo(int Handle)
         {
             SampleInfo temp = new SampleInfo();
-            SampleGetInfo(Handle, ref temp);
+            if (!SampleGetInfo(Handle, ref temp))
+                throw new BassException();
             return temp;
         }
         #endregion
@@ -167,7 +168,7 @@ namespace ManagedBass.Dynamics
 		/// <see cref="BassFlags.Byte"/>, <see cref="BassFlags.Mono"/>, <see cref="BassFlags.Bass3D"/>, <see cref="BassFlags.MuteMax"/>, <see cref="BassFlags.SoftwareMixing"/> and <see cref="BassFlags.VAM"/> also cannot be changed.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleSetInfo")]
         public static extern bool SampleSetInfo(int Handle, SampleInfo Info);
 
@@ -187,7 +188,7 @@ namespace ManagedBass.Dynamics
         /// This overload only returns the existing channels in the array.
 		/// <para>If you need to determine whether a particular sample channel still exists, it is simplest to just try it in a function call.</para>
 		/// </remarks>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid sample handle.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid sample handle.</exception>
         public static int[] SampleGetChannels(int Handle)
         {
             int count = BASS_SampleGetChannels(Handle, null);
@@ -211,7 +212,7 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <param name="Handle">The sample handle.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid sample handle.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid sample handle.</exception>
         /// <remarks>If a sample is playing simultaneously multiple times, calling this function will stop them all, which is obviously simpler than calling <see cref="ChannelStop" /> multiple times.</remarks>
         [DllImport(DllName, EntryPoint = "BASS_SampleStop")]
         public static extern bool SampleStop(int Handle);
@@ -252,13 +253,13 @@ namespace ManagedBass.Dynamics
         /// On iOS and OSX, CoreAudio codecs are supported, adding support for any file formats that have a codec installed.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">Sample functions are not available when using the "no sound" device.</exception>
-        /// <exception cref="Errors.IllegalParameter"><paramref name="MaxNoOfPlaybacks" /> and/or <paramref name="Length" /> is invalid.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="MaxNoOfPlaybacks" /> and/or <paramref name="Length" /> is invalid.</exception>
         /// <exception cref="Errors.FileOpen">The <paramref name="File" /> could not be opened.</exception>
-        /// <exception cref="Errors.UnsupportedFileFormat">The <paramref name="File" />'s format is not recognised/supported.</exception>
-        /// <exception cref="Errors.CodecNotAvailable">The file uses a codec that's not available/supported. This can apply to WAV and AIFF files, and also MP3 files when using the "MP3-free" BASS version.</exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">The sample format is not supported by the device/drivers. If the sample is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
+        /// <exception cref="Errors.FileFormat">The <paramref name="File" />'s format is not recognised/supported.</exception>
+        /// <exception cref="Errors.Codec">The file uses a codec that's not available/supported. This can apply to WAV and AIFF files, and also MP3 files when using the "MP3-free" BASS version.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If the sample is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
@@ -298,13 +299,13 @@ namespace ManagedBass.Dynamics
         /// On iOS and OSX, CoreAudio codecs are supported, adding support for any file formats that have a codec installed.
         /// </para>
 		/// </remarks>
-		/// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+		/// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">Sample functions are not available when using the "no sound" device.</exception>
-        /// <exception cref="Errors.IllegalParameter"><paramref name="MaxNoOfPlaybacks" /> and/or <paramref name="Length" /> is invalid. Specifying <paramref name="Length" /> is mandatory when loading from memory.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="MaxNoOfPlaybacks" /> and/or <paramref name="Length" /> is invalid. Specifying <paramref name="Length" /> is mandatory when loading from memory.</exception>
         /// <exception cref="Errors.FileOpen">The <paramref name="Memory" /> could not be opened.</exception>
-        /// <exception cref="Errors.UnsupportedFileFormat">The <paramref name="Memory" />'s format is not recognised/supported.</exception>
-        /// <exception cref="Errors.CodecNotAvailable">The file uses a codec that's not available/supported. This can apply to WAV and AIFF files, and also MP3 files when using the "MP3-free" BASS version.</exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">The sample format is not supported by the device/drivers. If the sample is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
+        /// <exception cref="Errors.FileFormat">The <paramref name="Memory" />'s format is not recognised/supported.</exception>
+        /// <exception cref="Errors.Codec">The file uses a codec that's not available/supported. This can apply to WAV and AIFF files, and also MP3 files when using the "MP3-free" BASS version.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If the sample is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
@@ -344,13 +345,13 @@ namespace ManagedBass.Dynamics
         /// On iOS and OSX, CoreAudio codecs are supported, adding support for any file formats that have a codec installed.
         /// </para>
 		/// </remarks>
-		/// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+		/// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">Sample functions are not available when using the "no sound" device.</exception>
-        /// <exception cref="Errors.IllegalParameter"><paramref name="MaxNoOfPlaybacks" /> and/or <paramref name="Length" /> is invalid. Specifying <paramref name="Length" /> is mandatory when loading from memory.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="MaxNoOfPlaybacks" /> and/or <paramref name="Length" /> is invalid. Specifying <paramref name="Length" /> is mandatory when loading from memory.</exception>
         /// <exception cref="Errors.FileOpen">The <paramref name="Memory" /> could not be opened.</exception>
-        /// <exception cref="Errors.UnsupportedFileFormat">The <paramref name="Memory" />'s format is not recognised/supported.</exception>
-        /// <exception cref="Errors.CodecNotAvailable">The file uses a codec that's not available/supported. This can apply to WAV and AIFF files, and also MP3 files when using the "MP3-free" BASS version.</exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">The sample format is not supported by the device/drivers. If the sample is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
+        /// <exception cref="Errors.FileFormat">The <paramref name="Memory" />'s format is not recognised/supported.</exception>
+        /// <exception cref="Errors.Codec">The file uses a codec that's not available/supported. This can apply to WAV and AIFF files, and also MP3 files when using the "MP3-free" BASS version.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If the sample is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>

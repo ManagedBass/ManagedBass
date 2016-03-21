@@ -39,7 +39,7 @@ namespace ManagedBass.Dynamics
 
         string PtrToString(IntPtr ptr)
         {
-            return Bass.UnicodeDeviceInformation ? Marshal.PtrToStringUni(ptr)
+            return Bass.UnicodeDeviceInformation ? Extensions.PtrToStringUtf8(ptr)
                                                  : Marshal.PtrToStringAnsi(ptr);
         }
 

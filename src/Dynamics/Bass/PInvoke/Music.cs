@@ -10,7 +10,7 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <param name="Handle">The MOD music handle.</param>
         /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle"/> is not valid.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle"/> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MusicFree")]
         public extern static bool MusicFree(int Handle);
 
@@ -68,12 +68,12 @@ namespace ManagedBass.Dynamics
         /// When a DMO effect is unavailable, the MOD music can still be played, but the effect will be disabled.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">The <see cref="BassFlags.AutoFree"/> flag is unavailable to decoding channels.</exception>
         /// <exception cref="Errors.FileOpen">The <paramref name="File"/> could not be opened.</exception>
-        /// <exception cref="Errors.UnsupportedFileFormat">The <paramref name="File"/>'s format is not recognised/supported.</exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">The sample format is not supported by the device/drivers. If the stream is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
-        /// <exception cref="Errors.SpeakerUnavailable">The specified SPEAKER flags are invalid. The device/drivers do not support them, they are attempting to assign a stereo stream to a mono speaker or 3D functionality is enabled.</exception>
+        /// <exception cref="Errors.FileFormat">The <paramref name="File"/>'s format is not recognised/supported.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If the stream is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
+        /// <exception cref="Errors.Speaker">The specified SPEAKER flags are invalid. The device/drivers do not support them, they are attempting to assign a stereo stream to a mono speaker or 3D functionality is enabled.</exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
@@ -134,12 +134,12 @@ namespace ManagedBass.Dynamics
         /// When a DMO effect is unavailable, the MOD music can still be played, but the effect will be disabled.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">The <see cref="BassFlags.AutoFree"/> flag is unavailable to decoding channels.</exception>
         /// <exception cref="Errors.FileOpen"><paramref name="Memory"/> could not be opened.</exception>
-        /// <exception cref="Errors.UnsupportedFileFormat"><paramref name="Memory"/>'s format is not recognised/supported.</exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">The sample format is not supported by the device/drivers. If the stream is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
-        /// <exception cref="Errors.SpeakerUnavailable">The specified SPEAKER flags are invalid. The device/drivers do not support them, they are attempting to assign a stereo stream to a mono speaker or 3D functionality is enabled.</exception>
+        /// <exception cref="Errors.FileFormat"><paramref name="Memory"/>'s format is not recognised/supported.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If the stream is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
+        /// <exception cref="Errors.Speaker">The specified SPEAKER flags are invalid. The device/drivers do not support them, they are attempting to assign a stereo stream to a mono speaker or 3D functionality is enabled.</exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
@@ -198,12 +198,12 @@ namespace ManagedBass.Dynamics
         /// When a DMO effect is unavailable, the MOD music can still be played, but the effect will be disabled.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">The <see cref="BassFlags.AutoFree"/> flag is unavailable to decoding channels.</exception>
         /// <exception cref="Errors.FileOpen"><paramref name="Memory"/> could not be opened.</exception>
-        /// <exception cref="Errors.UnsupportedFileFormat"><paramref name="Memory"/>'s format is not recognised/supported.</exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">The sample format is not supported by the device/drivers. If the stream is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
-        /// <exception cref="Errors.SpeakerUnavailable">The specified SPEAKER flags are invalid. The device/drivers do not support them, they are attempting to assign a stereo stream to a mono speaker or 3D functionality is enabled.</exception>
+        /// <exception cref="Errors.FileFormat"><paramref name="Memory"/>'s format is not recognised/supported.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If the stream is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
+        /// <exception cref="Errors.Speaker">The specified SPEAKER flags are invalid. The device/drivers do not support them, they are attempting to assign a stereo stream to a mono speaker or 3D functionality is enabled.</exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>

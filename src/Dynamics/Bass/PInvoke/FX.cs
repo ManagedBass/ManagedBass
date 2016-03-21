@@ -14,8 +14,8 @@ namespace ManagedBass.Dynamics
         /// If successful, <see langword="true"/> is returned, else <see langword="false"/> is returned.
         /// Use <see cref="LastError"/> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle"/> is not valid.</exception>
-        /// <exception cref="Errors.IllegalParameter">One or more of the parameters are invalid, make sure all the values are within the valid ranges.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle"/> is not valid.</exception>
+        /// <exception cref="Errors.Parameter">One or more of the parameters are invalid, make sure all the values are within the valid ranges.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         /// <seealso cref="ChannelSetFX"/>
         /// <seealso cref="FXGetParameters"/>
@@ -31,7 +31,7 @@ namespace ManagedBass.Dynamics
         /// If successful, <see langword="true"/> is returned, else <see langword="false"/> is returned.
         /// Use <see cref="LastError"/> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle"/> is not valid.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle"/> is not valid.</exception>
         /// <seealso cref="ChannelSetFX"/>
         /// <seealso cref="FXSetParameters"/>
         [DllImport(DllName, EntryPoint = "BASS_FXGetParameters")]
@@ -45,7 +45,7 @@ namespace ManagedBass.Dynamics
         /// If successful, <see langword="true"/> is returned, else <see langword="false"/> is returned.
         /// Use <see cref="LastError"/> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle"/> is invalid.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle"/> is invalid.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         /// <seealso cref="ChannelSetFX"/>
         /// <remarks>
@@ -70,10 +70,10 @@ namespace ManagedBass.Dynamics
         /// If succesful, then the new effect's Handle is returned, else 0 is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
-        /// <exception cref="Errors.IllegalType">An illegal <paramref name="Type" /> was specified.</exception>
-        /// <exception cref="Errors.EffectsNotAvailable">DX8 effects are unavailable.</exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Type">An illegal <paramref name="Type" /> was specified.</exception>
+        /// <exception cref="Errors.NoFX">DX8 effects are unavailable.</exception>
+        /// <exception cref="Errors.SampleFormat">
         /// The channel's format is not supported by the effect.
         /// It may be floating-point (without DX9) or more than stereo.
         /// </exception>
@@ -115,7 +115,7 @@ namespace ManagedBass.Dynamics
         /// If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.InvalidHandle">At least one of <paramref name="Handle" /> and <paramref name="FX" /> is not valid.</exception>
+        /// <exception cref="Errors.Handle">At least one of <paramref name="Handle" /> and <paramref name="FX" /> is not valid.</exception>
         /// <remarks>
         /// Depending on the DX8 effect implementation being used by the channel, the channel may have to be stopped before removing a DX8 effect on it.
         /// If necessary, that is done automatically and the channel is resumed afterwards.
@@ -132,9 +132,9 @@ namespace ManagedBass.Dynamics
         /// <param name="Priority">The new priority of the DSP/FX.</param>
         /// <returns>If successful, <see langword="true"/> is returned, else <see langword="false"/> is returned. Use <see cref="LastError"/> to get the error code.</returns>
         /// <remarks>If there are multiple DSP/FX with the same priority value, they will be applied in the order in which they were given that priority.</remarks>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle"/> is invalid.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle"/> is invalid.</exception>
         /// <exception cref="Errors.NotAvailable">Priority is not supported on DX8 effects when the "with FX flag" DX8 effect implementation is used.</exception>
         [DllImport(DllName, EntryPoint = "BASS_FXSetPriority")]
-        public static extern bool FXSetPriority(int handle, int priority);
+        public static extern bool FXSetPriority(int Handle, int Priority);
     }
 }

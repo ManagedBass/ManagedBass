@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static ManagedBass.Extensions;
 
 namespace ManagedBass.Dynamics
 {
@@ -19,10 +18,10 @@ namespace ManagedBass.Dynamics
         /// <param name="Win">The application's main window... <see cref="IntPtr.Zero" /> = the desktop window (use this for console applications).</param>
         /// <param name="ClsID">Class identifier of the object to create, that will be used to initialize DirectSound... <see langword="null" /> = use default</param>
         /// <returns>If the device was successfully initialized, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.IllegalDevice">The device number specified is invalid.</exception>
+        /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
         /// <exception cref="Errors.Already">The device has already been initialized. You must call <see cref="Free()" /> before you can initialize it again.</exception>
-        /// <exception cref="Errors.DriverNotFound">There is no available device driver... the device may already be in use.</exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">The specified format is not supported by the device. Try changing the <paramref name="Frequency" /> and <paramref name="Flags" /> parameters.</exception>
+        /// <exception cref="Errors.Driver">There is no available device driver... the device may already be in use.</exception>
+        /// <exception cref="Errors.SampleFormat">The specified format is not supported by the device. Try changing the <paramref name="Frequency" /> and <paramref name="Flags" /> parameters.</exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">The device has no 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
@@ -81,7 +80,7 @@ namespace ManagedBass.Dynamics
         /// Starts (or resumes) the output.
         /// </summary>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init"/> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init"/> has not been successfully called.</exception>
         /// <remarks>
         /// <para>The output is automatically started by <see cref="Init"/>, so there is no need to use this function unless you have stopped or paused the output.</para>
         /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to.</para>
@@ -99,7 +98,7 @@ namespace ManagedBass.Dynamics
 		/// <para>Use <see cref="Start" /> to resume the output and paused channels.</para>
 		/// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Pause")]
         public static extern bool Pause();
         
@@ -111,7 +110,7 @@ namespace ManagedBass.Dynamics
 		/// <para>This function can be used after <see cref="Pause" /> to stop the paused channels, so that they will not be resumed the next time <see cref="Start" /> is called.</para>
 		/// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Stop")]
         public static extern bool Stop();
 
@@ -124,7 +123,7 @@ namespace ManagedBass.Dynamics
 		/// <para>This function should be called for all initialized devices before your program exits. It's not necessary to individually free the samples/streams/musics as these are all automatically freed by this function.</para>
 		/// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Free")]
         public static extern bool Free();
 
@@ -137,7 +136,7 @@ namespace ManagedBass.Dynamics
 		/// <para>This function should be called for all initialized devices before your program exits. It's not necessary to individually free the samples/streams/musics as these are all automatically freed by this function.</para>
 		/// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         public static bool Free(int Device) => BASS_SetDevice(Device) && Free();
         #endregion
 
@@ -149,7 +148,7 @@ namespace ManagedBass.Dynamics
 		/// <remarks>
         /// Recording devices are indicated by the HIWORD of the return value being 1, when this function is called with a HRECORD channel.
         /// </remarks>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetDevice")]
         public static extern int ChannelGetDevice(int Handle);
 
@@ -167,12 +166,12 @@ namespace ManagedBass.Dynamics
         /// It's not possible to change the device of an individual sample channel.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not a valid channel.</exception>
-        /// <exception cref="Errors.IllegalDevice"><paramref name="Device" /> is invalid.</exception>
-        /// <exception cref="Errors.NotInitialised">The requested device has not been initialized.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Device"><paramref name="Device" /> is invalid.</exception>
+        /// <exception cref="Errors.Init">The requested device has not been initialized.</exception>
         /// <exception cref="Errors.Already">The channel is already using the requested device.</exception>
         /// <exception cref="Errors.NotAvailable">Only decoding channels are allowed to use the "no sound" device.</exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">
+        /// <exception cref="Errors.SampleFormat">
         /// The sample format is not supported by the device/drivers. 
         /// If the channel is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.
         /// </exception>
@@ -213,9 +212,9 @@ namespace ManagedBass.Dynamics
 		/// If you wish to only affect the level of your app's sounds, <see cref="ChannelSetAttribute(int, ChannelAttribute, float)" />
         /// and/or the <see cref="GlobalMusicVolume"/>, <see cref="GlobalSampleVolume"/> and <see cref="GlobalStreamVolume"/> config options should be used instead.</para>
         /// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">There is no volume control when using the <see cref="NoSoundDevice">No Sound Device</see>.</exception>
-        /// <exception cref="Errors.IllegalParameter">Invalid volume.</exception>
+        /// <exception cref="Errors.Parameter">Invalid volume.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static double Volume
         {
@@ -223,7 +222,7 @@ namespace ManagedBass.Dynamics
             set 
             {
                 if (!BASS_SetVolume((float)value))
-                    throw new InvalidOperationException();
+                    throw new BassException();
             }
         }
         #endregion
@@ -262,7 +261,7 @@ namespace ManagedBass.Dynamics
             set 
             {
                 if (!BASS_SetDevice(value))
-                    throw new InvalidOperationException(); 
+                    throw new BassException(); 
             }
         }
         #endregion
@@ -287,14 +286,13 @@ namespace ManagedBass.Dynamics
 		/// <remarks>
 		/// This function can be used to enumerate the available devices for a setup dialog. 
 		/// Device 0 is always the "no sound" device, so if you should start at device 1 if you only want to list real devices.
-        /// <para>This function does not use <see cref="BassException"/>.</para>
-		/// <para><b>Platform-specific</b></para>
+        /// <para><b>Platform-specific</b></para>
 		/// <para>
         /// On Linux, a "Default" device is hardcoded to device number 1, which uses the default output set in the ALSA config, and the real devices start at number 2.
 		/// That is also the case on Windows when the <see cref="IncludeDefaultDevice"/> option is enabled.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.IllegalDevice">The device number specified is invalid.</exception>
+        /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
         public static bool GetDeviceInfo(int Device, out DeviceInfo Info, bool Airplay = false)
         {
             return BASS_GetDeviceInfo(Airplay ? Device | 0x1000000 : Device, out Info);
@@ -318,11 +316,12 @@ namespace ManagedBass.Dynamics
         /// That is also the case on Windows when the <see cref="IncludeDefaultDevice"/> option is enabled.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.IllegalDevice">The device number specified is invalid.</exception>
+        /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
         public static DeviceInfo GetDeviceInfo(int Device, bool Airplay = false)
         {
             DeviceInfo info;
-            GetDeviceInfo(Device, out info);
+            if (!GetDeviceInfo(Device, out info))
+                throw new BassException();
             return info;
         }
         #endregion

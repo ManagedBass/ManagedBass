@@ -29,7 +29,7 @@ namespace MBassWPF
 
                 CDInfo DevInfo;
 
-                for (CurrentDriveIndex = 0; BassCd.GetDriveInfo(CurrentDriveIndex, out DevInfo); ++CurrentDriveIndex)
+                for (CurrentDriveIndex = 0; BassCd.GetInfo(CurrentDriveIndex, out DevInfo); ++CurrentDriveIndex)
                     if (DevInfo.DriveLetter == SelectedDrive.DriveLetter)
                         break;
 
@@ -76,7 +76,7 @@ namespace MBassWPF
 
             CDInfo DevInfo;
 
-            for (int i = 0; BassCd.GetDriveInfo(i, out DevInfo); ++i)
+            for (int i = 0; BassCd.GetInfo(i, out DevInfo); ++i)
                 AvailableDrives.Add(DevInfo);
         }
 

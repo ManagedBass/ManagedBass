@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 
+// TODO: Implement enum WmaTagFormat
+
 namespace ManagedBass.Dynamics
 {
     /// <summary>
@@ -126,9 +128,19 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpenPublishMulti")]
         public static extern int EncodeOpenPublish(int freq, int chans, WMAEncodeFlags flags, int[] bitrate, string url, string user, string pass);
-
+        
+		/// <summary>
+		/// Sets a client connection notification callback on a network encoder.
+		/// </summary>
+		/// <param name="Handle">The encoder handle.</param>
+		/// <param name="Procedure">User defined notification function... <see langword="null" /> = disable notifications.</param>
+		/// <param name="User">User instance data to pass to the callback function.</param>
+		/// <returns>If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>A previously set notification callback can be changed (or removed) at any time, by calling this function again.</remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The encoder is not a network encoder, so no port is being used.</exception>
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeSetNotify")]
-        public static extern bool EncodeSetNotify(int handle, ClientConnectProcedure proc, IntPtr user);
+        public static extern bool EncodeSetNotify(int Handle, ClientConnectProcedure Procedure, IntPtr User);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern bool BASS_WMA_EncodeSetTag(int handle, string tag, string value, int form);
@@ -137,19 +149,67 @@ namespace ManagedBass.Dynamics
         {
             return BASS_WMA_EncodeSetTag(handle, tag, value, 1); // form = 1 (Unicode)
         }
-
+        
+		/// <summary>
+		/// Retrieves the number of clients currently connected to the encoder.
+		/// </summary>
+		/// <param name="Handle">The encoder handle.</param>
+		/// <returns>If succesful, the number of clients is returned, else -1 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The encoder was not created with <see cref="EncodeOpenNetwork(int, int, WMAEncodeFlags, int, int, int)" />.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeGetClients")]
-        public static extern int EncodeGetClients(int handle);
-
+        public static extern int EncodeGetClients(int Handle);
+        
+		/// <summary>
+		/// Retrieves the network port for clients to connect to.
+		/// </summary>
+		/// <param name="Handle">The encoder handle.</param>
+		/// <returns>If succesful, the port number is returned, else 0 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// If you have choosen to let the system select a port (e.g. in your <see cref="EncodeOpenNetwork(int, int, WMAEncodeFlags, int, int, int)" /> or <see cref="EncodeOpenNetwork(int, int, WMAEncodeFlags, int[], int, int)" />), 
+		/// this is the function to retrieve the port actually being used.
+		/// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The encoder is not a network encoder, so no port is being used.</exception>
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeGetPort")]
-        public static extern int EncodeGetPort(int handle);
-
+        public static extern int EncodeGetPort(int Handle);
+        
+		/// <summary>
+		/// Finishes encoding and closes the file or network port.
+		/// </summary>
+		/// <param name="Handle">The encoder handle.</param>
+        /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeClose")]
-        public static extern bool EncodeClose(int handle);
+        public static extern bool EncodeClose(int Handle);
 
         [DllImport(DllName)]
         static unsafe extern int* BASS_WMA_EncodeGetRates(int freq, int chans, WMAEncodeFlags Flags);
-
+        
+		/// <summary>
+		/// Retrieves the WMA encoding bitrates available for a specified sample format.
+		/// </summary>
+		/// <param name="Frequency">The sample rate in Hz, or a BASS channel handle if the <see cref="WMAEncodeFlags.Source"/> flag is specified.</param>
+		/// <param name="Channels">The number of channels (1=mono, 2=stereo, etc.).</param>
+		/// <param name="Flags">A combination of <see cref="WMAEncodeFlags"/>.</param>
+		/// <returns>If succesful, an array of the available bitrates is returned (int[], in bits per second), else <see langword="null" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para>When requesting VBR rates, the rates returned are quality settings. For example, 10 = 10% quality, 25 = 25% quality, etc... 100% quality is lossless.</para>
+		/// <para>
+        /// The WMA codec expects 16-bit or 24-bit sample data depending on the <see cref="WMAEncodeFlags.Encode24Bit"/> flag, but BassWma will accept 8-bit, 16-bit or floating-point data, and convert it to the appropriate format.
+        /// Of course, it makes little sense to encode 8-bit or 16-bit data in 24-bit.
+        /// </para>
+		/// <para>
+        /// The WMA codec currently supports the following sample rates: 8000, 11025, 16000, 22050, 32000, 44100, 48000, 88200, 96000.
+        /// And the following number of channels: 1, 2, 6, 8.
+        /// But not all combinations of these are supported.
+        /// To encode other sample formats, the data will first have to be resampled to a supported format.
+        /// </para>
+		/// </remarks>
+        /// <exception cref="Errors.WM9">The Windows Media modules (v9 or above) are not installed.</exception>
+        /// <exception cref="Errors.NotAvailable">No codec could be found to support the specified sample format.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public unsafe static int[] EncodeGetRates(int Frequency, int Channels, WMAEncodeFlags Flags)
         {
             var list = new List<int>();
@@ -164,6 +224,7 @@ namespace ManagedBass.Dynamics
                     rates++;
                 }
             }
+            else return null;
 
             return list.ToArray();
         }

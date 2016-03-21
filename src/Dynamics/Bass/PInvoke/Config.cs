@@ -77,14 +77,13 @@ namespace ManagedBass.Dynamics
         }
 
         /// <summary>
-        /// The Buffer Length in milliseconds.
+        /// The Buffer Length in milliseconds (default = 500).
         /// </summary>
         /// <remarks>
         /// <para>
         /// The minimum Length is 1ms above the update period (See <see cref="UpdatePeriod"/>),
         /// the maximum is 5000 milliseconds.
         /// If the Length specified is outside this range, it is automatically capped.
-        /// The default Buffer Length is 500 milliseconds.
         /// Increasing the Length, decreases
         /// the chance of the sound possibly breaking-up on slower computers, but also
         /// increases the latency for DSP/FX.
@@ -341,7 +340,7 @@ namespace ManagedBass.Dynamics
         /// <remarks>
         /// When the output is paused using <see cref="Bass.Pause"/>, and this config option is enabled,
         /// channels can't be played until the output is resumed using <see cref="Bass.Start"/>.
-        /// Attempts to play a channel will give a <see cref="Errors.OutputNotStarted"/> error.
+        /// Attempts to play a channel will give a <see cref="Errors.Start"/> error.
         /// </remarks>
         public static int PauseNoPlay
         {

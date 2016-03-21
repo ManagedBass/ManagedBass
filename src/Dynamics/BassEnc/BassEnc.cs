@@ -19,19 +19,24 @@ namespace ManagedBass.Dynamics
 
         public static void Unload() => Extensions.Unload(hLib);
 
+        #region Version
         [DllImport(DllName)]
         static extern int BASS_Encode_GetVersion();
 
+        /// <summary>
+        /// Gets the Version of BassEnc that is loaded.
+        /// </summary>
         public static Version Version => Extensions.GetVersion(BASS_Encode_GetVersion());
+        #endregion
 
         #region Configure
         /// <summary>
-        /// Encoder DSP priority (default -1000)
-        /// priority (int): The priorty determines where in the DSP chain the encoding is performed. 
+        /// Encoder DSP priority (default -1000) which determines where in the DSP chain the encoding is performed. 
+        /// </summary>
+        /// <remarks>
         /// All DSP with a higher priority will be present in the encoding.
         /// Changes only affect subsequent encodings, not those that have already been started.
-        /// The default priority is -1000.
-        /// </summary>
+        /// </remarks>
         public static int DSPPriority
         {
             get { return Bass.GetConfig(Configuration.EncodePriority); }
@@ -39,13 +44,12 @@ namespace ManagedBass.Dynamics
         }
 
         /// <summary>
-        /// The maximum queue Length (default 10000, 0=no limit)
-        /// limit (int): The async encoder queue size limit in milliseconds; 0=unlimited.
-        /// When queued encoding is enabled, the queue's Buffer will grow as needed to hold the queued data,
-        /// up to a limit specified by this config option.  
-        /// The default limit is 10 seconds (10000 milliseconds). 
-        /// Changes only apply to new encoders, not any already existing encoders.
+        /// The maximum queue Length of the async encoder (default 10000, 0 = Unlimited) in milliseconds.
         /// </summary>
+        /// <remarks>
+        /// When queued encoding is enabled, the queue's Buffer will grow as needed to hold the queued data, up to a limit specified by this config option.
+        /// Changes only apply to new encoders, not any already existing encoders.
+        /// </remarks>
         public static int Queue
         {
             get { return Bass.GetConfig(Configuration.EncodeQueue); }
@@ -53,13 +57,13 @@ namespace ManagedBass.Dynamics
         }
 
         /// <summary>
-        /// The time to wait to send data to a cast server (default 5000ms)
-        /// timeout (int): The time to wait, in milliseconds.
-        /// When an attempt to send data is timed-out, the data is discarded. 
-        /// BassEnc.EncodeSetNotify() can be used to receive a notification of when this happens.
-        /// The default timeout is 5 seconds (5000 milliseconds).
-        /// Changes take immediate effect.
+        /// The time to wait (in milliseconds) to send data to a cast server (default 5000ms)
         /// </summary>
+        /// <remarks>
+        /// When an attempt to send data is timed-out, the data is discarded. 
+        /// <see cref="EncodeSetNotify"/> can be used to receive a notification of when this happens.
+        /// Changes take immediate effect.
+        /// </remarks>
         public static int CastTimeout
         {
             get { return Bass.GetConfig(Configuration.EncodeCastTimeout); }
@@ -67,22 +71,21 @@ namespace ManagedBass.Dynamics
         }
 
         /// <summary>
-        /// Proxy server settings when connecting to Icecast and Shoutcast
-        /// (in the form of "[User:pass@]server:port"... null = don't use a proxy but a direct connection).
-        /// proxy (string pointer): The proxy server settings, in the form of "[User:pass@]server:port"...
-        /// null = don't use a proxy but make a direct connection (default). 
-        /// If only the "server:port" part is specified, then that proxy server is used without any authorization credentials.
-        /// BASSenc does not make a copy of the config string, so it must reside in the heap (not the stack), eg. a global variable. 
-        /// This also means that the proxy settings can subsequently be changed at that location without having to call this function again.
-        /// This setting affects how the following functions connect to servers: BassEnc.EncodeCastInit(),
-        /// BassEnc.EncodeCastGetStats(), BassEnc.EncodeCastSetTitle().
-        /// When a proxy server is used, it needs to support the HTTP 'CONNECT' method.
-        /// The default setting is NULL (do not use a proxy).
-        /// Changes take effect from the next internet stream creation call. 
-        /// By default, BASSenc will not use any proxy settings when connecting to Icecast and Shoutcast.
+        /// Proxy server settings when connecting to Icecast and Shoutcast (in the form of "[User:pass@]server:port"... <see langword="null"/> (default) = don't use a proxy but a direct connection).
         /// </summary>
+        /// <remarks>
+        /// If only the "server:port" part is specified, then that proxy server is used without any authorization credentials.
+        /// This setting affects how the following functions connect to servers: <see cref="CastInit"/>, <see cref="CastGetStats"/>, <see cref="CastSetTitle"/>.
+        /// When a proxy server is used, it needs to support the HTTP 'CONNECT' method.
+        /// The default setting is <see langword="null"/> (do not use a proxy).
+        /// Changes take effect from the next internet stream creation call. 
+        /// By default, BassEnc will not use any proxy settings when connecting to Icecast and Shoutcast.
+        /// </remarks>
         public static string CastProxy
         {
+            // BassEnc does not make a copy of the config string, so it must reside in the heap (not the stack), eg. a global variable. 
+            // This also means that the proxy settings can subsequently be changed at that location without having to call this function again.
+
             get { return Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.EncodeCastProxy)); }
             set
             {
@@ -100,9 +103,7 @@ namespace ManagedBass.Dynamics
         }
 
         /// <summary>
-        /// ACM codec name to give priority for the formats it supports.
-        /// codec (string pointer): The ACM codec name to give priority (e.g. 'l3codecp.acm').
-        /// BASSenc does make a copy of the config string, so it can be freed right after calling it.
+        /// ACM codec name to give priority for the formats it supports (e.g. 'l3codecp.acm').
         /// </summary>
         public static string ACMLoad
         {
@@ -139,24 +140,65 @@ namespace ManagedBass.Dynamics
 
             return BASS_Encode_GetACMFormat(handle, form, formlen, title, ACMflags);
         }
-
+        
+		/// <summary>
+		/// Retrieves the channel that an encoder is set on.
+		/// </summary>
+		/// <param name="Handle">The encoder to get the channel from.</param>
+		/// <returns>If successful, the encoder's channel handle is returned, else 0 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_GetChannel")]
-        public static extern int EncodeGetChannel(int handle);
+        public static extern int EncodeGetChannel(int Handle);
 
         [DllImport(DllName, EntryPoint = "BASS_Encode_GetCount")]
         public static extern long EncodeGetCount(int handle, EncodeCount count);
 
+		/// <summary>
+		/// Checks if an encoder is running on a channel.
+		/// </summary>
+		/// <param name="Handle">The encoder or channel handle... a HENCODE, HSTREAM, HMUSIC, or HRECORD.</param>
+		/// <returns>The return value is one of <see cref="PlaybackState"/> values.</returns>
+		/// <remarks>
+		/// <para>When checking if there's an encoder running on a channel, and there are multiple encoders on the channel, <see cref="PlaybackState.Playing"/> will be returned if any of them are active.</para>
+		/// <para>If an encoder stops running prematurely, <see cref="EncodeStop(int)" /> should still be called to release resources that were allocated for the encoding.</para>
+		/// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_Encode_IsActive")]
-        public static extern PlaybackState EncodeIsActive(int handle);
-
+        public static extern PlaybackState EncodeIsActive(int Handle);
+        
+		/// <summary>
+		/// Moves an encoder (or all encoders on a channel) to another channel.
+		/// </summary>
+		/// <param name="Handle">The encoder or channel handle... a HENCODE, HSTREAM, HMUSIC, or HRECORD.</param>
+		/// <param name="Channel">The channel to move the encoder(s) to... a HSTREAM, HMUSIC, or HRECORD.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+        /// The new channel must have the same sample format (rate, channels, resolution) as the old channel, as that is what the encoder is expecting. 
+		/// A channel's sample format is available via <see cref="Bass.ChannelGetInfo(int, out ChannelInfo)" />.
+		/// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> or <paramref name="Channel" /> is not valid.</exception>
+        /// <exception cref="Errors.SampleFormat">The new channel's sample format is not the same as the old channel's.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_SetChannel")]
-        public static extern bool EncodeSetChannel(int handle, int channel);
+        public static extern bool EncodeSetChannel(int Handle, int Channel);
 
         [DllImport(DllName, EntryPoint = "BASS_Encode_SetNotify")]
         public static extern bool EncodeSetNotify(int handle, EncodeNotifyProcedure proc, IntPtr user);
-
+        
+		/// <summary>
+		/// Pauses or resumes encoding on a channel.
+		/// </summary>
+		/// <param name="Handle">The encoder or channel handle... a HENCODE, HSTREAM, HMUSIC, or HRECORD.</param>
+		/// <param name="Paused">Paused?</param>
+		/// <returns>If no encoder has been started on the channel, <see langword="false" /> is returned, otherwise <see langword="true" /> is returned.</returns>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para>
+        /// When an encoder is paused, no sample data will be sent to the encoder "automatically".
+        /// Data can still be sent to the encoder "manually" though, via the <see cref="EncodeWrite(int, IntPtr, int)" /> function.
+        /// </para>
+		/// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.s</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_SetPaused")]
-        public static extern bool EncodeSetPaused(int handle, bool paused);
+        public static extern bool EncodeSetPaused(int Handle, bool Paused = true);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_Encode_Start(int handle, string cmdline, EncodeFlags flags, EncodeProcedure proc, IntPtr user);
@@ -203,12 +245,34 @@ namespace ManagedBass.Dynamics
         {
             return BASS_Encode_StartUser(handle, filename, flags | BassFlags.Unicode, proc, user);
         }
-
+        
+		/// <summary>
+		/// Stops encoding on a channel.
+		/// </summary>
+		/// <param name="Handle">The encoder or channel handle... a HENCODE, HSTREAM, HMUSIC, or HRECORD.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// This function will free an encoder immediately, without waiting for any data that may be remaining in the queue.
+        /// <see cref="EncodeStop(int, bool)" /> can be used to have an encoder process the queue before it is freed.
+		/// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_Stop")]
-        public static extern bool EncodeStop(int handle);
-
+        public static extern bool EncodeStop(int Handle);
+        
+		/// <summary>
+		/// Stops async encoding on a channel.
+		/// </summary>
+		/// <param name="Handle">The encoder or channel handle... a HENCODE, HSTREAM, HMUSIC, or HRECORD.</param>
+		/// <param name="Queue">Process the queue first? If so, the encoder will not be freed until after any data remaining in the queue has been processed, and it will not accept any new data in the meantime.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// When an encoder is told to wait for its queue to be processed, this function will return immediately and the encoder will be freed in the background after the queued data has been processed.
+		/// <see cref="EncodeSetNotify" /> can be used to request notification of when the encoder has been freed.
+        /// <see cref="EncodeStop(int)" /> (or this function with queue = <see langword="false" />) can be used to cancel to queue processing and free the encoder immediately.
+		/// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_StopEx")]
-        public static extern bool EncodeStop(int handle, bool queue);
+        public static extern bool EncodeStop(int Handle, bool Queue);
 
         #region Encode Write
         [DllImport(DllName, EntryPoint = "BASS_Encode_Write")]
@@ -255,9 +319,25 @@ namespace ManagedBass.Dynamics
         #region Server
         [DllImport(DllName, EntryPoint = "BASS_Encode_ServerInit")]
         public static extern int ServerInit(int handle, string port, int buffer, int burst, EncodeServer flags, EncodeClientProcedure proc, IntPtr user);
-
+        
+		/// <summary>
+		/// Kicks clients from a server.
+		/// </summary>
+		/// <param name="Handle">The encoder handle.</param>
+		/// <param name="Client">The client(s) to kick... "" (empty string) = all clients. Unless a port number is included, this string is compared with the start of the connected clients' IP address.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para>
+        /// The clients may not be kicked immediately, but shortly after the call.
+        /// If the server has been setup with an <see cref="EncodeClientProcedure" /> callback function, that will receive notification of the disconnections.
+        /// </para>
+		/// <para><b>Platform-specific</b></para>
+		/// <para>This function is not available on Windows CE.</para>
+		/// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">No matching clients were found.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_ServerKick")]
-        public static extern int ServerKick(int handle, string client);
+        public static extern int ServerKick(int Handle, string Client = "");
         #endregion
     }
 }

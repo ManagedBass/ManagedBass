@@ -35,7 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BitHelper.cs" />
+    <Compile Include="BassException.cs" />
     <Compile Include="Dynamics\BassAsio\PInvoke\Channels.cs" />
+    <Compile Include="Dynamics\BassCd\Enumerations\CDInterface.cs" />
     <Compile Include="Dynamics\BassWma\Enumerations\WMEncodeType.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\Music.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\FX.cs" />

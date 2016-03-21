@@ -15,7 +15,7 @@ namespace ManagedBass.Dynamics
 		/// <remarks>The plugin information does not change, so the returned info remains valid for as long as the plugin is loaded.
 		/// <para>Note: There is no guarantee that the check is complete or might contain formats not being supported on your particular OS/machine (due to additional or missing audio codecs).</para>
 		/// </remarks>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_PluginGetInfo")]
         public static extern PluginInfo PluginGetInfo(int Handle);
         
@@ -53,7 +53,7 @@ namespace ManagedBass.Dynamics
         /// </para>
 		/// </remarks>
         /// <exception cref="Errors.FileOpen">The <paramref name="FileName" /> could not be opened.</exception>
-        /// <exception cref="Errors.UnsupportedFileFormat">The <paramref name="FileName" /> is not a plugin.</exception>
+        /// <exception cref="Errors.FileFormat">The <paramref name="FileName" /> is not a plugin.</exception>
         /// <exception cref="Errors.Already">The <paramref name="FileName" /> is already plugged in.</exception>
         public static int PluginLoad(string FileName) => BASS_PluginLoad(FileName);
         #endregion
@@ -67,7 +67,7 @@ namespace ManagedBass.Dynamics
         /// If there are streams created by a plugin in existence when it is being freed, the streams will automatically be freed too.
         /// Samples loaded by the plugin are unaffected as the plugin has nothing to do with them once they are loaded (the sample data is already fully decoded).
 		/// </remarks>
-        /// <exception cref="Errors.InvalidHandle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_PluginFree")]
         public static extern bool PluginFree(int Handle);
 

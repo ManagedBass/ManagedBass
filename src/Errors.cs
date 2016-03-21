@@ -1,5 +1,4 @@
 ﻿using ManagedBass.Dynamics;
-using System;
 
 namespace ManagedBass
 {
@@ -31,7 +30,7 @@ namespace ManagedBass
         /// <summary>
         /// Can't find a free/valid driver
         /// </summary>
-        DriverNotFound = 3,
+        Driver = 3,
 
         /// <summary>
         /// The sample Buffer was lost
@@ -41,37 +40,37 @@ namespace ManagedBass
         /// <summary>
         /// Invalid Handle
         /// </summary>
-        InvalidHandle = 5,
+        Handle = 5,
 
         /// <summary>
         /// Unsupported sample format
         /// </summary>
-        UnsupportedSampleFormat = 6,
+        SampleFormat = 6,
 
         /// <summary>
         /// Invalid playback position
         /// </summary>
-        InvalidPlaybackPosition = 7,
+        Position = 7,
 
         /// <summary>
         /// <see cref="Bass.Init"/> has not been successfully called
         /// </summary>
-        NotInitialised = 8,
+        Init = 8,
 
         /// <summary>
         /// <see cref="Bass.Start"/> has not been successfully called
         /// </summary>
-        OutputNotStarted = 9,
+        Start = 9,
 
         /// <summary>
         /// No CD in drive
         /// </summary>
-        NoCDinDrive = 12,
+        NoCD = 12,
 
         /// <summary>
         /// Invalid track number
         /// </summary>
-        InvalidCDTrack = 13,
+        CDTrack = 13,
 
         /// <summary>
         /// Already initialized/paused/whatever
@@ -91,17 +90,17 @@ namespace ManagedBass
         /// <summary>
         /// Can't get a free channel
         /// </summary>
-        NoFreeChannelAvailable = 18,
+        NoChannel = 18,
 
         /// <summary>
         /// An illegal Type was specified
         /// </summary>
-        IllegalType = 19,
+        Type = 19,
 
         /// <summary>
         /// An illegal parameter was specified
         /// </summary>
-        IllegalParameter = 20,
+        Parameter = 20,
 
         /// <summary>
         /// No 3D support
@@ -116,7 +115,7 @@ namespace ManagedBass
         /// <summary>
         /// Illegal device number
         /// </summary>
-        IllegalDevice = 23,
+        Device = 23,
 
         /// <summary>
         /// Not playing
@@ -126,37 +125,37 @@ namespace ManagedBass
         /// <summary>
         /// Illegal sample rate
         /// </summary>
-        IllegalSampleRate = 25,
+        SampleRate = 25,
 
         /// <summary>
         /// The stream is not a file stream
         /// </summary>
-        NotFileStream = 27,
+        NotFile = 27,
 
         /// <summary>
         /// No hardware voices available
         /// </summary>
-        NoHardwareVoicesAvailable = 29,
+        NoHW = 29,
 
         /// <summary>
         /// The MOD music has no sequence data
         /// </summary>
-        NoSequenceData = 31,
+        Empty = 31,
 
         /// <summary>
         /// No internet connection could be opened
         /// </summary>
-        NoInternetConnection = 32,
+        NoInternet = 32,
 
         /// <summary>
         /// Couldn't create the file
         /// </summary>
-        FileCreate = 33,
+        Create = 33,
 
         /// <summary>
         /// Effects are not available
         /// </summary>
-        EffectsNotAvailable = 34,
+        NoFX = 34,
 
         /// <summary>
         /// The channel is playing
@@ -171,7 +170,7 @@ namespace ManagedBass
         /// <summary>
         /// The channel is a 'Decoding Channel'
         /// </summary>
-        DecodingChannel = 38,
+        Decode = 38,
 
         /// <summary>
         /// A sufficient DirectX version is not installed
@@ -181,27 +180,27 @@ namespace ManagedBass
         /// <summary>
         /// Connection timedout
         /// </summary>
-        ConnectionTimedout = 40,
+        Timeout = 40,
 
         /// <summary>
         /// Unsupported file format
         /// </summary>
-        UnsupportedFileFormat = 41,
+        FileFormat = 41,
 
         /// <summary>
         /// Unavailable speaker
         /// </summary>
-        SpeakerUnavailable = 42,
+        Speaker = 42,
 
         /// <summary>
         /// Invalid BASS version (used by add-ons)
         /// </summary>
-        InvalidVersion = 43,
+        Version = 43,
 
         /// <summary>
         /// Codec is not available/supported
         /// </summary>
-        CodecNotAvailable = 44,
+        Codec = 44,
 
         /// <summary>
         /// The channel/file has ended
@@ -211,7 +210,7 @@ namespace ManagedBass
         /// <summary>
         /// The device is busy (eg. in "exclusive" use by another process)
         /// </summary>
-        DeviceBusy = 46,
+        Busy = 46,
 
         #region BassWma
         /// <summary>
@@ -232,36 +231,22 @@ namespace ManagedBass
         /// <summary>
         /// BassWma: No appropriate codec is installed
         /// </summary>
-        WmaCodecNotInstalled = 1003,
+        WmaCodec = 1003,
 
         /// <summary>
         /// BassWma: individualization is needed
         /// </summary>
-        WmaIndividualisationNeeded = 1004,
+        WmaIndividual = 1004,
         #endregion
 
         /// <summary>
         /// BassWASAPI: WASAPI Not available
         /// </summary>
-        WasapiNotAvailable = 5000,
+        Wasapi = 5000,
 
         /// <summary>
         /// BassAAC: Non-Streamable due to MP4 atom order ("mdat" before "moov")
         /// </summary>
         Mp4NoStream = 6000
-    }
-
-    public class BassException : Exception
-    {
-        internal BassException(Errors ErrorCode, string ExceptionPoint)
-            : base(string.Format("{0} occured at {1}", ErrorCode.ToString(), ExceptionPoint))
-        {
-            this.ExceptionPoint = ExceptionPoint;
-            this.ErrorCode = ErrorCode;
-        }
-
-        public string ExceptionPoint { get; }
-
-        public Errors ErrorCode { get; }
     }
 }

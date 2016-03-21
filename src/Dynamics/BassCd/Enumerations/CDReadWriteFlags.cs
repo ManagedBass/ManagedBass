@@ -3,7 +3,7 @@
 namespace ManagedBass.Dynamics
 {
     /// <summary>
-    /// The drive's reading &amp; writing capabilities used with <see cref="BassCd.GetDriveInfo(int,out CDInfo)" />.
+    /// The drive's reading &amp; writing capabilities used with <see cref="BassCd.GetInfo(int,out CDInfo)" />.
     /// </summary>
     [Flags]
     public enum CDReadWriteFlags

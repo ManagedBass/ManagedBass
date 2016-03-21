@@ -106,7 +106,7 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <param name="Info"><see cref="BassInfo"/> object to receive the information.</param>
         /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init"/> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init"/> has not been successfully called.</exception>
         /// <remarks>
         /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to.
         /// </remarks>
@@ -117,7 +117,7 @@ namespace ManagedBass.Dynamics
         /// Retrieves information on the device being used.
         /// </summary>
         /// <returns><see cref="BassInfo"/> object with the retreived information. (<see langword="null"/> on Error)</returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init"/> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init"/> has not been successfully called.</exception>
         /// <remarks>
         /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to.
         /// </remarks>
@@ -126,7 +126,8 @@ namespace ManagedBass.Dynamics
             get
             {
                 BassInfo info;
-                GetInfo(out info);
+                if (!GetInfo(out info))
+                    throw new BassException();
                 return info;
             }
         }

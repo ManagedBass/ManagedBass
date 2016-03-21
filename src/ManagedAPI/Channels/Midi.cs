@@ -2,6 +2,9 @@
 
 namespace ManagedBass
 {
+    /// <summary>
+    /// Streams MIDI from file or memory. Requires: BassMidi.dll.
+    /// </summary>
     public class Midi : Channel
     {
         public Midi(string FilePath, int Offset = 0, int Length = 0, int Frequency = 44100, bool IsDecoder = false, Resolution Resolution = Resolution.Short)

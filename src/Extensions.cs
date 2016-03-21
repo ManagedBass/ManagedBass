@@ -211,9 +211,14 @@ namespace ManagedBass
 
         public static unsafe string PtrToStringUtf8(IntPtr ptr)
         {
+            if (ptr == IntPtr.Zero)
+                return null;
+
             byte* bytes = (byte*)ptr.ToPointer();
             int size = 0;
-            while (bytes[size] != 0) ++size;
+            
+            while (bytes[size] != 0)
+                ++size;
 
             if (size == 0) return null;
 

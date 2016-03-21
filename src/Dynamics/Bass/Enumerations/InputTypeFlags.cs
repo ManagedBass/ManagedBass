@@ -3,13 +3,13 @@
 namespace ManagedBass.Dynamics
 {
     /// <summary>
-    /// Used with <see cref="Bass.RecordGetInputType"/>
+    /// Used with <see cref="Bass.RecordGetInput(int, out float)"/> applying <see cref="InputTypeMask"/> on the return value;
     /// </summary>
     [Flags]
     public enum InputTypeFlags
     {
         /// <summary>
-        /// The Type of Input is also indicated in the high 8-bits of <see cref="Bass.RecordGetInput(int,ref float)"/> (use this to test the return value).
+        /// The Type of Input is also indicated in the high 8-bits of <see cref="Bass.RecordGetInput(int, out float)"/> (use this to test the return value).
         /// </summary>
         InputTypeMask = -16777216,
 

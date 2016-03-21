@@ -4,6 +4,9 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
+    /// <summary>
+    /// Represents a Mixer Stream.
+    /// </summary>
     public class MixerStream : Channel
     {
         public MixerStream(int Frequency = 44100, int NoOfChannels = 2, bool IsDecoder = true, Resolution Resolution = Resolution.Short)

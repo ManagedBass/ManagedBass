@@ -60,7 +60,7 @@ namespace ManagedBass.Dynamics
 		/// </summary>
 		/// <param name="Rate">The sample rate to check.</param>
 		/// <returns>If the sample rate is supported, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">The sample rate is not supported by the device/drivers.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_CheckRate")]
@@ -70,7 +70,7 @@ namespace ManagedBass.Dynamics
 		/// Displays the current Asio driver's control panel.
 		/// </summary>
 		/// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_ControlPanel")]
         public static extern bool ControlPanel();
@@ -95,7 +95,7 @@ namespace ManagedBass.Dynamics
 		/// </summary>
 		/// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
 		/// <remarks>Make sure to free each Asio device you have initialized with <see cref="Init" />, <see cref="CurrentDevice" /> is used to switch the current device.</remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init"/> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init"/> has not been successfully called.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_Free")]
         public static extern bool Free();
 
@@ -106,7 +106,7 @@ namespace ManagedBass.Dynamics
 		/// <param name="Param">Pointer to the operation's parameters, if applicable.</param>
 		/// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
 		/// <remarks>This method is a general purpose extension method serving various purposes.</remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">The <paramref name="Selector" /> is not supported by the driver.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_Future")]
@@ -140,21 +140,21 @@ namespace ManagedBass.Dynamics
         /// The device setting is local to the current thread, so calling functions with different devices simultaneously in multiple threads is not a problem.
         /// </para>
         /// <para>
-        /// The device context setting is used by any function that may result in a <see cref="Errors.NotInitialised"/> error (except this function), which is the majority of them.
+        /// The device context setting is used by any function that may result in a <see cref="Errors.Init"/> error (except this function), which is the majority of them.
         /// When one if those functions is called, it will check the current thread's device setting, and if no device is selected (or the selected device is not initialized), BassAsio will automatically select the lowest device that is initialized. 
 		/// This means that when using a single device, there is no need to use this function - BassAsio will automatically use the device that's initialized.
         /// Even if you free the device, and initialize another, BassAsio will automatically switch to the one that is initialized.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised">The device has not been initialized or there are no initialised devices.</exception>
-        /// <exception cref="Errors.IllegalDevice">The device number specified is invalid.</exception>
+        /// <exception cref="Errors.Init">The device has not been initialized or there are no initialised devices.</exception>
+        /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
         public static int CurrentDevice
         {
             get { return BASS_ASIO_GetDevice(); }
             set
             {
                 if (!BASS_ASIO_SetDevice(value))
-                    throw new Exception("Could not set device");
+                    throw new BassException(LastError);
             }
         }
         #endregion
@@ -169,7 +169,7 @@ namespace ManagedBass.Dynamics
 		/// <remarks>
 		/// This function can be used to enumerate the available Asio devices for a setup dialog. 
 		/// </remarks>
-        /// <exception cref="Errors.IllegalDevice">The <paramref name="Device"/> number specified is invalid.</exception>
+        /// <exception cref="Errors.Device">The <paramref name="Device"/> number specified is invalid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_GetDeviceInfo")]
         public static extern bool GetDeviceInfo(int Device, out AsioDeviceInfo Info);
         
@@ -181,11 +181,12 @@ namespace ManagedBass.Dynamics
 		/// <remarks>
 		/// This function can be used to enumerate the available Asio devices for a setup dialog.
 		/// </remarks>
-        /// <exception cref="Errors.IllegalDevice">The <paramref name="Device"/> number specified is invalid.</exception>
+        /// <exception cref="Errors.Device">The <paramref name="Device"/> number specified is invalid.</exception>
         public static AsioDeviceInfo GetDeviceInfo(int Device)
         {
             AsioDeviceInfo info;
-            GetDeviceInfo(Device, out info);
+            if (!GetDeviceInfo(Device, out info))
+                throw new BassException(LastError);
             return info;
         }
         
@@ -218,7 +219,7 @@ namespace ManagedBass.Dynamics
         /// As in BASS, simultaneously using multiple devices is supported in the BASSASIO API via a context switching system - instead of there being an extra "device" parameter in the function calls, the device to be used needs to be set via <see cref="CurrentDevice" /> prior to calling the function.
         /// The device setting is local to the current thread, so calling functions with different devices simultaneously in multiple threads is not a problem.
         /// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_GetInfo")]
         public static extern bool GetInfo(out AsioInfo Info);
         
@@ -230,13 +231,14 @@ namespace ManagedBass.Dynamics
         /// As in BASS, simultaneously using multiple devices is supported in the BASSASIO API via a context switching system - instead of there being an extra "device" parameter in the function calls, the device to be used needs to be set via <see cref="CurrentDevice" /> prior to calling the function.
         /// The device setting is local to the current thread, so calling functions with different devices simultaneously in multiple threads is not a problem.
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         public static AsioInfo Info
         {
             get
             {
                 AsioInfo info;
-                GetInfo(out info);
+                if (!GetInfo(out info))
+                    throw new BassException();
                 return info;
             }
         }
@@ -259,7 +261,7 @@ namespace ManagedBass.Dynamics
         /// When a channel is being resampled, the sample latency will change, but the effective latency time remains constant.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_GetLatency")]
         public static extern int GetLatency(bool Input);
         
@@ -276,7 +278,7 @@ namespace ManagedBass.Dynamics
 		/// <remarks>
         /// When it's not possible to set the device to the rate wanted, this can be used to overcome that.
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">The sample rate is not supported by the device/drivers.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static double Rate
@@ -285,7 +287,7 @@ namespace ManagedBass.Dynamics
             set 
             {
                 if (!BASS_ASIO_SetRate(value)) 
-                    throw new Exception("Could not set rate");
+                    throw new BassException(LastError);
             }
         }
         #endregion
@@ -319,9 +321,9 @@ namespace ManagedBass.Dynamics
 		/// When successful, the current thread's device is set to the one that was just initialized.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.IllegalDevice">The <paramref name="Device" /> number specified is invalid.</exception>
+        /// <exception cref="Errors.Device">The <paramref name="Device" /> number specified is invalid.</exception>
         /// <exception cref="Errors.Already">A device has already been initialized. You must call <see cref="Free" /> before you can initialize again.</exception>
-        /// <exception cref="Errors.DriverNotFound">The driver couldn't be initialized.</exception>
+        /// <exception cref="Errors.Driver">The driver couldn't be initialized.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_Init")]
         public static extern bool Init(int Device, AsioInitFlags Flags);
         
@@ -335,9 +337,43 @@ namespace ManagedBass.Dynamics
 		/// <returns>Returns <see langword="true" />, if the device has been started, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         public static bool IsStarted => BASS_ASIO_IsStarted();
         #endregion
-
+                
+		/// <summary>
+		/// Set the direct input monitoring state.
+		/// </summary>
+		/// <param name="Input">The input channel to set the monitoring state of... -1 = all.</param>
+		/// <param name="Output">The suggested output channel for the monitoring.</param>
+		/// <param name="Gain">Suggested Gain, ranging from 0 to 0x7fffffff (-inf to +12 dB), 0x20000000 equals 0 dB.</param>
+		/// <param name="State">Monitoring state... 0 = off, 1 = on. Other settings may be possible depending on the drivers, e.g.:
+		/// <para>0 = input monitoring off.</para>
+		/// <para>1 = input monitoring on.</para>
+		/// <para>2 = playback monitoring off.</para>
+		/// <para>3 = playback monitoring on.</para>
+		/// </param>
+		/// <param name="Pan">Suggested Pan, ranging from 0 = left to 0x7fffffff = right (centre should be 0x40000000).</param>
+		/// <returns>If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>
+        /// If the hardware does not support patching and mixing a straight 1 to 1 routing is suggested. 
+		/// The driver should ignore all the information of ASIOMonitor it cannot deal with, usually these might be either or all of output, gain, pan.
+		/// <para>
+        /// Output is the base channel of a stereo channel pair, i.e. output is always an even channel (0,2,4...). 
+		/// If an odd input channel should be monitored and no panning or output routing can be applied, the driver has to use the next higher output (imply a hard right pan).
+		/// Note that the output, gain and pan settings are just suggestions, and may be ignored by the device/driver.
+        /// </para>
+		/// <para>Some cards/drivers might also support direct output monitoring, in such case use the <paramref name="Input" /> parameter to denote the output channel to monitor and specify an appropriate <paramref name="State" /> value.</para>
+		/// <para>
+        /// ADM has originally been based on a mono in - stereo out scheme. Meaning if you need to monitor a stereo input channel pair you need to call this twice, both using the same output value, but using an odd and an even input value.
+		/// In such case set the odd input to pan hard left and the even input to pan hard right.
+        /// </para>
+		/// <para>
+        /// Also note, that if you have channels in-between not activated in ASIO these will not counted. 
+		/// So if for example channels 3 and 4 are inactive, ADM input 3 is related to the physical input channel 5!
+        /// </para>
+		/// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_Monitor")]
-        public static extern bool Monitor(int input, int output, int gain, int state, int pan);
+        public static extern bool Monitor(int Input, int Output, int Gain, int State, int Pan);
 
         /// <summary>
 		/// Sets the device's sample format to DSD or PCM.
@@ -349,7 +385,7 @@ namespace ManagedBass.Dynamics
 		/// Any <see cref="ChannelSetFormat" /> and <see cref="ChannelSetRate" /> settings that have been applied will be reset to defaults. 
 		/// Other channel settings are unchanged.
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">DSD is not supported by the device/driver.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_SetDSD")]
@@ -362,7 +398,7 @@ namespace ManagedBass.Dynamics
 		/// <param name="User">User instance data to pass to the callback function.</param>
 		/// <returns>If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
 		/// <remarks>A previously set notification callback can be changed (or removed) at any time, by calling this function again.</remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_SetNotify")]
         public static extern bool SetNotify(AsioNotifyProcedure Procedure, IntPtr User = default(IntPtr));
         
@@ -388,6 +424,7 @@ namespace ManagedBass.Dynamics
             {
                 if (BASS_ASIO_SetUnicode(value))
                     unicode = value;
+                else throw new BassException(LastError);
             }
         }
         #endregion
@@ -407,9 +444,9 @@ namespace ManagedBass.Dynamics
 		/// The number of threads is automatically capped at the number of enabled channels with an <see cref="AsioProcedure" /> function, which is sufficient to have them all processed simultaneously.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.Already">The device has already been started.</exception>
-        /// <exception cref="Errors.NoFreeChannelAvailable">No channels have been enabled.</exception>
+        /// <exception cref="Errors.NoChannel">No channels have been enabled.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_Start")]
         public static extern bool Start(int BufferLength = 0, int Threads = 0);
@@ -423,8 +460,8 @@ namespace ManagedBass.Dynamics
 		/// the device to be used needs to be set via <see cref="CurrentDevice" /> prior to calling the function. 
 		/// The device setting is local to the current thread, so calling functions with different devices simultaneously in multiple threads is not a problem.
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="Init" /> has not been successfully called.</exception>
-        /// <exception cref="Errors.OutputNotStarted">The device hasn't been started.</exception>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Start">The device hasn't been started.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_Stop")]
         public static extern bool Stop();
     }

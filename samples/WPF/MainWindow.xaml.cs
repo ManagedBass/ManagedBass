@@ -11,7 +11,8 @@ namespace MBassWPF
 
         public MainWindow()
         {
-            if (!Directory.Exists(OutFolder)) Directory.CreateDirectory(OutFolder);
+            if (!Directory.Exists(OutFolder)) 
+                Directory.CreateDirectory(OutFolder);
 
             Instance = this;
             InitializeComponent();

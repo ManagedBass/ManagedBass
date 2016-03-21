@@ -9,6 +9,12 @@ namespace ManagedBass.Dynamics
     public enum InputFlags
     {
         /// <summary>
+        /// Don't change any setting. 
+        /// Use this flag, if you only want to set the volume.
+        /// </summary>
+        None,
+
+        /// <summary>
         /// Disable the Input.
         /// This flag can't be used when the device supports only one Input at a time.
         /// </summary>

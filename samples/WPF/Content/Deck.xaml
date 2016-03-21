@@ -142,10 +142,21 @@
                 </TabItem>
 
                 <TabItem Header="EQ">
-                    <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style TargetType="Slider">
+                                <Setter Property="OverridesDefaultStyle"
+                                        Value="False"/>
+                                <Setter Property="Orientation"
+                                        Value="Vertical"/>
+                                <Setter Property="IsEnabled"
+                                        Value="{Binding Ready}"/>
+                            </Style>
+                        </StackPanel.Resources>
                         <DockPanel>
                             <Label Content="400"
-                                   Width="40"/>
+                                   Width="40"
+                                   DockPanel.Dock="Bottom"/>
                             <Slider Margin="5"
                                     Minimum="-15" 
                                     Maximum="15"
@@ -154,7 +165,8 @@
                         </DockPanel>
                         <DockPanel>
                             <Label Content="620"
-                                   Width="40"/>
+                                   Width="40"
+                                   DockPanel.Dock="Bottom"/>
                             <Slider Margin="5"
                                     Minimum="-15" 
                                     Maximum="15"
@@ -163,7 +175,8 @@
                         </DockPanel>
                         <DockPanel>
                             <Label Content="1500"
-                                   Width="40"/>
+                                   Width="40"
+                                   DockPanel.Dock="Bottom"/>
                             <Slider Margin="5"
                                     Minimum="-15" 
                                     Maximum="15"
@@ -172,7 +185,8 @@
                         </DockPanel>
                         <DockPanel>
                             <Label Content="2400"
-                                   Width="40"/>
+                                   Width="40"
+                                   DockPanel.Dock="Bottom"/>
                             <Slider Margin="5"
                                     Minimum="-15" 
                                     Maximum="15"
@@ -181,7 +195,8 @@
                         </DockPanel>
                         <DockPanel>
                             <Label Content="3700"
-                                   Width="40"/>
+                                   Width="40"
+                                   DockPanel.Dock="Bottom"/>
                             <Slider Margin="5"
                                     Minimum="-15" 
                                     Maximum="15"
@@ -190,7 +205,8 @@
                         </DockPanel>
                         <DockPanel>
                             <Label Content="6200"
-                                   Width="40"/>
+                                   Width="40"
+                                   DockPanel.Dock="Bottom"/>
                             <Slider Margin="5"
                                     Minimum="-15" 
                                     Maximum="15"

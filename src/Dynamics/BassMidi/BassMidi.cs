@@ -114,6 +114,9 @@ namespace ManagedBass.Dynamics
         {
             int count = BASS_MIDI_StreamGetEvents(handle, track, filter, null);
 
+            if (count <= 0)
+                return null;
+
             var events = new MidiEvent[count];
 
             BASS_MIDI_StreamGetEvents(handle, track, filter, events);
@@ -159,14 +162,33 @@ namespace ManagedBass.Dynamics
         public static MidiMarker[] StreamGetAllMarkers(int handle)
         {
             int markc = StreamGetMarkers(handle, -1, MidiMarkerType.Marker, null);
+
+            if (markc <= 0)
+                return null;
+
             var marks = new MidiMarker[markc];
             StreamGetMarkers(handle, -1, MidiMarkerType.Marker, marks);
 
             return marks;
         }
-
+        
+		/// <summary>
+		/// Preloads the samples required by a MIDI file stream.
+		/// </summary>
+		/// <param name="Handle">The MIDI stream handle.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para>
+        /// Samples are normally loaded as they are needed while rendering a MIDI stream, which can result in CPU spikes, particularly with packed soundfonts.
+        /// That generally won't cause any problems, but when smooth/constant performance is critical this function can be used to preload the samples before rendering, so avoiding the need to load them while rendering.
+        /// </para>
+		/// <para>Preloaded samples can be compacted/unloaded just like any other samples, so it is probably wise to disable the <see cref="Compact"/> option when preloading samples, to avoid any chance of the samples subsequently being automatically unloaded.</para>
+		/// <para>This function should not be used while the MIDI stream is being rendered, as that could interrupt the rendering.</para>
+		/// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The stream is for real-time events only, so it's not possible to know what presets are going to be used. Use <see cref="FontLoad" /> instead.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamLoadSamples")]
-        public static extern bool StreamLoadSamples(int handle);
+        public static extern bool StreamLoadSamples(int Handle);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamSetFonts")]
         public static extern int StreamSetFonts(int handle, MidiFont fonts, int count);
@@ -265,11 +287,28 @@ namespace ManagedBass.Dynamics
         #endregion
 
         #region SoundFonts
+		/// <summary>
+		/// Compact a soundfont's memory usage.
+		/// </summary>
+		/// <param name="Handle">The soundfont to get info on (e.g. as returned by <see cref="FontInit(string, BassFlags)" />)... 0 = all soundfonts.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+        /// Compacting involves freeing any samples that are currently loaded but unused.
+        /// The amount of sample data currently loaded can be retrieved using <see cref="FontGetInfo(int, out MidiFontInfo)" />.
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontComapct")]
-        public static extern bool FontCompact(int handle);
-
+        public static extern bool FontCompact(int Handle);
+        
+		/// <summary>
+		/// Frees a soundfont.
+		/// </summary>
+		/// <param name="Handle">The soundfont handle to free (e.g. as returned by <see cref="FontInit(string, BassFlags)" />).</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>When a soundfont is freed, it is automatically removed from any MIDI streams that are using it.</remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontFree")]
-        public static extern bool FontFree(int handle);
+        public static extern bool FontFree(int Handle);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetInfo")]
         public static extern bool FontGetInfo(int handle, out MidiFontInfo info);
@@ -277,7 +316,8 @@ namespace ManagedBass.Dynamics
         public static MidiFontInfo FontGetInfo(int handle)
         {
             MidiFontInfo info;
-            FontGetInfo(handle, out info);
+            if (!FontGetInfo(handle, out info))
+                throw new BassException();
             return info;
         }
 
@@ -286,9 +326,15 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetPresets")]
         public static extern bool FontGetPresets(int handle, [In, Out] int[] presets);
-
+        
+		/// <summary>
+		/// Retrieves a soundfont's volume level.
+		/// </summary>
+		/// <param name="Handle">The soundfont to get the volume of.</param>
+		/// <returns>If successful, the soundfont's volume level is returned, else -1 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetVolume")]
-        public static extern float FontGetVolume(int handle);
+        public static extern float FontGetVolume(int Handle);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_MIDI_FontInit(string File, BassFlags flags);
@@ -298,8 +344,17 @@ namespace ManagedBass.Dynamics
             return BASS_MIDI_FontInit(file, flags | BassFlags.Unicode);
         }
 
+		/// <summary>
+		/// Initializes a soundfont via user callback functions.
+		/// </summary>
+		/// <param name="Procedures">The user defined file function (see <see cref="FileProcedures" />).</param>
+		/// <param name="User">User instance data to pass to the callback functions.</param>
+		/// <param name="Flags">Unused.</param>
+		/// <returns>If successful, the soundfont's handle is returned, else 0 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>The unbuffered file system (<see cref="StreamSystem.NoBuffer"/>) is always used by this function.</remarks>
+        /// <exception cref="Errors.FileFormat">The file's format is not recognised/supported.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontInitUser")]
-        public static extern int FontInit(FileProcedures procs, IntPtr user, BassFlags flags);
+        public static extern int FontInit([In, Out] FileProcedures Procedures, IntPtr User, BassFlags Flags);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontLoad")]
         public static extern bool FontLoad(int handle, int preset, int bank);
@@ -311,12 +366,37 @@ namespace ManagedBass.Dynamics
         {
             return BASS_MIDI_FontPack(handle, outfile, encoder, flags | BassFlags.Unicode);
         }
-
+        
+		/// <summary>
+		/// Sets a soundfont's volume level.
+		/// </summary>
+		/// <param name="Handle">The soundfont to set the volume of.</param>
+		/// <param name="Volume">The volume level... 0=silent, 1.0=normal/default.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// By default, some soundfonts may be louder than others, which could be a problem when mixing multiple soundfonts. 
+		/// This function can be used to compensate for any differences, by raising the level of the quieter soundfonts or lowering the louder ones.
+		/// <para>Changes take immediate effect in any MIDI streams that are using the soundfont.</para>
+		/// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontSetVolume")]
-        public static extern bool FontSetVolume(int handle, float volume);
-
+        public static extern bool FontSetVolume(int Handle, float Volume);
+        
+		/// <summary>
+		/// Unloads presets from a soundfont.
+		/// </summary>
+		/// <param name="Handle">The soundfont handle.</param>
+		/// <param name="Preset">Preset number to load... -1 = all presets.</param>
+		/// <param name="Bank">Bank number to load... -1 = all banks.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+        /// An unloaded preset will be loaded again when needed by a MIDI stream.
+        /// Any samples that are currently being used by a MIDI stream will not be unloaded.
+		/// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The soundfont does not contain the specified preset, or the soundfont is memory mapped.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontUnload")]
-        public static extern bool FontUnload(int handle, int preset, int bank);
+        public static extern bool FontUnload(int Handle, int Preset, int Bank);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern bool BASS_MIDI_FontUnpack(int handle, string outfile, BassFlags flags);
@@ -328,19 +408,53 @@ namespace ManagedBass.Dynamics
         #endregion
 
         #region In
+		/// <summary>
+		/// Frees a MIDI input device.
+		/// </summary>
+		/// <param name="Device">The device to free.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
+        /// <exception cref="Errors.Init">The device has not been initialized.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InFree")]
-        public static extern bool InFree(int device);
-
+        public static extern bool InFree(int Device);
+        
+		/// <summary>
+		/// Retrieves information on a MIDI input device.
+		/// </summary>
+		/// <param name="Device">The device to get the information of... 0 = first.</param>
+		/// <param name="Info">An instance of the <see cref="MidiDeviceInfo" /> class to store the information at.</param>
+		/// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+        /// This function can be used to enumerate the available MIDI input devices for a setup dialog. 
+		/// <para><b>Platform-specific</b></para>
+		/// <para>MIDI input is not available on Android.</para>
+		/// </remarks>
+        /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InGetDeviceInfo")]
-        public static extern bool InGetDeviceInfo(int device, out MidiDeviceInfo info);
-
-        public static MidiDeviceInfo InGetDeviceInfo(int device)
+        public static extern bool InGetDeviceInfo(int Device, out MidiDeviceInfo Info);
+        
+		/// <summary>
+		/// Retrieves information on a MIDI input device.
+		/// </summary>
+		/// <param name="Device">The device to get the information of... 0 = first.</param>
+		/// <returns>If successful, an instance of the <see cref="MidiDeviceInfo" /> structure is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+        /// This function can be used to enumerate the available MIDI input devices for a setup dialog.
+		/// <para><b>Platform-specific</b></para>
+		/// <para>MIDI input is not available on Android.</para>
+		/// </remarks>
+        /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
+        public static MidiDeviceInfo InGetDeviceInfo(int Device)
         {
             MidiDeviceInfo info;
-            InGetDeviceInfo(device, out info);
+            if (!InGetDeviceInfo(Device, out info))
+                throw new BassException();
             return info;
         }
 
+        /// <summary>
+        /// Gets the number of MidiIn devices available.
+        /// </summary>
         public static int InDeviceCount
         {
             get
@@ -356,12 +470,28 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InInit")]
         public static extern bool InInit(int device, MidiInProcedure proc, IntPtr user = default(IntPtr));
-
+        
+		/// <summary>
+		/// Starts a MIDI input device.
+		/// </summary>
+		/// <param name="Device">The device to start.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
+        /// <exception cref="Errors.Init">The device has not been initialized.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InStart")]
-        public static extern bool InStart(int device);
-
+        public static extern bool InStart(int Device);
+        
+		/// <summary>
+		/// Stops a MIDI input device.
+		/// </summary>
+		/// <param name="Device">The device to stop.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
+        /// <exception cref="Errors.Init">The device has not been initialized.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InStop")]
-        public static extern bool InStop(int device);
+        public static extern bool InStop(int Device);
         #endregion
     }
 }

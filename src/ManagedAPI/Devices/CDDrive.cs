@@ -21,7 +21,7 @@ namespace ManagedBass
             else
             {
                 CDInfo info;
-                if (!BassCd.GetDriveInfo(Device, out info))
+                if (!BassCd.GetInfo(Device, out info))
                     throw new ArgumentException("Invalid CDDrive Index");
 
                 var Dev = new CDDrive(Device);
@@ -45,7 +45,7 @@ namespace ManagedBass
         /// <summary>
         /// Gets Information about a Drive
         /// </summary>
-        public CDInfo DriveInfo => BassCd.GetDriveInfo(DriveIndex);
+        public CDInfo DriveInfo => BassCd.GetInfo(DriveIndex);
 
         public int Speed
         {
@@ -64,7 +64,7 @@ namespace ManagedBass
             {
                 CDInfo info;
 
-                for (int i = 0; BassCd.GetDriveInfo(i, out info); ++i)
+                for (int i = 0; BassCd.GetInfo(i, out info); ++i)
                     yield return Get(i);
             }
         }

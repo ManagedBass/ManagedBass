@@ -5,6 +5,9 @@ using static System.Runtime.InteropServices.Marshal;
 
 namespace ManagedBass
 {
+    /// <summary>
+    /// Streams a MOD music file.
+    /// </summary>
     public class MusicModule : Channel
     {
         public MusicModule(string FilePath, bool IsDecoder = false, Resolution Resolution = Resolution.Short)

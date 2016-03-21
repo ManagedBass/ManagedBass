@@ -95,7 +95,8 @@ namespace ManagedBass.Effects
 
             Handle = Bass.ChannelSetDSP(Channel, DSPProc, Priority: priority);
 
-            Resolution = Bass.ChannelGetInfo(Channel).Resolution;
+            if (Channel != 0)
+                Resolution = Bass.ChannelGetInfo(Channel).Resolution;
 
             if (Handle != 0) 
                 IsAssigned = true;

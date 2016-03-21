@@ -65,13 +65,13 @@ namespace ManagedBass
                                      encoding) != 0)
                 Handle = BassEnc.EncodeStartACM(Channel, ACMFormat, flags | EncodeFlags.AutoFree, FileName);
 
-            else throw new BassException(Bass.LastError, "GetACMFormat");
+            else throw new BassException();
 
             // Free the ACMFormat structure
             Marshal.FreeHGlobal(ACMFormat);
 
             if (Handle == 0)
-                throw new BassException(Bass.LastError, "EncoderStartACM");
+                throw new BassException();
         }
     }
 }

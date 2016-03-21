@@ -29,9 +29,9 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// </remarks>
         /// <exception cref="Errors.DirectX">A sufficient version of DirectX is not installed.</exception>
-        /// <exception cref="Errors.IllegalDevice"><paramref name="Device" /> is invalid.</exception>
+        /// <exception cref="Errors.Device"><paramref name="Device" /> is invalid.</exception>
         /// <exception cref="Errors.Already">The device has already been initialized. <see cref="RecordFree" /> must be called before it can be initialized again.</exception>
-        /// <exception cref="Errors.DriverNotFound">There is no available device driver.</exception>
+        /// <exception cref="Errors.Driver">There is no available device driver.</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordInit")]
         public extern static bool RecordInit(int Device = DefaultDevice);
 
@@ -43,7 +43,7 @@ namespace ManagedBass.Dynamics
 		/// <para>This function should be called for all initialized recording devices before your program exits.</para>
 		/// <para>When using multiple recording devices, the current thread's device setting (as set with <see cref="CurrentRecordingDevice" />) determines which device this function call applies to.</para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
+        /// <exception cref="Errors.Init"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordFree")]
         public extern static bool RecordFree();
 
@@ -74,8 +74,8 @@ namespace ManagedBass.Dynamics
         /// On other platforms, it is up the the system when data arrives from the device.
         /// </para>
         /// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="RecordInit" /> has not been successfully called.</exception>
-        /// <exception cref="Errors.DeviceBusy">
+        /// <exception cref="Errors.Init"><see cref="RecordInit" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Busy">
         /// The device is busy.
         /// An existing recording must be stopped before starting another one.
         /// Multiple simultaneous recordings can be made from the same device on Windows XP and Vista, but generally not on older Windows.
@@ -84,7 +84,7 @@ namespace ManagedBass.Dynamics
         /// The recording device is not available.
         /// Another application may already be recording with it, or it could be a half-duplex device and is currently being used for playback.
         /// </exception>
-        /// <exception cref="Errors.UnsupportedSampleFormat">
+        /// <exception cref="Errors.SampleFormat">
         /// The specified format is not supported.
         /// If using the <see cref="BassFlags.Float"/> flag, it could be that floating-point recording is not supported.
         /// </exception>
@@ -127,13 +127,13 @@ namespace ManagedBass.Dynamics
         /// <remarks>
 		/// <para>Simultaneously using multiple devices is supported in the BASS API via a context switching system - instead of there being an extra "device" parameter in the function calls, the device to be used is set prior to calling the functions. The device setting is local to the current thread, so calling functions with different devices simultaneously in multiple threads is not a problem.</para>
 		/// <para>The functions that use the recording device selection are the following: 
-		/// <see cref="RecordFree" />, <see cref="RecordGetInfo(out RecordInfo)" />, <see cref="RecordGetInput(int, ref float)" />, <see cref="RecordGetInputName(int)" />, <see cref="RecordSetInput(int, InputFlags, float)" />, <see cref="RecordStart(int, int, BassFlags, RecordProcedure, IntPtr)" />.</para>
+		/// <see cref="RecordFree" />, <see cref="RecordGetInfo(out RecordInfo)" />, <see cref="RecordGetInput(int, out float)" />, <see cref="RecordGetInputName(int)" />, <see cref="RecordSetInput(int, InputFlags, float)" />, <see cref="RecordStart(int, int, BassFlags, RecordProcedure, IntPtr)" />.</para>
 		/// <para>When one of the above functions (or <see cref="M:Un4seen.Bass.Bass.BASS_RecordGetDevice" />) is called, BASS will check the current thread's recording device setting, and if no device is selected (or the selected device is not initialized), BASS will automatically select the lowest device that is initialized. 
 		/// This means that when using a single device, there is no need to use this function - BASS will automatically use the device that's initialized. 
 		/// Even if you free the device, and initialize another, BASS will automatically switch to the one that is initialized.</para>
 		/// </remarks>
-        /// <exception cref="Errors.NotInitialised"><see cref="RecordInit" /> has not been successfully called - there are no initialized.</exception>
-        /// <exception cref="Errors.IllegalDevice">Specified device number is invalid.</exception>
+        /// <exception cref="Errors.Init"><see cref="RecordInit" /> has not been successfully called - there are no initialized.</exception>
+        /// <exception cref="Errors.Device">Specified device number is invalid.</exception>
         /// <seealso cref="RecordInit"/>
         public static int CurrentRecordingDevice
         {
@@ -141,7 +141,7 @@ namespace ManagedBass.Dynamics
             set 
             {
                 if (!BASS_RecordSetDevice(value))
-                    throw new InvalidOperationException(); 
+                    throw new BassException(); 
             }
         }
         #endregion
@@ -164,7 +164,7 @@ namespace ManagedBass.Dynamics
         /// On Linux, a "Default" device is hardcoded to device number 0, which uses the default input set in the ALSA config.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.IllegalDevice">The device number specified is invalid.</exception>
+        /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
         /// <exception cref="Errors.DirectX">A sufficient version of DirectX is not installed.</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordGetDeviceInfo")]
         public static extern bool RecordGetDeviceInfo(int Device, out DeviceInfo Info);
@@ -181,12 +181,13 @@ namespace ManagedBass.Dynamics
         /// On Linux, a "Default" device is hardcoded to device number 0, which uses the default input set in the ALSA config.
         /// </para>
 		/// </remarks>
-        /// <exception cref="Errors.IllegalDevice">The device number specified is invalid.</exception>
+        /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
         /// <exception cref="Errors.DirectX">A sufficient version of DirectX is not installed.</exception>
         public static DeviceInfo RecordGetDeviceInfo(int Device)
         {
             DeviceInfo info;
-            RecordGetDeviceInfo(Device, out info);
+            if (!RecordGetDeviceInfo(Device, out info))
+                throw new BassException();
             return info;
         }
         #endregion
@@ -200,7 +201,7 @@ namespace ManagedBass.Dynamics
         /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
+        /// <exception cref="Errors.Init"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordGetInfo")]
         public static extern bool RecordGetInfo(out RecordInfo info);
         
@@ -208,13 +209,14 @@ namespace ManagedBass.Dynamics
 		/// Retrieves information on the recording device being used.
 		/// </summary>
 		/// <returns>An instance of the <see cref="RecordInfo" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.NotInitialised"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
+        /// <exception cref="Errors.Init"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
 		public static RecordInfo RecordingInfo
         {
             get
             {
                 RecordInfo info;
-                RecordGetInfo(out info);
+                if (!RecordGetInfo(out info))
+                    throw new BassException();
                 return info;
             }
         }
@@ -255,31 +257,117 @@ namespace ManagedBass.Dynamics
             }
         }
 
+        /// <summary>
+        /// Retrieves the settings of a recording input source.
+        /// </summary>
+        /// <param name="Input">The input to get the settings of... 0 = first, -1 = master.</param>
+        /// <param name="Volume">Reference to a variable to receive the current volume.</param>
+        /// <returns>
+        /// If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
+        /// If successful, then the settings are returned.
+        /// The <see cref="InputFlags.Off"/> flag will be set if the input is disabled, otherwise the input is enabled.
+        /// The type of input (see <see cref="InputTypeFlags" />) is also indicated in the high 8-bits.
+        /// Use <see cref="InputTypeFlags.InputTypeMask"/> to test the return value.
+        /// If the volume is requested but not available, volume will receive -1.
+        /// </returns>
+        /// <remarks>
+        /// <para><b>Platform-specific</b></para>
+        /// <para>
+        /// The input type information is only available on Windows.
+        /// There is no "what you hear" type of input defined;
+        /// if the device has one, it will typically come under <see cref="InputTypeFlags.Analog"/> or <see cref="InputTypeFlags.Undefined"/>.
+        /// </para>
+        /// <para>On OSX, there is no master input (-1), and only the currently enabled input has its volume setting available (if it has a volume control).</para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Input" /> is invalid.</exception>
+        /// <exception cref="Errors.NotAvailable">A master input is not available.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordGetInput")]
-        public extern static int RecordGetInput(int input, ref float volume);
+        public extern static int RecordGetInput(int Input, out float Volume);
 
         [DllImport(DllName)]
-        extern static int BASS_RecordGetInput(int input, IntPtr volume);
+        extern static int BASS_RecordGetInput(int Input, IntPtr Volume);
 
-        public static InputTypeFlags RecordGetInputType(int input)
-        {
-            int n = BASS_RecordGetInput(input, IntPtr.Zero);
-            if (n == -1) return InputTypeFlags.Error;
-            return (InputTypeFlags)(n & 0xff0000);
-        }
+        /// <summary>
+        /// Retrieves the settings of a recording input source (does not retrieve Volume).
+        /// </summary>
+        /// <param name="Input">The input to get the settings of... 0 = first, -1 = master.</param>
+        /// <returns>
+        /// If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
+        /// If successful, then the settings are returned.
+        /// The <see cref="InputFlags.Off"/> flag will be set if the input is disabled, otherwise the input is enabled.
+        /// The type of input (see <see cref="InputTypeFlags" />) is also indicated in the high 8-bits.
+        /// Use <see cref="InputTypeFlags.InputTypeMask"/> to test the return value.
+        /// If the volume is requested but not available, volume will receive -1.
+        /// </returns>
+        /// <remarks>
+        /// <para><b>Platform-specific</b></para>
+        /// <para>
+        /// The input type information is only available on Windows.
+        /// There is no "what you hear" type of input defined;
+        /// if the device has one, it will typically come under <see cref="InputTypeFlags.Analog"/> or <see cref="InputTypeFlags.Undefined"/>.
+        /// </para>
+        /// <para>On OSX, there is no master input (-1), and only the currently enabled input has its volume setting available (if it has a volume control).</para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Input" /> is invalid.</exception>
+        /// <exception cref="Errors.NotAvailable">A master input is not available.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
+        public static int RecordGetInput(int Input) => BASS_RecordGetInput(Input, IntPtr.Zero);
 
         [DllImport(DllName)]
         extern static IntPtr BASS_RecordGetInputName(int input);
 
-        public static string RecordGetInputName(int input)
+        /// <summary>
+        /// Retrieves the text description of a recording input source.
+        /// </summary>
+        /// <param name="Input">The input to get the description of... 0 = first, -1 = master.</param>
+        /// <returns>If succesful, then the description is returned, else <see langword="null" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para><b>Platform-specific</b></para>
+        /// <para>
+        /// The returned string is in ANSI or UTF-8 form on Windows, depending on the <see cref="UnicodeDeviceInformation"/> setting.
+        /// It is in UTF-16 form ("WCHAR" rather than "char") on Windows CE, and in UTF-8 form on other platforms.
+        /// </para>
+        /// <para>On OSX, there is no master input (-1).</para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Input" /> is invalid.</exception>
+        /// <exception cref="Errors.NotAvailable">A master input is not available.</exception>
+        public static string RecordGetInputName(int Input)
         {
-            var ptr = BASS_RecordGetInputName(input);
+            var ptr = BASS_RecordGetInputName(Input);
 
-            return UnicodeDeviceInformation ? Marshal.PtrToStringUni(ptr)
+            if (ptr == IntPtr.Zero)
+                return null;
+
+            return UnicodeDeviceInformation ? Extensions.PtrToStringUtf8(ptr)
                                             : Marshal.PtrToStringAnsi(ptr);
         }
 
+        /// <summary>
+        /// Adjusts the settings of a recording input source.
+        /// </summary>
+        /// <param name="Input">The input to adjust the settings of... 0 = first, -1 = master.</param>
+        /// <param name="Setting">The new setting... a combination of <see cref="InputFlags"/>.</param>
+        /// <param name="Volume">The volume level... 0 (silent) to 1 (max), less than 0 = leave current.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// The actual volume level may not be exactly the same as requested, due to underlying precision differences.
+        /// <see cref="RecordGetInput(int, out float)" /> can be used to confirm what the volume is.
+        /// </para>
+        /// <para>The volume curve used by this function is always linear, the <see cref="LogarithmicVolumeCurve"/> config option setting has no effect on this.</para>
+        /// <para>Changes made by this function are system-wide, ie. other software using the device will be affected by it.</para>
+        /// <para><b>Platform-specific</b></para>
+        /// <para>On OSX, there is no master input (-1), and only the currently enabled input has its volume setting available (if it has a volume control).</para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Input" /> or <paramref name="Volume" /> is invalid.</exception>
+        /// <exception cref="Errors.NotAvailable">The soundcard/driver doesn't allow you to change the input or it's volume.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordSetInput")]
-        public extern static bool RecordSetInput(int input, InputFlags setting, float volume);
+        public extern static bool RecordSetInput(int Input, InputFlags Setting, float Volume);
     }
 }

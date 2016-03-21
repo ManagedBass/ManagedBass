@@ -30,7 +30,7 @@ namespace ManagedBass.Dynamics
                 int i;
                 CDInfo info;
 
-                for (i = 0; GetDriveInfo(i, out info); i++) ;
+                for (i = 0; GetInfo(i, out info); i++) ;
 
                 return i;
             }
@@ -52,9 +52,7 @@ namespace ManagedBass.Dynamics
         }
 
         /// <summary>
-        /// Number of times to retry after a read error.
-        /// 0 = don't retry.
-        /// default = 2.
+        /// Number of times to retry after a read error... 0 = don't retry, default = 2.
         /// </summary>
         public static int RetryCount
         {
@@ -76,7 +74,7 @@ namespace ManagedBass.Dynamics
         /// Skip past read errors?
         /// If true, reading will skip onto the next frame when a read error occurs, otherwise reading will stop.
         /// When skipping an error, it will be replaced with silence, so that the track Length is unaffected. 
-        /// Before skipping past an error, BassCD will first retry according to the <see cref="RetryCount"/> setting.
+        /// Before skipping past an error, BassCd will first retry according to the <see cref="RetryCount"/> setting.
         /// </summary>
         public static bool SkipError
         {
@@ -85,13 +83,13 @@ namespace ManagedBass.Dynamics
         }
 
         /// <summary>
-        /// The server to use in CDDB requests.
-        /// server (string): The CDDB server address, in the form of "User:pass@server:port/path".
+        /// The server address to use in CDDB requests, in the form of "User:pass@server:port/path" (default = "freedb.freedb.org").
+        /// </summary>
+        /// <remarks>
         /// The "User:pass@", ":port" and "/path" parts are optional; only the "server" part is required.
         /// If not provided, the port and path default to 80 and "/~cddb/cddb.cgi", respectively.
-        /// The default setting is "freedb.freedb.org". 
         /// The proxy server, as configured via the <see cref="Bass.NetProxy"/> option, is used when connecting to the CDDB server.
-        /// </summary>
+        /// </remarks>
         public static string CDDBServer
         {
             get { return Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.CDDBServer)); }
@@ -109,26 +107,83 @@ namespace ManagedBass.Dynamics
             }
         }
         #endregion
-
+        
+		/// <summary>
+		/// Releases a drive to allow other applications to access it.
+		/// </summary>
+		/// <param name="Drive">The drive to release... 0 = the first drive.</param>
+		/// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// When using the SPTI interface, some applications may require BassCd to release a CD drive before the app is able to use it.
+		/// After a drive has been released, BassCd will attempt to re-acquire it in the next BassCd function call made on it.
+		/// </remarks>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
+        /// <exception cref="Errors.NotAvailable">The ASPI interface is being used.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_Release")]
         public static extern bool Release(int Drive);
-
+        
+		/// <summary>
+		/// Retrieves the current read speed setting of a drive.
+		/// </summary>
+		/// <param name="Drive">The drive... 0 = the first drive.</param>
+		/// <returns>If successful, the read speed (in KB/s) is returned, else -1 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>Divide the speed by 176.4 to get the real-time speed multiplier, eg. 5645 / 176.4 = "32x speed".</remarks>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
+        /// <exception cref="Errors.NotAvailable">The read speed is unavailable.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_GetSpeed")]
         public static extern int GetSpeed(int Drive);
+        
+		/// <summary>
+		/// Retrieves the current read speed multiplier of a drive.
+		/// </summary>
+		/// <param name="Drive">The drive... 0 = the first drive.</param>
+		/// <returns>If successful, the read speed multiplier is returned, else -1 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
+        /// <exception cref="Errors.NotAvailable">The read speed is unavailable.</exception>
+        public static double GetSpeedMultiplier(int Drive)
+        {
+            double speed = GetSpeed(Drive);
 
+            return speed < 0 ? -1 : speed / 176.4;
+        }
+
+		/// <summary>
+		/// Sets the read speed of a drive in KB/s.
+		/// </summary>
+		/// <param name="Drive">The drive... 0 = the first drive.</param>
+		/// <param name="Speed">The speed, in KB/s.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para>
+        /// The speed is automatically restricted (rounded down) to what's supported by the drive, so may not be exactly what was requested.
+        /// <see cref="GetSpeed" /> can be used to check that. 
+		/// The maximum supported speed can be retrieved via <see cref="GetInfo(int, out CDInfo)" />.
+        /// </para>
+		/// <para>To use a real-time speed multiplier, multiply it by 176.4 (and round up) to get the KB/s speed to use with this function, eg. "32x speed" = 32 * 176.4 = 5645.</para>
+		/// </remarks>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_SetSpeed")]
         public static extern bool SetSpeed(int Drive, int Speed);
-
+        
+		/// <summary>
+		/// Checks if there is a CD ready in a drive.
+		/// </summary>
+		/// <param name="Drive">The drive to check... 0 = the first drive.</param>
+		/// <returns>If there is a CD ready in the drive, then <see langword="true" /> is returned, else <see langword="false" /> is returned.</returns>
+		/// <remarks>This function only returns <see langword="true" /> once there's a CD in the drive, and it's ready to be accessed.</remarks>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_IsReady")]
         public static extern bool IsReady(int Drive);
 
         [DllImport(DllName, EntryPoint = "BASS_CD_GetInfo")]
-        public static extern bool GetDriveInfo(int Drive, out CDInfo Info);
+        public static extern bool GetInfo(int Drive, out CDInfo Info);
 
-        public static CDInfo GetDriveInfo(int Drive)
+        public static CDInfo GetInfo(int Drive)
         {
             CDInfo info;
-            GetDriveInfo(Drive, out info);
+            if (!GetInfo(Drive, out info))
+                throw new BassException();
             return info;
         }
 
@@ -155,28 +210,82 @@ namespace ManagedBass.Dynamics
         }
 
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamGetTrack")]
-        public static extern int GetStreamTrack(int handle);
+        public static extern int StreamGetTrack(int handle);
 
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamSetTrack")]
-        public static extern bool SetStreamTrack(int handle, int track);
-
+        public static extern bool StreamSetTrack(int handle, int track);
+        
+		/// <summary>
+		/// Opens, closes, locks or unlocks a drive door.
+		/// </summary>
+		/// <param name="Drive">The drive... 0 = the first drive.</param>
+		/// <param name="Action">The action to perform... one of <see cref="CDDoorAction"/>.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Action" /> is invalid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem! Could be that the door is locked.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_Door")]
-        public static extern bool Door(int drive, CDDoorAction action);
-
+        public static extern bool Door(int Drive, CDDoorAction Action);
+        
+		/// <summary>
+		/// Checks if a drive door/tray is locked.
+		/// </summary>
+		/// <param name="Drive">The drive to check... 0 = the first drive.</param>
+		/// <returns><see langword="true" /> is returned if the door is locked, else <see langword="false" /> is returned.</returns>
+		/// <remarks>
+        /// It is not possible to get the drive's current door status via the WIO interface. 
+		/// So the last known status will be returned in that case, which may not be accurate if the door has been opened or closed by another application.
+        /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_CD_DoorIsLocked")]
-        public static extern bool DoorIsLocked(int drive);
-
+        public static extern bool DoorIsLocked(int Drive);
+        
+		/// <summary>
+		/// Checks if a drive door/tray is open.
+		/// </summary>
+		/// <param name="Drive">The drive to check... 0 = the first drive.</param>
+		/// <returns><see langword="true" /> is returned if the door is open, else <see langword="false" /> is returned.</returns>
+		/// <remarks>
+        /// It is not possible to get the drive's current door status via the WIO interface. 
+		/// So the last known status will be returned in that case, which may not be accurate if the door has been opened or closed by another application, or manually.
+        /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_CD_DoorIsOpen")]
-        public static extern bool DoorIsOpen(int drive);
-
+        public static extern bool DoorIsOpen(int Drive);
+        
+		/// <summary>
+		/// Sets the interface to use to access CD drives
+		/// </summary>
+		/// <param name="iface">The interface to use, which can be one of the <see cref="CDInterface"/> values.</param>
+		/// <returns>If successful, the interface being used is returned, else -1 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// The interface can be changed at any time, but any existing CD streams will be freed in doing so. 
+		/// The current interface can also be reinitialized, to detect any newly connected drives.
+		/// <para>Use of this function is optional. If it is not used, BassCd will automatically detect an available interface.</para>
+		/// </remarks>
+        /// <exception cref="Errors.Parameter"><paramref name="iface" /> is invalid.</exception>
+        /// <exception cref="Errors.NotAvailable">The interface is not available, or has no drives available.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_SetInterface")]
-        public static extern int SetInterface(int iface);
-
+        public static extern int SetInterface(CDInterface iface);
+        
+		/// <summary>
+		/// Sets the read offset of a drive.
+		/// </summary>
+		/// <param name="Drive">The drive... 0 = the first drive.</param>
+		/// <param name="Offset">The offset (in samples; bytes/4) to set.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// This function can be used to compensate for the fact that most drives will read audio data from CDs at a slight offset from where they ideally should.
+		/// Different drive models will have differing offsets, a list of which can be found at <a href="www.accuraterip.com/driveoffsets.htm">AccurateRip</a>.
+		/// <para>
+        /// When a negative offset is used, reading the beginning of the first track will require accessing the lead-in, and when a positive offset is used, reading the end of the last track will require accessing the lead-out.
+		/// The drive may not support that (overreading), in which case those parts will be replaced with silence.
+        /// </para>
+		/// <para>Changes do not affect an existing CD stream, unless <see cref="StreamSetTrack" /> is called (and any sub-channel/C2 reading is using a <see cref="CDDataProcedure" />).</para>
+		/// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_CD_SetOffset")]
-        public static extern bool SetOffset(int Drive, int offset);
+        public static extern bool SetOffset(int Drive, int Offset);
 
         [DllImport(DllName, EntryPoint = "BASS_CD_GetID")]
-        public static extern string GetID(int Drive, int id);
+        public static extern string GetID(int Drive, int ID);
 
         [DllImport(DllName, EntryPoint = "BASS_CD_GetTOC")]
         public static extern bool GetTOC(int Drive, TOCMode mode, out TOC toc);
@@ -184,7 +293,8 @@ namespace ManagedBass.Dynamics
         public static TOC GetTOC(int Drive, TOCMode Mode)
         {
             TOC toc;
-            GetTOC(Drive, Mode, out toc);
+            if (!GetTOC(Drive, Mode, out toc))
+                throw new BassException();
             return toc;
         }
 
