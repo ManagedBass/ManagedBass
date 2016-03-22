@@ -1,6 +1,4 @@
-﻿using ManagedBass.Dynamics;
-
-namespace ManagedBass
+﻿namespace ManagedBass.Fx
 {
     /// <summary>
     /// A Reusable Channel which can Load files like a Player including Tempo, Pitch and Reverse options using BassFx.
@@ -30,14 +28,14 @@ namespace ManagedBass
         #endregion
 
         #region Pitch
-        double? pitch;
+        double pitch = 0;
 
         /// <summary>
         /// Gets or Sets the Pitch in Semitones (-60 ... 0 ... 60).
         /// </summary>
         public double Pitch
         {
-            get { return pitch.HasValue ? pitch.Value : Bass.ChannelGetAttribute(TempoHandle, ChannelAttribute.Pitch); }
+            get { return pitch; }
             set
             {
                 if (Bass.ChannelSetAttribute(TempoHandle, ChannelAttribute.Pitch, value))
@@ -50,14 +48,14 @@ namespace ManagedBass
         #endregion
 
         #region Tempo
-        double? tempo;
+        double tempo = 0;
 
         /// <summary>
         /// Gets or Sets the Tempo in Percentage (-95% ... 0 ... 5000%)
         /// </summary>
         public double Tempo
         {
-            get { return tempo.HasValue ? tempo.Value : Bass.ChannelGetAttribute(TempoHandle, ChannelAttribute.Tempo); }
+            get { return tempo; }
             set
             {
                 if (Bass.ChannelSetAttribute(TempoHandle, ChannelAttribute.Tempo, value))
@@ -92,11 +90,8 @@ namespace ManagedBass
 
             base.InitProperties();
 
-            if (tempo.HasValue)
-                Tempo = tempo.Value;
-
-            if (pitch.HasValue)
-                Pitch = pitch.Value;
+            Tempo = tempo;
+            Pitch = pitch;
         }
     }
 }

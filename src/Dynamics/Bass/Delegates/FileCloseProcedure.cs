@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// User file stream close callback function (to be used with <see cref="FileProcedures" />).

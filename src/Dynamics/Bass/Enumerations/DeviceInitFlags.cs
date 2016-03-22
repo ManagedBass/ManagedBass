@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Initialization flags to be used with <see cref="Bass.Init" />

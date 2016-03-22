@@ -1,7 +1,6 @@
 ﻿using System.Runtime.InteropServices;
-using ManagedBass.Dynamics;
 
-namespace ManagedBass.Effects
+namespace ManagedBass.Fx
 {
     /// <summary>
     /// Used with <see cref="AutoWahEffect"/>.

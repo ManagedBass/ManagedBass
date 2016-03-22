@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Level retrieval flags (to be used with <see cref="Bass.ChannelGetLevel(int,float[],float,LevelRetrievalFlags)" />).

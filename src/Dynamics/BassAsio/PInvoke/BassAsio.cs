@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Asio
 {
     /// <summary>
     /// Wraps BassAsio: bassasio.dll
@@ -135,6 +135,7 @@ namespace ManagedBass.Dynamics
 		/// Gets or Sets the Asio device to use for subsequent calls in the current thread... 0 = first device.
 		/// </summary>
 		/// <remarks>
+        /// <para>Throws <see cref="BassException"/> on Error while setting value.</para>
         /// <para>
         /// As in BASS, simultaneously using multiple devices is supported in the BASSASIO API via a context switching system - instead of there being an extra "device" parameter in the function calls, the device to be used needs to be set via this function prior to calling the function.
         /// The device setting is local to the current thread, so calling functions with different devices simultaneously in multiple threads is not a problem.
@@ -177,7 +178,7 @@ namespace ManagedBass.Dynamics
 		/// Retrieves information on an Asio device.
 		/// </summary>
 		/// <param name="Device">The device to get the information of... 0 = first.</param>
-		/// <returns>An instance of the <see cref="AsioDeviceInfo" /> structure is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <returns>An instance of the <see cref="AsioDeviceInfo" /> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
 		/// <remarks>
 		/// This function can be used to enumerate the available Asio devices for a setup dialog.
 		/// </remarks>
@@ -226,7 +227,7 @@ namespace ManagedBass.Dynamics
 		/// <summary>
 		/// Retrieves information on the Asio device being used.
 		/// </summary>
-		/// <returns>An instance of the <see cref="AsioInfo" /> structure.</returns>
+		/// <returns>An instance of the <see cref="AsioInfo" /> structure. Throws <see cref="BassException"/> on Error.</returns>
 		/// <remarks>
         /// As in BASS, simultaneously using multiple devices is supported in the BASSASIO API via a context switching system - instead of there being an extra "device" parameter in the function calls, the device to be used needs to be set via <see cref="CurrentDevice" /> prior to calling the function.
         /// The device setting is local to the current thread, so calling functions with different devices simultaneously in multiple threads is not a problem.
@@ -276,6 +277,7 @@ namespace ManagedBass.Dynamics
 		/// Gets or Sets the current Asio device's sample rate.
 		/// </summary>
 		/// <remarks>
+        /// <para>Throws <see cref="BassException"/> on Error while setting value.</para>
         /// When it's not possible to set the device to the rate wanted, this can be used to overcome that.
 		/// </remarks>
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
@@ -337,7 +339,7 @@ namespace ManagedBass.Dynamics
 		/// <returns>Returns <see langword="true" />, if the device has been started, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         public static bool IsStarted => BASS_ASIO_IsStarted();
         #endregion
-                
+        
 		/// <summary>
 		/// Set the direct input monitoring state.
 		/// </summary>
@@ -412,6 +414,7 @@ namespace ManagedBass.Dynamics
 		/// Gets or Sets the character set used in device information text: if <see langword="false"/>, ANSI is used (default), else UTF-16 is used.
         /// </summary>
 		/// <remarks>
+        /// <para>Throws <see cref="BassException"/> on Error setting value.</para>
         /// This function determines the character set that is used in the <see cref="AsioDeviceInfo" /> structure and in <see cref="AddDevice" /> function calls.
 		/// It does not affect ASIO channel names in the <see cref="AsioChannelInfo" /> and <see cref="AsioInfo" /> structure.
 		/// <para>The character set choice is finalised in the first <see cref="GetDeviceInfo(int, out AsioDeviceInfo)" />, <see cref="AddDevice" /> or <see cref="Init" /> call, and it cannot be changed after that.</para>

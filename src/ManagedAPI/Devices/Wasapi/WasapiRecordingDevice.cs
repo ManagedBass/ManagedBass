@@ -1,9 +1,8 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ManagedBass
+namespace ManagedBass.Wasapi
 {
     public class WasapiRecordingDevice : WasapiDevice
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Asio
 {
     public static partial class BassAsio
     {
@@ -29,7 +29,7 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Parameter">The <paramref name="Input" /> and <paramref name="Channel" /> combination is invalid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_ChannelEnable")]
         public static extern bool ChannelEnable(bool Input, int Channel, AsioProcedure Procedure, IntPtr User = default(IntPtr));
-        
+
 		/// <summary>
 		/// Enables an output channel, and makes it mirror another channel.
 		/// </summary>
@@ -95,7 +95,7 @@ namespace ManagedBass.Dynamics
 		/// </summary>
 		/// <param name="Input">Dealing with an input channel? <see langword="false" /> = an output channel.</param>
 		/// <param name="Channel">The input/output channel number... 0 = first.</param>
-		/// <returns>An instance of the <see cref="AsioChannelInfo" /> structure is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <returns>An instance of the <see cref="AsioChannelInfo" /> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.Parameter">The <paramref name="Input" /> and <paramref name="Channel" /> combination is invalid.</exception>
         public static AsioChannelInfo ChannelGetInfo(bool Input, int Channel)
@@ -250,18 +250,91 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Parameter">The <paramref name="Input" /> and <paramref name="Channel" /> combination is invalid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_ChannelReset")]
         public static extern bool ChannelReset(bool Input, int Channel, AsioChannelResetFlags Flags);
-
+        
+		/// <summary>
+		/// Sets a channel's sample format.
+		/// </summary>
+		/// <param name="Input">Dealing with an input channel? <see langword="false" /> = an output channel.</param>
+		/// <param name="Channel">The input/output channel number... 0 = first.</param>
+		/// <param name="Format">The sample format.</param>
+		/// <returns>If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para>
+        /// The sample format can vary between ASIO devices/drivers, which could mean a lot of extra/duplicate code being required.
+        /// To avoid that extra work, BassAsio can automatically convert the sample data, whenever necessary, to/from a format of your choice. 
+		/// The native format of a channel can be retrieved via <see cref="ChannelGetInfo(bool, int, out AsioChannelInfo)" />.
+        /// </para>
+		/// <para>
+        /// The PCM format options are only available when the device's format is PCM, and the DSD format options are only available when the device's format is DSD. 
+		/// If a device supports both, it can be switched between DSD and PCM via <see cref="SetDSD" />.
+        /// </para>
+		/// <para>For performance reasons, it's best not to use 24-bit sample data whenever possible, as 24-bit data requires a bit more processing than the other formats.</para>
+		/// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Parameter">The <paramref name="Input" /> and <paramref name="Channel" /> combination, or <paramref name="Format" /> is invalid.</exception>
+        /// <exception cref="Errors.SampleFormat">Format conversion is not available for the channel's native sample format (please report).</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_ChannelSetFormat")]
-        public static extern bool ChannelSetFormat(bool input, int channel, AsioSampleFormat format);
-
+        public static extern bool ChannelSetFormat(bool Input, int Channel, AsioSampleFormat Format);
+        
+		/// <summary>
+		/// Sets a channel's sample rate.
+		/// </summary>
+		/// <param name="Input">Dealing with an input channel? <see langword="false" /> = an output channel.</param>
+		/// <param name="Channel">The input/output channel number... 0 = first.</param>
+		/// <param name="Rate">The sample rate... 0 = device rate.</param>
+		/// <returns>If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para>
+        /// For optimal quality and performance, it is best to set the device to the sample rate you want via <see cref="Rate" />, but that's not always possible. 
+		/// Which is where this function and resampling comes into play.
+        /// 16 point sinc interpolation is used, giving a good blend of sound quality and performance.
+        /// It is also SSE2 and 3DNow optimized for an extra boost with supporting CPUs.
+        /// </para>
+		/// <para>When a channel's sample rate is the same as the device rate, resampling is bypassed, so there's no unnecessary performance hit.</para>
+		/// <para>Resampling is not supported when the sample format is DSD.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader><term><see cref="T:Un4seen.Bass.BASSError">ERROR CODE</see></term><description>Description</description></listheader>
+		/// <item><term>BASS_ERROR_INIT</term><description></description></item>
+		/// <item><term>BASS_ERROR_ILLPARAM</term><description></description></item>
+		/// <item><term>BASS_ERROR_FORMAT</term><description></description></item>
+		/// </list>
+		/// </para>
+		/// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Parameter">The <paramref name="Input" /> and <paramref name="Channel" /> combination is invalid, or <paramref name="Rate" /> is below 0.</exception>
+        /// <exception cref="Errors.SampleFormat">Format conversion is not available for the channel's native sample format (please report).</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_ChannelSetRate")]
-        public static extern bool ChannelSetRate(bool input, int channel, double rate);
+        public static extern bool ChannelSetRate(bool Input, int Channel, double Rate);
 
         #region ChannelSetVolume
         [DllImport(DllName)]
         static extern bool BASS_ASIO_ChannelSetVolume(bool input, int channel, float volume);
-
-        public static bool ChannelSetVolume(bool input, int channel, double volume) => BASS_ASIO_ChannelSetVolume(input, channel, (float)volume);
+        
+		/// <summary>
+		/// Sets a channel's volume.
+		/// </summary>
+		/// <param name="Input">Dealing with an input channel? <see langword="false" /> = an output channel.</param>
+		/// <param name="Channel">The input/output channel number... 0 = first, -1 = master.</param>
+		/// <param name="Volume">The volume level... 0 (silent)...1.0 (normal). Above 1.0 amplifies the sound.</param>
+		/// <returns>If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para></para>
+		/// <para>
+        /// Apart from the master volume (channel = -1), this function applies a volume level to a single channel, and does not affect any other channels that are joined with it. 
+		/// This allows balance control over joined channels, by setting the individual volume levels accordingly.
+        /// The final level of a channel is = master volume * channel volume.
+        /// </para>
+		/// <para>The volume "curve" is linear, but logarithmic levels can be easily used. See the example below.</para>
+		/// <para>
+        /// ASIO drivers do not provide volume control themselves, so the volume adjustments are applied to the sample data by BassAsio. 
+		/// This also means that changes do not persist across sessions, and the channel volume levels will always start at 1.0.
+        /// </para>
+		/// <para>When the channel's sample format is DSD, a 0 volume setting will mute the channel and anything else will be treated as 1.0 (normal).</para>
+		/// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Parameter">The <paramref name="Input" /> and <paramref name="Channel" /> combination is invalid, or <paramref name="Volume" /> is below 0.</exception>
+        public static bool ChannelSetVolume(bool Input, int Channel, double Volume) => BASS_ASIO_ChannelSetVolume(Input, Channel, (float)Volume);
         #endregion
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Cd
 {
     /// <summary>
     /// Wraps basscd.dll.
@@ -23,6 +23,9 @@ namespace ManagedBass.Dynamics
 
         public static void Unload() => Extensions.Unload(hLib);
 
+        /// <summary>
+        /// Gets the number of CD Drives available.
+        /// </summary>
         public static int DriveCount
         {
             get
@@ -175,10 +178,23 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_IsReady")]
         public static extern bool IsReady(int Drive);
-
+        
+		/// <summary>
+		/// Retrieves information on a drive.
+		/// </summary>
+		/// <param name="Drive">The drive to get info on... 0 = the first drive.</param>
+		/// <param name="Info">An instance of the <see cref="CDInfo" /> structure to store the information at.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_GetInfo")]
         public static extern bool GetInfo(int Drive, out CDInfo Info);
-
+        
+		/// <summary>
+		/// Retrieves information on a drive.
+		/// </summary>
+		/// <param name="Drive">The drive to get info on... 0 = the first drive.</param>
+		/// <returns>An instance of the <see cref="CDInfo" /> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
         public static CDInfo GetInfo(int Drive)
         {
             CDInfo info;
@@ -187,11 +203,22 @@ namespace ManagedBass.Dynamics
             return info;
         }
 
+        #region CreateStream
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreate")]
         public static extern int CreateStream(int Drive, int Track, BassFlags Flags);
 
-        [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreateEx")]
-        public static extern int CreateStream(int Drive, int Track, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr));
+        [DllImport(DllName)]
+        static extern int BASS_CD_StreamCreateEx(int Drive, int Track, BassFlags Flags, CDDataProcedure proc, IntPtr user);
+        
+        public static int CreateStream(int Drive, int Track, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr))
+        {
+            int h = BASS_CD_StreamCreateEx(Drive, Track, Flags, proc, user);
+
+            if (h != 0)
+                Extensions.ChannelReferences.Add(h, 0, proc);
+
+            return h;
+        }
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_CD_StreamCreateFile(string File, BassFlags Flags);
@@ -206,8 +233,14 @@ namespace ManagedBass.Dynamics
 
         public static int CreateStream(string File, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr))
         {
-            return BASS_CD_StreamCreateFileEx(File, Flags | BassFlags.Unicode, proc, user);
+            int h = BASS_CD_StreamCreateFileEx(File, Flags | BassFlags.Unicode, proc, user);
+
+            if (h != 0)
+                Extensions.ChannelReferences.Add(h, 0, proc);
+
+            return h;
         }
+        #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamGetTrack")]
         public static extern int StreamGetTrack(int handle);
@@ -285,11 +318,30 @@ namespace ManagedBass.Dynamics
         public static extern bool SetOffset(int Drive, int Offset);
 
         [DllImport(DllName, EntryPoint = "BASS_CD_GetID")]
-        public static extern string GetID(int Drive, int ID);
-
+        public static extern string GetID(int Drive, CDID ID);
+        
+		/// <summary>
+		/// Retrieves the TOC from the CD in a drive.
+		/// </summary>
+		/// <param name="Drive">The drive to get info on... 0 = the first drive.</param>
+		/// <param name="Mode">TOC Mode.</param>
+		/// <param name="TOC">An instance of the <see cref="TOC" /> structure to store the information at.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>This function gives the TOC in the form that it is delivered by the drive, except that the byte order may be changed to match the system's native byte order (the TOC is originally big-endian).</remarks>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is not valid.</exception>
+        /// <exception cref="Errors.NoCD">There's no CD in the drive.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_GetTOC")]
-        public static extern bool GetTOC(int Drive, TOCMode mode, out TOC toc);
-
+        public static extern bool GetTOC(int Drive, TOCMode Mode, out TOC TOC);
+        
+		/// <summary>
+		/// Retrieves the TOC from the CD in a drive.
+		/// </summary>
+		/// <param name="Drive">The drive to get info on... 0 = the first drive.</param>
+		/// <param name="Mode">TOC Mode.</param>
+		/// <returns>If successful, an instance of the <see cref="TOC" /> strucure is returned. Throws <see cref="BassException"/> on Error.</returns>
+		/// <remarks>This function gives the TOC in the form that it is delivered by the drive, except that the byte order may be changed to match the system's native byte order (the TOC is originally big-endian).</remarks>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is not valid.</exception>
+        /// <exception cref="Errors.NoCD">There's no CD in the drive.</exception>
         public static TOC GetTOC(int Drive, TOCMode Mode)
         {
             TOC toc;
@@ -297,7 +349,14 @@ namespace ManagedBass.Dynamics
                 throw new BassException();
             return toc;
         }
-
+        
+		/// <summary>
+		/// Retrieves the number of tracks on the CD in a drive.
+		/// </summary>
+		/// <param name="Drive">The drive... 0 = the first drive.</param>
+		/// <returns>If an error occurs, -1 is returned, use <see cref="Bass.LastError" /> to get the error code. If successful, the number of tracks on the CD is returned.</returns>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is not valid.</exception>
+        /// <exception cref="Errors.NoCD">There's no CD in the drive.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_GetTracks")]
         public static extern int GetTracks(int Drive);
 
@@ -318,8 +377,16 @@ namespace ManagedBass.Dynamics
 
         [DllImport(DllName, EntryPoint = "BASS_CD_Analog_PlayFile")]
         public static extern bool AnalogPlay(string file, int pos);
-
+        
+		/// <summary>
+		/// Stops analog playback on a drive.
+		/// </summary>
+		/// <param name="Drive">The drive... 0 = the first drive.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>Pausing can be achieved by getting the position (<see cref="AnalogGetPosition" />) just before stopping, and then using that position in a call to <see cref="AnalogPlay(int, int, int)" /> to resume.</remarks>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_Analog_Stop")]
-        public static extern bool AnalogStop(int drive);
+        public static extern bool AnalogStop(int Drive);
     }
 }

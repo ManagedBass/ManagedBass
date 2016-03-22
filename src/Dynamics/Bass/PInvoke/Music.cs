@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     public static partial class Bass
     {
@@ -82,8 +82,6 @@ namespace ManagedBass.Dynamics
             return BASS_MusicLoad(false, File, Offset, Length, Flags | BassFlags.Unicode, Frequency);
         }
 
-        // TODO: Check if Offset is used
-        
         /// <summary>
 		/// Loads a MOD music file - MO3 / IT / XM / S3M / MTM / MOD / UMX formats from memory.
 		/// </summary>

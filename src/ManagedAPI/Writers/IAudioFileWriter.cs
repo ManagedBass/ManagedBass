@@ -8,24 +8,24 @@ namespace ManagedBass
     public interface IAudioFileWriter : IDisposable
     {
         /// <summary>
-        /// Write data from a byte[]
+        /// Write data from a byte[].
         /// </summary>
-        /// <param name="Buffer">byte[] to write to</param>
-        /// <param name="Length">No of bytes to write</param>
+        /// <param name="Buffer">byte[] to write from.</param>
+        /// <param name="Length">No of bytes to write.</param>
         void Write(byte[] Buffer, int Length);
 
         /// <summary>
-        /// Write data from a short[]
+        /// Write data from a short[].
         /// </summary>
-        /// <param name="Buffer">short[] to write to</param>
-        /// <param name="Length">No of bytes to write, i.e. (No of Shorts) * 2</param>
+        /// <param name="Buffer">short[] to write from.</param>
+        /// <param name="Length">No of bytes to write, i.e. (No of Shorts) * 2.</param>
         void Write(short[] Buffer, int Length);
 
         /// <summary>
-        /// Write data from a float[]
+        /// Write data from a float[].
         /// </summary>
-        /// <param name="Buffer">float[] to write to</param>
-        /// <param name="Length">No of bytes to write, i.e. (No of floats) * 4</param>
+        /// <param name="Buffer">float[] to write from.</param>
+        /// <param name="Length">No of bytes to write, i.e. (No of floats) * 4.</param>
         void Write(float[] Buffer, int Length);
 
         /// <summary>

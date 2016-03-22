@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Effects
+﻿namespace ManagedBass
 {
     public class PanDSP : DSP
     {

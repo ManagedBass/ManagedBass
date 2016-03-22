@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Cd
 {
     /// <summary>
     /// The CD Door actions to perform, used with <see cref="BassCd.Door" />.

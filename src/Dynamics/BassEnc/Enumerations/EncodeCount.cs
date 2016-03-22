@@ -1,7 +1,7 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Enc
 {
     /// <summary>
-    /// To be used with <see cref="BassEnc.EncodeGetCount" /> to define the type of count you want to get.
+    /// Used with <see cref="BassEnc.EncodeGetCount" /> to define the type of count you want to get.
     /// </summary>
     public enum EncodeCount
     {

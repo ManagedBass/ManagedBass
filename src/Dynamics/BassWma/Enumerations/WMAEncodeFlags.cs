@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Wma
 {
     /// <summary>
     /// WMA encoding flags.

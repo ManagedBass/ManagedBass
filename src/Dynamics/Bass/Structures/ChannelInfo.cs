@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Used with <see cref="Bass.ChannelGetInfo(int,out ChannelInfo)" /> to retrieve information on a channel.

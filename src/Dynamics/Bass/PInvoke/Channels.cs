@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     public static partial class Bass
     {
@@ -23,7 +23,7 @@ namespace ManagedBass.Dynamics
         /// Retrieves information on a channel.
         /// </summary>
         /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
-        /// <returns>An instance of the <see cref="ChannelInfo" /> class. (<see langword="null"/> on Error)</returns>
+        /// <returns>An instance of the <see cref="ChannelInfo" /> structure. Throws <see cref="BassException"/> on Error.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         public static ChannelInfo ChannelGetInfo(int Handle)
         {
@@ -34,6 +34,10 @@ namespace ManagedBass.Dynamics
         }
         #endregion
 
+        #region ChannelDSP
+        [DllImport(DllName)]
+        static extern int BASS_ChannelSetDSP(int Handle, DSPProcedure Procedure, IntPtr User, int Priority);
+        
         /// <summary>
         /// Sets up a User DSP function on a stream, MOD music, or recording channel.
         /// </summary>
@@ -64,8 +68,105 @@ namespace ManagedBass.Dynamics
         /// If you want to apply a DSP function to a sample, then you should stream the sample.
         /// </para>
         /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSetDSP")]
-        public static extern int ChannelSetDSP(int Handle, DSPProcedure Procedure, IntPtr User = default(IntPtr), int Priority = 0);
+        public static int ChannelSetDSP(int Handle, DSPProcedure Procedure, IntPtr User = default(IntPtr), int Priority = 0)
+        {
+            int h = BASS_ChannelSetDSP(Handle, Procedure, User, Priority);
+
+            if (h != 0)
+                Extensions.ChannelReferences.Add(Handle, h, Procedure);
+
+            return h;
+        }
+        
+        [DllImport(DllName)]
+        extern static bool BASS_ChannelRemoveDSP(int Handle, int DSP);
+
+        /// <summary>
+        /// Removes a DSP function from a stream, MOD music, or recording channel.
+        /// </summary>
+        /// <param name="Handle">The channel Handle... a HSTREAM, HMUSIC, or HRECORD.</param>
+        /// <param name="DSP">Handle of the DSP function to remove from the channel (return value of a previous <see cref="ChannelSetDSP" /> call).</param>
+        /// <returns>If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Handle">At least one of <paramref name="Handle" /> and <paramref name="DSP" /> is not valid.</exception>
+        public static bool ChannelRemoveDSP(int Handle, int DSP)
+        {
+            bool b = BASS_ChannelRemoveDSP(Handle, DSP);
+
+            if (b)
+                Extensions.ChannelReferences.Remove<DSPProcedure>(Handle, DSP);
+
+            return b;
+        }
+        #endregion
+
+        #region ChannelSync
+        [DllImport(DllName)]
+        static extern int BASS_ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedure Procedure, IntPtr User);
+        
+        /// <summary>
+        /// Sets up a synchronizer on a MOD music, stream or recording channel.
+        /// </summary>
+        /// <param name="Handle">The channel Handle... a HMUSIC, HSTREAM or HRECORD.</param>
+        /// <param name="Type">The Type of sync (see <see cref="SyncFlags" />).</param>
+        /// <param name="Parameter">The sync parameters, depends on the sync Type (see <see cref="SyncFlags"/>).</param>
+        /// <param name="Procedure">The callback function which should be invoked with the sync.</param>
+        /// <param name="User">User instance data to pass to the callback function.</param>
+        /// <returns>
+        /// If succesful, then the new synchronizer's Handle is returned, else 0 is returned.
+        /// Use <see cref="LastError" /> to get the error code.
+        /// </returns>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Type">An illegal <paramref name="Type" /> was specified.</exception>
+        /// <exception cref="Errors.Parameter">An illegal <paramref name="Parameter" /> was specified.</exception>
+        /// <remarks>
+        /// <para>
+        /// Multiple synchronizers may be used per channel, and they can be set before and while playing.
+        /// Equally, synchronizers can also be removed at any time, using <see cref="ChannelRemoveSync" />.
+        /// If the <see cref="SyncFlags.Onetime"/> flag is used, then the sync is automatically removed after its first occurrence.
+        /// </para>
+        /// <para>The <see cref="SyncFlags.Mixtime"/> flag can be used with <see cref="SyncFlags.End"/> or <see cref="SyncFlags.Position"/>/<see cref="SyncFlags.MusicPosition"/> syncs to implement custom looping, by using <see cref="ChannelSetPosition" /> in the callback.
+        /// A <see cref="SyncFlags.Mixtime"/> sync can also be used to add or remove DSP/FX at specific points, or change a HMUSIC channel's flags or attributes (see <see cref="ChannelFlags" />).
+        /// The <see cref="SyncFlags.Mixtime"/> flag can also be useful with a <see cref="SyncFlags.Seeking"/> sync, to reset DSP states after seeking.</para>
+        /// <para>
+        /// Several of the sync types are triggered in the process of rendering the channel's sample data;
+        /// for example, <see cref="SyncFlags.Position"/> and <see cref="SyncFlags.End"/> syncs, when the rendering reaches the sync position or the end, respectively.
+        /// Those sync types should be set before starting playback or pre-buffering (ie. before any rendering), to avoid missing any early sync events.
+        /// </para>
+        /// <para>With recording channels, <see cref="SyncFlags.Position"/> syncs are triggered just before the <see cref="RecordProcedure" /> receives the block of data containing the sync position.</para>
+        /// </remarks>
+        public static int ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedure Procedure, IntPtr User = default(IntPtr))
+        {
+            int h = BASS_ChannelSetSync(Handle, Type, Parameter, Procedure, User);
+            
+            if (h != 0)
+                Extensions.ChannelReferences.Add(Handle, h, Procedure);
+
+            return h;           
+        }
+
+        [DllImport(DllName)]
+        static extern bool BASS_ChannelRemoveSync(int Handle, int Sync);
+
+        /// <summary>
+        /// Removes a synchronizer from a MOD music or stream channel.
+        /// </summary>
+        /// <param name="Handle">The channel Handle... a HMUSIC, HSTREAM or HRECORD.</param>
+        /// <param name="Sync">Handle of the synchronizer to remove (return value of a previous <see cref="ChannelSetSync" /> call).</param>
+        /// <returns>
+        /// If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
+        /// Use <see cref="LastError" /> to get the error code.
+        /// </returns>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
+        public static bool ChannelRemoveSync(int Handle, int Sync)
+        {
+            bool b = BASS_ChannelRemoveSync(Handle, Sync);
+
+            if (b)
+                Extensions.ChannelReferences.Remove<SyncProcedure>(Handle, Sync);
+
+            return b;
+        }
+        #endregion
 
         /// <summary>
         /// Starts (or resumes) playback of a sample, stream, MOD music, or recording.
@@ -219,17 +320,7 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Already">Either <paramref name="Channel" /> is not a valid channel, or it is already not linked to <paramref name="Handle" />.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ChannelRemoveLink")]
         public extern static bool ChannelRemoveLink(int Handle, int Channel);
-
-        /// <summary>
-        /// Removes a DSP function from a stream, MOD music, or recording channel.
-        /// </summary>
-        /// <param name="Handle">The channel Handle... a HSTREAM, HMUSIC, or HRECORD.</param>
-        /// <param name="DSP">Handle of the DSP function to remove from the channel (return value of a previous <see cref="ChannelSetDSP" /> call).</param>
-        /// <returns>If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.Handle">At least one of <paramref name="Handle" /> and <paramref name="DSP" /> is not valid.</exception>
-        [DllImport(DllName, EntryPoint = "BASS_ChannelRemoveDSP")]
-        public extern static bool ChannelRemoveDSP(int Handle, int DSP);
-
+                
         #region Channel Flags
         /// <summary>
         /// Modifies and retrieves a channel's flags.
@@ -298,39 +389,117 @@ namespace ManagedBass.Dynamics
         /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM or HRECORD.</param>
         /// <param name="Attribute">The attribute to set the value of (one of <see cref="ChannelAttribute" />)</param>
         /// <param name="Value">Reference to a float to receive the attribute value.</param>
-        /// <returns>
-        /// If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
-        /// Use <see cref="LastError" /> to get the error code.
-        /// <i>Some attributes may have additional error codes than those listed here, see the documentation</i>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.
         /// </returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.Type"><paramref name="Attribute" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetAttribute")]
         public extern static bool ChannelGetAttribute(int Handle, ChannelAttribute Attribute, out float Value);
-
+        
+        /// <summary>
+        /// Retrieves the value of an attribute of a sample, stream or MOD music.
+        /// Can also get the sample rate of a recording channel.
+        /// </summary>
+        /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM or HRECORD.</param>
+        /// <param name="Attribute">The attribute to set the value of (one of <see cref="ChannelAttribute" />)</param>
+        /// <returns>If successful, the attribute value is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Type"><paramref name="Attribute" /> is not valid.</exception>
         public static double ChannelGetAttribute(int Handle, ChannelAttribute Attribute)
         {
             float temp = 0;
             ChannelGetAttribute(Handle, Attribute, out temp);
             return temp;
         }
-
+        
+		/// <summary>
+		/// Retrieves the value of a channel's attribute. 
+		/// </summary>
+		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM  or HRECORD.</param>
+		/// <param name="Attribute">The attribute to get the value of (e.g. <see cref="ChannelAttribute.ScannedInfo"/>)</param>
+		/// <param name="Value">Pointer to a buffer to receive the attribute data.</param>
+		/// <param name="Size">The size of the attribute data... 0 = get the size of the attribute without getting the data.</param>
+		/// <returns>If successful, the size of the attribute data is returned, else 0 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>This function also supports the floating-point attributes supported by <see cref="ChannelGetAttribute(int, ChannelAttribute, out float)" />.</remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.NotAvailable">The <paramref name="Attribute" /> is not available.</exception>
+        /// <exception cref="Errors.Type"><paramref name="Attribute" /> is not valid.</exception>
+        /// <exception cref="Errors.Parameter">The <paramref name="Value" /> content or <paramref name="Size" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetAttributeEx")]
         public static extern int ChannelGetAttribute(int Handle, ChannelAttribute Attribute, IntPtr Value, int Size);
-
+        
+		/// <summary>
+		/// Sets the value of an attribute of a sample, stream or MOD music.
+		/// </summary>
+		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM  or HRECORD.</param>
+		/// <param name="Attribute">The attribute to set the value of.</param>
+		/// <param name="Value">The new attribute value. See the attribute's documentation for details on the possible values.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// The actual attribute value may not be exactly the same as requested, due to precision differences.
+        /// For example, an attribute might only allow whole number values.
+        /// <see cref="ChannelGetAttribute(int, ChannelAttribute, out float)" /> can be used to confirm what the value is.
+		/// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Type"><paramref name="Attribute" /> is not valid.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Value" /> is not valid. See the attribute's documentation for the valid range of values.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ChannelSetAttribute")]
         public extern static bool ChannelSetAttribute(int Handle, ChannelAttribute Attribute, float Value);
-
+                
+		/// <summary>
+		/// Sets the value of an attribute of a sample, stream or MOD music.
+		/// </summary>
+		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM  or HRECORD.</param>
+		/// <param name="Attribute">The attribute to set the value of.</param>
+		/// <param name="Value">The new attribute value. See the attribute's documentation for details on the possible values.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// The actual attribute value may not be exactly the same as requested, due to precision differences.
+        /// For example, an attribute might only allow whole number values.
+        /// <see cref="ChannelGetAttribute(int, ChannelAttribute)" /> can be used to confirm what the value is.
+		/// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Type"><paramref name="Attribute" /> is not valid.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Value" /> is not valid. See the attribute's documentation for the valid range of values.</exception>
         public static bool ChannelSetAttribute(int Handle, ChannelAttribute Attribute, double Value)
         {
             return ChannelSetAttribute(Handle, Attribute, (float)Value);
         }
-
+        
+		/// <summary>
+		/// Sets the value of a channel's attribute.
+		/// </summary>
+		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM  or HRECORD.</param>
+		/// <param name="Attribute">The attribute to set the value of. (e.g. <see cref="ChannelAttribute.ScannedInfo"/>)</param>
+		/// <param name="Value">The pointer to the new attribute data.</param>
+		/// <param name="Size">The size of the attribute data.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.Type"><paramref name="Attribute" /> is not valid.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Value" /> is not valid. See the attribute's documentation for the valid range of values.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ChannelSetAttributeEx")]
         public static extern bool ChannelSetAttribute(int Handle, ChannelAttribute Attribute, IntPtr Value, int Size);
         #endregion
 
-        [DllImport(DllName, EntryPoint = "BASS_ChannelGetTags")]
+        /// <summary>
+		/// Retrieves the requested tags/headers from a channel, if they are available.
+		/// </summary>
+		/// <param name="Handle">The channel handle...a HMUSIC or HSTREAM.</param>
+		/// <param name="Tags">The tags/headers wanted...</param>
+		/// <returns>If succesful, a pointer to the data of the tags/headers is returned, else <see cref="IntPtr.Zero" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// Some tags (eg. <see cref="TagType.ID3"/>) are located at the end of the file, so when streaming a file from the internet, the tags will not be available until the download is complete.
+        /// A <see cref="SyncFlags.Downloaded"/> sync can be set via <see cref="ChannelSetSync(int, SyncFlags, long, SyncProcedure, IntPtr)" />, to be informed of when the download is complete. 
+		/// A <see cref="SyncFlags.MetadataReceived"/> sync can be used to be informed of new Shoutcast metadata, and a <see cref="SyncFlags.OggChange"/> sync for when a new logical bitstream begins in a chained OGG stream, which generally brings new OGG tags.
+		/// <para>
+        /// In a chained OGG file containing multiple bitstreams, each bitstream will have its own tags.
+        /// To get the tags from a particular one, <see cref="ChannelSetPosition(int, long, PositionFlags)" /> can be first used to seek to it.
+        /// </para>
+		/// <para>When a Media Foundation codec is in use, the <see cref="TagType.WaveFormat"/> tag can be used to find out what the source format is, eg. via the <see cref="WaveFormat.Encoding"/> member.</para>
+		/// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The requested tags are not available.</exception>
+		[DllImport(DllName, EntryPoint = "BASS_ChannelGetTags")]
         public extern static IntPtr ChannelGetTags(int Handle, TagType Tags);
 
         /// <summary>
@@ -365,53 +534,6 @@ namespace ManagedBass.Dynamics
         /// </example>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetLength")]
         public extern static long ChannelGetLength(int Handle, PositionFlags Mode = PositionFlags.Bytes);
-
-        /// <summary>
-        /// Sets up a synchronizer on a MOD music, stream or recording channel.
-        /// </summary>
-        /// <param name="Handle">The channel Handle... a HMUSIC, HSTREAM or HRECORD.</param>
-        /// <param name="Type">The Type of sync (see <see cref="SyncFlags" />).</param>
-        /// <param name="Parameter">The sync parameters, depends on the sync Type (see <see cref="SyncFlags"/>).</param>
-        /// <param name="Procedure">The callback function which should be invoked with the sync.</param>
-        /// <param name="User">User instance data to pass to the callback function.</param>
-        /// <returns>
-        /// If succesful, then the new synchronizer's Handle is returned, else 0 is returned.
-        /// Use <see cref="LastError" /> to get the error code.
-        /// </returns>
-        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
-        /// <exception cref="Errors.Type">An illegal <paramref name="Type" /> was specified.</exception>
-        /// <exception cref="Errors.Parameter">An illegal <paramref name="Parameter" /> was specified.</exception>
-        /// <remarks>
-        /// <para>
-        /// Multiple synchronizers may be used per channel, and they can be set before and while playing.
-        /// Equally, synchronizers can also be removed at any time, using <see cref="ChannelRemoveSync" />.
-        /// If the <see cref="SyncFlags.Onetime"/> flag is used, then the sync is automatically removed after its first occurrence.
-        /// </para>
-        /// <para>The <see cref="SyncFlags.Mixtime"/> flag can be used with <see cref="SyncFlags.End"/> or <see cref="SyncFlags.Position"/>/<see cref="SyncFlags.MusicPosition"/> syncs to implement custom looping, by using <see cref="ChannelSetPosition" /> in the callback.
-        /// A <see cref="SyncFlags.Mixtime"/> sync can also be used to add or remove DSP/FX at specific points, or change a HMUSIC channel's flags or attributes (see <see cref="ChannelFlags" />).
-        /// The <see cref="SyncFlags.Mixtime"/> flag can also be useful with a <see cref="SyncFlags.Seeking"/> sync, to reset DSP states after seeking.</para>
-        /// <para>
-        /// Several of the sync types are triggered in the process of rendering the channel's sample data;
-        /// for example, <see cref="SyncFlags.Position"/> and <see cref="SyncFlags.End"/> syncs, when the rendering reaches the sync position or the end, respectively.
-        /// Those sync types should be set before starting playback or pre-buffering (ie. before any rendering), to avoid missing any early sync events.
-        /// </para>
-        /// <para>With recording channels, <see cref="SyncFlags.Position"/> syncs are triggered just before the <see cref="RecordProcedure" /> receives the block of data containing the sync position.</para>
-        /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSetSync")]
-        public static extern int ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedure Procedure, IntPtr User = default(IntPtr));
-
-        /// <summary>
-        /// Removes a synchronizer from a MOD music or stream channel.
-        /// </summary>
-        /// <param name="Handle">The channel Handle... a HMUSIC, HSTREAM or HRECORD.</param>
-        /// <param name="Sync">Handle of the synchronizer to remove (return value of a previous <see cref="ChannelSetSync" /> call).</param>
-        /// <returns>
-        /// If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned.
-        /// Use <see cref="LastError" /> to get the error code.
-        /// </returns>
-        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
-        [DllImport(DllName, EntryPoint = "BASS_ChannelRemoveSync")]
-        public static extern bool ChannelRemoveSync(int Handle, int Sync);
 
         /// <summary>
         /// Translates a byte position into time (seconds), based on a channel's format.

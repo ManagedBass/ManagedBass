@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Wma
 {
     /// <summary>
     /// WMA encoding callback flags for use with <see cref="WMEncodeProcedure" />.

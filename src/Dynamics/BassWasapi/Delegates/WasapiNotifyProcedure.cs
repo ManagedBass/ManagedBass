@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Wasapi
 {
     public delegate void WasapiNotifyProcedure(WasapiNotificationType notify, int device, IntPtr User);
 }

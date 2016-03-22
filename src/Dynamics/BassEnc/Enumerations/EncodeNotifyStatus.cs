@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Enc
 {
     /// <summary>
     /// To be used with <see cref="BassEnc.EncodeSetNotify" /> to receive notifications on an encoder's status.

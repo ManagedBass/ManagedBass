@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Enc
 {
     /// <summary>
     /// To be used with <see cref="BassEnc.CastSendMeta" /> to define the type of metadata to send.

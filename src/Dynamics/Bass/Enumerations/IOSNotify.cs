@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass
 {
     public enum IOSNotify
     {

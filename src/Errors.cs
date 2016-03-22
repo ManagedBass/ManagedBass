@@ -1,6 +1,4 @@
-﻿using ManagedBass.Dynamics;
-
-namespace ManagedBass
+﻿namespace ManagedBass
 {
     /// <summary>
     /// Bass Error Codes returned by <see cref="Bass.LastError" />.

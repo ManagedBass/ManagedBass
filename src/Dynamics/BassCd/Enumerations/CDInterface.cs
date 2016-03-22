@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Cd
 {
     /// <summary>
     /// The interface to use to access CD drives (used with <see cref="BassCd.SetInterface" />).

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Enc
 {
     public delegate void EncodeNotifyProcedure(int handle, EncodeNotifyStatus status, IntPtr user);
 }

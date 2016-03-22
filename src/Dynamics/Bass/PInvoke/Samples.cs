@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     public static partial class Bass
     {
@@ -135,7 +135,7 @@ namespace ManagedBass.Dynamics
         /// Retrieves a sample's default attributes and other information.
         /// </summary>
         /// <param name="Handle">The sample handle.</param>
-        /// <returns>An instance of the <see cref="SampleInfo" /> class is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <returns>An instance of the <see cref="SampleInfo" /> class is returned. Throws <see cref="BassException"/> on Error.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         public static SampleInfo SampleGetInfo(int Handle)
         {

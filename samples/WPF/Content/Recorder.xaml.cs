@@ -1,5 +1,8 @@
 ﻿using ManagedBass;
-using ManagedBass.Effects;
+using ManagedBass.Enc;
+using ManagedBass.Pitch;
+using ManagedBass.Wasapi;
+using ManagedBass.Wma;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

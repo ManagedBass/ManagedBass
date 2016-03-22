@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Asio
 {
     /// <summary>
     /// Used with <see cref="BassAsio.Info" /> to retrieve information on the current device.

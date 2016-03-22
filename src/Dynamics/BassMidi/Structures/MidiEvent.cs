@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Midi
 {
     /// <summary>
     /// Used with <see cref="BassMidi.StreamEvents(int,MidiEvent[],bool,bool)"/> to apply events and <see cref="BassMidi.StreamGetEvents"/> to retrieve events, and <see cref="BassMidi.CreateStream(MidiEvent[],int,BassFlags,int)"/> to play event sequences.

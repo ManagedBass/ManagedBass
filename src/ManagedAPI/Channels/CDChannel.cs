@@ -1,6 +1,4 @@
-﻿using ManagedBass.Dynamics;
-
-namespace ManagedBass
+﻿namespace ManagedBass.Cd
 {
     /// <summary>
     /// Stream audio from a CD file or track

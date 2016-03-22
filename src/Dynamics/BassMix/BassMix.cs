@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Mix
 {
     /// <summary>
     /// Wraps BassMix: bassmix.dll
@@ -288,15 +288,30 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelSetPosition")]
         public static extern bool ChannelSetPosition(int Handle, long Position, PositionFlags Mode = PositionFlags.Bytes);
 
-        [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelSetSync")]
-        public static extern int ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedure Procedure, IntPtr User = default(IntPtr));
+        [DllImport(DllName)]
+        static extern int BASS_Mixer_ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedure Procedure, IntPtr User);
+
+        public static int ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedure Procedure, IntPtr User = default(IntPtr))
+        {
+            int h = BASS_Mixer_ChannelSetSync(Handle, Type, Parameter, Procedure, User);
+
+            if (h != 0)
+                Extensions.ChannelReferences.Add(Handle, h, Procedure);
+
+            return h;
+        }
 
         [DllImport(DllName)]
-        static extern int BASS_Mixer_ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedureEx Procedure, IntPtr User);
+        static extern int BASS_Mixer_ChannelSetSync(int Handle, int Type, long Parameter, SyncProcedureEx Procedure, IntPtr User);
 
         public static int ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedureEx Procedure, IntPtr User = default(IntPtr))
         {
-            return BASS_Mixer_ChannelSetSync(Handle, (SyncFlags)((int)Type | 0x1000000), Parameter, Procedure, User);
+            int h = BASS_Mixer_ChannelSetSync(Handle, (int)Type | 0x1000000, Parameter, Procedure, User);
+            
+            if (h != 0)
+                Extensions.ChannelReferences.Add(Handle, h, Procedure);
+
+            return h;
         }
         
 		/// <summary>

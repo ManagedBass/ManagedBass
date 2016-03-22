@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     public static partial class Bass
     {
@@ -279,7 +279,7 @@ namespace ManagedBass.Dynamics
         /// <para><b>Platform-specific</b></para>
         /// <para>
         /// On Windows, DirectX 7 or above is required for this option to have effect.
-        /// On other platforms, only the <see cref="ManagedBass.Dynamics.Algorithm3D.Default"/> and <see cref="ManagedBass.Dynamics.Algorithm3D.Off"/> options are available.
+        /// On other platforms, only the <see cref="ManagedBass.Algorithm3D.Default"/> and <see cref="ManagedBass.Algorithm3D.Off"/> options are available.
         /// </para>
         /// </remarks>
         public static Algorithm3D Algorithm3D

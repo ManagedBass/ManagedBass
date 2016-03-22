@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass
+namespace ManagedBass.Wasapi
 {
     /// <summary>
     /// Capture SoundCard output using Wasapi Loopback

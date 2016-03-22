@@ -1,7 +1,6 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 
-namespace ManagedBass
+namespace ManagedBass.Asio
 {
     public class AsioDevice : IDisposable
     {

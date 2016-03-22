@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Enc
 {
     /// <summary>
     /// BassEnc Start flags for use with <see cref="BassEnc.EncodeStart(int,string,EncodeFlags,EncodeProcedure,IntPtr)" />.

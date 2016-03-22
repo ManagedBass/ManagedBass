@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Used with <see cref="Bass.PluginGetInfo" /> to retrieve information on a plugin.
@@ -29,15 +29,11 @@ namespace ManagedBass.Dynamics
             get
             {
                 var arr = new PluginFormat[formatc];
+                int SizeOfPluginFormat = Marshal.SizeOf(typeof(PluginFormat));
 
-                for (int i = 0; i < formatc; ++i)
-                {
-                    PluginFormat format;
-                    format = (PluginFormat)Marshal.PtrToStructure(formats, typeof(PluginFormat));
-                    formats += Marshal.SizeOf(format);
-                    arr[i] = format;
-                }
-
+                for (int i = 0; i < formatc; ++i, formats += SizeOfPluginFormat)
+                    arr[i] = (PluginFormat)Marshal.PtrToStructure(formats, typeof(PluginFormat));
+                
                 return arr;
             }
         }

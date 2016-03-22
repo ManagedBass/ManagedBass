@@ -24,53 +24,52 @@ namespace ManagedBass
         public WaveFormat() : this(44100, 16, 2) { }
 
         /// <summary>
-        /// Creates a new 16 bit wave format with the specified sample
-        /// rate and channel count
+        /// Creates a new 16 bit wave format with the specified sample rate and channel count
         /// </summary>
-        /// <param name="sampleRate">Sample Rate</param>
-        /// <param name="channels">Number of channels</param>
-        public WaveFormat(int sampleRate, int channels) : this(sampleRate, 16, channels) { }
+        /// <param name="SampleRate">Sample Rate</param>
+        /// <param name="Channels">Number of channels</param>
+        public WaveFormat(int SampleRate, int Channels) : this(SampleRate, 16, Channels) { }
 
         /// <summary>
         /// Creates a new PCM format with the specified sample rate, bit depth and channels
         /// </summary>
-        public WaveFormat(int rate, int bits, int channels)
+        public WaveFormat(int SampleRate, int BitsPerSample, int Channels)
         {
-            if (channels < 1)
+            if (Channels < 1)
                 throw new ArgumentOutOfRangeException("channels", "Channels must be 1 or greater");
 
             // minimum 16 bytes, sometimes 18 for PCM
             this.waveFormatTag = WaveFormatTag.Pcm;
-            this.channels = (short)channels;
-            this.sampleRate = rate;
-            this.bitsPerSample = (short)bits;
+            this.channels = (short)Channels;
+            this.sampleRate = SampleRate;
+            this.bitsPerSample = (short)BitsPerSample;
             this.extraSize = 0;
 
-            this.blockAlign = (short)(channels * (bits / 8));
+            this.blockAlign = (short)(Channels * (BitsPerSample / 8));
             this.averageBytesPerSecond = this.sampleRate * this.blockAlign;
         }
 
         /// <summary>
         /// Creates a new 32 bit IEEE floating point wave format
         /// </summary>
-        /// <param name="sampleRate">sample rate</param>
-        /// <param name="channels">number of channels</param>
-        public static WaveFormat CreateIeeeFloat(int sampleRate, int channels)
+        /// <param name="SampleRate">sample rate</param>
+        /// <param name="Channels">number of channels</param>
+        public static WaveFormat CreateIeeeFloat(int SampleRate, int Channels)
         {
             return new WaveFormat()
             {
                 waveFormatTag = WaveFormatTag.IeeeFloat,
-                channels = (short)channels,
+                channels = (short)Channels,
                 bitsPerSample = 32,
-                sampleRate = sampleRate,
-                blockAlign = (short)(4 * channels),
-                averageBytesPerSecond = sampleRate * 4 * channels,
+                sampleRate = SampleRate,
+                blockAlign = (short)(4 * Channels),
+                averageBytesPerSecond = SampleRate * 4 * Channels,
                 extraSize = 0
             };
         }
         
         /// <summary>
-        /// Returns the encoding Type used
+        /// Gets or Sets the encoding Type used
         /// </summary>
         public WaveFormatTag Encoding
         {
@@ -94,34 +93,34 @@ namespace ManagedBass
         }
 
         /// <summary>
-        /// Returns the number of channels (1=mono,2=stereo etc)
+        /// Gets the number of channels (1=mono,2=stereo etc)
         /// </summary>
         public int Channels => channels;
 
         /// <summary>
-        /// Returns the sample rate (samples per second)
+        /// Gets the sample rate (samples per second)
         /// </summary>
         public int SampleRate => sampleRate;
 
         /// <summary>
-        /// Returns the average number of bytes used per second
+        /// Gets the average number of bytes used per second
         /// </summary>
         public int AverageBytesPerSecond => averageBytesPerSecond;
 
         /// <summary>
-        /// Returns the block alignment
+        /// Gets the block alignment
         /// </summary>
         public virtual int BlockAlign => blockAlign;
 
         /// <summary>
-        /// Returns the number of bits per sample (usually 16 or 32, sometimes 24 or 8)
+        /// Gets the number of bits per sample (usually 16 or 32, sometimes 24 or 8)
         /// Can be 0 for some codecs
         /// </summary>
         public int BitsPerSample => bitsPerSample;
 
         /// <summary>
-        /// Returns the number of extra bytes used by this waveformat. Often 0,
-        /// except for compressed formats which store extra data after the WAVEFORMATEX header
+        /// Gets the number of extra bytes used by this waveformat.
+        /// Often 0, except for compressed formats which store extra data after the WAVEFORMATEX header
         /// </summary>
         public int ExtraSize => extraSize;
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Wasapi
 {
     [Flags]
     public enum WasapiInitFlags

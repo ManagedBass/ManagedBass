@@ -1,4 +1,7 @@
 ﻿using ManagedBass;
+using ManagedBass.Enc;
+using ManagedBass.Fx;
+using ManagedBass.Wma;
 using Microsoft.Win32;
 using System;
 using System.IO;
@@ -21,7 +24,7 @@ namespace MBassWPF
             {
                 CheckFileExists = true,
                 CheckPathExists = true,
-                Filter = "Audio Files|*.mp3;*.wav;*.wma;*.aac",
+                Filter = "Audio Files|*.mp3;*.wav;*.wma;*.aac;*.m4a",
                 Title = "Select Audio File",
                 ValidateNames = true,
                 Multiselect = true

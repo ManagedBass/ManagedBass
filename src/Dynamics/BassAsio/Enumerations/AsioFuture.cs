@@ -1,4 +1,4 @@
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Asio
 {
 	/// <summary>
 	/// BassAsio Future values that might be used with the <see cref="BassAsio.Future" /> method.

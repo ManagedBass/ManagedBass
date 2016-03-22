@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     public static partial class Bass
     {
-        public const int NoSoundDevice = 0, DefaultDevice = -1;
+        /// <summary>
+        /// Index of No Sound Device.
+        /// </summary>
+        public const int NoSoundDevice = 0;
+
+        /// <summary>
+        /// Index of Default Device.
+        /// </summary>
+        public const int DefaultDevice = -1;
 
         /// <summary>
         /// Initializes an output device.
@@ -114,7 +122,6 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_Stop")]
         public static extern bool Stop();
 
-        #region Free
         /// <summary>
 		/// Frees all resources used by the output device, including all it's samples, streams, and MOD musics.
 		/// </summary>
@@ -126,20 +133,7 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Free")]
         public static extern bool Free();
-
-        /// <summary>
-		/// Frees all resources used by the output device, including all it's samples, streams, and MOD musics.
-		/// </summary>
-        /// <param name="Device">The device to free.</param>
-		/// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-		/// <remarks>
-		/// <para>This function should be called for all initialized devices before your program exits. It's not necessary to individually free the samples/streams/musics as these are all automatically freed by this function.</para>
-		/// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
-		/// </remarks>
-        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
-        public static bool Free(int Device) => BASS_SetDevice(Device) && Free();
-        #endregion
-
+        
         /// <summary>
 		/// Retrieves the device that the channel is using.
 		/// </summary>
@@ -180,6 +174,9 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_ChannelSetDevice")]
         public static extern bool ChannelSetDevice(int Handle, int Device);
 
+        /// <summary>
+        /// Gets the number of Playback Devices available.
+        /// </summary>
         public static int DeviceCount
         {
             get
@@ -205,12 +202,13 @@ namespace ManagedBass.Dynamics
         /// </summary>
         /// <remarks>
         /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
-        /// <para>A return value of -1 indicates error. Use <see cref="LastError" /> to get the error code.</para>
+        /// <para>A return value of -1 indicates error. Use <see cref="LastError" /> to get the error code. Throws <see cref="BassException"/> on Error while setting value.</para>
         /// <para>The actual volume level may not be exactly the same as set, due to underlying precision differences.</para>
         /// <para>
         /// This function affects the volume level of all applications using the same output device. 
 		/// If you wish to only affect the level of your app's sounds, <see cref="ChannelSetAttribute(int, ChannelAttribute, float)" />
-        /// and/or the <see cref="GlobalMusicVolume"/>, <see cref="GlobalSampleVolume"/> and <see cref="GlobalStreamVolume"/> config options should be used instead.</para>
+        /// and/or the <see cref="GlobalMusicVolume"/>, <see cref="GlobalSampleVolume"/> and <see cref="GlobalStreamVolume"/> config options should be used instead.
+        /// </para>
         /// </remarks>
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">There is no volume control when using the <see cref="NoSoundDevice">No Sound Device</see>.</exception>
@@ -238,7 +236,7 @@ namespace ManagedBass.Dynamics
         /// Gets or sets the device setting of the current thread... 0 = no sound, 1 = first real output device.
         /// </summary>
         /// <remarks>
-        /// <para>A return value of -1 indicates error. Use <see cref="LastError" /> to get the error code.</para>
+        /// <para>A return value of -1 indicates error. Use <see cref="LastError" /> to get the error code. Throws <see cref="BassException"/> on Error while setting value.</para>
         /// <para>
         /// Simultaneously using multiple devices is supported in the BASS API via a context switching system - 
         /// instead of there being an extra "device" parameter in the function calls, the device to be used is set prior to calling the functions.
@@ -306,7 +304,7 @@ namespace ManagedBass.Dynamics
 		/// A shared buffer is used for the Airplay receiver name information, which gets overwritten each time Airplay receiver information is requested, so it should be copied if needed. 
 		/// <see cref="EnableAirplayReceivers"/> can be used to change which of the receiver(s) are used.
         /// </param>
-        /// <returns>An instance of the <see cref="DeviceInfo" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <returns>An instance of the <see cref="DeviceInfo" /> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
 		/// <remarks>
 		/// This function can be used to enumerate the available devices for a setup dialog. 
 		/// Device 0 is always the "no sound" device, so if you should start at device 1 if you only want to list real devices.
@@ -323,6 +321,39 @@ namespace ManagedBass.Dynamics
             if (!GetDeviceInfo(Device, out info))
                 throw new BassException();
             return info;
+        }
+        #endregion
+        
+        #region Info
+        /// <summary>
+        /// Retrieves information on the device being used.
+        /// </summary>
+        /// <param name="Info"><see cref="BassInfo"/> object to receive the information.</param>
+        /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Init"><see cref="Init"/> has not been successfully called.</exception>
+        /// <remarks>
+        /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to.
+        /// </remarks>
+        [DllImport(DllName, EntryPoint = "BASS_GetInfo")]
+        public static extern bool GetInfo(out BassInfo Info);
+
+        /// <summary>
+        /// Retrieves information on the device being used.
+        /// </summary>
+        /// <returns><see cref="BassInfo"/> structure with the retreived information. Throws <see cref="BassException"/> on Error.</returns>
+        /// <exception cref="Errors.Init"><see cref="Init"/> has not been successfully called.</exception>
+        /// <remarks>
+        /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to.
+        /// </remarks>
+        public static BassInfo Info
+        {
+            get
+            {
+                BassInfo info;
+                if (!GetInfo(out info))
+                    throw new BassException();
+                return info;
+            }
         }
         #endregion
     }

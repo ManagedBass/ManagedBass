@@ -1,5 +1,4 @@
 ﻿using System;
-using ManagedBass.Dynamics;
 
 namespace ManagedBass
 {

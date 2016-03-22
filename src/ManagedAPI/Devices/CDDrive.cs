@@ -1,8 +1,7 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace ManagedBass
+namespace ManagedBass.Cd
 {
     /// <summary>
     /// Managed Wrapper around BassCd

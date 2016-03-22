@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Cd
 {
     /// <summary>
     /// The drive's reading &amp; writing capabilities used with <see cref="BassCd.GetInfo(int,out CDInfo)" />.

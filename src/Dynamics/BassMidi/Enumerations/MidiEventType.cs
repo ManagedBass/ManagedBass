@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Midi
 {
     /// <summary>
     /// The MIDI event type, to be used with <see cref="BassMidi.StreamEvent(int,int,MidiEventType,int)" /> or <see cref="BassMidi.StreamGetEvent(int,int,MidiEventType)" /> or <see cref="BassMidi.CreateStream(MidiEvent[],int,BassFlags,int)" />.

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Asio
 {
 	/// <summary>
 	/// Used with <see cref="BassAsio.Future" /> and the SetInputMonitor selector.

@@ -1,6 +1,9 @@
-﻿using System;
+﻿using ManagedBass.Fx;
+using ManagedBass.Midi;
+using ManagedBass.Mix;
+using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Stream/Sample/Music/Recording/AddOn create flags to be used with Stream Creation functions.

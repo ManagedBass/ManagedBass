@@ -1,8 +1,7 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Effects
+namespace ManagedBass.Fx
 {
     /// <summary>
     /// Used with <see cref="ReverbEffect"/>.

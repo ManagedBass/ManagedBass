@@ -1,10 +1,9 @@
-﻿using ManagedBass.Effects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Wraps bass.dll.
@@ -98,39 +97,6 @@ namespace ManagedBass.Dynamics
         /// Retrieves the version of BASS that is loaded
         /// </summary>
         public static Version Version => Extensions.GetVersion(BASS_GetVersion());
-        #endregion
-
-        #region Info
-        /// <summary>
-        /// Retrieves information on the device being used.
-        /// </summary>
-        /// <param name="Info"><see cref="BassInfo"/> object to receive the information.</param>
-        /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <exception cref="Errors.Init"><see cref="Init"/> has not been successfully called.</exception>
-        /// <remarks>
-        /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to.
-        /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_GetInfo")]
-        public static extern bool GetInfo(out BassInfo Info);
-
-        /// <summary>
-        /// Retrieves information on the device being used.
-        /// </summary>
-        /// <returns><see cref="BassInfo"/> object with the retreived information. (<see langword="null"/> on Error)</returns>
-        /// <exception cref="Errors.Init"><see cref="Init"/> has not been successfully called.</exception>
-        /// <remarks>
-        /// When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice"/>) determines which device this function call applies to.
-        /// </remarks>
-        public static BassInfo Info
-        {
-            get
-            {
-                BassInfo info;
-                if (!GetInfo(out info))
-                    throw new BassException();
-                return info;
-            }
-        }
         #endregion
 
         #region GetDSoundObject

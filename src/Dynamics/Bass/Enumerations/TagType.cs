@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass
 {
     /// <summary>
     /// Types of what's returned by <see cref="Bass.ChannelGetTags" />.

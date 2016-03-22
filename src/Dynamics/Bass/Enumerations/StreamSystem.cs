@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// User file system flag to be used with <see cref="Bass.CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)" />

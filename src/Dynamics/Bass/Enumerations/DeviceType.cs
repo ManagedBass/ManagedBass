@@ -1,5 +1,8 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass
 {
+    /// <summary>
+    /// Device Type to be used with <see cref="DeviceInfo" />.
+    /// </summary>
     public enum DeviceType
     {
         /// <summary>

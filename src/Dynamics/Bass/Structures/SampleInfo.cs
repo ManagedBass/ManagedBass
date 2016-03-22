@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Used with <see cref="Bass.SampleGetInfo(int,ref SampleInfo)" /> and <see cref="Bass.SampleSetInfo" /> to retrieve and set the default playback attributes of a sample.

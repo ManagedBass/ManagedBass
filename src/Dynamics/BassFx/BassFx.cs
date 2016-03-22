@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Fx
 {
     /// <summary>
     /// Wraps BassFx: bassfx.dll

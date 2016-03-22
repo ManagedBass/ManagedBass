@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Channel Position Mode flags to be used with e.g. <see cref="Bass.ChannelGetLength" />, <see cref="Bass.ChannelGetPosition" />,

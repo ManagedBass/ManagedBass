@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using ManagedBass.Wasapi;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     public static partial class Bass
     {
@@ -32,7 +33,6 @@ namespace ManagedBass.Dynamics
 
         static event IOSNotifyProcedure _iosnotify;
 
-        // TODO: Verify Event
         public static event IOSNotifyProcedure IOSNotification
         {
             add
@@ -58,11 +58,10 @@ namespace ManagedBass.Dynamics
             set { Configure(Configuration.MFDisable, value); }
         }
 
-        public static bool Float
-        {
-            get { return GetConfigBool(Configuration.Float); }
-            set { Configure(Configuration.Float, value); }
-        }
+        /// <summary>
+        /// Gets if Floating-Point audio is supported on the current platform.
+        /// </summary>
+        public static bool Float => GetConfigBool(Configuration.Float);
 
         public static bool IOSNoCategory
         {
@@ -676,6 +675,15 @@ namespace ManagedBass.Dynamics
         {
             get { return GetConfigBool(Configuration.DevNonStop); }
             set { Configure(Configuration.DevNonStop, value); }
+        }
+
+        /// <summary>
+        /// Disables Bass from setting system timer resolution.
+        /// </summary>
+        public static bool NoTimerResolution
+        {
+            get { return GetConfigBool(Configuration.NoTimerResolution); }
+            set { Configure(Configuration.NoTimerResolution, value); }
         }
     }
 }

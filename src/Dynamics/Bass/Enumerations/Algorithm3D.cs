@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass
 {
     /// <summary>
     /// Software 3D mixing algorithm modes to be used with <see cref="Bass.Algorithm3D"/>.

@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Cd
 {
     /// <summary>
-    /// User defined CD data callback delegate (to be used with <see cref="BassCd.CreateStream(int,int,BassFlags,CDDataProcedure,IntPtr)" /> or <see cref="BassCd.CreateStream(string,BassFlags,CDDataProcedure,IntPtr)" />).
+    /// User defined CD data callback delegate (to be used with <see cref="BassCd.CreateStream(int, int, BassFlags, CDDataProcedure, IntPtr)" /> or <see cref="BassCd.CreateStream(string, BassFlags, CDDataProcedure, IntPtr)" />).
     /// </summary>
     /// <param name="Handle">The CD stream that provided the data.</param>
     /// <param name="Position">The stream position (in bytes) that the data is from.</param>

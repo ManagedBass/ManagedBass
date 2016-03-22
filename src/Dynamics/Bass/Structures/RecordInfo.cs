@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Used with <see cref="Bass.RecordGetInfo" /> to retrieve information on the current recording device.

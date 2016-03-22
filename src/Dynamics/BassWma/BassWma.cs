@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 
-// TODO: Implement enum WmaTagFormat
-
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Wma
 {
     /// <summary>
     /// Wraps basswma.dll
@@ -31,8 +29,18 @@ namespace ManagedBass.Dynamics
         public static extern IntPtr GetWMObject(int handle);
 
         #region CreateStream
-        [DllImport(DllName, EntryPoint="BASS_WMA_StreamCreateFileUser")]
-        public static extern int CreateStream(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user = default(IntPtr));
+        [DllImport(DllName)]
+        static extern int BASS_WMA_StreamCreateFileUser(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user);
+        
+        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr))
+        {
+            int h = BASS_WMA_StreamCreateFileUser(system, flags, procs, user);
+
+            if (h != 0)
+                Extensions.ChannelReferences.Add(h, 0, procs);
+
+            return h;
+        }
         
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_WMA_StreamCreateFile(bool Memory, string File, long Offset, long Length, BassFlags Flags);

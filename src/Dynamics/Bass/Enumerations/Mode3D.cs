@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass
 {
     /// <summary>
     /// 3D Channel Mode flags used with <see cref="SampleInfo" />.

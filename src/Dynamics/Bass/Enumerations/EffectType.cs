@@ -1,4 +1,6 @@
-﻿namespace ManagedBass.Dynamics
+﻿using ManagedBass.Fx;
+
+namespace ManagedBass
 {
     /// <summary>
     /// FX effect types, use with <see cref="Bass.ChannelSetFX" />.

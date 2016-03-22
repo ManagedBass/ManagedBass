@@ -1,8 +1,7 @@
 ﻿using System;
-using ManagedBass.Dynamics;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass
+namespace ManagedBass.Midi
 {
     public class MidiIn : IDisposable
     {

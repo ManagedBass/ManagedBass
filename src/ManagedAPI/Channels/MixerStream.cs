@@ -1,8 +1,7 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass
+namespace ManagedBass.Mix
 {
     /// <summary>
     /// Represents a Mixer Stream.

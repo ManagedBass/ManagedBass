@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Cd
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct TOC

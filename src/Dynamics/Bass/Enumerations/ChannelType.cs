@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Channel Type flags to be used with <see cref="ChannelInfo" /> (see also <see cref="Bass.ChannelGetInfo(int,out ChannelInfo)" />).

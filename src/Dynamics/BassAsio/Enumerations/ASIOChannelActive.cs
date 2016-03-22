@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Asio
 {
     /// <summary>
     /// BassAsio active values return by <see cref="BassAsio.ChannelIsActive" />.

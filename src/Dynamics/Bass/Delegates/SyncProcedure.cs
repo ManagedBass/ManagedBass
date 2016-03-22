@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// User defined synchronizer callback function (see <see cref="Bass.ChannelSetSync" /> for details).
@@ -18,12 +18,6 @@ namespace ManagedBass.Dynamics
     /// <para>
     /// <see cref="Bass.ChannelSetPosition" /> can be used in a mixtime sync to implement custom looping,
     /// eg. set a <see cref="SyncFlags.Position"/> sync at the loop end position and seek to the loop start position in the callback.
-    /// </para>
-    /// <para>
-    /// NOTE: When you pass an instance of a callback delegate to one of the BASS functions, this delegate object will not be reference counted.
-    /// This means .NET would not know, that it might still being used by BASS.
-    /// The Garbage Collector might (re)move the delegate instance, if the variable holding the delegate is not declared as global.
-    /// So make sure to always keep your delegate instance in a variable which lives as long as BASS needs it, e.g. use a global variable or member.
     /// </para>
     /// </remarks>
     public delegate void SyncProcedure(int Handle, int Channel, int Data, IntPtr User);

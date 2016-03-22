@@ -1,7 +1,6 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 
-namespace ManagedBass.Effects
+namespace ManagedBass.Pitch
 {
     public class PitchDSP : DSP
     {

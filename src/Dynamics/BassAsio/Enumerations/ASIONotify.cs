@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Asio
 {
     /// <summary>
     /// BassAsio notify values as used in the <see cref="AsioNotifyProcedure" />.

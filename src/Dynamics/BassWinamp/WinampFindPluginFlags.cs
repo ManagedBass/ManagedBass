@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Winamp
 {
     /// <summary>
     /// Flags to be used with <see cref="BassWinamp.FindPlugins" />.

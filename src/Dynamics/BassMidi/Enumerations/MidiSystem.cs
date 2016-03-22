@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Midi
 {
     /// <summary>
     /// System mode parameter, to be used with <see cref="MidiEventType.System" />, <see cref="MidiEventType.SystemEx" />.

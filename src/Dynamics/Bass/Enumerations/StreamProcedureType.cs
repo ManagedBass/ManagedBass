@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// <see cref="StreamProcedure"/> flag used with <see cref="Bass.CreateStream(int,int,BassFlags,StreamProcedure,System.IntPtr)" /> resp. used with a User sample stream to be used with <see cref="StreamProcedure" />.

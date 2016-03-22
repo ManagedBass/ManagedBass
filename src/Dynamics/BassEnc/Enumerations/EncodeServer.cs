@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Enc
 {
     /// <summary>
     /// To be used with <see cref="BassEnc.ServerInit" /> to define optional server flags.

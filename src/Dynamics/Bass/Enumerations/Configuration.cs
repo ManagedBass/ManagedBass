@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass
 {
     enum Configuration
     {
@@ -24,6 +24,7 @@
         FileVerificationBytes = 23,
         UpdateThreads = 24,
         DeviceBufferLength = 27,
+        NoTimerResolution = 29,
         TruePlayPosition = 30,
         IOSMixAudio = 34,
         SuppressMP3ErrorCorruptionSilence = 35,

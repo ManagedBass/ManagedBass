@@ -1,18 +1,17 @@
-﻿using ManagedBass.Dynamics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace ManagedBass.Effects
+namespace ManagedBass.DirectX8
 {
     [StructLayout(LayoutKind.Sequential)]
     public class DXChorusParameters : IEffectParameter
     {
-        public float fWetDryMix;
-        public float fDepth;
+        public float fWetDryMix = 50f;
+        public float fDepth = 25f;
         public float fFeedback;
         public float fFrequency;
-        public DXWaveform lWaveform;
+        public DXWaveform lWaveform = DXWaveform.Triangle;
         public float fDelay;
-        public DXPhase lPhase;
+        public DXPhase lPhase = DXPhase.Zero;
 
         public EffectType FXType => EffectType.DXChorus;
     }

@@ -1,6 +1,4 @@
-﻿using ManagedBass.Dynamics;
-
-namespace ManagedBass
+﻿namespace ManagedBass.Midi
 {
     /// <summary>
     /// Streams MIDI from file or memory. Requires: BassMidi.dll.

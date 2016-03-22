@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Asio
 {
     /// <summary>
     /// User defined notification callback function (to be used with <see cref="BassAsio.SetNotify" />).

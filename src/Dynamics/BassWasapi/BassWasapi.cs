@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Wasapi
 {
     /// <summary>
     /// Wraps basswasapi.dll: Windows Audio Session API driver library
@@ -54,6 +54,7 @@ namespace ManagedBass.Dynamics
 		/// Gets or Sets the Wasapi device to use for susequent calls in the current thread... 0 = first device. Use <see cref="Bass.LastError" /> to get the error code.
 		/// </summary>
 		/// <remarks>
+        /// <para>Throws <see cref="BassException"/> on Error setting value.</para>
 		/// <para>
         /// Simultaneously using multiple devices is supported in the BASS API via a context switching system;
         /// instead of there being an extra "device" parameter in the function calls, the device to be used is set prior to calling the functions.
@@ -80,9 +81,25 @@ namespace ManagedBass.Dynamics
         }
         #endregion
 
+        #region GetDeviceInfo
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetDeviceInfo")]
         public extern static bool GetDeviceInfo(int device, out WasapiDeviceInfo info);
-        
+                
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Device"></param>
+        /// <returns></returns>
+        /// <remarks>An instance of <see cref="WasapiDeviceInfo"/> structure is returned. Throws <see cref="BassException"/> on Error.</remarks>
+        public static WasapiDeviceInfo GetDeviceInfo(int Device)
+        {
+            WasapiDeviceInfo info;
+            if (!GetDeviceInfo(Device, out info))
+                throw new BassException();
+            return info;
+        }
+        #endregion
+
 		/// <summary>
 		/// Sets a device change notification callback.
 		/// </summary>
@@ -92,15 +109,7 @@ namespace ManagedBass.Dynamics
 		/// <remarks>A previously set notification callback can be changed (or removed) at any time, by calling this function again.</remarks>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_SetNotify")]
         public extern static bool SetNotify(WasapiNotifyProcedure Procedure, IntPtr User = default(IntPtr));
-
-        public static WasapiDeviceInfo GetDeviceInfo(int Device)
-        {
-            WasapiDeviceInfo info;
-            if (!GetDeviceInfo(Device, out info))
-                throw new BassException();
-            return info;
-        }
-        
+                
 		/// <summary>
 		/// Gets the total number of available Wasapi devices.
 		/// </summary>
@@ -121,6 +130,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_CheckFormat")]
         public extern static WasapiFormat CheckFormat(int device, int freq, int chans, WasapiInitFlags flags);
         
+        #region GetInfo
 		/// <summary>
 		/// Retrieves information on the Wasapi device being used.
 		/// </summary>
@@ -137,7 +147,7 @@ namespace ManagedBass.Dynamics
 		/// <summary>
 		/// Retrieves information on the Wasapi device being used.
 		/// </summary>
-		/// <returns>An instance of the <see cref="WasapiInfo" /> structure.</returns>
+		/// <returns>An instance of the <see cref="WasapiInfo" /> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
 		/// <remarks>
         /// This method can be used to get the effective settings used with an initialized Wasapi device (endpoint).
 		/// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
@@ -153,7 +163,8 @@ namespace ManagedBass.Dynamics
                 return info;
             }
         }
-        
+        #endregion
+
 		/// <summary>
 		/// Frees the Wasapi device/driver (endpoint).
 		/// </summary>

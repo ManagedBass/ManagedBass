@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Fx
 {
     public delegate void BPMBeatProcedure(int chan, double beatpos, IntPtr user);
 }

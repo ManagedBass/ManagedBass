@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Enc
 {
     /// <summary>
     /// Wraps BassEnc: bassenc.dll
@@ -231,19 +231,19 @@ namespace ManagedBass.Dynamics
         }
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_Encode_StartLimit(int handle, string cmdline, BassFlags flags, EncodeProcedure proc, IntPtr user, int limit);
+        static extern int BASS_Encode_StartLimit(int handle, string cmdline, EncodeFlags flags, EncodeProcedure proc, IntPtr user, int limit);
 
-        public static int EncodeStart(int handle, string cmdline, BassFlags flags, EncodeProcedure proc, IntPtr user, int limit)
+        public static int EncodeStart(int handle, string cmdline, EncodeFlags flags, EncodeProcedure proc, IntPtr user, int limit)
         {
-            return BASS_Encode_StartLimit(handle, cmdline, flags | BassFlags.Unicode, proc, user, limit);
+            return BASS_Encode_StartLimit(handle, cmdline, flags | EncodeFlags.Unicode, proc, user, limit);
         }
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_Encode_StartUser(int handle, string filename, BassFlags flags, EncoderProcedure proc, IntPtr user);
+        static extern int BASS_Encode_StartUser(int handle, string filename, EncodeFlags flags, EncoderProcedure proc, IntPtr user);
 
-        public static int EncodeStart(int handle, string filename, BassFlags flags, EncoderProcedure proc, IntPtr user = default(IntPtr))
+        public static int EncodeStart(int handle, string filename, EncodeFlags flags, EncoderProcedure proc, IntPtr user = default(IntPtr))
         {
-            return BASS_Encode_StartUser(handle, filename, flags | BassFlags.Unicode, proc, user);
+            return BASS_Encode_StartUser(handle, filename, flags | EncodeFlags.Unicode, proc, user);
         }
         
 		/// <summary>

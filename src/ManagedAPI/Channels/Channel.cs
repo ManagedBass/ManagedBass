@@ -1,8 +1,7 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using static ManagedBass.Dynamics.Bass;
+using static ManagedBass.Bass;
 
 namespace ManagedBass
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     public static partial class Bass
     {
@@ -48,6 +48,9 @@ namespace ManagedBass.Dynamics
         public extern static bool RecordFree();
 
         #region RecordStart
+        [DllImport(DllName)]
+        extern static int BASS_RecordStart(int freq, int chans, BassFlags flags, RecordProcedure proc, IntPtr User);
+
         /// <summary>
         /// Starts recording.
         /// </summary>
@@ -90,8 +93,15 @@ namespace ManagedBass.Dynamics
         /// </exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        [DllImport(DllName, EntryPoint = "BASS_RecordStart")]
-        public extern static int RecordStart(int freq, int chans, BassFlags flags, RecordProcedure proc, IntPtr User = default(IntPtr));
+        public static int RecordStart(int freq, int chans, BassFlags flags, RecordProcedure proc, IntPtr User = default(IntPtr))
+        {
+            int h = BASS_RecordStart(freq, chans, flags, proc, User);
+
+            if (h != 0)
+                Extensions.ChannelReferences.Add(h, 0, proc);
+
+            return h;
+        }
         
         /// <summary>
 		/// Starts recording.
@@ -122,13 +132,13 @@ namespace ManagedBass.Dynamics
 
         /// <summary>
 		/// Gets or Sets the recording device setting in the current thread... 0 = first recording device.
-        /// A value of -1 indicates error. Use <see cref="LastError" /> to get the error code.
 		/// </summary>
         /// <remarks>
+        /// <para>A value of -1 indicates error. Use <see cref="LastError" /> to get the error code.  Throws <see cref="BassException"/> on Error while setting value.</para>
 		/// <para>Simultaneously using multiple devices is supported in the BASS API via a context switching system - instead of there being an extra "device" parameter in the function calls, the device to be used is set prior to calling the functions. The device setting is local to the current thread, so calling functions with different devices simultaneously in multiple threads is not a problem.</para>
 		/// <para>The functions that use the recording device selection are the following: 
 		/// <see cref="RecordFree" />, <see cref="RecordGetInfo(out RecordInfo)" />, <see cref="RecordGetInput(int, out float)" />, <see cref="RecordGetInputName(int)" />, <see cref="RecordSetInput(int, InputFlags, float)" />, <see cref="RecordStart(int, int, BassFlags, RecordProcedure, IntPtr)" />.</para>
-		/// <para>When one of the above functions (or <see cref="M:Un4seen.Bass.Bass.BASS_RecordGetDevice" />) is called, BASS will check the current thread's recording device setting, and if no device is selected (or the selected device is not initialized), BASS will automatically select the lowest device that is initialized. 
+		/// <para>When one of the above functions is called, BASS will check the current thread's recording device setting, and if no device is selected (or the selected device is not initialized), BASS will automatically select the lowest device that is initialized. 
 		/// This means that when using a single device, there is no need to use this function - BASS will automatically use the device that's initialized. 
 		/// Even if you free the device, and initialize another, BASS will automatically switch to the one that is initialized.</para>
 		/// </remarks>
@@ -173,7 +183,7 @@ namespace ManagedBass.Dynamics
 		/// Retrieves information on a recording device.
 		/// </summary>
 		/// <param name="Device">The device to get the information of... 0 = first.</param>
-		/// <returns>An instance of the <see cref="DeviceInfo" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <returns>An instance of the <see cref="DeviceInfo" /> structure is returned.A value of -1 indicates error. Use <see cref="LastError" /> to get the error code. Throws <see cref="BassException"/> on Error.</returns>
 		/// <remarks>
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
@@ -208,7 +218,7 @@ namespace ManagedBass.Dynamics
 		/// <summary>
 		/// Retrieves information on the recording device being used.
 		/// </summary>
-		/// <returns>An instance of the <see cref="RecordInfo" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <returns>An instance of the <see cref="RecordInfo" /> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
         /// <exception cref="Errors.Init"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
 		public static RecordInfo RecordingInfo
         {

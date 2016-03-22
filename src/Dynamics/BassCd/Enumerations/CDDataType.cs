@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Cd
 {
     /// <summary>
     /// The Type of data received, used with <see cref="CDDataProcedure" />.

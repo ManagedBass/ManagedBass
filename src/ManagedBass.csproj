@@ -27,6 +27,7 @@
     <DebugType>full</DebugType>
     <DefineConstants>DEBUG</DefineConstants>
     <Prefer32Bit>false</Prefer32Bit>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>true</Optimize>
@@ -37,7 +38,9 @@
     <Compile Include="BitHelper.cs" />
     <Compile Include="BassException.cs" />
     <Compile Include="Dynamics\BassAsio\PInvoke\Channels.cs" />
+    <Compile Include="Dynamics\BassCd\Enumerations\CDID.cs" />
     <Compile Include="Dynamics\BassCd\Enumerations\CDInterface.cs" />
+    <Compile Include="Dynamics\BassDsd\DSDCommentType.cs" />
     <Compile Include="Dynamics\BassWma\Enumerations\WMEncodeType.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\Music.cs" />
     <Compile Include="Dynamics\Bass\PInvoke\FX.cs" />
@@ -58,7 +61,7 @@
     <Compile Include="Dynamics\BassCd\Enumerations\CDDataType.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\EncodeServer.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\EncodeMetaDataType.cs" />
-    <Compile Include="Dynamics\BassDsd.cs" />
+    <Compile Include="Dynamics\BassDsd\BassDsd.cs" />
     <Compile Include="Dynamics\BassMidi\Enumerations\MidiSystem.cs" />
     <Compile Include="Dynamics\BassMix\MixEnvelope.cs" />
     <Compile Include="Dynamics\BassMix\MixerNode.cs" />
@@ -101,12 +104,12 @@
     <Compile Include="Dynamics\BassEnc\Enumerations\ACMFormatFlags.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\EncodeCount.cs" />
     <Compile Include="Dynamics\BassEnc\Enumerations\EncodeFlags.cs" />
-    <Compile Include="Dynamics\BassEnc\Enumerations\WaveFormatTag.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\WaveFormatTag.cs" />
     <Compile Include="Dynamics\BassFx\Delegates\BPMProcedure.cs" />
     <Compile Include="Dynamics\BassFx\Delegates\BPMProgressProcedure.cs" />
     <Compile Include="Dynamics\BassFx\Delegates\BPMBeatProcedure.cs" />
-    <Compile Include="Dynamics\BassFx\Enumerations\BQFType.cs" />
-    <Compile Include="Dynamics\BassFx\Enumerations\FXChannelFlags.cs" />
+    <Compile Include="Dynamics\BassFx\BQFType.cs" />
+    <Compile Include="Dynamics\Bass\Enumerations\FXChannelFlags.cs" />
     <Compile Include="Dynamics\BassMidi\Enumerations\MidiEventType.cs" />
     <Compile Include="Dynamics\BassMidi\Enumerations\MidiEventsMode.cs" />
     <Compile Include="Dynamics\BassMidi\Enumerations\MidiMarkerType.cs" />
@@ -200,7 +203,7 @@
     <Compile Include="ManagedAPI\Effects\DirectX8\DXChorus.cs" />
     <Compile Include="ManagedAPI\Effects\DirectX8\DXGargle.cs" />
     <Compile Include="ManagedAPI\Effects\BassFx\PitchShift.cs" />
-    <Compile Include="ManagedAPI\Channels\FullDuplex.cs" />
+    <Compile Include="ManagedAPI\Channels\WasapiToBassFullDuplex.cs" />
     <Compile Include="ManagedAPI\AudioCapture\IAudioCaptureClient.cs" />
     <Compile Include="ManagedAPI\Channels\CDChannel.cs" />
     <Compile Include="ManagedAPI\Channels\FileChannel.cs" />
@@ -222,7 +225,7 @@
     <Compile Include="ManagedAPI\Effects\PitchTracker\PitchTracker.cs" />
     <Compile Include="ManagedAPI\Tags\ApeBinaryTag.cs" />
     <Compile Include="ManagedAPI\Tags\ADXLoopTag.cs" />
-    <Compile Include="ManagedAPI\Tags\DSDComment.cs" />
+    <Compile Include="Dynamics\BassDsd\DSDComment.cs" />
     <Compile Include="ManagedAPI\Tags\ID3\ID3v2Reader.cs" />
     <Compile Include="ManagedAPI\Tags\ID3\ID3v2Tag.cs" />
     <Compile Include="ManagedAPI\Tags\BextTag.cs" />
@@ -234,6 +237,7 @@
     <Compile Include="ManagedAPI\Tags\Flac\FlacCueTag.cs" />
     <Compile Include="ManagedAPI\Tags\Flac\FlacPictureTag.cs" />
     <Compile Include="ManagedAPI\Tags\ID3\ID3v1Tag.cs" />
+    <Compile Include="ProcedureDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolution.cs" />
     <Compile Include="ManagedAPI\Writers\ACMEncodedFileWriter.cs" />

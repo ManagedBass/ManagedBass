@@ -1,5 +1,4 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -14,7 +13,7 @@ namespace ManagedBass
     public class MediaPlayer : Channel, INotifyPropertyChanged
     {
         #region Frequency
-        double? freq;
+        double freq = 44100;
         
         /// <summary>
         /// Gets or Sets the Playback Frequency in Hertz.
@@ -22,7 +21,7 @@ namespace ManagedBass
         /// </summary>
         public override double Frequency
         {
-            get { return freq.HasValue ? freq.Value : base.Frequency; }
+            get { return freq; }
             set
             {
                 if (Bass.ChannelSetAttribute(Handle, ChannelAttribute.Frequency, value))
@@ -35,7 +34,7 @@ namespace ManagedBass
         #endregion
 
         #region Balance
-        double? pan;
+        double pan = 0;
         
         /// <summary>
         /// Gets or Sets Balance (Panning) (-1 ... 0 ... 1).
@@ -45,7 +44,7 @@ namespace ManagedBass
         /// </summary>
         public override double Balance
         {
-            get { return pan.HasValue ? pan.Value : base.Balance; }
+            get { return pan; }
             set
             {
                 if (Bass.ChannelSetAttribute(Handle, ChannelAttribute.Pan, value))
@@ -82,14 +81,14 @@ namespace ManagedBass
         #endregion
 
         #region Volume
-        double? vol;
+        double vol = 0.5;
 
         /// <summary>
         /// Gets or Sets the Playback Volume.
         /// </summary>
         public override double Volume
         {
-            get { return vol.HasValue ? vol.Value : base.Volume; }
+            get { return vol; }
             set
             {
                 if (Bass.ChannelSetAttribute(Handle, ChannelAttribute.Volume, value))
@@ -102,14 +101,14 @@ namespace ManagedBass
         #endregion
 
         #region Loop
-        bool? loop;
+        bool loop = false;
 
         /// <summary>
         /// Gets or Sets whether the Playback is looped.
         /// </summary>
         public override bool Loop
         {
-            get { return loop.HasValue ? loop.Value : base.Loop; }
+            get { return loop; }
             set
             {
                 if (value ? AddFlag(BassFlags.Loop) : RemoveFlag(BassFlags.Loop))
@@ -232,14 +231,10 @@ namespace ManagedBass
 
         protected virtual void InitProperties()
         {
-            if (freq.HasValue)
-                Frequency = freq.Value;
-            if (pan.HasValue)
-                Balance = pan.Value;
-            if (vol.HasValue)
-                Volume = vol.Value;
-            if (loop.HasValue)
-                Loop = loop.Value;
+            Frequency = freq;
+            Balance = pan;
+            Volume = vol;
+            Loop = loop;
         }
 
         protected void OnPropertyChanged([CallerMemberName] string PropertyName = "")

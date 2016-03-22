@@ -1,4 +1,3 @@
-using ManagedBass.Dynamics;
 using System;
 using System.Runtime.InteropServices;
 

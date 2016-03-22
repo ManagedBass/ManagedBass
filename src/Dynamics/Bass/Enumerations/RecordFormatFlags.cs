@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Formats flags of <see cref="RecordInfo.SupportedFormats"/> member to be used with <see cref="RecordInfo" />

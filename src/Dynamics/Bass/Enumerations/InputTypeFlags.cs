@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Used with <see cref="Bass.RecordGetInput(int, out float)"/> applying <see cref="InputTypeMask"/> on the return value;

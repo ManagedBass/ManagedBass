@@ -1,10 +1,9 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using static ManagedBass.Dynamics.BassWasapi;
+using static ManagedBass.Wasapi.BassWasapi;
 
-namespace ManagedBass
+namespace ManagedBass.Wasapi
 {
     /// <summary>
     /// Wraps a WASAPI Device

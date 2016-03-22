@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Asio
 {
     /// <summary>
     /// User defined ASIO channel callback function (to be used with <see cref="BassAsio.ChannelEnable" />).
@@ -30,14 +30,8 @@ namespace ManagedBass.Dynamics
     /// Also, if it is an output channel, <see cref="BassAsio.ChannelSetFormat" /> and <see cref="BassAsio.ChannelSetRate" /> should not be used on the channel being processed by the callback.
     /// </para>
     /// <para>
-    /// Prior to calling this function, BASSASIO will set the thread's device context to the device that the channel belongs to.
+    /// Prior to calling this function, BassAsio will set the thread's device context to the device that the channel belongs to.
     /// So when using multiple devices, <see cref="BassAsio.CurrentDevice" /> can be used to determine which device the channel is on.
-    /// </para>
-    /// <para>
-    /// NOTE: When you pass an instance of a callback delegate to one of the BASS functions, this delegate object will not be reference counted. 
-    /// This means .NET would not know, that it might still being used by BASS.
-    /// The Garbage Collector might (re)move the delegate instance, if the variable holding the delegate is not declared as global.
-    /// So make sure to always keep your delegate instance in a variable which lives as long as BASS needs it, e.g. use a global variable or member.
     /// </para>
     /// </remarks>
     public delegate int AsioProcedure(bool Input, int Channel, IntPtr Buffer, int Length, IntPtr User);

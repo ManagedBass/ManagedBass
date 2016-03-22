@@ -1,7 +1,6 @@
-﻿using ManagedBass.Dynamics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace ManagedBass.Effects
+namespace ManagedBass.DirectX8
 {
     [StructLayout(LayoutKind.Sequential)]
     public class DXDistortionParameters : IEffectParameter

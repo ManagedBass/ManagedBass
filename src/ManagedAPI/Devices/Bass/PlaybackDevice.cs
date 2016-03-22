@@ -1,5 +1,4 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -110,7 +109,11 @@ namespace ManagedBass
         /// <summary>
         /// Frees an initialized Device
         /// </summary>
-        public void Dispose() => Bass.Free(DeviceIndex);
+        public void Dispose() 
+        {
+            Bass.CurrentDevice = DeviceIndex;
+            Bass.Free();
+        }
 
         /// <summary>
         /// Gets or Sets the Device Volume

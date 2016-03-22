@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Midi
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct MidiDeviceInfo

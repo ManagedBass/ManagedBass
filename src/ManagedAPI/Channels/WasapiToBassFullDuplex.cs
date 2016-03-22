@@ -1,7 +1,6 @@
 ﻿using System;
-using ManagedBass.Dynamics;
 
-namespace ManagedBass
+namespace ManagedBass.Wasapi
 {
     /// <summary>
     /// Provides audio from <see cref="WasapiRecordingDevice"/> or <see cref="WasapiLoopbackDevice"/> in a Bass Channel.

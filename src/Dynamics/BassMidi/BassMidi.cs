@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Midi
 {
     /// <summary>
     /// Wraps BassMidi: bassmidi.dll
@@ -62,15 +62,30 @@ namespace ManagedBass.Dynamics
             return Handle;
         }
 
-        [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreateFileUser")]
-        public static extern int CreateStream(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user = default(IntPtr), int freq = 44100);
+        [DllImport(DllName)]
+        static extern int BASS_MIDI_StreamCreateFileUser(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user, int freq);
+
+        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr), int freq = 44100)
+        {
+            int h = BASS_MIDI_StreamCreateFileUser(system, flags, procs, user, freq);
+
+            if (h != 0)
+                Extensions.ChannelReferences.Add(h, 0, procs);
+
+            return h;
+        }
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_MIDI_StreamCreateURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 44100);
 
         public static int CreateStream(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 44100)
         {
-            return BASS_MIDI_StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User, Frequency);
+            int h = BASS_MIDI_StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User, Frequency);
+
+            if (h != 0)
+                Extensions.ChannelReferences.Add(h, 0, Procedure);
+
+            return h;
         }
         #endregion
 
@@ -313,6 +328,11 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetInfo")]
         public static extern bool FontGetInfo(int handle, out MidiFontInfo info);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="handle"></param>
+        /// <returns>An instance of <see cref="MidiFontInfo"/> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
         public static MidiFontInfo FontGetInfo(int handle)
         {
             MidiFontInfo info;
@@ -437,7 +457,7 @@ namespace ManagedBass.Dynamics
 		/// Retrieves information on a MIDI input device.
 		/// </summary>
 		/// <param name="Device">The device to get the information of... 0 = first.</param>
-		/// <returns>If successful, an instance of the <see cref="MidiDeviceInfo" /> structure is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <returns>If successful, an instance of the <see cref="MidiDeviceInfo" /> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
 		/// <remarks>
         /// This function can be used to enumerate the available MIDI input devices for a setup dialog.
 		/// <para><b>Platform-specific</b></para>

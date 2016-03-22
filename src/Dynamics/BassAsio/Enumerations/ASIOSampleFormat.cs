@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Asio
 {
     /// <summary>
     /// BassAsio sample formats to be used with <see cref="AsioChannelInfo" /> and <see cref="BassAsio.ChannelGetInfo(bool,int,out AsioChannelInfo)" />.

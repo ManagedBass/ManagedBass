@@ -1,5 +1,4 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -16,11 +15,16 @@ namespace ManagedBass
     {
         internal static readonly bool IsWindows = false;
 
+        internal static ReferenceHolder ChannelReferences = new ReferenceHolder();
+
         static Extensions()
         {
             IsWindows = Environment.OSVersion.Platform.Is(PlatformID.Win32NT, PlatformID.Win32Windows);
         }
 
+        /// <summary>
+        /// Clips a value between a Minimum and a Maximum.
+        /// </summary>
         public static T Clip<T>(this T Item, T MinValue, T MaxValue)
             where T : IComparable<T>
         {
@@ -33,6 +37,9 @@ namespace ManagedBass
             return Item;
         }
 
+        /// <summary>
+        /// Checks for equality of an item with any element of an array of items.
+        /// </summary>
         public static bool Is<T>(this T Item, params T[] Args)
         {
             foreach (var arg in Args)
@@ -84,7 +91,8 @@ namespace ManagedBass
         {
             get
             {
-                if (floatable.HasValue) return floatable.Value;
+                if (floatable.HasValue) 
+                    return floatable.Value;
 
                 // try creating a floating-point stream
                 int hStream = Bass.CreateStream(44100, 1, BassFlags.Float, StreamProcedureType.Dummy);
@@ -92,7 +100,8 @@ namespace ManagedBass
                 floatable = hStream != 0;
 
                 // floating-point channels are supported! (free the test stream)
-                if (floatable.Value) Bass.StreamFree(hStream);
+                if (floatable.Value) 
+                    Bass.StreamFree(hStream);
 
                 return floatable.Value;
             }

@@ -1,9 +1,8 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace ManagedBass.Effects
+namespace ManagedBass
 {
     /// <summary>
     /// Base class for DSPs.

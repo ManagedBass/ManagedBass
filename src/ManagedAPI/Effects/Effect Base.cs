@@ -1,10 +1,9 @@
 ﻿using System;
-using ManagedBass.Dynamics;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
 
-namespace ManagedBass.Effects
+namespace ManagedBass
 {
     public interface IEffectParameter { EffectType FXType { get; } }
 

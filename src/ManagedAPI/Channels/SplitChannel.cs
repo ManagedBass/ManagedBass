@@ -1,7 +1,6 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 
-namespace ManagedBass
+namespace ManagedBass.Mix
 {
     public class SplitChannel : Channel
     {

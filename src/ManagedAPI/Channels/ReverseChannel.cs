@@ -1,7 +1,6 @@
-﻿using ManagedBass.Dynamics;
-using System;
+﻿using System;
 
-namespace ManagedBass
+namespace ManagedBass.Fx
 {
     /// <summary>
     /// Streams audio from a Decoder allowing manipulation of Playback Direction.

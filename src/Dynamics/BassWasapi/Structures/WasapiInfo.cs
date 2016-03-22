@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Wasapi
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct WasapiInfo

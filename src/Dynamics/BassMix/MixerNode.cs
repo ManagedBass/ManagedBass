@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Mix
 {
     /// <summary>
     /// Used with <see cref="BassMix.ChannelSetEnvelope(int,MixEnvelope,MixerNode[],int)" /> to set an envelope on a mixer source channel.

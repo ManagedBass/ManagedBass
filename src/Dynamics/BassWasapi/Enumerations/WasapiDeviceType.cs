@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Wasapi
 {
     public enum WasapiDeviceType
     {

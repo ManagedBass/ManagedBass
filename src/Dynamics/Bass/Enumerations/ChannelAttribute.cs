@@ -1,6 +1,9 @@
-﻿using System;
+﻿using ManagedBass.Fx;
+using ManagedBass.Midi;
+using ManagedBass.Mix;
+using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Channel attribute options used by <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)" /> and <see cref="Bass.ChannelGetAttribute(int,ChannelAttribute,out float)" />.

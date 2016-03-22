@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// User stream writing callback delegate (to be used with <see cref="Bass.CreateStream(int,int,BassFlags,StreamProcedure,IntPtr)" />).
@@ -31,9 +31,6 @@ namespace ManagedBass.Dynamics
     /// Sideeffects might occure, due to the fact, that BASS will call this callback too fast and too often...
     /// However, this is not always the case, so in most examples it'll work just fine - but if you got problems - try moving any memory allocation things outside any callbacks.
     /// </para>
-    /// <para>NOTE: When you pass an instance of a callback delegate to one of the BASS functions, this delegate object will not be reference counted.
-    /// This means .NET would not know, that it might still being used by BASS. The Garbage Collector might (re)move the delegate instance, if the variable holding the delegate is not declared as global.
-    /// So make sure to always keep your delegate instance in a variable which lives as long as BASS needs it, e.g. use a global variable or member.</para>
     /// </remarks>
     public delegate int StreamProcedure(int Handle, IntPtr Buffer, int Length, IntPtr User);
 }

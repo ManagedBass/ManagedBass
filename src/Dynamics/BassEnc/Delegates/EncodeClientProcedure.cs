@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Enc
 {
     public delegate bool EncodeClientProcedure(int handle, bool connect, string client, string header, IntPtr user);
 }

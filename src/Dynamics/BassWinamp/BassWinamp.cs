@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Winamp
 {
     /// <summary>
     /// BassWinamp: Wraps bass_winamp.dll.

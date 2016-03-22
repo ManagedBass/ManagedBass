@@ -1,17 +1,8 @@
-using ManagedBass.Dynamics;
 using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass
+namespace ManagedBass.Dsd
 {
-    public enum DSDCommentType : short
-    {
-        General,
-        Channel,
-        SoundSource,
-        FileHistory
-    }
-
 	[StructLayout(LayoutKind.Sequential)]
 	public class DSDComment
 	{

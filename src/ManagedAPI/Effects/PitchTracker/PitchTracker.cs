@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Effects
+namespace ManagedBass.Pitch
 {
     /// <summary>
     /// Tracks pitch

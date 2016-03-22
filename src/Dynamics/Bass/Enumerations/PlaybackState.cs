@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass
 {
     /// <summary>
     /// <see cref="Bass.ChannelIsActive" /> return values.

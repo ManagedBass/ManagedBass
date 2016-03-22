@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     public static partial class Bass
     {
@@ -30,7 +30,7 @@ namespace ManagedBass.Dynamics
         [DllImport(DllName, EntryPoint = "BASS_StreamGetFilePosition")]
         public static extern long StreamGetFilePosition(int Handle, FileStreamPosition Mode = FileStreamPosition.Current);
 
-        #region StreamCreateFile
+        #region File
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_StreamCreateFile(bool Memory, string File, long Offset, long Length, BassFlags Flags);
 
@@ -76,7 +76,7 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// <para>
         /// To stream a file from the internet, use <see cref="CreateStream(string, int, BassFlags, DownloadProcedure, IntPtr)" />.
-        /// To stream from other locations, see <see cref="M:Un4seen.Bass.Bass.BASS_StreamCreateFileUser(Un4seen.Bass.BASSStreamSystem,Un4seen.Bass.BASSFlag,Un4seen.Bass.BASS_FILEPROCS,System.IntPtr)" />.
+        /// To stream from other locations, see <see cref="CreateStream(StreamSystem, BassFlags, FileProcedures, IntPtr)" />.
         /// </para>
         /// <para><b>Platform-specific</b></para>
         /// <para>
@@ -149,7 +149,7 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// <para>
         /// To stream a file from the internet, use <see cref="CreateStream(string, int, BassFlags, DownloadProcedure, IntPtr)" />.
-        /// To stream from other locations, see <see cref="M:Un4seen.Bass.Bass.BASS_StreamCreateFileUser(Un4seen.Bass.BASSStreamSystem,Un4seen.Bass.BASSFlag,Un4seen.Bass.BASS_FILEPROCS,System.IntPtr)" />.
+        /// To stream from other locations, see <see cref="CreateStream(StreamSystem, BassFlags, FileProcedures, IntPtr)" />.
         /// </para>
         /// <para>Don't forget to pin your memory object when using this overload.</para>
         /// <para><b>Platform-specific</b></para>
@@ -221,7 +221,7 @@ namespace ManagedBass.Dynamics
         /// </para>
         /// <para>
         /// To stream a file from the internet, use <see cref="CreateStream(string, int, BassFlags, DownloadProcedure, IntPtr)" />.
-        /// To stream from other locations, see <see cref="M:Un4seen.Bass.Bass.BASS_StreamCreateFileUser(Un4seen.Bass.BASSStreamSystem,Un4seen.Bass.BASSFlag,Un4seen.Bass.BASS_FILEPROCS,System.IntPtr)" />.
+        /// To stream from other locations, see <see cref="CreateStream(StreamSystem, BassFlags, FileProcedures, IntPtr)" />.
         /// </para>
         /// <para><b>Platform-specific</b></para>
         /// <para>
@@ -251,13 +251,19 @@ namespace ManagedBass.Dynamics
 
             int Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
 
-            if (Handle == 0) GCPin.Free();
+            if (Handle == 0)
+                GCPin.Free();
+
             else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
 
             return Handle;
         }
         #endregion
 
+        #region FileUser
+        [DllImport(DllName)]
+        static extern int BASS_StreamCreateFileUser(StreamSystem System, BassFlags Flags, [In, Out] FileProcedures Procedures, IntPtr User);
+        
         /// <summary>
         /// Creates a sample stream from an MP3, MP2, MP1, OGG, WAV, AIFF or plugin supported file via user callback functions.
         /// </summary>
@@ -310,19 +316,44 @@ namespace ManagedBass.Dynamics
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        [DllImport(DllName, EntryPoint = "BASS_StreamCreateFileUser")]
-        public static extern int CreateStream(StreamSystem System, BassFlags Flags, [In, Out] FileProcedures Procedures, IntPtr User = default(IntPtr));
+        public static int CreateStream(StreamSystem System, BassFlags Flags, FileProcedures Procedures, IntPtr User = default(IntPtr))
+        {
+            int h = BASS_StreamCreateFileUser(System, Flags, Procedures, User);
 
+            if (h != 0)
+                Extensions.ChannelReferences.Add(h, 0, Procedures);
+
+            return h;
+        }
+        #endregion
+
+        #region Url
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_StreamCreateURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr));
 
         public static int CreateStream(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr))
         {
-            return BASS_StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User);
-        }
+            int h = BASS_StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User);
 
-        [DllImport(DllName, EntryPoint = "BASS_StreamCreate")]
-        public extern static int CreateStream(int Frequency, int Channels, BassFlags Flags, StreamProcedure Procedure, IntPtr User = default(IntPtr));
+            if (h != 0)
+                Extensions.ChannelReferences.Add(h, 0, Procedure);
+
+            return h;
+        }
+        #endregion
+
+        [DllImport(DllName)]
+        extern static int BASS_StreamCreate(int Frequency, int Channels, BassFlags Flags, StreamProcedure Procedure, IntPtr User);
+
+        public static int CreateStream(int Frequency, int Channels, BassFlags Flags, StreamProcedure Procedure, IntPtr User = default(IntPtr))
+        {
+            int h = BASS_StreamCreate(Frequency, Channels, Flags, Procedure, User);
+
+            if (h != 0)
+                Extensions.ChannelReferences.Add(h, 0, Procedure);
+
+            return h;
+        }
 
         [DllImport(DllName, EntryPoint = "BASS_StreamCreate")]
         public extern static int CreateStream(int Frequency, int Channels, BassFlags Flags, StreamProcedureType Procedure, IntPtr User = default(IntPtr));

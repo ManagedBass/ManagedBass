@@ -1,4 +1,4 @@
-﻿using ManagedBass.Dynamics;
+﻿using ManagedBass;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;

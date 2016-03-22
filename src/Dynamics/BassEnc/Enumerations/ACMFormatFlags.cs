@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Enc
 {
     /// <summary>
     /// ACM Format flags to be used with <see cref="BassEnc.GetACMFormat" />.

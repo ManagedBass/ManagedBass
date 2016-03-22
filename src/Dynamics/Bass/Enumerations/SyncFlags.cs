@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ManagedBass.Cd;
+using ManagedBass.Midi;
+using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// Sync types to be used with <see cref="Bass.ChannelSetSync" /> (param flag) and <see cref="SyncProcedure" /> (data flag).

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass.Asio
 {
     /// <summary>
     /// BassAsio attributes to be used when to reset a channel with <see cref="BassAsio.ChannelReset" />.

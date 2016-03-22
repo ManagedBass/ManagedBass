@@ -1,7 +1,13 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass.Wasapi
 {
+    /// <summary>
+    /// BassWasapi sample formats to be used with <see cref="WasapiInfo" /> and <see cref="BassWasapi.GetInfo" />.
+    /// </summary>
     public enum WasapiFormat
     {
+        /// <summary>
+        /// Unknown
+        /// </summary>
         Unknown = -1,
 
         /// <summary>

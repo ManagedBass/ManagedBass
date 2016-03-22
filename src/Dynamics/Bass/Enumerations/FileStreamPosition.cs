@@ -1,4 +1,4 @@
-﻿namespace ManagedBass.Dynamics
+﻿namespace ManagedBass
 {
     /// <summary>
     /// Stream File Position modes to be used with <see cref="Bass.StreamGetFilePosition" />

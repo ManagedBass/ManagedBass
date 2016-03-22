@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass.Dynamics
+namespace ManagedBass
 {
     /// <summary>
     /// EAX environment constants to be used with <see cref="Bass.SetEAXParameters" />
