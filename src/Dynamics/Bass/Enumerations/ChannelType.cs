@@ -120,12 +120,12 @@ namespace ManagedBass
         APE = 67328,
 
         /// <summary>
-        /// BASSmix mixer stream.
+        /// BassMix mixer stream.
         /// </summary>
         Mixer = 67584,
 
         /// <summary>
-        /// BASSmix splitter stream.
+        /// BassMix splitter stream.
         /// </summary>
         Split = 67585,
 
@@ -221,7 +221,7 @@ namespace ManagedBass
 
         /// <summary>
         /// MOD format music.
-        /// This can also be used as a flag to test if the channel is any kind of HMUSIC.
+        /// This can also be used as a flag to test if the channel is any kind of HMusic.
         /// </summary>
         MOD = 131072,
 
@@ -246,17 +246,17 @@ namespace ManagedBass
         IT = 131076,
 
         /// <summary>
-        /// WAV format stream, LOWORD=codec.
+        /// Wave format stream, LoWord = codec.
         /// </summary>
         Wave = 262144,
 
         /// <summary>
-        /// WAV format stream, PCM 16-bit.
+        /// Wave format stream, PCM 16-bit.
         /// </summary>
         WavePCM = 327681,
 
         /// <summary>
-        /// WAV format stream, FLOAT 32-bit.
+        /// Wave format stream, Float 32-bit.
         /// </summary>
         WaveFloat = 327683,
     }

@@ -1,4 +1,6 @@
-﻿namespace ManagedBass
+﻿using ManagedBass.Tags;
+
+namespace ManagedBass
 {
     /// <summary>
     /// Types of what's returned by <see cref="Bass.ChannelGetTags" />.

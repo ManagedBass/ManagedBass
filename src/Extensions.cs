@@ -229,7 +229,8 @@ namespace ManagedBass
             while (bytes[size] != 0)
                 ++size;
 
-            if (size == 0) return null;
+            if (size == 0) 
+                return null;
 
             byte[] buffer = new byte[size];
             Marshal.Copy((IntPtr)ptr, buffer, 0, size);
@@ -242,31 +243,17 @@ namespace ManagedBass
         #region Tags
         public static string TagGetLyrics3v2(int Handle) => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.Lyrics3v2));
 
-        public static string TagGetVendor(int Handle) => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.OggEncoder));
-
         public static string TagGetRiffDisp(int Handle) => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.RiffDISP));
 
         public static string TagGetIcyShoutcastMeta(int Handle) => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.META));
 
-        public static string TagGetOggEncoder(int Handle) => PtrToStringUtf8(Bass.ChannelGetTags(Handle, TagType.OggEncoder));
-
         public static string TagGetWMAMidStreamTag(int Handle) => PtrToStringUtf8(Bass.ChannelGetTags(Handle, TagType.WmaMeta));
-
-        public static string[] TagGetOggComments(int Handle) => ExtractMultiStringUtf8(Bass.ChannelGetTags(Handle, TagType.OGG));
 
         public static string[] TagGetHTTPHeaders(int Handle) => ExtractMultiStringAnsi(Bass.ChannelGetTags(Handle, TagType.HTTP));
 
         public static string[] TagGetICYHeaders(int Handle) => ExtractMultiStringAnsi(Bass.ChannelGetTags(Handle, TagType.ICY));
 
-        public static string[] TagGetAPE(int Handle) => ExtractMultiStringUtf8(Bass.ChannelGetTags(Handle, TagType.APE));
-
-        public static string[] TagGetMP4Metadata(int Handle) => ExtractMultiStringUtf8(Bass.ChannelGetTags(Handle, TagType.MP4));
-
-        public static string[] TagGetWMA(int Handle) => ExtractMultiStringUtf8(Bass.ChannelGetTags(Handle, TagType.WMA));
-
         public static string[] TagGetMF(int Handle) => ExtractMultiStringUtf8(Bass.ChannelGetTags(Handle, TagType.MF));
-
-        public static string[] TagGetRiff(int Handle) => ExtractMultiStringAnsi(Bass.ChannelGetTags(Handle, TagType.RiffInfo));
         #endregion
     }
 }

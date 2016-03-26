@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ManagedBass
+namespace ManagedBass.Tags
 {
     /// <summary>
     /// Wraps an ID3v1 tag

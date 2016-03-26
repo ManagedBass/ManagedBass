@@ -1,120 +1,253 @@
-using System.Collections.Generic;
+// Adopted from the great article: http://www.codeproject.com/Articles/17890/Do-Anything-With-ID
 
-namespace ManagedBass
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
+
+namespace ManagedBass.Tags
 {
     public class ID3v2Tag
     {
-        Dictionary<string, string> Other = new Dictionary<string, string>();
-
-        ID3v2Tag(Dictionary<string, string> Frames)
+        enum TextEncodings
         {
-            foreach (var frame in Frames)
+            Ascii,
+            UTF_16,
+            UTF_16BE,
+            UTF8
+        }
+
+        IntPtr ptr;
+        Version VersionInfo;
+
+        public ID3v2Tag(IntPtr Pointer)
+        {
+            ptr = Pointer;
+
+            if (ReadText(3, TextEncodings.Ascii) != "ID3") // If don't contain ID3v2 tag
+                throw new DataMisalignedException("ID3v2 info not found");
+
+            VersionInfo = new Version(2, ReadByte(), ReadByte()); // Read ID3v2 version           
+            ptr += 1; // Flags are skipped
+
+            ReadAllFrames(ReadSize());
+        }
+
+        public ID3v2Tag(int Channel) : this(Bass.ChannelGetTags(Channel, TagType.ID3v2)) { }
+
+        void ReadAllFrames(int Length)
+        {
+            string FrameID;
+            int FrameLength;
+            byte Buf;
+
+            // If ID3v2 is ID3v2.2 FrameID, FrameLength of Frames is 3 byte
+            // otherwise it's 4 character
+            int FrameIDLen = VersionInfo.Minor == 2 ? 3 : 4;
+
+            // Minimum frame size is 10 because frame header is 10 byte
+            while (Length > 10)
             {
-                switch (frame.Key)
+                // check for padding( 00 bytes )
+                Buf = ReadByte();
+
+                if (Buf == 0)
                 {
-                    case "TALB":
-                    case "TAL":
-                        Album = frame.Value;
-                        break;
-
-                    case "TBPM":
-                    case "TBP":
-                        BPM = frame.Value;
-                        break;
-
-                    case "TCOM":
-                    case "TCM":
-                        Composer = frame.Value;
-                        break;
-
-                    case "TCOP":
-                    case "TCR":
-                        Copyright = frame.Value;
-                        break;
-
-                    case "TIT1":
-                    case "TT1":
-                        Grouping = frame.Value;
-                        break;
-
-                    case "TIT2":
-                    case "TT2":
-                        Title = frame.Value;
-                        break;
-
-                    case "TIT3":
-                    case "TT3":
-                        Subtitle = frame.Value;
-                        break;
-
-                    case "TPE1":
-                    case "TP1":
-                        Artist = frame.Value;
-                        break;
-
-                    case "TPE2":
-                    case "TP2":
-                        AlbumArtist = frame.Value;
-                        break;
-
-                    case "TCON":
-                    case "TCO":
-                        Genre = frame.Value;
-                        break;
-
-                    case "TPUB":
-                    case "TPB":
-                        Publisher = frame.Value;
-                        break;
-
-                    case "TENC":
-                    case "TEN":
-                        Encoder = frame.Value;
-                        break;
-
-                    case "TEXT":
-                    case "TXT":
-                        Lyricist = frame.Value;
-                        break;
-
-                    case "TYER":
-                    case "TYE":
-                        Year = frame.Value;
-                        break;
-
-                    case "TPE3":
-                    case "TP3":
-                        Conductor = frame.Value;
-                        break;
-
-                    default:
-                        Other.Add(frame.Key, frame.Value);
-                        break;
+                    Length--;
+                    continue;
                 }
+
+                // if readed byte is not zero. it must read as FrameID
+                ptr -= 1;
+
+                // ---------- Read Frame Header -----------------------
+                FrameID = ReadText(FrameIDLen, TextEncodings.Ascii);
+                FrameLength = Convert.ToInt32(ReadUInt(FrameIDLen));
+
+                if (FrameIDLen == 4)
+                    ReadUInt(2);
+
+                bool Added = AddFrame(FrameID, FrameLength);
+
+                // if don't read this frame, we must go forward to read next frame
+                if (!Added)
+                    ptr += FrameLength;
+
+                Length -= FrameLength + 10;
             }
         }
 
-        public string Artist { get; }
-        public string Album { get; }
-        public string AlbumArtist { get; }
-        public string Title { get; }
-        public string Subtitle { get; }
-        public string BPM { get; }
-        public string Composer { get; }
-        public string Copyright { get; }
-        public string Genre { get; }
-        public string Grouping { get; }
-        public string Publisher { get; }
-        public string Encoder { get; }
-        public string Lyricist { get; }
-        public string Year { get; }
-        public string Conductor { get; }
-
-        public static ID3v2Tag Read(int Channel)
+        bool AddFrame(string FrameID, int Length)
         {
-            var ptr = Bass.ChannelGetTags(Channel, TagType.ID3v2);
+            if (FrameID == null || !IsValidFrameID(FrameID))
+                return false;
 
-            return new ID3v2Tag(new ID3v2Reader(ptr).TextFrames);
+            if (FrameID[0].Is('T', 'W')) // Is Text Frame
+            {
+                bool IsURL = FrameID[0] == 'W';
+
+                TextEncodings TextEncoding;
+
+                if (IsURL) TextEncoding = TextEncodings.Ascii;
+                else
+                {
+                    TextEncoding = (TextEncodings)ReadByte();
+                    Length--;
+                    if (!Enum.IsDefined(typeof(TextEncodings), TextEncoding))
+                        return false;
+                }
+
+                var Text = ReadText(Length, TextEncoding);
+
+                TextFrames.Add(FrameID, Text);
+                return true;
+            }
+
+            return false;
         }
+
+        static bool IsValidFrameID(string FrameID)
+        {
+            if (FrameID == null || !FrameID.Length.Is(3, 4))
+                return false;
+
+            foreach (char ch in FrameID)
+                if (!Char.IsUpper(ch) && !char.IsDigit(ch))
+                    return false;
+
+            return true;
+        }
+
+        public Dictionary<string, string> TextFrames { get; } = new Dictionary<string, string>();
+
+        #region Streaming
+        string ReadText(int MaxLength, TextEncodings TEncoding)
+        {
+            if (MaxLength <= 0)
+                return "";
+
+            var MStream = new MemoryStream();
+
+            if (MaxLength >= 3)
+            {
+                byte[] Buffer = new byte[3];
+
+                Read(Buffer, 0, Buffer.Length);
+
+                if (Buffer[0] == 0xFF && Buffer[1] == 0xFE)
+                {   // FF FE
+                    TEncoding = TextEncodings.UTF_16;// UTF-16 (LE)
+
+                    ptr -= 1;
+
+                    MaxLength -= 2;
+                }
+                else if (Buffer[0] == 0xFE && Buffer[1] == 0xFF)
+                {   // FE FF
+                    TEncoding = TextEncodings.UTF_16BE;
+
+                    ptr -= 1;
+
+                    MaxLength -= 2;
+                }
+                else if (Buffer[0] == 0xEF && Buffer[1] == 0xBB && Buffer[2] == 0xBF)
+                {
+                    // EF BB BF
+                    TEncoding = TextEncodings.UTF8;
+                    MaxLength -= 3;
+                }
+                else ptr -= 3;
+            }
+            bool Is2ByteSeprator = TEncoding.Is(TextEncodings.UTF_16, TextEncodings.UTF_16BE);
+
+            byte Buf;
+            while (MaxLength > 0)
+            {
+                Buf = ReadByte(); // Read First/Next byte from stream
+
+                if (Buf != 0) // if it's data byte
+                    MStream.WriteByte(Buf);
+                else // if Buf == 0
+                {
+                    if (Is2ByteSeprator)
+                    {
+                        byte Temp = ReadByte();
+                        if (Temp == 0)
+                            break;
+                        else
+                        {
+                            MStream.WriteByte(Buf);
+                            MStream.WriteByte(Temp);
+                            MaxLength--;
+                        }
+                    }
+                    else break;
+                }
+                MaxLength--;
+            }
+
+            if (MaxLength < 0)
+                ptr += MaxLength;
+
+            return GetEncoding(TEncoding).GetString(MStream.ToArray());
+        }
+
+        byte ReadByte()
+        {
+            byte[] RByte = new byte[1];
+
+            Read(RByte, 0, 1);
+
+            return RByte[0];
+        }
+
+        uint ReadUInt(int Length)
+        {
+            if (Length > 4 || Length < 1)
+                throw (new ArgumentOutOfRangeException("ReadUInt method can read 1-4 byte(s)"));
+
+            byte[] Buf = new byte[Length],
+                   RBuf = new byte[4];
+
+            Read(Buf, 0, Length);
+
+            Buf.CopyTo(RBuf, 4 - Buf.Length);
+            Array.Reverse(RBuf);
+
+            return BitConverter.ToUInt32(RBuf, 0);
+        }
+
+        int ReadSize()
+        {
+            /* ID3 Size is like:
+             * 0XXXXXXXb 0XXXXXXXb 0XXXXXXXb 0XXXXXXXb (b means binary)
+             * the zero bytes must ignore, so we have 28 bits number = 0x1000 0000 (maximum)
+             * it's equal to 256MB
+             */
+            return ReadByte() * 0x200000 + ReadByte() * 0x4000 + ReadByte() * 0x80 + ReadByte();
+        }
+
+        Encoding GetEncoding(TextEncodings TEncoding)
+        {
+            switch (TEncoding)
+            {
+                case TextEncodings.UTF_16:
+                    return Encoding.Unicode;
+                case TextEncodings.UTF_16BE:
+                    return Encoding.GetEncoding("UTF-16BE");
+                case TextEncodings.UTF8:
+                    return Encoding.UTF8;
+                default:
+                    return Encoding.Default;
+            }
+        }
+
+        void Read(byte[] buffer, int offset, int count)
+        {
+            Marshal.Copy(ptr, buffer, offset, count);
+            ptr += count;
+        }
+        #endregion
     }
 }

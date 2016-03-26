@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ManagedBass.Tags;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -197,24 +198,13 @@ namespace ManagedBass
 
             Handle = h;
 
-            ID3v1Tag tags = null;
+            var tags = TagReader.Read(Handle);
 
-            try { tags = ID3v1Tag.Read(Handle); }
-            catch { }
+            Title = !string.IsNullOrWhiteSpace(tags.Title) ? tags.Title 
+                                                           : Path.GetFileNameWithoutExtension(FileName);
+            Artist = tags.Artist;
+            Album = tags.Album;
             
-            if (tags != null)
-            {
-                Title = !string.IsNullOrWhiteSpace(tags.Title) ? tags.Title 
-                                                               : Path.GetFileNameWithoutExtension(FileName);
-                Artist = tags.Artist;
-                Album = tags.Album;
-            }
-            else
-            {
-                Title = Path.GetFileNameWithoutExtension(FileName);
-                Artist = Album = "";
-            }
-
             InitProperties();
 
             MediaLoaded?.Invoke(h);

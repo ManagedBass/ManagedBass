@@ -77,7 +77,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        public static int MusicLoad(string File, long Offset, int Length, BassFlags Flags, int Frequency = 44100)
+        public static int MusicLoad(string File, long Offset = 0, int Length = 0, BassFlags Flags = BassFlags.Default, int Frequency = 44100)
         {
             return BASS_MusicLoad(false, File, Offset, Length, Flags | BassFlags.Unicode, Frequency);
         }
@@ -141,7 +141,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-		public static int MusicLoad(IntPtr Memory, long Offset, int Length, BassFlags Flags, int Frequency = 44100)
+		public static int MusicLoad(IntPtr Memory, long Offset, int Length, BassFlags Flags = BassFlags.Default, int Frequency = 44100)
         {
             return BASS_MusicLoad(true, Memory, Offset, Length, Flags, Frequency);
         }
@@ -205,7 +205,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        public static int MusicLoad(byte[] Memory, long Offset, int Length, BassFlags Flags, int Frequency = 44100)
+        public static int MusicLoad(byte[] Memory, long Offset, int Length, BassFlags Flags = BassFlags.Default, int Frequency = 44100)
         {
             return BASS_MusicLoad(true, Memory, Offset, Length, Flags, Frequency);
         }

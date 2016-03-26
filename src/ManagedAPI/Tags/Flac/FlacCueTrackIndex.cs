@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ManagedBass
+namespace ManagedBass.Tags
 {
     [StructLayout(LayoutKind.Sequential)]
     public class FlacCueTrackIndex

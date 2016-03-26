@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ManagedBass
+namespace ManagedBass.Tags
 {
     [Flags]
     public enum CueSheetTrackType
