@@ -8,6 +8,7 @@ namespace ManagedBass.Tags
     {
         TagReader() { }
 
+        #region Properties
         public Dictionary<string, string> Other { get; } = new Dictionary<string, string>();
 
         public string Title { get; private set; }
@@ -32,6 +33,7 @@ namespace ManagedBass.Tags
         public string Rating { get; private set; }
         public string ISRC { get; private set; }
         public string Remixer { get; private set; }
+        #endregion
 
         public static TagReader Read(string FileName)
         {
@@ -56,6 +58,9 @@ namespace ManagedBass.Tags
                     Bass.MusicFree(h);
                 }
             }
+
+            if (!string.IsNullOrWhiteSpace(Result.Title))
+                Result.Title = System.IO.Path.GetFileNameWithoutExtension(FileName);
 
             return Result;
         }
@@ -783,6 +788,10 @@ namespace ManagedBass.Tags
 
                     case "TSCR":
                         ISRC = frame.Value;
+                        break;
+
+                    case "POPM":
+                        Rating = frame.Value;
                         break;
 
                     default:

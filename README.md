@@ -13,18 +13,20 @@ Download the versions you need.
 
 Features
 -----------------------------------------
-* **Open Source**
 * **FREE**: You get freedom from the licensing of Bass.Net.  
-  BASS and other ADDONS STILL NEED TO BE LICENSED.
-* You don't have to suppress Popups by providing a Registration Key.
+  BASS and other ADDONS STILL NEED TO BE LICENSED.  
+  You don't have to suppress Popups by providing a Registration Key.
+
 * **Method Names** have been **simplified** in Dynamics using `EntryPoint` Parameter of `DllImport`.  
   e.g. Instead of `BassWma.BASS_WMA_EncodeOpenFile()` you could use `BassWma.EncodeOpenFile();`
+
 * **Plugin Add-Ons** are wrapped in a light-weight way as instances of the Plugin class.  
   Most Plugins are supported.  
-  Plugin class works through the plugin's exposed functions on Windows and `Bass.PluginLoad` on other platforms.
-* ManagedBass provides completely managed types for your use.  
-  It does the Native wrapping in **ManagedBass.Dynamics**.  
-  You could use these types in this namespace directly or use Managed Alternatives.
+  Their Specific functions are not wrapped due to lack of productivity.
+
+* ManagedBass provides completely managed types for your use along with the Native wrapper types.  
+  Namespaces are grouped by AddOns or Features.
+
 * Intended to be a single Cross-Platform library (Works on **Windows**, also runs on **Xamarin.Android**).  
   `<DllMap>` in **ManagedBass.dll.config** may be used with **Mono** to map to custom Dll Names/Paths.  
   **iOS** is **not** currently supported due to the requirement of **static _internal** linking.

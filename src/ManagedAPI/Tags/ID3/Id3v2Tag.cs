@@ -94,6 +94,7 @@ namespace ManagedBass.Tags
                 {
                     TextEncoding = (TextEncodings)ReadByte();
                     Length--;
+
                     if (!Enum.IsDefined(typeof(TextEncodings), TextEncoding))
                         return false;
                 }
@@ -102,6 +103,42 @@ namespace ManagedBass.Tags
 
                 TextFrames.Add(FrameID, Text);
                 return true;
+            }
+            else
+            {
+                switch (FrameID)
+                {
+                    case "POPM":
+                        ReadText(Length, TextEncodings.Ascii, ref Length, true); // Skip Email Address
+
+                        var Rating = ReadByte().ToString(); // Read Rating
+                        
+                        if (--Length > 8)
+                            return false;
+            
+                        ptr += Length; // Skip Counter value
+                        
+                        TextFrames.Add("POPM", Rating);
+                        break;
+
+                    case "COM":
+                    case "COMM":
+                        var TextEncoding = (TextEncodings)ReadByte();
+                        
+                        Length--;
+                        
+                        if (!Enum.IsDefined(typeof(TextEncodings), TextEncoding))
+                            return false;
+
+                        ptr += 3;
+                        
+                        Length -= 3;
+
+                        var _Description = ReadText(Length, TextEncoding, ref Length, true);
+
+                        TextFrames.Add("COMM", ReadText(Length, TextEncoding));
+                        break;
+                }
             }
 
             return false;
@@ -124,39 +161,48 @@ namespace ManagedBass.Tags
         #region Streaming
         string ReadText(int MaxLength, TextEncodings TEncoding)
         {
+            int i = 0;
+            return ReadText(MaxLength, TEncoding, ref i, false);
+        }
+        
+        string ReadText(int MaxLength, TextEncodings TEncoding, ref int ReadedLength, bool DetectEncoding)
+        {
             if (MaxLength <= 0)
                 return "";
 
+            var Pos = ptr;
+
             var MStream = new MemoryStream();
 
-            if (MaxLength >= 3)
+            if (DetectEncoding && MaxLength >= 3)
             {
                 byte[] Buffer = new byte[3];
-
+                
                 Read(Buffer, 0, Buffer.Length);
-
+                
                 if (Buffer[0] == 0xFF && Buffer[1] == 0xFE)
-                {   // FF FE
-                    TEncoding = TextEncodings.UTF_16;// UTF-16 (LE)
-
+                {   
+                    // FF FE
+                    TEncoding = TextEncodings.UTF_16; // UTF-16 (LE)
                     ptr -= 1;
-
                     MaxLength -= 2;
                 }
+
                 else if (Buffer[0] == 0xFE && Buffer[1] == 0xFF)
-                {   // FE FF
+                {   
+                    // FE FF
                     TEncoding = TextEncodings.UTF_16BE;
-
                     ptr -= 1;
-
                     MaxLength -= 2;
                 }
+
                 else if (Buffer[0] == 0xEF && Buffer[1] == 0xBB && Buffer[2] == 0xBF)
-                {
+                {                    
                     // EF BB BF
                     TEncoding = TextEncodings.UTF8;
                     MaxLength -= 3;
                 }
+
                 else ptr -= 3;
             }
             bool Is2ByteSeprator = TEncoding.Is(TextEncodings.UTF_16, TextEncodings.UTF_16BE);
@@ -168,13 +214,16 @@ namespace ManagedBass.Tags
 
                 if (Buf != 0) // if it's data byte
                     MStream.WriteByte(Buf);
+
                 else // if Buf == 0
                 {
                     if (Is2ByteSeprator)
                     {
                         byte Temp = ReadByte();
+
                         if (Temp == 0)
                             break;
+                        
                         else
                         {
                             MStream.WriteByte(Buf);
@@ -184,11 +233,14 @@ namespace ManagedBass.Tags
                     }
                     else break;
                 }
+
                 MaxLength--;
             }
 
             if (MaxLength < 0)
                 ptr += MaxLength;
+
+            ReadedLength -= Convert.ToInt32(ptr.ToInt32() - Pos.ToInt32());
 
             return GetEncoding(TEncoding).GetString(MStream.ToArray());
         }
