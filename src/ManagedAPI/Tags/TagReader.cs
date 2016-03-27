@@ -37,6 +37,8 @@ namespace ManagedBass.Tags
 
         public static TagReader Read(string FileName)
         {
+            Bass.Init();
+
             int h = Bass.CreateStream(FileName, Flags: BassFlags.Prescan);
 
             TagReader Result = null;

@@ -82,7 +82,7 @@ namespace ManagedBass
         /// <seealso cref="CreateSample"/>
         /// <seealso cref="SampleLoad(string, long, int, int, BassFlags)"/>
         [DllImport(DllName, EntryPoint = "BASS_Init")]
-        public static extern bool Init(int Device, int Frequency = 44100, DeviceInitFlags Flags = DeviceInitFlags.Default, IntPtr Win = default(IntPtr), IntPtr ClsID = default(IntPtr));
+        public static extern bool Init(int Device = DefaultDevice, int Frequency = 44100, DeviceInitFlags Flags = DeviceInitFlags.Default, IntPtr Win = default(IntPtr), IntPtr ClsID = default(IntPtr));
         
         /// <summary>
         /// Starts (or resumes) the output.

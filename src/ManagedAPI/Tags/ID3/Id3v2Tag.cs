@@ -118,8 +118,8 @@ namespace ManagedBass.Tags
             
                         ptr += Length; // Skip Counter value
                         
-                        TextFrames.Add("POPM", Rating);
-                        break;
+                        TextFrames.Add("POPM", Rating);                        
+                        return true;
 
                     case "COM":
                     case "COMM":
@@ -134,10 +134,38 @@ namespace ManagedBass.Tags
                         
                         Length -= 3;
 
-                        var _Description = ReadText(Length, TextEncoding, ref Length, true);
+                        ReadText(Length, TextEncoding, ref Length, true); // Skip Description
 
                         TextFrames.Add("COMM", ReadText(Length, TextEncoding));
-                        break;
+                        return true;
+
+                    case "APIC":
+                        var _TextEncoding = (TextEncodings)ReadByte();
+                        
+                        Length--;
+                        
+                        if (!Enum.IsDefined(typeof(TextEncodings), _TextEncoding))
+                            return false;
+
+                        var _MIMEType = ReadText(Length, TextEncodings.Ascii, ref Length, true);
+
+                        var _PictureType = (ID3PictureTypes)ReadByte();
+
+                        Length--;
+
+                        ReadText(Length, _TextEncoding, ref Length, true); // Skip Description
+
+                        byte[] _Data = new byte[Length];
+
+                        Read(_Data, 0, Length);
+
+                        PictureFrames.Add(new ID3Picture()
+                        {
+                            Data = _Data,
+                            MimeType = _MIMEType,
+                            PictureType = _PictureType
+                        });
+                        return true;
                 }
             }
 
@@ -157,6 +185,8 @@ namespace ManagedBass.Tags
         }
 
         public Dictionary<string, string> TextFrames { get; } = new Dictionary<string, string>();
+
+        public List<ID3Picture> PictureFrames { get; } = new List<ID3Picture>();
 
         #region Streaming
         string ReadText(int MaxLength, TextEncodings TEncoding)

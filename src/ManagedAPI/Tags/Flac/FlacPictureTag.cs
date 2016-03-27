@@ -14,7 +14,7 @@ namespace ManagedBass.Tags
         /// The MIME type. This may be "--&gt;" to signify that data contains a URL of the picture rather than the picture data itself.
         /// </summary>
         public string Mime => Marshal.PtrToStringAnsi(mime);
-                
+
         IntPtr description;
 
         /// <summary>
