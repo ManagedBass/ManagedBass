@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass
@@ -249,12 +248,12 @@ namespace ManagedBass
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
-            int Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
+            var Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
 
             if (Handle == 0)
                 GCPin.Free();
 
-            else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
+            else ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
 
             return Handle;
         }
@@ -318,7 +317,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int CreateStream(StreamSystem System, BassFlags Flags, FileProcedures Procedures, IntPtr User = default(IntPtr))
         {
-            int h = BASS_StreamCreateFileUser(System, Flags, Procedures, User);
+            var h = BASS_StreamCreateFileUser(System, Flags, Procedures, User);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(h, 0, Procedures);
@@ -333,7 +332,7 @@ namespace ManagedBass
 
         public static int CreateStream(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr))
         {
-            int h = BASS_StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User);
+            var h = BASS_StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(h, 0, Procedure);
@@ -343,11 +342,11 @@ namespace ManagedBass
         #endregion
 
         [DllImport(DllName)]
-        extern static int BASS_StreamCreate(int Frequency, int Channels, BassFlags Flags, StreamProcedure Procedure, IntPtr User);
+        static extern int BASS_StreamCreate(int Frequency, int Channels, BassFlags Flags, StreamProcedure Procedure, IntPtr User);
 
         public static int CreateStream(int Frequency, int Channels, BassFlags Flags, StreamProcedure Procedure, IntPtr User = default(IntPtr))
         {
-            int h = BASS_StreamCreate(Frequency, Channels, Flags, Procedure, User);
+            var h = BASS_StreamCreate(Frequency, Channels, Flags, Procedure, User);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(h, 0, Procedure);
@@ -356,40 +355,40 @@ namespace ManagedBass
         }
 
         [DllImport(DllName, EntryPoint = "BASS_StreamCreate")]
-        public extern static int CreateStream(int Frequency, int Channels, BassFlags Flags, StreamProcedureType Procedure, IntPtr User = default(IntPtr));
+        public static extern int CreateStream(int Frequency, int Channels, BassFlags Flags, StreamProcedureType Procedure, IntPtr User = default(IntPtr));
 
         #region Stream Put Data
         [DllImport(DllName, EntryPoint = "BASS_StreamPutData")]
-        public extern static int StreamPutData(int Handle, IntPtr Buffer, int Length);
+        public static extern int StreamPutData(int Handle, IntPtr Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_StreamPutData")]
-        public extern static int StreamPutData(int Handle, byte[] Buffer, int Length);
+        public static extern int StreamPutData(int Handle, byte[] Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_StreamPutData")]
-        public extern static int StreamPutData(int Handle, short[] Buffer, int Length);
+        public static extern int StreamPutData(int Handle, short[] Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_StreamPutData")]
-        public extern static int StreamPutData(int Handle, int[] Buffer, int Length);
+        public static extern int StreamPutData(int Handle, int[] Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_StreamPutData")]
-        public extern static int StreamPutData(int Handle, float[] Buffer, int Length);
+        public static extern int StreamPutData(int Handle, float[] Buffer, int Length);
         #endregion
 
         #region Stream Put File Data
         [DllImport(DllName, EntryPoint = "BASS_StreamPutFileData")]
-        public extern static int StreamPutFileData(int Handle, IntPtr Buffer, int Length);
+        public static extern int StreamPutFileData(int Handle, IntPtr Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_StreamPutFileData")]
-        public extern static int StreamPutFileData(int Handle, byte[] Buffer, int Length);
+        public static extern int StreamPutFileData(int Handle, byte[] Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_StreamPutFileData")]
-        public extern static int StreamPutFileData(int Handle, short[] Buffer, int Length);
+        public static extern int StreamPutFileData(int Handle, short[] Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_StreamPutFileData")]
-        public extern static int StreamPutFileData(int Handle, int[] Buffer, int Length);
+        public static extern int StreamPutFileData(int Handle, int[] Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_StreamPutFileData")]
-        public extern static int StreamPutFileData(int Handle, float[] Buffer, int Length);
+        public static extern int StreamPutFileData(int Handle, float[] Buffer, int Length);
         #endregion
 
         /// <summary>

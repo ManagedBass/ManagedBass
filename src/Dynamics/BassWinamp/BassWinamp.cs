@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass.Winamp
@@ -63,7 +62,7 @@ namespace ManagedBass.Winamp
         {
             var titleptr = Marshal.AllocHGlobal(255);
 
-            bool Result = BASS_WINAMP_GetFileInfoInt(file, titleptr, out lenms);
+            var Result = BASS_WINAMP_GetFileInfoInt(file, titleptr, out lenms);
 
             title = Marshal.PtrToStringAnsi(titleptr);
 

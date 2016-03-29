@@ -23,14 +23,14 @@ namespace ManagedBass.Pitch
 
         public event Action<PitchRecord> PitchDetected;
 
-        protected override void Callback(BufferProvider buffer)
+        protected override void Callback(BufferProvider Buffer)
         {
-            if (_buffer == null || _buffer.Length < buffer.FloatLength)
-                _buffer = new float[buffer.FloatLength];
+            if (_buffer == null || _buffer.Length < Buffer.FloatLength)
+                _buffer = new float[Buffer.FloatLength];
 
-            buffer.Read(_buffer);
+            Buffer.Read(_buffer);
 
-            pTracker.ProcessBuffer(_buffer, buffer.FloatLength);
+            pTracker.ProcessBuffer(_buffer, Buffer.FloatLength);
         }
     }
 }

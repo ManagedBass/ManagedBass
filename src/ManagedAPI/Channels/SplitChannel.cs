@@ -2,16 +2,16 @@
 
 namespace ManagedBass.Mix
 {
-    public class SplitChannel : Channel
+    public sealed class SplitChannel : Channel
     {
-        Channel Source;
+        Channel _source;
 
         public SplitChannel(Channel DecodingSource, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
             if (!DecodingSource.IsDecodingChannel)
                 throw new ArgumentException("Not a Decoding Channel!");
 
-            this.Source = DecodingSource;
+            _source = DecodingSource;
 
             Handle = BassMix.CreateSplitStream(DecodingSource.Handle, FlagGen(IsDecoder, Resolution), null);
         }
@@ -19,7 +19,7 @@ namespace ManagedBass.Mix
         public override void Dispose()
         {
             base.Dispose();
-            Source = null;
+            _source = null;
         }
     }
 }

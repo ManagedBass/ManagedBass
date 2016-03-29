@@ -12,7 +12,7 @@ namespace ManagedBass.Asio
         IntPtr name;
         IntPtr driver;
 
-        string PtrToString(IntPtr ptr) => BassAsio.Unicode ? Marshal.PtrToStringUni(ptr) : Marshal.PtrToStringAnsi(ptr);
+        static string PtrToString(IntPtr ptr) => BassAsio.Unicode ? Marshal.PtrToStringUni(ptr) : Marshal.PtrToStringAnsi(ptr);
 
         /// <summary>
         /// The description of the device.

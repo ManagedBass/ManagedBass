@@ -59,7 +59,7 @@ namespace ManagedBass.Tags
 				if (Length == 0)
                     return null;
 				
-				byte[] arr = new byte[Length];
+				var arr = new byte[Length];
 				Marshal.Copy(data, arr, 0, Length);
 				return arr;
 			}
@@ -68,16 +68,7 @@ namespace ManagedBass.Tags
         /// <summary>
 		/// Returns the image URL, if the <see cref="Mime" /> type is "--&gt;" - else <see langword="null" />.
 		/// </summary>
-        public string URL
-        {
-            get
-            {
-                if (Mime == "-->")
-                    return null;
-
-                return Marshal.PtrToStringAnsi(data);
-            }
-        }
+        public string URL => Mime == "-->" ? null : Marshal.PtrToStringAnsi(data);
 
         public static FlacPictureTag Read(int Channel, int Index)
         {

@@ -8,11 +8,11 @@ namespace ManagedBass.Fx
     [StructLayout(LayoutKind.Sequential)]
     public class EchoParameters : IEffectParameter
     {
-        public float fDryMix = 0;
-        public float fWetMix = 0;
-        public float fFeedback = 0;
-        public float fDelay = 0;
-        public int bStereo = 0;
+        public float fDryMix;
+        public float fWetMix;
+        public float fFeedback;
+        public float fDelay;
+        public int bStereo;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
         public EffectType FXType => EffectType.Echo;

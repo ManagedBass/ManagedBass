@@ -8,7 +8,7 @@ namespace ManagedBass.Fx
     [StructLayout(LayoutKind.Sequential)]
     public class RotateParameters : IEffectParameter
     {
-        public float fRate = 0;
+        public float fRate;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
         public EffectType FXType => EffectType.Rotate;

@@ -78,9 +78,9 @@ namespace ManagedBass
         {
             get
             {
-                if (flags.HasFlag(BassFlags.Byte)) return Resolution.Byte;
-                else if (flags.HasFlag(BassFlags.Float)) return Resolution.Float;
-                else return Resolution.Short;
+                if (flags.HasFlag(BassFlags.Byte))
+                    return Resolution.Byte;
+                return flags.HasFlag(BassFlags.Float) ? Resolution.Float : Resolution.Short;
             }
         }
 

@@ -6,25 +6,25 @@ namespace ManagedBass
 {
     public static partial class Bass
     {
-        static IOSNotifyProcedure iosnproc = (status) => _iosnotify?.Invoke(status);
+        static readonly IOSNotifyProcedure iosnproc = status => _iosnotify?.Invoke(status);
 
         [DllImport(DllName, EntryPoint = "BASS_SetConfig")]
-        internal extern static bool Configure(Configuration option, bool newvalue);
+        internal static extern bool Configure(Configuration option, bool newvalue);
 
         [DllImport(DllName, EntryPoint = "BASS_SetConfig")]
-        internal extern static bool Configure(Configuration option, int newvalue);
+        internal static extern bool Configure(Configuration option, int newvalue);
 
         [DllImport(DllName, EntryPoint = "BASS_SetConfigPtr")]
-        internal extern static bool Configure(Configuration option, IntPtr newvalue);
+        internal static extern bool Configure(Configuration option, IntPtr newvalue);
 
         [DllImport(DllName, EntryPoint = "BASS_GetConfig")]
-        internal extern static int GetConfig(Configuration option);
+        internal static extern int GetConfig(Configuration option);
 
         [DllImport(DllName, EntryPoint = "BASS_GetConfigPtr")]
-        internal extern static IntPtr GetConfigPtr(Configuration option);
+        internal static extern IntPtr GetConfigPtr(Configuration option);
 
         [DllImport(DllName, EntryPoint = "BASS_GetConfig")]
-        internal extern static bool GetConfigBool(Configuration option);
+        internal static extern bool GetConfigBool(Configuration option);
 
         public static bool EnableAirplayReceivers(int receivers)
         {
@@ -399,9 +399,9 @@ namespace ManagedBass
             get { return Marshal.PtrToStringAnsi(GetConfigPtr(Configuration.NetAgent)); }
             set
             {
-                IntPtr ptr = Marshal.StringToHGlobalAnsi(value);
+                var ptr = Marshal.StringToHGlobalAnsi(value);
                 
-                Bass.Configure(Configuration.NetAgent, ptr);
+                Configure(Configuration.NetAgent, ptr);
 
                 Marshal.FreeHGlobal(ptr);
             }
@@ -420,9 +420,9 @@ namespace ManagedBass
             get { return Marshal.PtrToStringAnsi(GetConfigPtr(Configuration.NetProxy)); }
             set
             {
-                IntPtr ptr = Marshal.StringToHGlobalAnsi(value);
+                var ptr = Marshal.StringToHGlobalAnsi(value);
                 
-                Bass.Configure(Configuration.NetProxy, ptr);
+                Configure(Configuration.NetProxy, ptr);
 
                 Marshal.FreeHGlobal(ptr);
             }

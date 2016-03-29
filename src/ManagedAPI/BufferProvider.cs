@@ -37,7 +37,7 @@ namespace ManagedBass
 
         public BufferProvider(IntPtr Buffer, int ByteLength)
         {
-            this.Pointer = Buffer;
+            Pointer = Buffer;
             this.ByteLength = ByteLength;
         }
 

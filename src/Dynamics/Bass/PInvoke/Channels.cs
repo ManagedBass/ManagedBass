@@ -70,7 +70,7 @@ namespace ManagedBass
         /// </remarks>
         public static int ChannelSetDSP(int Handle, DSPProcedure Procedure, IntPtr User = default(IntPtr), int Priority = 0)
         {
-            int h = BASS_ChannelSetDSP(Handle, Procedure, User, Priority);
+            var h = BASS_ChannelSetDSP(Handle, Procedure, User, Priority);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(Handle, h, Procedure);
@@ -79,7 +79,7 @@ namespace ManagedBass
         }
         
         [DllImport(DllName)]
-        extern static bool BASS_ChannelRemoveDSP(int Handle, int DSP);
+        static extern bool BASS_ChannelRemoveDSP(int Handle, int DSP);
 
         /// <summary>
         /// Removes a DSP function from a stream, MOD music, or recording channel.
@@ -90,7 +90,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Handle">At least one of <paramref name="Handle" /> and <paramref name="DSP" /> is not valid.</exception>
         public static bool ChannelRemoveDSP(int Handle, int DSP)
         {
-            bool b = BASS_ChannelRemoveDSP(Handle, DSP);
+            var b = BASS_ChannelRemoveDSP(Handle, DSP);
 
             if (b)
                 Extensions.ChannelReferences.Remove<DSPProcedure>(Handle, DSP);
@@ -136,7 +136,7 @@ namespace ManagedBass
         /// </remarks>
         public static int ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedure Procedure, IntPtr User = default(IntPtr))
         {
-            int h = BASS_ChannelSetSync(Handle, Type, Parameter, Procedure, User);
+            var h = BASS_ChannelSetSync(Handle, Type, Parameter, Procedure, User);
             
             if (h != 0)
                 Extensions.ChannelReferences.Add(Handle, h, Procedure);
@@ -159,7 +159,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         public static bool ChannelRemoveSync(int Handle, int Sync)
         {
-            bool b = BASS_ChannelRemoveSync(Handle, Sync);
+            var b = BASS_ChannelRemoveSync(Handle, Sync);
 
             if (b)
                 Extensions.ChannelReferences.Remove<SyncProcedure>(Handle, Sync);
@@ -255,7 +255,7 @@ namespace ManagedBass
         /// A channel must be unlocked in the same thread that it was locked.
         /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_ChannelLock")]
-        public extern static bool ChannelLock(int Handle, bool Lock = true);
+        public static extern bool ChannelLock(int Handle, bool Lock = true);
 
         /// <summary>
         /// Checks if a sample, stream, or MOD music is active (playing) or stalled. Can also check if a recording is in progress.
@@ -273,7 +273,7 @@ namespace ManagedBass
         /// </para>
         /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_ChannelIsActive")]
-        public extern static PlaybackState ChannelIsActive(int Handle);
+        public static extern PlaybackState ChannelIsActive(int Handle);
         
         /// <summary>
         /// Links two MOD music or stream channels together.
@@ -305,7 +305,7 @@ namespace ManagedBass
         /// </para>
         /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_ChannelSetLink")]
-        public extern static bool ChannelSetLink(int Handle, int Channel);
+        public static extern bool ChannelSetLink(int Handle, int Channel);
         
         /// <summary>
         /// Removes a links between two MOD music or stream channels.
@@ -319,7 +319,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.Already">Either <paramref name="Channel" /> is not a valid channel, or it is already not linked to <paramref name="Handle" />.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ChannelRemoveLink")]
-        public extern static bool ChannelRemoveLink(int Handle, int Channel);
+        public static extern bool ChannelRemoveLink(int Handle, int Channel);
                 
         #region Channel Flags
         /// <summary>
@@ -357,7 +357,7 @@ namespace ManagedBass
         /// </para>
         /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_ChannelFlags")]
-        public extern static BassFlags ChannelFlags(int Handle, BassFlags Flags, BassFlags Mask);
+        public static extern BassFlags ChannelFlags(int Handle, BassFlags Flags, BassFlags Mask);
 
         /// <summary>
         /// Checks if a flag is present on a channel.
@@ -378,7 +378,7 @@ namespace ManagedBass
         /// </summary>
         /// <param name="Handle">The channel Handle... a HCHANNEL, HMUSIC, HSTREAM.</param>
         /// <param name="Flag">see <see cref="BassFlags" /></param>
-        public static bool ChannelRemoveFlag(int Handle, BassFlags Flag) => !(ChannelFlags(Handle, 0, Flag).HasFlag(Flag));
+        public static bool ChannelRemoveFlag(int Handle, BassFlags Flag) => !ChannelFlags(Handle, 0, Flag).HasFlag(Flag);
         #endregion
 
         #region Channel Attributes
@@ -394,7 +394,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.Type"><paramref name="Attribute" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetAttribute")]
-        public extern static bool ChannelGetAttribute(int Handle, ChannelAttribute Attribute, out float Value);
+        public static extern bool ChannelGetAttribute(int Handle, ChannelAttribute Attribute, out float Value);
         
         /// <summary>
         /// Retrieves the value of an attribute of a sample, stream or MOD music.
@@ -407,7 +407,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Type"><paramref name="Attribute" /> is not valid.</exception>
         public static double ChannelGetAttribute(int Handle, ChannelAttribute Attribute)
         {
-            float temp = 0;
+            float temp;
             ChannelGetAttribute(Handle, Attribute, out temp);
             return temp;
         }
@@ -444,7 +444,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Type"><paramref name="Attribute" /> is not valid.</exception>
         /// <exception cref="Errors.Parameter"><paramref name="Value" /> is not valid. See the attribute's documentation for the valid range of values.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ChannelSetAttribute")]
-        public extern static bool ChannelSetAttribute(int Handle, ChannelAttribute Attribute, float Value);
+        public static extern bool ChannelSetAttribute(int Handle, ChannelAttribute Attribute, float Value);
                 
 		/// <summary>
 		/// Sets the value of an attribute of a sample, stream or MOD music.
@@ -500,7 +500,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         /// <exception cref="Errors.NotAvailable">The requested tags are not available.</exception>
 		[DllImport(DllName, EntryPoint = "BASS_ChannelGetTags")]
-        public extern static IntPtr ChannelGetTags(int Handle, TagType Tags);
+        public static extern IntPtr ChannelGetTags(int Handle, TagType Tags);
 
         /// <summary>
         /// Retrieves the playback Length of a channel.
@@ -533,7 +533,7 @@ namespace ManagedBass
         /// </code>
         /// </example>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetLength")]
-        public extern static long ChannelGetLength(int Handle, PositionFlags Mode = PositionFlags.Bytes);
+        public static extern long ChannelGetLength(int Handle, PositionFlags Mode = PositionFlags.Bytes);
 
         /// <summary>
         /// Translates a byte position into time (seconds), based on a channel's format.
@@ -544,7 +544,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <remarks>The translation is based on the channel's initial sample rate, when it was created.</remarks>
         [DllImport(DllName, EntryPoint = "BASS_ChannelBytes2Seconds")]
-        public extern static double ChannelBytes2Seconds(int Handle, long Position);
+        public static extern double ChannelBytes2Seconds(int Handle, long Position);
         
         /// <summary>
         /// Translates a time (seconds) position into bytes, based on a channel's format.
@@ -561,7 +561,7 @@ namespace ManagedBass
         /// <para>The return value is rounded down to the position of the nearest sample.</para>
         /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_ChannelSeconds2Bytes")]
-        public extern static long ChannelSeconds2Bytes(int Handle, double Position);
+        public static extern long ChannelSeconds2Bytes(int Handle, double Position);
 
         /// <summary>
         /// Retrieves the playback position of a sample, stream, or MOD music. Can also be used with a recording channel.
@@ -577,7 +577,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         /// <remarks>With MOD music you might use the <see cref="BitHelper.LoWord" /> and <see cref="BitHelper.HiWord" /> methods to retrieve the order and the row values respectively.</remarks>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetPosition")]
-        public extern static long ChannelGetPosition(int Handle, PositionFlags Mode = PositionFlags.Bytes);
+        public static extern long ChannelGetPosition(int Handle, PositionFlags Mode = PositionFlags.Bytes);
 
         /// <summary>
         /// Sets the playback position of a sample, MOD music, or stream.
@@ -619,7 +619,7 @@ namespace ManagedBass
         /// When a file has been scanned, all seeking (even without the <see cref="PositionFlags.Scan"/> flag) within the scanned part of it will use the scanned infomation.</para>
         /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_ChannelSetPosition")]
-        public extern static bool ChannelSetPosition(int Handle, long Position, PositionFlags Mode = PositionFlags.Bytes);
+        public static extern bool ChannelSetPosition(int Handle, long Position, PositionFlags Mode = PositionFlags.Bytes);
         
         /// <summary>
         /// Checks if an attribute (or any attribute) of a sample, stream, or MOD music is sliding.
@@ -628,7 +628,7 @@ namespace ManagedBass
         /// <param name="Attribute">The attribute to check for sliding (0 for any attribute).</param>
         /// <returns>If the attribute (or any) is sliding, then <see langword="true" /> is returned, else <see langword="false" /> is returned.</returns>
         [DllImport(DllName, EntryPoint = "BASS_ChannelIsSliding")]
-        public extern static bool ChannelIsSliding(int Handle, ChannelAttribute Attribute);
+        public static extern bool ChannelIsSliding(int Handle, ChannelAttribute Attribute);
 
         /// <summary>
         /// Checks whether a <see cref="ChannelAttribute"/> is slidable via <see cref="ChannelSlideAttribute"/>.
@@ -676,7 +676,7 @@ namespace ManagedBass
         /// <para>Attribute slides are unaffected by whether the channel is playing, paused or stopped. They carry on regardless.</para>
         /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_ChannelSlideAttribute")]
-        public extern static bool ChannelSlideAttribute(int Handle, ChannelAttribute Attribute, float Value, int Time);
+        public static extern bool ChannelSlideAttribute(int Handle, ChannelAttribute Attribute, float Value, int Time);
         
         #region Channel Get Level
         [DllImport(DllName)]
@@ -684,7 +684,7 @@ namespace ManagedBass
 
         public static double ChannelGetLevel(int Channel)
         {
-            int Temp = BASS_ChannelGetLevel(Channel);
+            var Temp = BASS_ChannelGetLevel(Channel);
             return (Temp.LoWord() + Temp.HiWord()) / (2.0 * 32768);
         }
 
@@ -693,19 +693,16 @@ namespace ManagedBass
 
         public static float[] ChannelGetLevel(int handle, float length, LevelRetrievalFlags flags)
         {
-            int n = ChannelGetInfo(handle).Channels;
+            var n = ChannelGetInfo(handle).Channels;
 
             if (flags.HasFlag(LevelRetrievalFlags.Mono))
                 n = 1;
             else if (flags.HasFlag(LevelRetrievalFlags.Stereo))
                 n = 2;
 
-            float[] levels = new float[n];
+            var levels = new float[n];
 
-            if (ChannelGetLevel(handle, levels, length, flags))
-                return levels;
-
-            return null;
+            return ChannelGetLevel(handle, levels, length, flags) ? levels : null;
         }
         #endregion
 

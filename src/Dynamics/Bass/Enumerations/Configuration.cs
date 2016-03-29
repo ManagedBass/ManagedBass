@@ -74,6 +74,6 @@
         AacSupportMp4 = 67329,
         DSDFrequency = 67584,
         WinampInputTimeout = 67584,
-        DSDGain = 67585,
+        DSDGain = 67585
     }
 }

@@ -45,6 +45,6 @@ namespace ManagedBass
         /// <summary>
         /// 16-bit samples are supported by hardware mixing.
         /// </summary>
-        Secondary16Bit = 2048,
+        Secondary16Bit = 2048
     }
 }

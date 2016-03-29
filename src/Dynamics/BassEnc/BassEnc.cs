@@ -110,7 +110,7 @@ namespace ManagedBass.Enc
             get { return Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.EncodeACMLoad)); }
             set
             {
-                IntPtr ptr = Marshal.StringToHGlobalAnsi(value);
+                var ptr = Marshal.StringToHGlobalAnsi(value);
 
                 Bass.Configure(Configuration.EncodeACMLoad, ptr);
 
@@ -136,7 +136,7 @@ namespace ManagedBass.Enc
                                        ACMFormatFlags flags = ACMFormatFlags.Default,
                                        WaveFormatTag encoding = WaveFormatTag.Unknown)
         {
-            int ACMflags = BitHelper.MakeLong((short)(flags | ACMFormatFlags.Unicode), (short)encoding);
+            var ACMflags = BitHelper.MakeLong((short)(flags | ACMFormatFlags.Unicode), (short)encoding);
 
             return BASS_Encode_GetACMFormat(handle, form, formlen, title, ACMflags);
         }

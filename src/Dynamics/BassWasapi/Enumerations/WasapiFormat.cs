@@ -33,6 +33,6 @@
         /// <summary>
         /// 32-bit integer.
         /// </summary>
-        Bit32 = 4,
+        Bit32 = 4
     }
 }

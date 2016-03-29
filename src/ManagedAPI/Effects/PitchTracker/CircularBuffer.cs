@@ -7,9 +7,9 @@ namespace ManagedBass.Pitch
         int m_bufSize, m_begBufOffset, m_availBuf;
         float[] m_buffer;
         
-        public CircularBuffer(int bufCount) 
+        public CircularBuffer(int BufferCount) 
         {            
-            m_bufSize = bufCount;
+            m_bufSize = BufferCount;
             
             if (m_bufSize > 0)
                 m_buffer = new float[m_bufSize];
@@ -91,7 +91,7 @@ namespace ManagedBass.Pitch
 
             if (startRead < StartPosition || endRead > endAvail) return false;
 
-            var startReadPos = (int)(((startRead - StartPosition) + m_begBufOffset) % m_bufSize);
+            var startReadPos = (int)((startRead - StartPosition + m_begBufOffset) % m_bufSize);
             var block1Samples = Math.Min(readCount, m_bufSize - startReadPos);
             var block2Samples = readCount - block1Samples;
 

@@ -8,10 +8,10 @@ namespace ManagedBass.Fx
     [StructLayout(LayoutKind.Sequential)]
     public class DistortionParameters : IEffectParameter
     {
-        public float fDrive = 0f;
+        public float fDrive;
         public float fDryMix = 5f;
         public float fWetMix = 0.1f;
-        public float fFeedback = 0f;
+        public float fFeedback;
         public float fVolume = 0.3f;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 

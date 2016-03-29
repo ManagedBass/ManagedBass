@@ -11,14 +11,14 @@ namespace ManagedBass
     public class Channel : IDisposable
     {
         #region Fields
-        SynchronizationContext syncContext;
+        readonly SynchronizationContext _syncContext;
 
-        bool RestartOnNextPlayback = false;
+        bool _restartOnNextPlayback;
 
-        int HCHANNEL;
+        int _hchannel;
         public virtual int Handle
         {
-            get { return HCHANNEL; }
+            get { return _hchannel; }
             protected set
             {
                 ChannelInfo info;
@@ -35,33 +35,32 @@ namespace ManagedBass
                 OriginalResolution = info.OriginalResolution;
                 IsDecodingChannel = info.IsDecodingChannel;
                 
-                HCHANNEL = value;
+                _hchannel = value;
 
                 // Init Events
-                ChannelSetSync(Handle, SyncFlags.Free, 0, Free_Delegate);
-                ChannelSetSync(Handle, SyncFlags.End, 0, End_Delegate);
-                ChannelSetSync(Handle, SyncFlags.Stop, 0, Fail_Delegate);
+                ChannelSetSync(Handle, SyncFlags.Free, 0, _freeDelegate);
+                ChannelSetSync(Handle, SyncFlags.End, 0, _endDelegate);
+                ChannelSetSync(Handle, SyncFlags.Stop, 0, _failDelegate);
             }
         }
         #endregion
 
         #region Events
-        SyncProcedure Free_Delegate, End_Delegate, Fail_Delegate;
+        readonly SyncProcedure _freeDelegate, _endDelegate, _failDelegate;
 
         void OnFree(int handle, int channel, int data, IntPtr User)
         {
             try
             {
-                HCHANNEL = 0;
+                _hchannel = 0;
 
                 var handler = Disposed;
 
-                if (handler != null)
-                {
-                    if (syncContext == null)
-                        handler(this, new EventArgs());
-                    else syncContext.Post(state => handler(this, new EventArgs()), null);
-                }
+                if (handler == null)
+                    return;
+                if (_syncContext == null)
+                    handler(this, new EventArgs());
+                else _syncContext.Post(state => handler(this, new EventArgs()), null);
             }
             catch { }
         }
@@ -72,12 +71,11 @@ namespace ManagedBass
         {
             var handler = MediaEnded;
 
-            if (handler != null && !Loop)
-            {
-                if (syncContext == null)
-                    handler(this, new EventArgs());
-                else syncContext.Post(state => handler(this, new EventArgs()), null);
-            }
+            if (handler == null || Loop)
+                return;
+            if (_syncContext == null)
+                handler(this, new EventArgs());
+            else _syncContext.Post(state => handler(this, new EventArgs()), null);
         }
 
         /// <summary>
@@ -89,12 +87,11 @@ namespace ManagedBass
         {
             var handler = MediaFailed;
 
-            if (handler != null)
-            {
-                if (syncContext == null)
-                    handler(this, new EventArgs());
-                else syncContext.Post(state => handler(this, new EventArgs()), null);
-            }
+            if (handler == null)
+                return;
+            if (_syncContext == null)
+                handler(this, new EventArgs());
+            else _syncContext.Post(state => handler(this, new EventArgs()), null);
         }
 
         /// <summary>
@@ -115,19 +112,19 @@ namespace ManagedBass
 
         static Channel()
         {
-            var currentDev = Bass.CurrentDevice;
+            var currentDev = CurrentDevice;
 
-            if (currentDev == -1 || !Bass.GetDeviceInfo(Bass.CurrentDevice).IsInitialized)
-                Bass.Init(currentDev);
+            if (currentDev == -1 || !GetDeviceInfo(CurrentDevice).IsInitialized)
+                Init(currentDev);
         }
 
         protected Channel()
         {
-            syncContext = SynchronizationContext.Current;
+            _syncContext = SynchronizationContext.Current;
 
-            Free_Delegate = new SyncProcedure(OnFree);
-            End_Delegate = new SyncProcedure(OnMediaEnded);
-            Fail_Delegate = new SyncProcedure(OnMediaFailed);
+            _freeDelegate = OnFree;
+            _endDelegate = OnMediaEnded;
+            _failDelegate = OnMediaFailed;
         }
 
         public Channel(int Handle) : this() { this.Handle = Handle; }
@@ -167,14 +164,14 @@ namespace ManagedBass
 
         public double Bytes2Seconds(long Bytes) => ChannelBytes2Seconds(Handle, Bytes);
 
-        public bool Lock() => ChannelLock(Handle, true);
+        public bool Lock() => ChannelLock(Handle);
 
         public bool Unlock() => ChannelLock(Handle, false);
 
         public virtual void Dispose() 
         { 
-            if (HCHANNEL != 0 && StreamFree(HCHANNEL))
-                HCHANNEL = 0;
+            if (_hchannel != 0 && StreamFree(_hchannel))
+                _hchannel = 0;
         }
 
         public override int GetHashCode() => Handle;
@@ -192,19 +189,19 @@ namespace ManagedBass
             if (!IsDecodingChannel)
                 throw new InvalidOperationException("Not a Decoding Channel!");
 
-            double InitialPosition = Position;
+            var InitialPosition = Position;
 
             Position += Offset;
 
-            int BlockLength = (int)ChannelSeconds2Bytes(Handle, 2);
+            var BlockLength = (int)ChannelSeconds2Bytes(Handle, 2);
 
-            byte[] Buffer = new byte[BlockLength];
+            var Buffer = new byte[BlockLength];
 
             var gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
 
             while (DecoderHasData)
             {
-                int BytesReceived = ChannelGetData(Handle, gch.AddrOfPinnedObject(), BlockLength);
+                var BytesReceived = ChannelGetData(Handle, gch.AddrOfPinnedObject(), BlockLength);
                 Writer.Write(Buffer, BytesReceived);
             }
 
@@ -219,8 +216,8 @@ namespace ManagedBass
         #region Playable
         public virtual bool Start()
         {
-            bool Result = ChannelPlay(Handle, RestartOnNextPlayback);
-            if (Result) RestartOnNextPlayback = false;
+            var Result = ChannelPlay(Handle, _restartOnNextPlayback);
+            if (Result) _restartOnNextPlayback = false;
             return Result;
         }
 
@@ -230,7 +227,7 @@ namespace ManagedBass
 
         public virtual bool Stop()
         {
-            RestartOnNextPlayback = true;
+            _restartOnNextPlayback = true;
             return ChannelStop(Handle);
         }
 

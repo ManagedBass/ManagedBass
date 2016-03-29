@@ -29,11 +29,11 @@ namespace ManagedBass.Cd
         {
             get
             {
-                int n = size / Marshal.SizeOf(typeof(TOC));
+                var n = size / Marshal.SizeOf(typeof(TOC));
 
                 var list = new List<TOCTrack>(n);
                 
-                for (int i = 0; i < n; ++i)
+                for (var i = 0; i < n; ++i)
                     list.Add(tracks[i]);
 
                 return list;

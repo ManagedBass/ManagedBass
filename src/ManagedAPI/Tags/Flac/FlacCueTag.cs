@@ -28,7 +28,7 @@ namespace ManagedBass.Tags
 				var arr = new FlacCueTrack[TrackCount];
 				var ptr = tracks;
 
-				for (int i = 0; i < TrackCount; i++)
+				for (var i = 0; i < TrackCount; i++)
 				{
 					arr[i] = (FlacCueTrack)Marshal.PtrToStructure(ptr, typeof(FlacCueTrack));
 					ptr += Marshal.SizeOf(arr[i]);

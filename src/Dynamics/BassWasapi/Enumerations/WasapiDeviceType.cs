@@ -55,6 +55,6 @@
         /// <summary>
         /// An unknown device.
         /// </summary>
-        Unknown = 10,
+        Unknown = 10
     }
 }

@@ -22,9 +22,18 @@ namespace ManagedBass.Wma
         {
             this.Resolution = Resolution;
 
-            WMAEncodeFlags flags = WMAEncodeFlags.Default;
-            if (Resolution == Resolution.Byte) flags |= WMAEncodeFlags.Byte;
-            else if (Resolution == Resolution.Float) flags |= WMAEncodeFlags.Float;
+            var flags = WMAEncodeFlags.Default;
+
+            switch (Resolution)
+            {
+                case Resolution.Byte:
+                    flags |= WMAEncodeFlags.Byte;
+                    break;
+
+                case Resolution.Float:
+                    flags |= WMAEncodeFlags.Float;
+                    break;
+            }
 
             EncoderHandle = BassWma.EncodeOpenFile(SampleRate, NoOfChannels, flags, BitRate, FilePath);
         }
@@ -38,7 +47,7 @@ namespace ManagedBass.Wma
 
         void Write(object buffer, int Length)
         {
-            GCHandle gch = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            var gch = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 
             Write(gch.AddrOfPinnedObject(), Length);
 

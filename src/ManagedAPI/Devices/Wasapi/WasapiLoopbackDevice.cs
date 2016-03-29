@@ -12,17 +12,15 @@ namespace ManagedBass.Wasapi
         {
             if (Singleton.ContainsKey(Device))
                 return Singleton[Device] as WasapiLoopbackDevice;
-            else
-            {
-                WasapiDeviceInfo info;
-                if (!(BassWasapi.GetDeviceInfo(Device, out info) && info.IsLoopback))
-                    throw new ArgumentException("Invalid WasapiLoopbackDevice Index");
 
-                var Dev = new WasapiLoopbackDevice(Device);
-                Singleton.Add(Device, Dev);
+            WasapiDeviceInfo info;
+            if (!(BassWasapi.GetDeviceInfo(Device, out info) && info.IsLoopback))
+                throw new ArgumentException("Invalid WasapiLoopbackDevice Index");
 
-                return Dev;
-            }
+            var dev = new WasapiLoopbackDevice(Device);
+            Singleton.Add(Device, dev);
+
+            return dev;
         }
 
         public bool Init() => _Init(0, 0, true, false, 0, 0);
@@ -33,27 +31,27 @@ namespace ManagedBass.Wasapi
             {
                 WasapiDeviceInfo dev;
 
-                for (int i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
+                for (var i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
                     if (dev.IsLoopback)
                         yield return Get(i);
             }
         }
 
-        public static WasapiLoopbackDevice DefaultDevice => Devices.First((dev) => dev.DeviceInfo.IsDefault);
+        public static WasapiLoopbackDevice DefaultDevice => Devices.First(Dev => Dev.DeviceInfo.IsDefault);
 
         public static int Count
         {
             get
             {
-                int Count = 0;
+                var count = 0;
 
                 WasapiDeviceInfo dev;
 
-                for (int i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
+                for (var i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
                     if (dev.IsLoopback)
-                        Count++;
+                        count++;
 
-                return Count;
+                return count;
             }
         }
 
@@ -61,9 +59,8 @@ namespace ManagedBass.Wasapi
         {
             get
             {
-                foreach (var dev in WasapiPlaybackDevice.Devices)
-                    if (dev.DeviceInfo.ID == DeviceInfo.ID)
-                        return dev;
+                foreach (var dev in WasapiPlaybackDevice.Devices.Where(dev => dev.DeviceInfo.ID == DeviceInfo.ID))
+                    return dev;
 
                 throw new Exception("Could not find a Playback Device.");
             }

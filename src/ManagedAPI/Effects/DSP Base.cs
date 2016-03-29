@@ -14,36 +14,36 @@ namespace ManagedBass
 
         public int Handle { get; private set; }
 
-        int priority;
+        int _priority;
         public int Priority
         {
-            get { return priority; }
+            get { return _priority; }
             set
             {
                 if (Bass.FXSetPriority(Handle, value))
-                    priority = value;
+                    _priority = value;
             }
         }
 
-        bool isAssigned;
+        bool _isAssigned;
         public bool IsAssigned
         {
-            get { return isAssigned; }
+            get { return _isAssigned; }
             private set
             {
-                isAssigned = value;
+                _isAssigned = value;
 
                 OnPropertyChanged();
             }
         }
 
-        bool bypass = false;
+        bool _bypass;
         public bool Bypass 
         {
-            get { return bypass; }
+            get { return _bypass; }
             set
             {
-                bypass = value;
+                _bypass = value;
 
                 OnPropertyChanged();
             }
@@ -51,8 +51,8 @@ namespace ManagedBass
 
         public Resolution Resolution { get; private set; }
 
-        DSPProcedure DSPProc;
-        SyncProcedure freeproc;
+        readonly DSPProcedure _dspProc;
+        readonly SyncProcedure _freeproc;
 
         static DSP() { Bass.FloatingPointDSP = true; }
 
@@ -60,17 +60,17 @@ namespace ManagedBass
         {
             this.Channel = Channel;
 
-            DSPProc = new DSPProcedure(OnDSP);
+            _dspProc = OnDsp;
 
-            priority = Priority;
+            _priority = Priority;
 
-            Handle = Bass.ChannelSetDSP(Channel, DSPProc, Priority: priority);
+            Handle = Bass.ChannelSetDSP(Channel, _dspProc, Priority: _priority);
 
             Resolution = Bass.ChannelGetInfo(Channel).Resolution;
 
-            freeproc = (a, b, c, d) => Dispose();
+            _freeproc = (a, b, c, d) => Dispose();
 
-            Bass.ChannelSetSync(Channel, SyncFlags.Free, 0, freeproc);
+            Bass.ChannelSetSync(Channel, SyncFlags.Free, 0, _freeproc);
 
             if (Handle != 0) 
                 IsAssigned = true;
@@ -79,9 +79,9 @@ namespace ManagedBass
 
         protected DSP(MediaPlayer player, int Priority)
         {
-            DSPProc = new DSPProcedure(OnDSP);
+            _dspProc = OnDsp;
 
-            priority = Priority;
+            _priority = Priority;
 
             Reassign(player.Handle);
 
@@ -92,7 +92,7 @@ namespace ManagedBass
         {
             Channel = h;
 
-            Handle = Bass.ChannelSetDSP(Channel, DSPProc, Priority: priority);
+            Handle = Bass.ChannelSetDSP(Channel, _dspProc, Priority: _priority);
 
             if (Channel != 0)
                 Resolution = Bass.ChannelGetInfo(Channel).Resolution;
@@ -101,13 +101,13 @@ namespace ManagedBass
                 IsAssigned = true;
         }
 
-        void OnDSP(int handle, int channel, IntPtr Buffer, int Length, IntPtr User)
+        void OnDsp(int handle, int channel, IntPtr Buffer, int Length, IntPtr User)
         {
             if (IsAssigned && !Bypass)
                 Callback(new BufferProvider(Buffer, Length));
         }
 
-        protected abstract void Callback(BufferProvider buffer);
+        protected abstract void Callback(BufferProvider Buffer);
 
         public void Dispose()
         {

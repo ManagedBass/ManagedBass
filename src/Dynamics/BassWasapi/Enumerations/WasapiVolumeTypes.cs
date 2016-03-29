@@ -28,6 +28,6 @@ namespace ManagedBass.Wasapi
         /// <summary>
         /// Use the session volume.
         /// </summary>
-        Session = 8,
+        Session = 8
     }
 }

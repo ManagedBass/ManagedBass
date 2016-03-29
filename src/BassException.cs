@@ -11,7 +11,7 @@ namespace ManagedBass
         internal BassException() : this(Bass.LastError) { }
 
         internal BassException(Errors ErrorCode)
-            : base(string.Format("Error: {0}", ErrorCode))
+            : base($"Error: {ErrorCode}")
         {
             this.ErrorCode = ErrorCode;
         }

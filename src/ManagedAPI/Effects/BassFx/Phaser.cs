@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ManagedBass.Fx
 {
@@ -11,7 +10,7 @@ namespace ManagedBass.Fx
     {
         public float fDryMix = 0.999f;
         public float fWetMix = 0.999f;
-        public float fFeedback = 0;
+        public float fFeedback;
         public float fRate = 1;
         public float fRange = 4.3f;
         public float fFreq = 50;

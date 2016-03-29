@@ -6,18 +6,18 @@ namespace ManagedBass.Fx
     /// Streams audio from a Decoder allowing manipulation of Playback Direction.
     /// Requires BassFx.
     /// </summary>
-    public class ReverseChannel : Channel
+    public sealed class ReverseChannel : Channel
     {
-        Channel decoder;
+        Channel _decoder;
 
         public ReverseChannel(Channel DecodingSource, bool IsDecoder = false, Resolution Resolution = Resolution.Short, double DecodingBlockLength = 2)
         {
-			this.decoder = DecodingSource;
+			_decoder = DecodingSource;
 
-			if (!decoder.IsDecodingChannel)
+			if (!_decoder.IsDecodingChannel)
                 throw new ArgumentException("Not a Decoding Channel!");
 			
-			Handle = BassFx.ReverseCreate(decoder.Handle, (float)DecodingBlockLength, FlagGen(IsDecoder, Resolution));
+			Handle = BassFx.ReverseCreate(_decoder.Handle, (float)DecodingBlockLength, FlagGen(IsDecoder, Resolution));
         }
 
         public bool Reverse
@@ -29,7 +29,7 @@ namespace ManagedBass.Fx
         public override void Dispose()
         {
             base.Dispose();
-            decoder = null;
+            _decoder = null;
         }
     }
 }

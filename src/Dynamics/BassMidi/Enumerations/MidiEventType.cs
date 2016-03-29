@@ -405,6 +405,6 @@
         /// <summary>
         /// Flag: no running status.
         /// </summary>
-        NoRunningStatus = 33554432,
+        NoRunningStatus = 33554432
     }
 }

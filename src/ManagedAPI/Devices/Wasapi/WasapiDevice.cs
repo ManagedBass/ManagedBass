@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using static ManagedBass.Wasapi.BassWasapi;
 
 namespace ManagedBass.Wasapi
@@ -13,24 +12,24 @@ namespace ManagedBass.Wasapi
         protected static Dictionary<int, WasapiDevice> Singleton = new Dictionary<int, WasapiDevice>();
 
         #region Notify
-        static WasapiNotifyProcedure notifyproc = new WasapiNotifyProcedure(OnNotify);
+        static readonly WasapiNotifyProcedure Notifyproc = OnNotify;
 
-        static void OnNotify(WasapiNotificationType notify, int device, IntPtr User)
+        static void OnNotify(WasapiNotificationType Notify, int Device, IntPtr User)
         {
-            Singleton[device]._StateChanged?.Invoke(notify);
+            Singleton[Device]._StateChanged?.Invoke(Notify);
         }
 
-        bool notifyRegistered = false;
+        bool _notifyRegistered;
         event Action<WasapiNotificationType> _StateChanged;
 
         public event Action<WasapiNotificationType> StateChanged
         {
             add
             {
-                if (!notifyRegistered)
+                if (!_notifyRegistered)
                 {
                     CurrentDevice = DeviceIndex;
-                    notifyRegistered = SetNotify(notifyproc);
+                    _notifyRegistered = SetNotify(Notifyproc);
                 }
 
                 _StateChanged += value;
@@ -39,19 +38,18 @@ namespace ManagedBass.Wasapi
             {
                 _StateChanged -= value;
 
-                if (_StateChanged == null
-                    && notifyRegistered)
-                {
-                    CurrentDevice = DeviceIndex;
-                    notifyRegistered = !SetNotify(null);
-                }
+                if (_StateChanged != null || !_notifyRegistered)
+                    return;
+
+                CurrentDevice = DeviceIndex;
+                _notifyRegistered = !SetNotify(null);
             }
         }
         #endregion
 
         protected WasapiDevice(int Index)
         {
-            proc = new WasapiProcedure(OnProc);
+            _proc = OnProc;
             DeviceIndex = Index;
         }
 
@@ -62,7 +60,7 @@ namespace ManagedBass.Wasapi
         #endregion
 
         #region Callback
-        WasapiProcedure proc;
+        readonly WasapiProcedure _proc;
 
         public virtual int OnProc(IntPtr Buffer, int Length, IntPtr User)
         {
@@ -134,15 +132,15 @@ namespace ManagedBass.Wasapi
             var flags = Shared ? WasapiInitFlags.Shared : WasapiInitFlags.Exclusive;
             if (UseEventSync) flags |= WasapiInitFlags.EventDriven;
 
-            bool Result = Init(DeviceIndex,
+            var result = Init(DeviceIndex,
                                Frequency,
                                Channels,
                                flags,
                                Buffer,
                                Period,
-                               proc);
+                               _proc);
 
-            return Result;
+            return result;
         }
 
         public bool IsStarted
@@ -167,7 +165,7 @@ namespace ManagedBass.Wasapi
         }
 
         #region Overrides
-        public override bool Equals(object obj) => (obj is WasapiDevice) && (DeviceIndex == ((WasapiDevice)obj).DeviceIndex);
+        public override bool Equals(object Obj) => Obj is WasapiDevice && DeviceIndex == ((WasapiDevice)Obj).DeviceIndex;
 
         public override string ToString()
         {

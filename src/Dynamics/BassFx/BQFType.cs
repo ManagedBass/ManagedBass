@@ -48,6 +48,6 @@
         /// <summary>
         /// BiQuad High-Shelf filter.
         /// </summary>
-        HighShelf = 8,
+        HighShelf = 8
     }
 }

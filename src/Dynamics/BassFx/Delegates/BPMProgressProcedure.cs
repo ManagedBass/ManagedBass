@@ -2,5 +2,5 @@
 
 namespace ManagedBass.Fx
 {
-    public delegate void BPMProgressProcedure(int chan, float percent, IntPtr user);
+    public delegate void BPMProgressProcedure(int Channel, float Percent, IntPtr User);
 }

@@ -14,7 +14,7 @@ namespace ManagedBass.Cd
 
         public byte ADR => (byte)(adrcon >> 4 & 15);
 
-        public TOCControlFlags Control => (TOCControlFlags)((byte)(adrcon & 15));
+        public TOCControlFlags Control => (TOCControlFlags)(byte)(adrcon & 15);
 
         public byte Track => track;
 
@@ -22,14 +22,6 @@ namespace ManagedBass.Cd
 
         public byte Frame => (byte)(lba & 15);
 
-        public TimeSpan Address
-        {
-            get
-            {
-                return new TimeSpan(lba >> 24 & 15,
-                                    lba >> 16 & 15,
-                                    lba >> 8 & 15);
-            }
-        }
+        public TimeSpan Address => new TimeSpan(lba >> 24 & 15, lba >> 16 & 15, lba >> 8 & 15);
     }
 }

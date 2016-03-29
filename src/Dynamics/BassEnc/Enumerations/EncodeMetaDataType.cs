@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ManagedBass.Enc
+﻿namespace ManagedBass.Enc
 {
     /// <summary>
     /// To be used with <see cref="BassEnc.CastSendMeta" /> to define the type of metadata to send.

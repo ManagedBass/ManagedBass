@@ -13,17 +13,15 @@ namespace ManagedBass.Wasapi
         {
             if (Singleton.ContainsKey(Device))
                 return Singleton[Device] as WasapiPlaybackDevice;
-            else
-            {
-                WasapiDeviceInfo info;
-                if (!BassWasapi.GetDeviceInfo(Device, out info) || info.IsInput)
-                    throw new ArgumentException("Invalid WasapiPlaybackDevice Index");
 
-                var Dev = new WasapiPlaybackDevice(Device);
-                Singleton.Add(Device, Dev);
+            WasapiDeviceInfo info;
+            if (!BassWasapi.GetDeviceInfo(Device, out info) || info.IsInput)
+                throw new ArgumentException("Invalid WasapiPlaybackDevice Index");
 
-                return Dev;
-            }
+            var dev = new WasapiPlaybackDevice(Device);
+            Singleton.Add(Device, dev);
+
+            return dev;
         }
 
         public static IEnumerable<WasapiPlaybackDevice> Devices
@@ -32,7 +30,7 @@ namespace ManagedBass.Wasapi
             {
                 WasapiDeviceInfo dev;
 
-                for (int i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
+                for (var i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
                     if (!dev.IsInput)
                         yield return Get(i);
             }
@@ -40,7 +38,7 @@ namespace ManagedBass.Wasapi
 
         public bool Init(int Frequency = 44100, int Channels = 2, bool Shared = true, bool UseEventSync = false, int Buffer = 0, int Period = 0)
         {
-            bool Result = base._Init(Frequency, Channels, Shared, UseEventSync, Buffer, Period);
+            var result = _Init(Frequency, Channels, Shared, UseEventSync, Buffer, Period);
 
             BassWasapi.CurrentDevice = DeviceIndex;
             var info = BassWasapi.Info;
@@ -49,7 +47,7 @@ namespace ManagedBass.Wasapi
 
             MixerStream = BassMix.CreateMixerStream(info.Frequency, info.Channels, BassFlags.Float | BassFlags.Decode);
 
-            return Result;
+            return result;
         }
 
         #region Callback
@@ -97,7 +95,7 @@ namespace ManagedBass.Wasapi
                 BassWasapi.CurrentDevice = DeviceIndex;
                 var info = BassWasapi.Info;
 
-                int handle = Bass.CreateStream(info.Frequency, info.Channels, BassFlags.Decode | BassFlags.Float, sproc);
+                var handle = Bass.CreateStream(info.Frequency, info.Channels, BassFlags.Decode | BassFlags.Float, sproc);
 
                 AddOutputSource(handle);
 
@@ -115,21 +113,21 @@ namespace ManagedBass.Wasapi
         }
         #endregion
 
-        public static WasapiPlaybackDevice DefaultDevice => Devices.First((dev) => dev.DeviceInfo.IsDefault);
+        public static WasapiPlaybackDevice DefaultDevice => Devices.First(dev => dev.DeviceInfo.IsDefault);
 
         public static int Count
         {
             get
             {
-                int Count = 0;
+                var count = 0;
 
                 WasapiDeviceInfo dev;
 
-                for (int i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
+                for (var i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
                     if (!dev.IsInput)
-                        Count++;
+                        count++;
 
-                return Count;
+                return count;
             }
         }
 
@@ -137,9 +135,8 @@ namespace ManagedBass.Wasapi
         {
             get
             {
-                foreach (var dev in WasapiLoopbackDevice.Devices)
-                    if (dev.DeviceInfo.ID == DeviceInfo.ID)
-                        return dev;
+                foreach (var dev in WasapiLoopbackDevice.Devices.Where(dev => dev.DeviceInfo.ID == DeviceInfo.ID))
+                    return dev;
 
                 throw new Exception("Could not find a Loopback Device.");
             }

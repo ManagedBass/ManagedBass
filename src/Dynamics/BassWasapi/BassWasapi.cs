@@ -33,7 +33,7 @@ namespace ManagedBass.Wasapi
 
         #region CPU
         [DllImport(DllName)]
-        extern static float BASS_WASAPI_GetCPU();
+        static extern float BASS_WASAPI_GetCPU();
 
         /// <summary>
         /// Retrieves the current CPU usage of BASSWASAPI.
@@ -45,10 +45,10 @@ namespace ManagedBass.Wasapi
 
         #region Current Device
         [DllImport(DllName)]
-        extern static int BASS_WASAPI_GetDevice();
+        static extern int BASS_WASAPI_GetDevice();
 
         [DllImport(DllName)]
-        extern static bool BASS_WASAPI_SetDevice(int device);
+        static extern bool BASS_WASAPI_SetDevice(int device);
 
 		/// <summary>
 		/// Gets or Sets the Wasapi device to use for susequent calls in the current thread... 0 = first device. Use <see cref="Bass.LastError" /> to get the error code.
@@ -83,7 +83,7 @@ namespace ManagedBass.Wasapi
 
         #region GetDeviceInfo
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetDeviceInfo")]
-        public extern static bool GetDeviceInfo(int device, out WasapiDeviceInfo info);
+        public static extern bool GetDeviceInfo(int device, out WasapiDeviceInfo info);
                 
         /// <summary>
         /// 
@@ -108,7 +108,7 @@ namespace ManagedBass.Wasapi
 		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
 		/// <remarks>A previously set notification callback can be changed (or removed) at any time, by calling this function again.</remarks>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_SetNotify")]
-        public extern static bool SetNotify(WasapiNotifyProcedure Procedure, IntPtr User = default(IntPtr));
+        public static extern bool SetNotify(WasapiNotifyProcedure Procedure, IntPtr User = default(IntPtr));
                 
 		/// <summary>
 		/// Gets the total number of available Wasapi devices.
@@ -121,14 +121,14 @@ namespace ManagedBass.Wasapi
 
                 int i;
 
-                for (i = 0; GetDeviceInfo(i, out info); i++) ;
+                for (i = 0; GetDeviceInfo(i, out info); i++) { }
 
                 return i;
             }
         }
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_CheckFormat")]
-        public extern static WasapiFormat CheckFormat(int device, int freq, int chans, WasapiInitFlags flags);
+        public static extern WasapiFormat CheckFormat(int device, int freq, int chans, WasapiInitFlags flags);
         
         #region GetInfo
 		/// <summary>
@@ -142,7 +142,7 @@ namespace ManagedBass.Wasapi
 		/// </remarks>
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetInfo")]
-        public extern static bool GetInfo(out WasapiInfo Info);
+        public static extern bool GetInfo(out WasapiInfo Info);
         
 		/// <summary>
 		/// Retrieves information on the Wasapi device being used.
@@ -176,19 +176,19 @@ namespace ManagedBass.Wasapi
 		/// </remarks>
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_Free")]
-        public extern static bool Free();
+        public static extern bool Free();
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetData")]
-        public extern static int GetData(IntPtr Buffer, int Length);
+        public static extern int GetData(IntPtr Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetData")]
-        public extern static int GetData([In, Out] float[] Buffer, int Length);
+        public static extern int GetData([In, Out] float[] Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_PutData")]
-        public extern static int PutData(IntPtr Buffer, int Length);
+        public static extern int PutData(IntPtr Buffer, int Length);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_PutData")]
-        public extern static int PutData(float[] Buffer, int Length);
+        public static extern int PutData(float[] Buffer, int Length);
                 
 		/// <summary>
 		/// Locks the device to the current thread.
@@ -201,13 +201,13 @@ namespace ManagedBass.Wasapi
 		/// A device must be unlocked in the same thread that it was locked.
 		/// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_Lock")]
-        public extern static bool Lock(bool State = true);
+        public static extern bool Lock(bool State = true);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetMute")]
-        public extern static bool GetMute(WasapiVolumeTypes mode = WasapiVolumeTypes.Device);
+        public static extern bool GetMute(WasapiVolumeTypes mode = WasapiVolumeTypes.Device);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_SetMute")]
-        public extern static bool SetMute(WasapiVolumeTypes mode, bool mute);
+        public static extern bool SetMute(WasapiVolumeTypes mode, bool mute);
         
 		/// <summary>
 		/// Gets the audio meter information of the current Wasapi device/driver (endpoint).
@@ -228,16 +228,16 @@ namespace ManagedBass.Wasapi
         /// <exception cref="Errors.Parameter"><paramref name="Channel" /> is not valid.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetDeviceLevel")]
-        public extern static float GetDeviceLevel(int Device, int Channel = -1);
+        public static extern float GetDeviceLevel(int Device, int Channel = -1);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetVolume")]
-        public extern static float GetVolume(WasapiVolumeTypes curve = WasapiVolumeTypes.Device);
+        public static extern float GetVolume(WasapiVolumeTypes curve = WasapiVolumeTypes.Device);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_SetVolume")]
-        public extern static bool SetVolume(WasapiVolumeTypes curve, float volume);
+        public static extern bool SetVolume(WasapiVolumeTypes curve, float volume);
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_Init")]
-        public extern static bool Init(int Device,
+        public static extern bool Init(int Device,
                                         int Frequency = 0,
                                         int Channels = 0,
                                         WasapiInitFlags Flags = WasapiInitFlags.Shared,
@@ -248,7 +248,7 @@ namespace ManagedBass.Wasapi
 
         #region IsStarted
         [DllImport(DllName)]
-        extern static bool BASS_WASAPI_IsStarted();
+        static extern bool BASS_WASAPI_IsStarted();
         
 		/// <summary>
 		/// Checks, if the current Wasapi device/driver (endpoint) has been already started (via <see cref="Start" />).
@@ -272,7 +272,7 @@ namespace ManagedBass.Wasapi
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_Start")]
-        public extern static bool Start();
+        public static extern bool Start();
         
 		/// <summary>
 		/// Stops the current Wasapi device/driver (endpoint).
@@ -292,7 +292,7 @@ namespace ManagedBass.Wasapi
         /// <exception cref="Errors.Start">The device hasn't been started.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_Stop")]
-        public extern static bool Stop(bool Reset = true);
+        public static extern bool Stop(bool Reset = true);
         
 		/// <summary>
 		/// Retrieves the level (peak amplitude) of the current Wasapi device/driver (endpoint).
@@ -311,14 +311,14 @@ namespace ManagedBass.Wasapi
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">The device was not initialized using buffering (<see cref="WasapiInitFlags.Buffer"/>).</exception>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetLevel")]
-        public extern static int GetLevel();
+        public static extern int GetLevel();
 
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetLevelEx")]
         public static extern int GetLevel([In, Out] float[] Levels, float Length, LevelRetrievalFlags Flags);
 
         #region Version
         [DllImport(DllName)]
-        extern static int BASS_WASAPI_GetVersion();
+        static extern int BASS_WASAPI_GetVersion();
 
         /// <summary>
         /// Gets the Version of BassWasapi that is loaded.

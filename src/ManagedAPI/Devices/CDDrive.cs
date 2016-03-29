@@ -10,24 +10,23 @@ namespace ManagedBass.Cd
     public class CDDrive : IDisposable
     {
         #region Singleton
-        static Dictionary<int, CDDrive> Singleton = new Dictionary<int, CDDrive>();
+        static readonly Dictionary<int, CDDrive> Singleton = new Dictionary<int, CDDrive>();
 
         CDDrive(int Index) { DriveIndex = Index; }
 
         public static CDDrive Get(int Device)
         {
-            if (Singleton.ContainsKey(Device)) return Singleton[Device];
-            else
-            {
-                CDInfo info;
-                if (!BassCd.GetInfo(Device, out info))
-                    throw new ArgumentException("Invalid CDDrive Index");
+            if (Singleton.ContainsKey(Device))
+                return Singleton[Device];
 
-                var Dev = new CDDrive(Device);
-                Singleton.Add(Device, Dev);
+            CDInfo info;
+            if (!BassCd.GetInfo(Device, out info))
+                throw new ArgumentException("Invalid CDDrive Index");
 
-                return Dev;
-            }
+            var dev = new CDDrive(Device);
+            Singleton.Add(Device, dev);
+
+            return dev;
         }
         #endregion
 
@@ -49,7 +48,11 @@ namespace ManagedBass.Cd
         public int Speed
         {
             get { return BassCd.GetSpeed(DriveIndex); }
-            set { if (!BassCd.SetSpeed(DriveIndex, value)) throw new InvalidOperationException(); }
+            set
+            {
+                if (!BassCd.SetSpeed(DriveIndex, value))
+                    throw new InvalidOperationException();
+            }
         }
 
         public bool HasDisk => BassCd.IsReady(DriveIndex);
@@ -63,7 +66,7 @@ namespace ManagedBass.Cd
             {
                 CDInfo info;
 
-                for (int i = 0; BassCd.GetInfo(i, out info); ++i)
+                for (var i = 0; BassCd.GetInfo(i, out info); ++i)
                     yield return Get(i);
             }
         }

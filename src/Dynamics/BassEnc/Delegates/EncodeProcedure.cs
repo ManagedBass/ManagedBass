@@ -2,5 +2,5 @@
 
 namespace ManagedBass.Enc
 {
-    public delegate void EncodeProcedure(int handle, int channel, IntPtr buffer, int length, IntPtr user);
+    public delegate void EncodeProcedure(int Handle, int Channel, IntPtr Buffer, int Length, IntPtr User);
 }

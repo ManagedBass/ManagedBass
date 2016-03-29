@@ -22,16 +22,16 @@ namespace ManagedBass.Midi
 
         public bool Stop() => BassMidi.InStop(DeviceId);
 
-        byte[] data;
+        byte[] _data;
 
-        unsafe void Callback(int device, double time, IntPtr buffer, int length, IntPtr user)
+        void Callback(int device, double time, IntPtr buffer, int length, IntPtr user)
         {
-            if (data == null || data.Length < length)
-                data = new byte[length];
+            if (_data == null || _data.Length < length)
+                _data = new byte[length];
 
-            Marshal.Copy(buffer, data, 0, length);
+            Marshal.Copy(buffer, _data, 0, length);
          
-            MessageReceived?.Invoke(data, length);
+            MessageReceived?.Invoke(_data, length);
         }
 
         public event Action<byte[], int> MessageReceived;

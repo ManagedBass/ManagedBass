@@ -2,33 +2,31 @@
 {
     public class GainDSP : DSP
     {
-        int n;
-
         public GainDSP(int Channel, int Priority = 0) : base(Channel, Priority) { }
 
-        public GainDSP(MediaPlayer player, int Priority = 0) : base(player, Priority) { }
+        public GainDSP(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
 
-        float gain = 1;
+        float _gain = 1;
         public double Gain
         {
-            get { return gain; }
+            get { return _gain; }
             set
             {
-                gain = (float)value.Clip(0, 1024);
+                _gain = (float)value.Clip(0, 1024);
 
                 OnPropertyChanged();
             }
         }
 
-        protected override unsafe void Callback(BufferProvider buffer)
+        protected override unsafe void Callback(BufferProvider Buffer)
         {
-            if (gain == 0)
+            if (_gain == 0)
                 return;
 
-            var ptr = (float*)buffer.Pointer;
+            var ptr = (float*)Buffer.Pointer;
 
-            for (n = buffer.FloatLength; n > 0; --n, ++ptr)
-                *ptr *= gain;
+            for (var i = Buffer.FloatLength; i > 0; --i, ++ptr)
+                *ptr *= _gain;
         }
     }
 }

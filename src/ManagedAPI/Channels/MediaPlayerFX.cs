@@ -3,12 +3,12 @@
     /// <summary>
     /// A Reusable Channel which can Load files like a Player including Tempo, Pitch and Reverse options using BassFx.
     /// </summary>
-    public class MediaPlayerFX : MediaPlayer
+    public sealed class MediaPlayerFX : MediaPlayer
     {
         int TempoHandle;
 
         #region Reverse
-        bool rev = false;
+        bool rev;
 
         /// <summary>
         /// Gets or Sets the Media playback direction.
@@ -18,17 +18,17 @@
             get { return rev; }
             set
             {
-                if (Bass.ChannelSetAttribute(Handle, ChannelAttribute.ReverseDirection, value ? -1 : 1))
-                {
-                    rev = value;
-                    OnPropertyChanged();
-                }
+                if (!Bass.ChannelSetAttribute(Handle, ChannelAttribute.ReverseDirection, value ? -1 : 1))
+                    return;
+
+                rev = value;
+                OnPropertyChanged();
             }
         }
         #endregion
 
         #region Pitch
-        double pitch = 0;
+        double pitch;
 
         /// <summary>
         /// Gets or Sets the Pitch in Semitones (-60 ... 0 ... 60).
@@ -38,17 +38,17 @@
             get { return pitch; }
             set
             {
-                if (Bass.ChannelSetAttribute(TempoHandle, ChannelAttribute.Pitch, value))
-                {
-                    pitch = value;
-                    OnPropertyChanged();
-                }
+                if (!Bass.ChannelSetAttribute(TempoHandle, ChannelAttribute.Pitch, value))
+                    return;
+
+                pitch = value;
+                OnPropertyChanged();
             }
         }
         #endregion
 
         #region Tempo
-        double tempo = 0;
+        double tempo;
 
         /// <summary>
         /// Gets or Sets the Tempo in Percentage (-95% ... 0 ... 5000%)
@@ -58,18 +58,18 @@
             get { return tempo; }
             set
             {
-                if (Bass.ChannelSetAttribute(TempoHandle, ChannelAttribute.Tempo, value))
-                {
-                    tempo = value;
-                    OnPropertyChanged();
-                }
+                if (!Bass.ChannelSetAttribute(TempoHandle, ChannelAttribute.Tempo, value))
+                    return;
+
+                tempo = value;
+                OnPropertyChanged();
             }
         }
         #endregion
                 
         protected override int OnLoad(string FileName)
         {
-            int h = Bass.CreateStream(FileName, Flags: BassFlags.Decode);
+            var h = Bass.CreateStream(FileName, Flags: BassFlags.Decode);
 
             if (h == 0)
                 return 0;

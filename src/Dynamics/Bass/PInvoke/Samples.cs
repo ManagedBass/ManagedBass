@@ -139,7 +139,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         public static SampleInfo SampleGetInfo(int Handle)
         {
-            SampleInfo temp = new SampleInfo();
+            var temp = new SampleInfo();
             if (!SampleGetInfo(Handle, ref temp))
                 throw new BassException();
             return temp;
@@ -191,7 +191,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid sample handle.</exception>
         public static int[] SampleGetChannels(int Handle)
         {
-            int count = BASS_SampleGetChannels(Handle, null);
+            var count = BASS_SampleGetChannels(Handle, null);
 
             if (count < 0)
                 return null;
@@ -200,10 +200,7 @@ namespace ManagedBass
 
             count = BASS_SampleGetChannels(Handle, Return);
 
-            if (count < 0)
-                return null;
-
-            return Return;
+            return count < 0 ? null : Return;
         }
         #endregion
         
@@ -359,7 +356,7 @@ namespace ManagedBass
         {
             var gch = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
-            var Return = SampleLoad(Memory, Offset, Length, MaxNoOfPlaybacks, Flags);
+            var Return = SampleLoad(gch.AddrOfPinnedObject(), Offset, Length, MaxNoOfPlaybacks, Flags);
 
             gch.Free();
 

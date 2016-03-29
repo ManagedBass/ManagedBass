@@ -5,10 +5,10 @@ namespace ManagedBass
     /// <summary>
     /// Streams an audio file from a Url
     /// </summary>
-    public class NetworkChannel : Channel
+    public sealed class NetworkChannel : Channel
     {
-        DownloadProcedure proc;
-        Action<BufferProvider> call;
+        readonly DownloadProcedure _proc;
+        readonly Action<BufferProvider> _call;
 
         public string Url { get; }
         
@@ -18,21 +18,21 @@ namespace ManagedBass
 
             if (callback != null)
             {
-                call = callback;
-                proc = new DownloadProcedure(Callback);
+                _call = callback;
+                _proc = Callback;
             }
 
-            Down_Handler = new SyncProcedure(OnDownloadCompleted);
+            _downHandler = OnDownloadCompleted;
 
             var flags = Resolution.ToBassFlag() | BassFlags.Unicode;
             if (IsDecoder) flags |= BassFlags.Decode;
 
-            Handle = Bass.CreateStream(Url, Offset, flags, (callback != null ? proc : null), IntPtr.Zero);
+            Handle = Bass.CreateStream(Url, Offset, flags, callback != null ? _proc : null, IntPtr.Zero);
 
-            Bass.ChannelSetSync(Handle, SyncFlags.Downloaded, 0, Down_Handler, IntPtr.Zero);
+            Bass.ChannelSetSync(Handle, SyncFlags.Downloaded, 0, _downHandler, IntPtr.Zero);
         }
 
-        void Callback(IntPtr Buffer, int Length, IntPtr User) => call.Invoke(new BufferProvider(Buffer, Length));
+        void Callback(IntPtr Buffer, int Length, IntPtr User) => _call.Invoke(new BufferProvider(Buffer, Length));
 
         public long DownloadProgress => Bass.StreamGetFilePosition(Handle, FileStreamPosition.Download);
 
@@ -41,7 +41,7 @@ namespace ManagedBass
         public bool IsConnected => Bass.StreamGetFilePosition(Handle, FileStreamPosition.Connected) == 1;
 
         #region Download Completed
-        SyncProcedure Down_Handler;
+        readonly SyncProcedure _downHandler;
 
         void OnDownloadCompleted(int handle, int channel, int data, IntPtr User) => DownloadComplete?.Invoke();
 

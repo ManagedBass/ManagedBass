@@ -184,7 +184,7 @@ namespace ManagedBass
                 int i;
                 DeviceInfo info;
 
-                for (i = 0; BASS_GetDeviceInfo(i, out info); i++) ;
+                for (i = 0; BASS_GetDeviceInfo(i, out info); i++) { }
 
                 return i;
             }
@@ -192,10 +192,10 @@ namespace ManagedBass
 
         #region Current Device Volume
         [DllImport(DllName)]
-        extern static float BASS_GetVolume();
+        static extern float BASS_GetVolume();
 
         [DllImport(DllName)]
-        extern static bool BASS_SetVolume(float volume);
+        static extern bool BASS_SetVolume(float volume);
 
         /// <summary>
         /// Gets or sets the current output master volume level... 0 (silent) to 1 (max).
@@ -227,10 +227,10 @@ namespace ManagedBass
 
         #region Current Device
         [DllImport(DllName)]
-        extern static int BASS_GetDevice();
+        static extern int BASS_GetDevice();
 
         [DllImport(DllName)]
-        extern static bool BASS_SetDevice(int Device);
+        static extern bool BASS_SetDevice(int Device);
 
         /// <summary>
         /// Gets or sets the device setting of the current thread... 0 = no sound, 1 = first real output device.

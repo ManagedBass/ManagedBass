@@ -3,16 +3,16 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="PeakEQEffect"/>.
+    /// Used with <see cref="PeakEQ"/>.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class PeakEQParameters : IEffectParameter
     {
-        public int lBand = 0;
+        public int lBand;
         public float fBandwidth = 1f;
-        public float fQ = 0;
+        public float fQ;
         public float fCenter = 1000f;
-        public float fGain = 0;
+        public float fGain;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
         public EffectType FXType => EffectType.PeakEQ;
@@ -116,7 +116,7 @@ namespace ManagedBass.Fx
 
             Handle = Bass.ChannelSetFX(Channel, EffectType.PeakEQ, 0);
 
-            parameters = new PeakEQParameters()
+            parameters = new PeakEQParameters
             {
                 lBand = -1,
                 fQ = (float)Q,

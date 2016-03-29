@@ -75,18 +75,15 @@ namespace ManagedBass.Mix
 		/// <returns>The array of splitter handles (<see langword="null" /> on error, use <see cref="Bass.LastError" /> to get the error code).</returns>
         public static int[] SplitStreamGetSplits(int Handle)
         {
-            int num = BASS_Split_StreamGetSplits(Handle, null, 0);
+            var num = BASS_Split_StreamGetSplits(Handle, null, 0);
 
             if (num <= 0) 
                 return null;
 
-            int[] numArray = new int[num];
+            var numArray = new int[num];
             num = BASS_Split_StreamGetSplits(Handle, numArray, num);
 
-            if (num <= 0)
-                return null;
-
-            return numArray;
+            return num <= 0 ? null : numArray;
         }
         #endregion
 
@@ -184,7 +181,7 @@ namespace ManagedBass.Mix
 
         public static bool ChannelAddFlag(int handle, BassFlags flag) => ChannelFlags(handle, flag, flag).HasFlag(flag);
 
-        public static bool ChannelRemoveFlag(int handle, BassFlags flag) => !(ChannelFlags(handle, 0, flag).HasFlag(flag));
+        public static bool ChannelRemoveFlag(int handle, BassFlags flag) => !ChannelFlags(handle, 0, flag).HasFlag(flag);
         #endregion
 
         #region Channel Get Data
@@ -293,7 +290,7 @@ namespace ManagedBass.Mix
 
         public static int ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedure Procedure, IntPtr User = default(IntPtr))
         {
-            int h = BASS_Mixer_ChannelSetSync(Handle, Type, Parameter, Procedure, User);
+            var h = BASS_Mixer_ChannelSetSync(Handle, Type, Parameter, Procedure, User);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(Handle, h, Procedure);
@@ -306,7 +303,7 @@ namespace ManagedBass.Mix
 
         public static int ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedureEx Procedure, IntPtr User = default(IntPtr))
         {
-            int h = BASS_Mixer_ChannelSetSync(Handle, (int)Type | 0x1000000, Parameter, Procedure, User);
+            var h = BASS_Mixer_ChannelSetSync(Handle, (int)Type | 0x1000000, Parameter, Procedure, User);
             
             if (h != 0)
                 Extensions.ChannelReferences.Add(Handle, h, Procedure);
@@ -347,7 +344,7 @@ namespace ManagedBass.Mix
 
         public static bool ChannelSetEnvelope(int Handle, MixEnvelope Type, MixerNode[] Nodes)
         {
-            return ChannelSetEnvelope(Handle, Type, Nodes, Nodes != null ? Nodes.Length : 0);
+            return ChannelSetEnvelope(Handle, Type, Nodes, Nodes?.Length ?? 0);
         }
         #endregion
     }

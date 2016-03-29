@@ -104,7 +104,7 @@ namespace ManagedBass
         /// <seealso cref="FXSetParameters"/>
         /// <seealso cref="ChannelSetDSP"/>
         [DllImport(DllName, EntryPoint = "BASS_ChannelSetFX")]
-        public extern static int ChannelSetFX(int Handle, EffectType Type, int Priority);
+        public static extern int ChannelSetFX(int Handle, EffectType Type, int Priority);
 
         /// <summary>
         /// Removes an effect from a stream, MOD music, or recording channel.
@@ -123,7 +123,7 @@ namespace ManagedBass
         /// </remarks>
         /// <seealso cref="ChannelSetFX"/>
         [DllImport(DllName, EntryPoint = "BASS_ChannelRemoveFX")]
-        public extern static bool ChannelRemoveFX(int Handle, int FX);
+        public static extern bool ChannelRemoveFX(int Handle, int FX);
 
         /// <summary>
         /// Sets the priority of an effect or DSP function, which determines its position in the DSP chain. 

@@ -2,5 +2,5 @@
 
 namespace ManagedBass.Enc
 {
-    public delegate bool EncodeClientProcedure(int handle, bool connect, string client, string header, IntPtr user);
+    public delegate bool EncodeClientProcedure(int Handle, bool Connect, string Client, string Header, IntPtr User);
 }

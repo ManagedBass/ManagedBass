@@ -42,6 +42,6 @@ namespace ManagedBass
         /// If there are no free hardware voices,
         /// the Buffer to be terminated will be the one with the lowest priority.
         /// </summary>
-        TerminatePriority = 16,
+        TerminatePriority = 16
     }
 }

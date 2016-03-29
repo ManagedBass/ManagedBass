@@ -36,17 +36,17 @@ namespace ManagedBass
         public WaveFormat(int SampleRate, int BitsPerSample, int Channels)
         {
             if (Channels < 1)
-                throw new ArgumentOutOfRangeException("channels", "Channels must be 1 or greater");
+                throw new ArgumentOutOfRangeException(nameof(Channels), $"{nameof(Channels)} must be 1 or greater");
 
             // minimum 16 bytes, sometimes 18 for PCM
-            this.waveFormatTag = WaveFormatTag.Pcm;
-            this.channels = (short)Channels;
-            this.sampleRate = SampleRate;
-            this.bitsPerSample = (short)BitsPerSample;
-            this.extraSize = 0;
+            waveFormatTag = WaveFormatTag.Pcm;
+            channels = (short)Channels;
+            sampleRate = SampleRate;
+            bitsPerSample = (short)BitsPerSample;
+            extraSize = 0;
 
-            this.blockAlign = (short)(Channels * (BitsPerSample / 8));
-            this.averageBytesPerSecond = this.sampleRate * this.blockAlign;
+            blockAlign = (short)(Channels * (BitsPerSample / 8));
+            averageBytesPerSecond = sampleRate * blockAlign;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace ManagedBass
         /// <param name="Channels">number of channels</param>
         public static WaveFormat CreateIeeeFloat(int SampleRate, int Channels)
         {
-            return new WaveFormat()
+            return new WaveFormat
             {
                 waveFormatTag = WaveFormatTag.IeeeFloat,
                 channels = (short)Channels,
@@ -80,16 +80,16 @@ namespace ManagedBass
         /// <summary>
         /// Writes this WaveFormat object to a stream
         /// </summary>
-        /// <param name="writer">the output stream</param>
-        public virtual void Serialize(BinaryWriter writer)
+        /// <param name="Writer">the output stream</param>
+        public virtual void Serialize(BinaryWriter Writer)
         {
-            writer.Write((short)Encoding);
-            writer.Write((short)Channels);
-            writer.Write((int)SampleRate);
-            writer.Write((int)AverageBytesPerSecond);
-            writer.Write((short)BlockAlign);
-            writer.Write((short)BitsPerSample);
-            writer.Write((short)ExtraSize);
+            Writer.Write((short)Encoding);
+            Writer.Write((short)Channels);
+            Writer.Write(SampleRate);
+            Writer.Write(AverageBytesPerSecond);
+            Writer.Write((short)BlockAlign);
+            Writer.Write((short)BitsPerSample);
+            Writer.Write((short)ExtraSize);
         }
 
         /// <summary>

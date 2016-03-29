@@ -44,6 +44,6 @@ namespace ManagedBass.Wasapi
         /// <summary>
         /// The WASAPI device is disabled.
         /// </summary>
-        Disabled = 64,
+        Disabled = 64
     }
 }

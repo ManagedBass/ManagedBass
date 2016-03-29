@@ -33,7 +33,7 @@ namespace ManagedBass.Cd
                 int i;
                 CDInfo info;
 
-                for (i = 0; GetInfo(i, out info); i++) ;
+                for (i = 0; GetInfo(i, out info); i++) { }
 
                 return i;
             }
@@ -212,7 +212,7 @@ namespace ManagedBass.Cd
         
         public static int CreateStream(int Drive, int Track, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr))
         {
-            int h = BASS_CD_StreamCreateEx(Drive, Track, Flags, proc, user);
+            var h = BASS_CD_StreamCreateEx(Drive, Track, Flags, proc, user);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(h, 0, proc);
@@ -233,7 +233,7 @@ namespace ManagedBass.Cd
 
         public static int CreateStream(string File, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr))
         {
-            int h = BASS_CD_StreamCreateFileEx(File, Flags | BassFlags.Unicode, proc, user);
+            var h = BASS_CD_StreamCreateFileEx(File, Flags | BassFlags.Unicode, proc, user);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(h, 0, proc);

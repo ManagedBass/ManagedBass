@@ -25,6 +25,6 @@
         /// <summary>
         /// The channel is paused.
         /// </summary>
-        Paused = 3,
+        Paused = 3
     }
 }

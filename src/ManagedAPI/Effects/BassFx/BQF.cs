@@ -10,10 +10,10 @@ namespace ManagedBass.Fx
     {
         public BQFType lFilter = BQFType.AllPass;
         public float fCenter = 200f;
-        public float fGain = 0;
+        public float fGain;
         public float fBandwidth = 1f;
-        public float fQ = 0;
-        public float fS = 0;
+        public float fQ;
+        public float fS;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
         public EffectType FXType => EffectType.BQF;

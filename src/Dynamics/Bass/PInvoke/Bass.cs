@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass
@@ -125,7 +123,7 @@ namespace ManagedBass
 
         #region Error Code
         [DllImport(DllName)]
-        extern static Errors BASS_ErrorGetCode();
+        static extern Errors BASS_ErrorGetCode();
 
         /// <summary>
         /// Gets the Error that occured on the Last Bass function that was called.

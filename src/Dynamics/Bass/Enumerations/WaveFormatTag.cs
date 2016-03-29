@@ -627,6 +627,6 @@
         /// <summary>
         /// WAVE_FORMAT_VORBIS3P "qg" Have no codebook header
         /// </summary>
-        Vorbis3P = 0x6771,
+        Vorbis3P = 0x6771
     }
 }

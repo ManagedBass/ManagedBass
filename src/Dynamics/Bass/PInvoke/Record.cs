@@ -33,7 +33,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Already">The device has already been initialized. <see cref="RecordFree" /> must be called before it can be initialized again.</exception>
         /// <exception cref="Errors.Driver">There is no available device driver.</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordInit")]
-        public extern static bool RecordInit(int Device = DefaultDevice);
+        public static extern bool RecordInit(int Device = DefaultDevice);
 
         /// <summary>
 		/// Frees all resources used by the recording device.
@@ -45,11 +45,11 @@ namespace ManagedBass
 		/// </remarks>
         /// <exception cref="Errors.Init"><see cref="RecordInit" /> has not been successfully called - there are no initialized devices.</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordFree")]
-        public extern static bool RecordFree();
+        public static extern bool RecordFree();
 
         #region RecordStart
         [DllImport(DllName)]
-        extern static int BASS_RecordStart(int freq, int chans, BassFlags flags, RecordProcedure proc, IntPtr User);
+        static extern int BASS_RecordStart(int freq, int chans, BassFlags flags, RecordProcedure proc, IntPtr User);
 
         /// <summary>
         /// Starts recording.
@@ -95,7 +95,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int RecordStart(int freq, int chans, BassFlags flags, RecordProcedure proc, IntPtr User = default(IntPtr))
         {
-            int h = BASS_RecordStart(freq, chans, flags, proc, User);
+            var h = BASS_RecordStart(freq, chans, flags, proc, User);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(h, 0, proc);
@@ -125,10 +125,10 @@ namespace ManagedBass
 
         #region Current Recording Device
         [DllImport(DllName)]
-        extern static int BASS_RecordGetDevice();
+        static extern int BASS_RecordGetDevice();
 
         [DllImport(DllName)]
-        extern static bool BASS_RecordSetDevice(int Device);
+        static extern bool BASS_RecordSetDevice(int Device);
 
         /// <summary>
 		/// Gets or Sets the recording device setting in the current thread... 0 = first recording device.
@@ -261,7 +261,7 @@ namespace ManagedBass
                 int i;
                 DeviceInfo info;
 
-                for (i = 0; RecordGetDeviceInfo(i, out info); i++) ;
+                for (i = 0; RecordGetDeviceInfo(i, out info); i++) { }
 
                 return i;
             }
@@ -294,10 +294,10 @@ namespace ManagedBass
         /// <exception cref="Errors.NotAvailable">A master input is not available.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordGetInput")]
-        public extern static int RecordGetInput(int Input, out float Volume);
+        public static extern int RecordGetInput(int Input, out float Volume);
 
         [DllImport(DllName)]
-        extern static int BASS_RecordGetInput(int Input, IntPtr Volume);
+        static extern int BASS_RecordGetInput(int Input, IntPtr Volume);
 
         /// <summary>
         /// Retrieves the settings of a recording input source (does not retrieve Volume).
@@ -327,7 +327,7 @@ namespace ManagedBass
         public static int RecordGetInput(int Input) => BASS_RecordGetInput(Input, IntPtr.Zero);
 
         [DllImport(DllName)]
-        extern static IntPtr BASS_RecordGetInputName(int input);
+        static extern IntPtr BASS_RecordGetInputName(int input);
 
         /// <summary>
         /// Retrieves the text description of a recording input source.
@@ -378,6 +378,6 @@ namespace ManagedBass
         /// <exception cref="Errors.NotAvailable">The soundcard/driver doesn't allow you to change the input or it's volume.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_RecordSetInput")]
-        public extern static bool RecordSetInput(int Input, InputFlags Setting, float Volume);
+        public static extern bool RecordSetInput(int Input, InputFlags Setting, float Volume);
     }
 }

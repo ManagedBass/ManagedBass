@@ -11,24 +11,23 @@ namespace ManagedBass
     public class RecordingDevice : IDisposable
     {
         #region Singleton
-        static Dictionary<int, RecordingDevice> Singleton = new Dictionary<int, RecordingDevice>();
+        static readonly Dictionary<int, RecordingDevice> Singleton = new Dictionary<int, RecordingDevice>();
 
         RecordingDevice(int DeviceIndex) { this.DeviceIndex = DeviceIndex; }
 
         public static RecordingDevice Get(int Device)
         {
-            if (Singleton.ContainsKey(Device)) return Singleton[Device];
-            else
-            {
-                DeviceInfo info;
-                if (!Bass.RecordGetDeviceInfo(Device, out info))
-                    throw new ArgumentException("Invalid RecordingDevice Index");
+            if (Singleton.ContainsKey(Device))
+                return Singleton[Device];
 
-                var Dev = new RecordingDevice(Device);
-                Singleton.Add(Device, Dev);
+            DeviceInfo info;
+            if (!Bass.RecordGetDeviceInfo(Device, out info))
+                throw new ArgumentException("Invalid RecordingDevice Index");
 
-                return Dev;
-            }
+            var dev = new RecordingDevice(Device);
+            Singleton.Add(Device, dev);
+
+            return dev;
         }
         #endregion
 
@@ -41,7 +40,7 @@ namespace ManagedBass
             {
                 DeviceInfo info;
 
-                for (int i = 0; Bass.RecordGetDeviceInfo(i, out info); ++i)
+                for (var i = 0; Bass.RecordGetDeviceInfo(i, out info); ++i)
                     yield return Get(i);
             }
         }
@@ -79,7 +78,7 @@ namespace ManagedBass
         /// <summary>
         /// Default Audio Recording Devices
         /// </summary>
-        public static RecordingDevice DefaultDevice => Devices.First((dev) => dev.DeviceInfo.IsDefault);
+        public static RecordingDevice DefaultDevice => Devices.First(Dev => Dev.DeviceInfo.IsDefault);
 
         public static RecordingDevice CurrentDevice
         {

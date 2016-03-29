@@ -3,7 +3,7 @@
     /// <summary>
     /// Stream audio from a CD file or track
     /// </summary>
-    public class CDChannel : Channel
+    public sealed class CDChannel : Channel
     {
         public CDChannel(string FileName, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {

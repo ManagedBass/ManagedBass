@@ -3,7 +3,7 @@
     /// <summary>
     /// Streams MIDI from file or memory. Requires: BassMidi.dll.
     /// </summary>
-    public class Midi : Channel
+    public sealed class Midi : Channel
     {
         public Midi(string FilePath, int Offset = 0, int Length = 0, int Frequency = 44100, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
@@ -20,16 +20,16 @@
             Handle = BassMidi.CreateStream(Channels, FlagGen(IsDecoder, Resolution), Frequency);
         }
 
-        public Midi(MidiEvent[] events, int ppqn, int Frequency = 44100, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
+        public Midi(MidiEvent[] Events, int ppqn, int Frequency = 44100, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
-            Handle = BassMidi.CreateStream(events, ppqn, FlagGen(IsDecoder, Resolution), Frequency);
+            Handle = BassMidi.CreateStream(Events, ppqn, FlagGen(IsDecoder, Resolution), Frequency);
         }
         
         public int TrackCount
         {
             get
             {
-                int tracks = 0;
+                var tracks = 0;
                 float dummy;
 
                 while (Bass.ChannelGetAttribute(Handle, ChannelAttribute.MidiTrackVolume + tracks, out dummy))

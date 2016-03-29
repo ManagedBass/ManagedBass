@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -38,19 +39,15 @@ namespace ManagedBass.Tags
 
         void ReadAllFrames(int Length)
         {
-            string FrameID;
-            int FrameLength;
-            byte Buf;
-
             // If ID3v2 is ID3v2.2 FrameID, FrameLength of Frames is 3 byte
             // otherwise it's 4 character
-            int FrameIDLen = VersionInfo.Minor == 2 ? 3 : 4;
+            var FrameIDLen = VersionInfo.Minor == 2 ? 3 : 4;
 
             // Minimum frame size is 10 because frame header is 10 byte
             while (Length > 10)
             {
                 // check for padding( 00 bytes )
-                Buf = ReadByte();
+                var Buf = ReadByte();
 
                 if (Buf == 0)
                 {
@@ -62,13 +59,13 @@ namespace ManagedBass.Tags
                 ptr -= 1;
 
                 // ---------- Read Frame Header -----------------------
-                FrameID = ReadText(FrameIDLen, TextEncodings.Ascii);
-                FrameLength = Convert.ToInt32(ReadUInt(FrameIDLen));
+                var FrameID = ReadText(FrameIDLen, TextEncodings.Ascii);
+                var FrameLength = Convert.ToInt32(ReadUInt(FrameIDLen));
 
                 if (FrameIDLen == 4)
                     ReadUInt(2);
 
-                bool Added = AddFrame(FrameID, FrameLength);
+                var Added = AddFrame(FrameID, FrameLength);
 
                 // if don't read this frame, we must go forward to read next frame
                 if (!Added)
@@ -85,7 +82,7 @@ namespace ManagedBass.Tags
 
             if (FrameID[0].Is('T', 'W')) // Is Text Frame
             {
-                bool IsURL = FrameID[0] == 'W';
+                var IsURL = FrameID[0] == 'W';
 
                 TextEncodings TextEncoding;
 
@@ -104,69 +101,66 @@ namespace ManagedBass.Tags
                 TextFrames.Add(FrameID, Text);
                 return true;
             }
-            else
+            switch (FrameID)
             {
-                switch (FrameID)
-                {
-                    case "POPM":
-                        ReadText(Length, TextEncodings.Ascii, ref Length, true); // Skip Email Address
+                case "POPM":
+                    ReadText(Length, TextEncodings.Ascii, ref Length, true); // Skip Email Address
 
-                        var Rating = ReadByte().ToString(); // Read Rating
+                    var Rating = ReadByte().ToString(); // Read Rating
                         
-                        if (--Length > 8)
-                            return false;
+                    if (--Length > 8)
+                        return false;
             
-                        ptr += Length; // Skip Counter value
+                    ptr += Length; // Skip Counter value
                         
-                        TextFrames.Add("POPM", Rating);                        
-                        return true;
+                    TextFrames.Add("POPM", Rating);                        
+                    return true;
 
-                    case "COM":
-                    case "COMM":
-                        var TextEncoding = (TextEncodings)ReadByte();
+                case "COM":
+                case "COMM":
+                    var TextEncoding = (TextEncodings)ReadByte();
                         
-                        Length--;
+                    Length--;
                         
-                        if (!Enum.IsDefined(typeof(TextEncodings), TextEncoding))
-                            return false;
+                    if (!Enum.IsDefined(typeof(TextEncodings), TextEncoding))
+                        return false;
 
-                        ptr += 3;
+                    ptr += 3;
                         
-                        Length -= 3;
+                    Length -= 3;
 
-                        ReadText(Length, TextEncoding, ref Length, true); // Skip Description
+                    ReadText(Length, TextEncoding, ref Length, true); // Skip Description
 
-                        TextFrames.Add("COMM", ReadText(Length, TextEncoding));
-                        return true;
+                    TextFrames.Add("COMM", ReadText(Length, TextEncoding));
+                    return true;
 
-                    case "APIC":
-                        var _TextEncoding = (TextEncodings)ReadByte();
+                case "APIC":
+                    var _TextEncoding = (TextEncodings)ReadByte();
                         
-                        Length--;
+                    Length--;
                         
-                        if (!Enum.IsDefined(typeof(TextEncodings), _TextEncoding))
-                            return false;
+                    if (!Enum.IsDefined(typeof(TextEncodings), _TextEncoding))
+                        return false;
 
-                        var _MIMEType = ReadText(Length, TextEncodings.Ascii, ref Length, true);
+                    var _MIMEType = ReadText(Length, TextEncodings.Ascii, ref Length, true);
 
-                        var _PictureType = (ID3PictureTypes)ReadByte();
+                    var _PictureType = (ID3PictureTypes)ReadByte();
 
-                        Length--;
+                    Length--;
 
-                        ReadText(Length, _TextEncoding, ref Length, true); // Skip Description
+                    ReadText(Length, _TextEncoding, ref Length, true); // Skip Description
 
-                        byte[] _Data = new byte[Length];
+                    var _Data = new byte[Length];
 
-                        Read(_Data, 0, Length);
+                    Read(_Data, 0, Length);
 
-                        PictureFrames.Add(new ID3Picture()
-                        {
-                            Data = _Data,
-                            MimeType = _MIMEType,
-                            PictureType = _PictureType
-                        });
-                        return true;
-                }
+                    PictureFrames.Add(new ID3Picture
+                    {
+                        Data = _Data,
+                        MimeType = _MIMEType,
+                        PictureType = _PictureType
+                    });
+                    return true;
             }
 
             return false;
@@ -177,11 +171,7 @@ namespace ManagedBass.Tags
             if (FrameID == null || !FrameID.Length.Is(3, 4))
                 return false;
 
-            foreach (char ch in FrameID)
-                if (!Char.IsUpper(ch) && !char.IsDigit(ch))
-                    return false;
-
-            return true;
+            return FrameID.All(ch => char.IsUpper(ch) || char.IsDigit(ch));
         }
 
         public Dictionary<string, string> TextFrames { get; } = new Dictionary<string, string>();
@@ -191,7 +181,7 @@ namespace ManagedBass.Tags
         #region Streaming
         string ReadText(int MaxLength, TextEncodings TEncoding)
         {
-            int i = 0;
+            var i = 0;
             return ReadText(MaxLength, TEncoding, ref i, false);
         }
         
@@ -206,7 +196,7 @@ namespace ManagedBass.Tags
 
             if (DetectEncoding && MaxLength >= 3)
             {
-                byte[] Buffer = new byte[3];
+                var Buffer = new byte[3];
                 
                 Read(Buffer, 0, Buffer.Length);
                 
@@ -235,12 +225,11 @@ namespace ManagedBass.Tags
 
                 else ptr -= 3;
             }
-            bool Is2ByteSeprator = TEncoding.Is(TextEncodings.UTF_16, TextEncodings.UTF_16BE);
+            var Is2ByteSeprator = TEncoding.Is(TextEncodings.UTF_16, TextEncodings.UTF_16BE);
 
-            byte Buf;
             while (MaxLength > 0)
             {
-                Buf = ReadByte(); // Read First/Next byte from stream
+                var Buf = ReadByte();
 
                 if (Buf != 0) // if it's data byte
                     MStream.WriteByte(Buf);
@@ -249,17 +238,14 @@ namespace ManagedBass.Tags
                 {
                     if (Is2ByteSeprator)
                     {
-                        byte Temp = ReadByte();
+                        var Temp = ReadByte();
 
                         if (Temp == 0)
                             break;
-                        
-                        else
-                        {
-                            MStream.WriteByte(Buf);
-                            MStream.WriteByte(Temp);
-                            MaxLength--;
-                        }
+
+                        MStream.WriteByte(Buf);
+                        MStream.WriteByte(Temp);
+                        MaxLength--;
                     }
                     else break;
                 }
@@ -277,7 +263,7 @@ namespace ManagedBass.Tags
 
         byte ReadByte()
         {
-            byte[] RByte = new byte[1];
+            var RByte = new byte[1];
 
             Read(RByte, 0, 1);
 
@@ -287,7 +273,7 @@ namespace ManagedBass.Tags
         uint ReadUInt(int Length)
         {
             if (Length > 4 || Length < 1)
-                throw (new ArgumentOutOfRangeException("ReadUInt method can read 1-4 byte(s)"));
+                throw new ArgumentOutOfRangeException(nameof(Length), "ReadUInt method can read 1-4 byte(s)");
 
             byte[] Buf = new byte[Length],
                    RBuf = new byte[4];
@@ -310,7 +296,7 @@ namespace ManagedBass.Tags
             return ReadByte() * 0x200000 + ReadByte() * 0x4000 + ReadByte() * 0x80 + ReadByte();
         }
 
-        Encoding GetEncoding(TextEncodings TEncoding)
+        static Encoding GetEncoding(TextEncodings TEncoding)
         {
             switch (TEncoding)
             {

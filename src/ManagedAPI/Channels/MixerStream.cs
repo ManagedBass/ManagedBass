@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 namespace ManagedBass.Mix
 {
     /// <summary>
     /// Represents a Mixer Stream.
     /// </summary>
-    public class MixerStream : Channel
+    public sealed class MixerStream : Channel
     {
         public MixerStream(int Frequency = 44100, int NoOfChannels = 2, bool IsDecoder = true, Resolution Resolution = Resolution.Short)
         {
@@ -25,12 +24,12 @@ namespace ManagedBass.Mix
         public override int Read(float[] Buffer, int Length) => BassMix.ChannelGetData(Handle, Buffer, Length);
         #endregion
 
-        public bool AddChannel(Channel channel) => AddChannel(channel.Handle);
+        public bool AddChannel(Channel Channel) => AddChannel(Channel.Handle);
 
-        public bool AddChannel(int channel) => BassMix.MixerAddChannel(Handle, channel, BassFlags.Default);
+        public bool AddChannel(int Channel) => BassMix.MixerAddChannel(Handle, Channel, BassFlags.Default);
 
-        public bool RemoveChannel(Channel channel) => RemoveChannel(channel.Handle);
+        public bool RemoveChannel(Channel Channel) => RemoveChannel(Channel.Handle);
 
-        public bool RemoveChannel(int channel) => BassMix.MixerRemoveChannel(channel);
+        public bool RemoveChannel(int Channel) => BassMix.MixerRemoveChannel(Channel);
     }
 }

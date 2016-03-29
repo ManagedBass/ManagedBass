@@ -1,5 +1,4 @@
 // Adopted from http://www.codeproject.com/Articles/12919/C-Bitwise-Helper-Class
-using System;
 
 namespace ManagedBass
 {

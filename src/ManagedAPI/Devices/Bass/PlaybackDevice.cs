@@ -11,24 +11,23 @@ namespace ManagedBass
     public class PlaybackDevice : IDisposable
     {
         #region Singleton
-        static Dictionary<int, PlaybackDevice> Singleton = new Dictionary<int, PlaybackDevice>();
+        static readonly Dictionary<int, PlaybackDevice> Singleton = new Dictionary<int, PlaybackDevice>();
 
         PlaybackDevice(int DeviceIndex) { this.DeviceIndex = DeviceIndex; }
 
         public static PlaybackDevice Get(int Device)
         {
-            if (Singleton.ContainsKey(Device)) return Singleton[Device];
-            else
-            {
-                DeviceInfo info;
-                if (!Bass.GetDeviceInfo(Device, out info))
-                    throw new ArgumentException("Invalid PlaybackDevice Index");
+            if (Singleton.ContainsKey(Device))
+                return Singleton[Device];
 
-                var Dev = new PlaybackDevice(Device);
-                Singleton.Add(Device, Dev);
+            DeviceInfo info;
+            if (!Bass.GetDeviceInfo(Device, out info))
+                throw new ArgumentException("Invalid PlaybackDevice Index");
 
-                return Dev;
-            }
+            var dev = new PlaybackDevice(Device);
+            Singleton.Add(Device, dev);
+
+            return dev;
         }
         #endregion
 
@@ -51,7 +50,7 @@ namespace ManagedBass
             {
                 DeviceInfo info;
 
-                for (int i = 0; Bass.GetDeviceInfo(i, out info); ++i)
+                for (var i = 0; Bass.GetDeviceInfo(i, out info); ++i)
                     yield return Get(i);
             }
         }
@@ -64,7 +63,7 @@ namespace ManagedBass
         /// <summary>
         /// Default Audio Playback Device
         /// </summary>
-        public static PlaybackDevice DefaultDevice => Devices.First((dev) => dev.DeviceInfo.IsDefault);
+        public static PlaybackDevice DefaultDevice => Devices.First(Dev => Dev.DeviceInfo.IsDefault);
 
         public static PlaybackDevice CurrentDevice
         {
@@ -81,11 +80,11 @@ namespace ManagedBass
         /// Initialize a Device for Playback
         /// </summary>
         /// <param name="Frequency">Frequency, defaults to 44100</param>
-        /// <param name="flags">DeviceInitFlags used to specify options to init the device</param>
+        /// <param name="Flags">DeviceInitFlags used to specify options to init the device</param>
         /// <returns>A Return&lt;bool&gt; object containing success and error info</returns>
-        public bool Init(int Frequency = 44100, DeviceInitFlags flags = DeviceInitFlags.Default)
+        public bool Init(int Frequency = 44100, DeviceInitFlags Flags = DeviceInitFlags.Default)
         {
-            return Bass.Init(DeviceIndex, Frequency, flags);
+            return Bass.Init(DeviceIndex, Frequency, Flags);
         }
         
         public bool Start()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace ManagedBass.Wasapi
 {
@@ -7,54 +8,51 @@ namespace ManagedBass.Wasapi
     /// </summary>
     public class Loopback : IAudioCaptureClient
     {
-        Silence SilencePlayer;
-        WasapiLoopbackDevice Device;
+        readonly Silence _silencePlayer;
+        readonly WasapiLoopbackDevice _device;
 
         public Loopback(WasapiLoopbackDevice Device, bool IncludeSilence = true)
         {
-            this.Device = Device;
+            this._device = Device;
 
             if (IncludeSilence)
             {
-                PlaybackDevice playbackDevice = PlaybackDevice.DefaultDevice;
-
-                foreach (var dev in PlaybackDevice.Devices)
-                    if (dev.DeviceInfo.Driver == Device.DeviceInfo.ID)
-                        playbackDevice = dev;
-
-                SilencePlayer = new Silence(playbackDevice);
+                var playbackDevice = PlaybackDevice.Devices.First(Dev => Dev.DeviceInfo.Driver == Device.DeviceInfo.ID);
+                
+                _silencePlayer = new Silence(playbackDevice);
             }
 
             Device.Init();
-            Device.Callback += (b) => DataAvailable?.Invoke(b);
+            Device.Callback += B => DataAvailable?.Invoke(B);
         }
 
-        public double Level => Device.Level;
+        public double Level => _device.Level;
 
-        public bool IsActive => Device.IsStarted;
+        public bool IsActive => _device.IsStarted;
 
         public bool Start()
         {
-            SilencePlayer?.Start();
+            _silencePlayer?.Start();
 
-            bool Result = Device.Start();
+            var result = _device.Start();
 
-            if (SilencePlayer != null && !Result) SilencePlayer.Stop();
+            if (_silencePlayer != null && !result)
+                _silencePlayer.Stop();
 
-            return Result;
+            return result;
         }
 
         public bool Stop()
         {
-            SilencePlayer?.Stop();
+            _silencePlayer?.Stop();
 
-            return Device.Stop();
+            return _device.Stop();
         }
 
         public void Dispose()
         {
-            Device.Dispose();
-            SilencePlayer?.Dispose();
+            _device.Dispose();
+            _silencePlayer?.Dispose();
         }
 
         public event Action<BufferProvider> DataAvailable;

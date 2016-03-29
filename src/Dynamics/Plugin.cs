@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Linq;
 
 namespace ManagedBass
 {
@@ -15,18 +15,18 @@ namespace ManagedBass
     {
         public string DllName { get; }
         int HPlugin;
-        PluginInfo? info = null;
+        PluginInfo? info;
 
         public Version Version
         {
             get
             {
-                if (info == null)
-                {
-                    Load();
+                if (info != null)
+                    return info.Value.Version;
 
-                    info = Bass.PluginGetInfo(HPlugin);
-                }
+                Load();
+
+                info = Bass.PluginGetInfo(HPlugin);
 
                 return info.Value.Version;
             }
@@ -78,20 +78,11 @@ namespace ManagedBass
                 return;
 
             // Try for Windows, Linux/Android and OSX Libraries respectively.
-            foreach (var lib in new string[] { DllName + ".dll", "lib" + DllName + ".so", "lib" + DllName + ".dylib" })
-            {
-                string path = Folder != null ? Path.Combine(Folder, lib) : lib;
-
-                int h = Bass.PluginLoad(path);
-
-                if (h != 0)
-                {
-                    HPlugin = h;
-
-                    break;
-                }
-            }
-
+            HPlugin = new[] { DllName + ".dll", "lib" + DllName + ".so", "lib" + DllName + ".dylib" }
+                              .Select(lib => Folder != null ? Path.Combine(Folder, lib) : lib)
+                              .Select(Bass.PluginLoad)
+                              .FirstOrDefault(h => h != 0);
+            
             if (HPlugin == 0)
                 throw new DllNotFoundException(DllName);
 

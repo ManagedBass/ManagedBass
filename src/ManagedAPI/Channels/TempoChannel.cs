@@ -5,18 +5,18 @@ namespace ManagedBass.Fx
     /// <summary>
     /// Streams audio from a Decoder allowing manipulation of Tempo and Pitch
     /// </summary>
-    public class TempoChannel : Channel
+    public sealed class TempoChannel : Channel
     {
-        Channel decoder;
+        Channel _decoder;
 
         public TempoChannel(Channel DecodingSource, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
-			this.decoder = DecodingSource;
+			_decoder = DecodingSource;
 
-			if (!decoder.IsDecodingChannel)
+			if (!_decoder.IsDecodingChannel)
                 throw new ArgumentException("Not a Decoding Channel!");
 
-			Handle = BassFx.TempoCreate(decoder.Handle, FlagGen(IsDecoder, Resolution));
+			Handle = BassFx.TempoCreate(_decoder.Handle, FlagGen(IsDecoder, Resolution));
         }
 
         public double Pitch
@@ -34,7 +34,7 @@ namespace ManagedBass.Fx
         public override void Dispose()
         {
             base.Dispose();
-            decoder = null;
+            _decoder = null;
         }
     }
 }

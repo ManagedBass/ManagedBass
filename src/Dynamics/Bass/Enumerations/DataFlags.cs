@@ -81,6 +81,6 @@ namespace ManagedBass
         /// <summary>
         /// flag: return floating-point sample data
         /// </summary>
-        Float = 0x40000000,
+        Float = 0x40000000
     }
 }

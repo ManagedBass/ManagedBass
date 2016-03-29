@@ -34,6 +34,6 @@ namespace ManagedBass.Wasapi
         /// When used with shared mode, the User-provided 'Buffer' and 'period' lengths are ignored 
         /// and WASAPI decides what Buffer to use (<see cref="BassWasapi.Info"/> can be used to check that).
         /// </summary>
-        EventDriven = 16,
+        EventDriven = 16
     }
 }

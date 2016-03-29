@@ -37,7 +37,7 @@ namespace ManagedBass
         IntPtr driver;
         DeviceInfoFlags flags;
 
-        string PtrToString(IntPtr ptr)
+        static string PtrToString(IntPtr ptr)
         {
             return Bass.UnicodeDeviceInformation ? Extensions.PtrToStringUtf8(ptr)
                                                  : Marshal.PtrToStringAnsi(ptr);

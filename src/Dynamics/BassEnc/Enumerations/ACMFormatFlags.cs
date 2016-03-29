@@ -36,6 +36,6 @@ namespace ManagedBass.Enc
         /// <summary>
         /// Suggest a format (HIWORD=format tag - use one of the WAVEFormatTag flags).
         /// </summary>
-        Suggest = 8,
+        Suggest = 8
     }
 }

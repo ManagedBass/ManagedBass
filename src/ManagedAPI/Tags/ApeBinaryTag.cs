@@ -21,7 +21,7 @@ namespace ManagedBass.Tags
                 if (data == IntPtr.Zero || length == 0)
                     return null;
 
-                byte[] arr = new byte[length];
+                var arr = new byte[length];
                 Marshal.Copy(data, arr, 0, length);
                 return arr;
             }
@@ -30,16 +30,7 @@ namespace ManagedBass.Tags
         /// <summary>
         /// The name of the tag.
         /// </summary>
-        public string Key
-        {
-            get
-            {
-                if (key == IntPtr.Zero)
-                    return null;
-
-                return Marshal.PtrToStringAnsi(key);
-            }
-        }
+        public string Key => key == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(key);
 
         /// <summary>
         /// The size of data in bytes.
@@ -58,7 +49,7 @@ namespace ManagedBass.Tags
         {
             ApeBinaryTag tag;
 
-            for (int i = 0; (tag = Read(Handle, i)) != null; ++i)
+            for (var i = 0; (tag = Read(Handle, i)) != null; ++i)
                 yield return tag;
         }
 

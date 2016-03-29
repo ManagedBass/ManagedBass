@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Linq;
 using System.Text;
-using System.Runtime.CompilerServices;
 using static System.Runtime.InteropServices.Marshal;
 
 namespace ManagedBass
@@ -13,7 +12,7 @@ namespace ManagedBass
     /// </summary>
     public static class Extensions
     {
-        internal static readonly bool IsWindows = false;
+        internal static readonly bool IsWindows;
 
         internal static ReferenceHolder ChannelReferences = new ReferenceHolder();
 
@@ -31,24 +30,14 @@ namespace ManagedBass
             if (Item.CompareTo(MaxValue) > 0)
                 return MaxValue;
 
-            if (Item.CompareTo(MinValue) < 0)
-                return MinValue;
-            
-            return Item;
+            return Item.CompareTo(MinValue) < 0 ? MinValue : Item;
         }
 
         /// <summary>
         /// Checks for equality of an item with any element of an array of items.
         /// </summary>
-        public static bool Is<T>(this T Item, params T[] Args)
-        {
-            foreach (var arg in Args)
-                if (Item.Equals(arg))
-                    return true;
+        public static bool Is<T>(this T Item, params T[] Args) => Args.Contains(Item);
 
-            return false;
-        }
-        
         /// <summary>
         /// Converts <see cref="Resolution"/> to <see cref="BassFlags"/>
         /// </summary>
@@ -68,13 +57,13 @@ namespace ManagedBass
         internal static IntPtr Load(string DllName, string Folder)
         {
             if (IsWindows) return WindowsNative.LoadLibrary(!string.IsNullOrWhiteSpace(Folder) ? Path.Combine(Folder, DllName + ".dll") : DllName);
-            else throw new PlatformNotSupportedException("Only available on Windows");
+            throw new PlatformNotSupportedException("Only available on Windows");
         }
 
         internal static bool Unload(IntPtr hLib)
         {
             if (IsWindows) return WindowsNative.FreeLibrary(hLib);
-            else throw new PlatformNotSupportedException("Only available on Windows");
+            throw new PlatformNotSupportedException("Only available on Windows");
         }
 
         /// <summary>
@@ -82,7 +71,7 @@ namespace ManagedBass
         /// </summary>
         public static BassFlags SpeakerN(int n) => (BassFlags)(n << 24);
 
-        static bool? floatable = null;
+        static bool? floatable;
 
         /// <summary>
         /// Check whether Floating point streams are supported in the Current Environment.
@@ -95,7 +84,7 @@ namespace ManagedBass
                     return floatable.Value;
 
                 // try creating a floating-point stream
-                int hStream = Bass.CreateStream(44100, 1, BassFlags.Float, StreamProcedureType.Dummy);
+                var hStream = Bass.CreateStream(44100, 1, BassFlags.Float, StreamProcedureType.Dummy);
 
                 floatable = hStream != 0;
 
@@ -120,15 +109,15 @@ namespace ManagedBass
         // ms = samples * 1000 / samplerate. 
         // bytes = samples * bits * channels / 8. 
 
-        public static long BytesToSamples(long bytes, int bits, int channels) => ((bytes * 8) / bits) / channels;
+        public static long BytesToSamples(long bytes, int bits, int channels) => bytes * 8 / bits / channels;
 
-        public static long MilisecondsToSamples(int samplerate, long ms) => (ms * samplerate) / 1000;
+        public static long MilisecondsToSamples(int samplerate, long ms) => ms * samplerate / 1000;
 
-        public static long SamplesToBytes(long samples, int bits, int channels) => (samples * bits * channels) / 8;
+        public static long SamplesToBytes(long samples, int bits, int channels) => samples * bits * channels / 8;
 
-        public static long SamplesToMiliseconds(long samples, int samplerate) => (samples * 1000) / samplerate;
+        public static long SamplesToMiliseconds(long samples, int samplerate) => samples * 1000 / samplerate;
 
-        public static long SamplesToSamplerate(long samples, long ms) => (samples * 1000) / ms;
+        public static long SamplesToSamplerate(long samples, long ms) => samples * 1000 / ms;
 
         public static double SamplesToSeconds(long samples, int samplerate) => samples / (double)samplerate;
 
@@ -149,7 +138,7 @@ namespace ManagedBass
 
         public static int DbToLevel(double dB, int maxLevel)
         {
-            return (int)Math.Round((double)maxLevel * Math.Pow(10, dB / 20));
+            return (int)Math.Round(maxLevel * Math.Pow(10, dB / 20));
         }
 
         public static double DbToLevel(double dB, double maxLevel)
@@ -176,8 +165,9 @@ namespace ManagedBass
                 case 7:
                     return "6.1";
                 default:
-                    if (Channels < 1) throw new ArgumentException("Channels must be greater than Zero.");
-                    else return Channels + " Channels";
+                    if (Channels < 1)
+                        throw new ArgumentException("Channels must be greater than Zero.");
+                    return Channels + " Channels";
             }
         }
 
@@ -187,9 +177,9 @@ namespace ManagedBass
 
             while (true)
             {
-                string str = Marshal.PtrToStringAnsi(ptr);
+                var str = PtrToStringAnsi(ptr);
 
-                if (str.Length == 0)
+                if (string.IsNullOrEmpty(str))
                     break;
                 
                 l.Add(str);
@@ -207,37 +197,45 @@ namespace ManagedBass
 
             while (true)
             {
-                string str = PtrToStringUtf8(ptr);
+                int size;
+                var str = PtrToStringUtf8(ptr, out size);
 
-                if (str == null)
+                if (string.IsNullOrEmpty(str))
                     break;
  
                 l.Add(str);
+
+                ptr += size + 1;
             }
 
             return l.ToArray();
         }
 
-        public static unsafe string PtrToStringUtf8(IntPtr ptr)
+        public static unsafe string PtrToStringUtf8(IntPtr ptr, out int size)
         {
+            size = 0;
+
             if (ptr == IntPtr.Zero)
                 return null;
 
-            byte* bytes = (byte*)ptr.ToPointer();
-            int size = 0;
+            var bytes = (byte*)ptr.ToPointer();
             
             while (bytes[size] != 0)
                 ++size;
 
-            if (size == 0) 
+            if (size == 0)
                 return null;
 
-            byte[] buffer = new byte[size];
-            Marshal.Copy((IntPtr)ptr, buffer, 0, size);
-
-            ptr += size;
-
+            var buffer = new byte[size];
+            Copy(ptr, buffer, 0, size);
+            
             return Encoding.UTF8.GetString(buffer);
+        }
+
+        public static string PtrToStringUtf8(IntPtr ptr)
+        {
+            int size;
+            return PtrToStringUtf8(ptr, out size);
         }
 
         #region Tags

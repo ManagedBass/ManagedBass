@@ -71,6 +71,6 @@ namespace ManagedBass
         /// <summary>
         /// Analog, typically a mix of all analog sources (what you hear).
         /// </summary>
-        Analog = 167772160,
+        Analog = 167772160
     }
 }

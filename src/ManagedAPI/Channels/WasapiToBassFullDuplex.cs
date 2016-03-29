@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace ManagedBass.Wasapi
+﻿namespace ManagedBass.Wasapi
 {
     /// <summary>
     /// Provides audio from <see cref="WasapiRecordingDevice"/> or <see cref="WasapiLoopbackDevice"/> in a Bass Channel.
     /// </summary>
-    public class WasapiToBassFullDuplex : Channel
+    public sealed class WasapiToBassFullDuplex : Channel
     {
-        WasapiDevice WasapiDevice;
+        readonly WasapiDevice _wasapiDevice;
 
         public WasapiToBassFullDuplex(WasapiRecordingDevice Device, bool Decode = false)
             : this(Device as WasapiDevice, Decode) { Device.Init(); }
@@ -19,43 +17,43 @@ namespace ManagedBass.Wasapi
         {
             var info = WasapiDevice.DeviceInfo;
 
-            this.WasapiDevice = WasapiDevice;
+            this._wasapiDevice = WasapiDevice;
 
             Handle = Bass.CreateStream(info.MixFrequency, info.MixChannels, Decode ? BassFlags.Decode : 0, StreamProcedureType.Push);
 
-            WasapiDevice.Callback += (s) => Bass.StreamPutData(Handle, s.Pointer, s.ByteLength);
+            WasapiDevice.Callback += s => Bass.StreamPutData(Handle, s.Pointer, s.ByteLength);
         }
 
         public override bool Start()
         {
-            WasapiDevice.Start();
+            _wasapiDevice.Start();
 
             return base.Start();
         }
 
         public override bool Pause()
         {
-            bool Result = base.Pause();
+            var result = base.Pause();
 
-            WasapiDevice.Stop();
+            _wasapiDevice.Stop();
 
-            return Result;
+            return result;
         }
 
         public override bool Stop()
         {
-            bool Result = base.Stop();
+            var result = base.Stop();
 
-            WasapiDevice.Stop();
+            _wasapiDevice.Stop();
 
-            return Result;
+            return result;
         }
 
         public override void Dispose()
         {
             base.Dispose();
 
-            WasapiDevice.Dispose();
+            _wasapiDevice.Dispose();
         }
     }
 }

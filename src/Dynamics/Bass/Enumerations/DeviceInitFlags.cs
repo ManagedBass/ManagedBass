@@ -63,6 +63,6 @@ namespace ManagedBass
         /// <summary>
         /// Set the device's output rate to freq, otherwise leave it as it is.
         /// </summary>
-        Frequency = 16384,
+        Frequency = 16384
     }
 }

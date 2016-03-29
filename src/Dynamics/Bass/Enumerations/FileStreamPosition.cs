@@ -52,6 +52,6 @@
         /// <summary>
         /// WMA add-on: internet buffering progress (0-100%)
         /// </summary>
-        WmaBuffer = 1000,
+        WmaBuffer = 1000
     }
 }

@@ -203,7 +203,7 @@ namespace ManagedBass.Asio
                 int i;
                 AsioDeviceInfo info;
 
-                for (i = 0; GetDeviceInfo(i, out info); ++i) ;
+                for (i = 0; GetDeviceInfo(i, out info); ++i) { }
 
                 return i;
             }
@@ -405,7 +405,7 @@ namespace ManagedBass.Asio
         public static extern bool SetNotify(AsioNotifyProcedure Procedure, IntPtr User = default(IntPtr));
         
         #region Unicode
-        static bool unicode = false;
+        static bool unicode;
 
         [DllImport(DllName)]
         static extern bool BASS_ASIO_SetUnicode(bool Unicode);

@@ -35,7 +35,7 @@ namespace ManagedBass.Enc
 
         void Write(object buffer, int Length)
         {
-            GCHandle gch = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            var gch = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 
             Write(gch.AddrOfPinnedObject(), Length);
 

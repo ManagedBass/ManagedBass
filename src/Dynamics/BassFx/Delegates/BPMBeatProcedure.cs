@@ -2,5 +2,5 @@
 
 namespace ManagedBass.Fx
 {
-    public delegate void BPMBeatProcedure(int chan, double beatpos, IntPtr user);
+    public delegate void BPMBeatProcedure(int Channel, double BeatPosition, IntPtr User);
 }

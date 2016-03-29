@@ -39,7 +39,7 @@ namespace ManagedBass.Tags
         {
             Bass.Init();
 
-            int h = Bass.CreateStream(FileName, Flags: BassFlags.Prescan);
+            var h = Bass.CreateStream(FileName, Flags: BassFlags.Prescan);
 
             TagReader Result = null;
 
@@ -69,11 +69,11 @@ namespace ManagedBass.Tags
 
         public static TagReader Read(int Channel)
         {
-            TagReader TH = new TagReader();
+            var TH = new TagReader();
             var info = Bass.ChannelGetInfo(Channel);
             var ctype = info.ChannelType;
 
-            IntPtr ptr = IntPtr.Zero;
+            IntPtr ptr;
 
             // Mp3, Mp2, Mp1
             if (ctype.Is(ChannelType.MP3, ChannelType.MP2, ChannelType.MP1))

@@ -26,6 +26,6 @@
         /// <summary>
         /// Turn off 3D processing on the channel, the sound will be played in the center.
         /// </summary>
-        Off = 2,
+        Off = 2
     }
 }

@@ -7,56 +7,56 @@ namespace ManagedBass
     /// </summary>
     public class SineWave : Channel
     {
-        double freq, amp, rate, sangle;
-        int length;
-        int Sample;
+        double _freq, _amp, _rate, _sangle;
+        int _length;
+        int _sample;
 
         public new double Frequency
         {
-            get { return freq; }
+            get { return _freq; }
             set
             {
-                freq = value;
+                _freq = value;
                 Regenerate();
             }
         }
 
         public double Amplitude
         {
-            get { return amp; }
+            get { return _amp; }
             set
             {
-                amp = value;
+                _amp = value;
                 Regenerate();
             }
         }
 
         public double SampleRate
         {
-            get { return rate; }
+            get { return _rate; }
             set
             {
-                rate = value;
+                _rate = value;
                 Regenerate();
             }
         }
 
         public int Length
         {
-            get { return length; }
+            get { return _length; }
             set
             {
-                length = value;
+                _length = value;
                 Regenerate();
             }
         }
 
         public double StartAngle
         {
-            get { return sangle; }
+            get { return _sangle; }
             set
             {
-                sangle = value;
+                _sangle = value;
                 Regenerate();
             }
         }
@@ -74,23 +74,23 @@ namespace ManagedBass
 
         void Regenerate()
         {
-            float[] Buffer = new float[Length];
-            CreateSineWave(Buffer, StartAngle);
+            var Buffer = new float[Length];
+            CreateSineWave(Buffer);
 
-            if (Sample != 0)
-                Bass.SampleFree(Sample);
+            if (_sample != 0)
+                Bass.SampleFree(_sample);
 
-            Sample = Bass.CreateSample(4 * Length, 44100, 2, 1, BassFlags.Float);
-            Bass.SampleSetData(Sample, Buffer);
-            Handle = Bass.SampleGetChannel(Sample);
+            _sample = Bass.CreateSample(4 * Length, 44100, 2, 1, BassFlags.Float);
+            Bass.SampleSetData(_sample, Buffer);
+            Handle = Bass.SampleGetChannel(_sample);
         }
 
-        void CreateSineWave(float[] Buffer, double StartAngle = 0)
+        void CreateSineWave(float[] Buffer)
         {
-            double AngleStep = Frequency / SampleRate * Math.PI * 2;
-            double CurrentAngle = StartAngle;
+            var AngleStep = Frequency / SampleRate * Math.PI * 2;
+            var CurrentAngle = StartAngle;
 
-            for (int i = 0; i < Length; ++i)
+            for (var i = 0; i < Length; ++i)
             {
                 Buffer[i] = (float)Math.Sin(CurrentAngle) * (float)Amplitude;
 

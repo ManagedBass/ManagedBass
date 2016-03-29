@@ -28,7 +28,7 @@ namespace ManagedBass.Tags
 
         public byte genre = 147;
 
-        public static string[] Genres = new string[148]
+        public static string[] Genres = 
             {
                 "Blues",
                 "Classic Rock",
@@ -185,31 +185,11 @@ namespace ManagedBass.Tags
             return (ID3v1Tag)Marshal.PtrToStructure(Bass.ChannelGetTags(Handle, TagType.ID3), typeof(ID3v1Tag));
         }
 
-        public string Comment
-        {
-            get
-            {
-                return comment == null ? ""
-                                       : new string(comment).Replace("\0", "").Trim();
-            }
-        }
+        public string Comment => comment == null ? "" : new string(comment).Replace("\0", "").Trim();
 
-        public string Genre
-        {
-            get
-            {
-                if (genre > 147) return Genres[147];
-                else return Genres[genre];
-            }
-        }
+        public string Genre => genre > 147 ? Genres[147] : Genres[genre];
 
-        public int TrackNo
-        {
-            get
-            {
-                // If 29th byte of comment[] is null ('\0'), then 30th byte is track number
-                return comment[28] == '\0' ? comment[29] : -1;
-            }
-        }
+        // If 29th byte of comment[] is null ('\0'), then 30th byte is track number
+        public int TrackNo => comment[28] == '\0' ? comment[29] : -1;
     }
 }

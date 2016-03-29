@@ -163,6 +163,6 @@ namespace ManagedBass
         /// <summary>
         /// Channel 30: depends on the multi-channel source (see above info).
         /// </summary>
-        Channel30 = 536870912,
+        Channel30 = 536870912
     }
 }

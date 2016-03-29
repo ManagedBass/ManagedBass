@@ -6,26 +6,27 @@ namespace ManagedBass
     /// <summary>
     /// Streams audio from a Decoder allowing manipulation of Playback Direction without BassFx.
     /// </summary>
-    public class ReverseUserChannel : Channel
+    public sealed class ReverseUserChannel : Channel
     {
-        Channel decoder;
-        int dHandle, qLength, BytesRead;
-        long pos, dur, diff;
-        StreamProcedure proc;
-        float[] buffer;
+        Channel _decoder;
+        readonly int _dHandle;
+        int _qLength, _bytesRead;
+        long _pos, _dur, _diff;
+        readonly StreamProcedure _proc;
+        float[] _buffer;
 
         public ReverseUserChannel(Channel DecodingSource)
         {
-			this.decoder = DecodingSource;
-            this.dHandle = DecodingSource.Handle;
-            proc = new StreamProcedure(Callback);
+			_decoder = DecodingSource;
+            _dHandle = DecodingSource.Handle;
+            _proc = Callback;
 
-			if (!decoder.IsDecodingChannel)
+			if (!_decoder.IsDecodingChannel)
                 throw new ArgumentException("Not a Decoding Channel!");
 			
-			Handle = Bass.CreateStream((int)decoder.Frequency, decoder.ChannelCount, BassFlags.Float, proc);
+			Handle = Bass.CreateStream((int)_decoder.Frequency, _decoder.ChannelCount, BassFlags.Float, _proc);
                         
-            Bass.ChannelSetPosition(dHandle, Bass.ChannelGetLength(dHandle) - 1);
+            Bass.ChannelSetPosition(_dHandle, Bass.ChannelGetLength(_dHandle) - 1);
         }
 
         public bool Reverse { get; set; } = true;
@@ -34,62 +35,62 @@ namespace ManagedBass
 
         unsafe int Callback(int Handle, IntPtr Buffer, int Length, IntPtr User)
         {
-            pos = Bass.ChannelGetPosition(dHandle);
-            dur = Bass.ChannelGetLength(dHandle);
+            _pos = Bass.ChannelGetPosition(_dHandle);
+            _dur = Bass.ChannelGetLength(_dHandle);
 
-            qLength = Length / 4;
+            _qLength = Length / 4;
 
-            if (buffer == null || buffer.Length < qLength)
-                buffer = new float[qLength];
+            if (_buffer == null || _buffer.Length < _qLength)
+                _buffer = new float[_qLength];
 
             // Looping
             if (Reverse)
             {
-                diff = pos - Length;
+                _diff = _pos - Length;
 
-                if (diff <= 0) 
+                if (_diff <= 0) 
                 {
                     if (Loop)
-                        Bass.ChannelSetPosition(dHandle, dur + diff - 1);
+                        Bass.ChannelSetPosition(_dHandle, _dur + _diff - 1);
                     else Bass.ChannelStop(Handle);
                 }
-                else Bass.ChannelSetPosition(dHandle, diff);
+                else Bass.ChannelSetPosition(_dHandle, _diff);
             }
-            else if (pos >= dur)
+            else if (_pos >= _dur)
             {
                 if (Loop)
-                    Bass.ChannelSetPosition(dHandle, 0);
+                    Bass.ChannelSetPosition(_dHandle, 0);
                 else Bass.ChannelStop(Handle);
             }
 
-            BytesRead = Bass.ChannelGetData(dHandle, buffer, Length | (int)DataFlags.Float);
+            _bytesRead = Bass.ChannelGetData(_dHandle, _buffer, Length | (int)DataFlags.Float);
             
-            qLength  = BytesRead / 4;
+            _qLength  = _bytesRead / 4;
 
             if (Reverse)
             {
                 var b = (float*)Buffer;
 
-                for (int i = 0; i < qLength; ++i)
-                    b[i] = buffer[qLength - i - 1];
+                for (var i = 0; i < _qLength; ++i)
+                    b[i] = _buffer[_qLength - i - 1];
             }
-            else Marshal.Copy(buffer, 0, Buffer, qLength);
+            else Marshal.Copy(_buffer, 0, Buffer, _qLength);
 
-            return BytesRead;
+            return _bytesRead;
         }
 
         public override double Position
         {
-	        get { return Bass.ChannelBytes2Seconds(dHandle, Bass.ChannelGetPosition(dHandle)); }
-	        set { Bass.ChannelSetPosition(dHandle, Bass.ChannelSeconds2Bytes(dHandle, value));	}
+	        get { return Bass.ChannelBytes2Seconds(_dHandle, Bass.ChannelGetPosition(_dHandle)); }
+            set { Bass.ChannelSetPosition(_dHandle, Bass.ChannelSeconds2Bytes(_dHandle, value)); }
         }
 
-        public override double Duration => Bass.ChannelBytes2Seconds(dHandle, Bass.ChannelGetLength(dHandle));
+        public override double Duration => Bass.ChannelBytes2Seconds(_dHandle, Bass.ChannelGetLength(_dHandle));
 
         public override void Dispose()
         {
             base.Dispose();
-            decoder = null;
+            _decoder = null;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass.Dsd
@@ -80,7 +79,7 @@ namespace ManagedBass.Dsd
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
-            int Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags, Frequency);
+            var Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags, Frequency);
 
             if (Handle == 0) GCPin.Free();
             else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
@@ -93,7 +92,7 @@ namespace ManagedBass.Dsd
 
         public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr), int freq = 44100)
         {
-            int h = BASS_DSD_StreamCreateFileUser(system, flags, procs, user, freq);
+            var h = BASS_DSD_StreamCreateFileUser(system, flags, procs, user, freq);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(h, 0, procs);
@@ -106,7 +105,7 @@ namespace ManagedBass.Dsd
 
         public static int CreateStream(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 44100)
         {
-            int h = BASS_DSD_StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User, Frequency);
+            var h = BASS_DSD_StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User, Frequency);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(h, 0, Procedure);

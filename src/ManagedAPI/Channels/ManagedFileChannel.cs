@@ -7,10 +7,10 @@ namespace ManagedBass
     /// <summary>
     /// Stream an audio file using .Net file handling using <see cref="FileProcedures"/>.
     /// </summary>
-    public class ManagedFileChannel : Channel
+    public sealed class ManagedFileChannel : Channel
     {
-        FileProcedures procs;
-        FileStream Stream;
+        readonly FileProcedures _procs;
+        readonly FileStream _stream;
 
         /// <summary>
         /// Gets the path of the Loaded file
@@ -25,17 +25,19 @@ namespace ManagedBass
         /// <param name="Resolution">Channel Resolution to use.</param>
         public ManagedFileChannel(string FileName, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
-            Stream = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            _stream = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
 
             this.FileName = FileName;
 
-            procs = new FileProcedures();
-            procs.Close = (u) => Stream.Dispose();
-            procs.Length = (u) => Stream.Length;
-            procs.Read = ReadProc;
-            procs.Seek = SeekProc;
-            
-            Handle = Bass.CreateStream(StreamSystem.Buffer, FlagGen(IsDecoder, Resolution), procs);
+            _procs = new FileProcedures
+            {
+                Close = u => _stream.Dispose(),
+                Length = u => _stream.Length,
+                Read = ReadProc,
+                Seek = SeekProc
+            };
+
+            Handle = Bass.CreateStream(StreamSystem.Buffer, FlagGen(IsDecoder, Resolution), _procs);
         }
 
         byte[] b;
@@ -47,7 +49,7 @@ namespace ManagedBass
                 if (b == null || b.Length < length)
                     b = new byte[length];
 
-                int read = Stream.Read(b, 0, length);
+                var read = _stream.Read(b, 0, length);
 
                 Marshal.Copy(b, 0, buffer, read);
 
@@ -60,7 +62,7 @@ namespace ManagedBass
         {
             try
             {
-                Stream.Seek(offset, SeekOrigin.Current);
+                _stream.Seek(offset, SeekOrigin.Current);
                 return true;
             }
             catch { return false; }

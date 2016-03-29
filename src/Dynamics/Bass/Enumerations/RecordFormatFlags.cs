@@ -111,6 +111,6 @@ namespace ManagedBass
         /// <summary>
         /// 96 kHz, Stereo, 16-bit
         /// </summary>
-        WF96S16 = 524288,
+        WF96S16 = 524288
     }
 }

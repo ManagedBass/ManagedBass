@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass.Wma
@@ -34,7 +33,7 @@ namespace ManagedBass.Wma
         
         public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr))
         {
-            int h = BASS_WMA_StreamCreateFileUser(system, flags, procs, user);
+            var h = BASS_WMA_StreamCreateFileUser(system, flags, procs, user);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(h, 0, procs);
@@ -62,7 +61,7 @@ namespace ManagedBass.Wma
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
-            int Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
+            var Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
 
             if (Handle == 0) GCPin.Free();
             else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
@@ -92,7 +91,7 @@ namespace ManagedBass.Wma
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
-            int Handle = CreateStream(GCPin.AddrOfPinnedObject(), Length, Flags, UserName, Password);
+            var Handle = CreateStream(GCPin.AddrOfPinnedObject(), Length, Flags, UserName, Password);
 
             if (Handle == 0) GCPin.Free();
             else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
@@ -193,7 +192,7 @@ namespace ManagedBass.Wma
         public static extern bool EncodeClose(int Handle);
 
         [DllImport(DllName)]
-        static unsafe extern int* BASS_WMA_EncodeGetRates(int freq, int chans, WMAEncodeFlags Flags);
+        static extern unsafe int* BASS_WMA_EncodeGetRates(int freq, int chans, WMAEncodeFlags Flags);
         
 		/// <summary>
 		/// Retrieves the WMA encoding bitrates available for a specified sample format.
@@ -218,7 +217,7 @@ namespace ManagedBass.Wma
         /// <exception cref="Errors.WM9">The Windows Media modules (v9 or above) are not installed.</exception>
         /// <exception cref="Errors.NotAvailable">No codec could be found to support the specified sample format.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        public unsafe static int[] EncodeGetRates(int Frequency, int Channels, WMAEncodeFlags Flags)
+        public static unsafe int[] EncodeGetRates(int Frequency, int Channels, WMAEncodeFlags Flags)
         {
             var list = new List<int>();
 

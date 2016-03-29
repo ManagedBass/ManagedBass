@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace ManagedBass.Pitch
 {
@@ -77,10 +78,10 @@ namespace ManagedBass.Pitch
                 Design();
             }
         }
-        
-        bool IsOdd(int n) => (n & 1) == 1;
-        
-        double Sqr(double value) => value * value;
+
+        static bool IsOdd(int n) => (n & 1) == 1;
+
+        static double Sqr(double value) => value * value;
 
         /// <summary>
         /// Determines poles and zeros of IIR filter
@@ -91,14 +92,14 @@ namespace ManagedBass.Pitch
             m_real = new double[m_order + 1];
             m_imag = new double[m_order + 1];
             m_z = new double[m_order + 1];
-            double ln10 = Math.Log(10.0);
+            var ln10 = Math.Log(10.0);
 
             // Butterworth, Chebyshev parameters
-            int n = m_order;
+            var n = m_order;
 
-            int ir = n % 2;
-            int n1 = n + ir;
-            int n2 = (3 * n + ir) / 2 - 1;
+            var ir = n % 2;
+            var n1 = n + ir;
+            var n2 = (3 * n + ir) / 2 - 1;
             double f1;
 
             switch (m_filterType)
@@ -116,21 +117,21 @@ namespace ManagedBass.Pitch
                     break;
             }
 
-            double tanw1 = Math.Tan(0.5 * Math.PI * f1 / m_fN);
-            double tansqw1 = Sqr(tanw1);
+            var tanw1 = Math.Tan(0.5 * Math.PI * f1 / m_fN);
+            var tansqw1 = Sqr(tanw1);
 
             // Real and Imaginary parts of low-pass poles
-            double t, r = 1.0, i = 1.0;
+            double r;
 
-            for (int k = n1; k <= n2; k++)
+            for (var k = n1; k <= n2; k++)
             {
-                t = 0.5 * (2 * k + 1 - ir) * Math.PI / (double)n;
+                var t = 0.5 * (2 * k + 1 - ir) * Math.PI / n;
 
-                double b3 = 1.0 - 2.0 * tanw1 * Math.Cos(t) + tansqw1;
+                var b3 = 1.0 - 2.0 * tanw1 * Math.Cos(t) + tansqw1;
                 r = (1.0 - tansqw1) / b3;
-                i = 2.0 * tanw1 * Math.Sin(t) / b3;
+                var i = 2.0 * tanw1 * Math.Sin(t) / b3;
 
-                int m = 2 * (n2 - k) + 1;
+                var m = 2 * (n2 - k) + 1;
                 m_real[m + ir] = r;
                 m_imag[m + ir] = Math.Abs(i);
                 m_real[m + ir + 1] = r;
@@ -148,13 +149,13 @@ namespace ManagedBass.Pitch
             switch (m_filterType)
             {
                 case IIRFilterType.LP:
-                    for (int m = 1; m <= n; m++)
+                    for (var m = 1; m <= n; m++)
                         m_z[m] = -1.0;
                     break;
 
                 case IIRFilterType.HP:
                     // Low-pass to high-pass transformation
-                    for (int m = 1; m <= n; m++)
+                    for (var m = 1; m <= n; m++)
                     {
                         m_real[m] = -m_real[m];
                         m_z[m] = 1.0;
@@ -168,7 +169,7 @@ namespace ManagedBass.Pitch
         /// </summary>
         public void Design()
         {
-            if (!this.FilterValid)
+            if (!FilterValid)
                 return;
 
             m_aCoeff = new double[m_order + 1];
@@ -176,8 +177,8 @@ namespace ManagedBass.Pitch
             m_inHistory = new double[kHistSize];
             m_outHistory = new double[kHistSize];
 
-            double[] newA = new double[m_order + 1];
-            double[] newB = new double[m_order + 1];
+            var newA = new double[m_order + 1];
+            var newB = new double[m_order + 1];
 
             // Find filter poles and zeros
             LocatePolesAndZeros();
@@ -186,15 +187,12 @@ namespace ManagedBass.Pitch
             m_aCoeff[0] = 1.0;
             m_bCoeff[0] = 1.0;
 
-            for (int i = 1; i <= m_order; i++)
-            {
-                m_aCoeff[i] = 0.0;
-                m_bCoeff[i] = 0.0;
-            }
-
-            int k = 0;
-            int n = m_order;
-            int pairs = n / 2;
+            for (var i = 1; i <= m_order; i++)
+                m_aCoeff[i] = m_bCoeff[i] = 0.0;
+            
+            var k = 0;
+            var n = m_order;
+            var pairs = n / 2;
 
             if (IsOdd(m_order))
             {
@@ -204,24 +202,24 @@ namespace ManagedBass.Pitch
                 k = 1;
             }
 
-            for (int p = 1; p <= pairs; p++)
+            for (var p = 1; p <= pairs; p++)
             {
-                int m = 2 * p - 1 + k;
-                double alpha1 = -(m_z[m] + m_z[m + 1]);
-                double alpha2 = m_z[m] * m_z[m + 1];
-                double beta1 = -2.0 * m_real[m];
-                double beta2 = Sqr(m_real[m]) + Sqr(m_imag[m]);
+                var m = 2 * p - 1 + k;
+                var alpha1 = -(m_z[m] + m_z[m + 1]);
+                var alpha2 = m_z[m] * m_z[m + 1];
+                var beta1 = -2.0 * m_real[m];
+                var beta2 = Sqr(m_real[m]) + Sqr(m_imag[m]);
 
                 newA[1] = m_aCoeff[1] + alpha1 * m_aCoeff[0];
                 newB[1] = m_bCoeff[1] + beta1 * m_bCoeff[0];
 
-                for (int i = 2; i <= n; i++)
+                for (var i = 2; i <= n; i++)
                 {
                     newA[i] = m_aCoeff[i] + alpha1 * m_aCoeff[i - 1] + alpha2 * m_aCoeff[i - 2];
                     newB[i] = m_bCoeff[i] + beta1 * m_bCoeff[i - 1] + beta2 * m_bCoeff[i - 2];
                 }
 
-                for (int i = 1; i <= n; i++)
+                for (var i = 1; i <= n; i++)
                 {
                     m_aCoeff[i] = newA[i];
                     m_bCoeff[i] = newB[i];
@@ -252,18 +250,17 @@ namespace ManagedBass.Pitch
         public void FilterBuffer(float[] srcBuf, long srcPos, float[] dstBuf, long dstPos, long nLen)
         {
             const double kDenormal = 0.000000000000001;
-            double denormal = m_invertDenormal ? -kDenormal : kDenormal;
+            var denormal = m_invertDenormal ? -kDenormal : kDenormal;
             m_invertDenormal = !m_invertDenormal;
 
-            for (int sampleIdx = 0; sampleIdx < nLen; sampleIdx++)
+            for (var sampleIdx = 0; sampleIdx < nLen; sampleIdx++)
             {
-                double sum = 0;
-
                 m_inHistory[m_histIdx] = srcBuf[srcPos + sampleIdx] + denormal;
 
-                for (int idx = 0; idx < m_aCoeff.Length; idx++) sum += m_aCoeff[idx] * m_inHistory[(m_histIdx - idx) & kHistMask];
+                var sum = m_aCoeff.Select((t, idx) => t*m_inHistory[(m_histIdx - idx) & kHistMask]).Sum();
 
-                for (int idx = 1; idx < m_bCoeff.Length; idx++) sum -= m_bCoeff[idx] * m_outHistory[(m_histIdx - idx) & kHistMask];
+                for (var idx = 1; idx < m_bCoeff.Length; idx++)
+                    sum -= m_bCoeff[idx] * m_outHistory[(m_histIdx - idx) & kHistMask];
 
                 m_outHistory[m_histIdx] = sum;
                 m_histIdx = (m_histIdx + 1) & kHistMask;
@@ -279,26 +276,28 @@ namespace ManagedBass.Pitch
         public float[] FilterGain(int freqPoints)
         {
             // Filter gain at uniform frequency intervals
-            float[] g = new float[freqPoints];
-            double theta, s, c, sac, sas, sbc, sbs;
-            float gMax = -100;
-            float sc = 10 / (float)Math.Log(10);
-            double t = Math.PI / (freqPoints - 1);
+            var g = new float[freqPoints];
+            
+            var gMax = -100f;
+            var sc = 10 / (float)Math.Log(10);
+            var t = Math.PI / (freqPoints - 1);
 
-            for (int i = 0; i < freqPoints; i++)
+            for (var i = 0; i < freqPoints; i++)
             {
-                theta = i * t;
+                var theta = i * t;
 
-                if (i == 0) theta = Math.PI * 0.0001;
+                if (i == 0)
+                    theta = Math.PI * 0.0001;
 
-                if (i == freqPoints - 1) theta = Math.PI * 0.9999;
+                if (i == freqPoints - 1)
+                    theta = Math.PI * 0.9999;
 
-                sac = sas = sbc = sbs = 0;
+                double sac = 0, sas = 0, sbc = 0, sbs = 0;
 
-                for (int k = 0; k <= m_order; k++)
+                for (var k = 0; k <= m_order; k++)
                 {
-                    c = Math.Cos(k * theta);
-                    s = Math.Sin(k * theta);
+                    var c = Math.Cos(k * theta);
+                    var s = Math.Sin(k * theta);
                     sac += c * m_aCoeff[k];
                     sas += s * m_aCoeff[k];
                     sbc += c * m_bCoeff[k];
@@ -310,12 +309,14 @@ namespace ManagedBass.Pitch
             }
 
             // Normalize to 0 dB maximum gain
-            for (int i = 0; i < freqPoints; i++) g[i] -= gMax;
+            for (var i = 0; i < freqPoints; i++)
+                g[i] -= gMax;
 
             // Normalize numerator (a) coefficients
-            float normFactor = (float)Math.Pow(10.0, -0.05 * gMax);
+            var normFactor = (float)Math.Pow(10.0f, -0.05f * gMax);
 
-            for (int i = 0; i <= m_order; i++) m_aCoeff[i] *= normFactor;
+            for (var i = 0; i <= m_order; i++)
+                m_aCoeff[i] *= normFactor;
 
             return g;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass
@@ -61,15 +62,9 @@ namespace ManagedBass
                 return BASS_PluginLoad(FilePath);
 
             // Try for Windows, Linux/Android and OSX Libraries respectively.
-            foreach (var lib in new string[] { FilePath + ".dll", "lib" + FilePath + ".so", "lib" + FilePath + ".dylib" })
-            {
-                int HLib = Bass.PluginLoad(lib);
-
-                if (HLib != 0)
-                    return HLib;
-            }
-
-            return 0;
+            return new[] { FilePath + ".dll", "lib" + FilePath + ".so", "lib" + FilePath + ".dylib" }
+                           .Select(PluginLoad)
+                           .FirstOrDefault(HLib => HLib != 0);
         }
         #endregion
 
@@ -95,24 +90,22 @@ namespace ManagedBass
         {
             var list = new Dictionary<string, int>();
 
-            if (Directory.Exists(directory))
+            if (!Directory.Exists(directory))
+                return list;
+
+            foreach (var libs in new[] { "bass*.dll", "libbass*.so", "libbass*.dylib" }
+                                         .Select(wildcard => Directory.GetFiles(directory, wildcard))
+                                         .Where(libs => libs.Length != 0))
             {
-                foreach (var wildcard in new[] { "bass*.dll", "libbass*.so", "libbass*.dylib" })
+                foreach (var lib in libs)
                 {
-                    var libs = Directory.GetFiles(directory, wildcard);
-
-                    if (libs == null || libs.Length == 0)
-                        continue;
-
-                    foreach (var lib in libs)
-                    {
-                        int h = BASS_PluginLoad(lib);
-                        if (h != 0) list.Add(lib, h);
-                    }
-
-                    if (list.Count > 0)
-                        break;
+                    var h = BASS_PluginLoad(lib);
+                    if (h != 0)
+                        list.Add(lib, h);
                 }
+
+                if (list.Count > 0)
+                    break;
             }
 
             return list;

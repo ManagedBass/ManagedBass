@@ -13,15 +13,14 @@ namespace ManagedBass.Pitch
 
         public PitchRecord(double Pitch)
         {
-            var midiNote = 0;
-            var midiCents = 0;
+            int midiNote, midiCents;
 
             PitchToMidiNote((float)Pitch, out midiNote, out midiCents);
             
             this.Pitch = Pitch;
-            this.MidiNote = midiNote;
-            this.MidiCents = midiCents;
-            this.NoteName = GetNoteName(MidiNote, true, true);
+            MidiNote = midiNote;
+            MidiCents = midiCents;
+            NoteName = GetNoteName(MidiNote, true, true);
         }
 
         /// <summary>
@@ -52,7 +51,7 @@ namespace ManagedBass.Pitch
                 return false;
             }
 
-            var fNote = (float)((12.0 * Math.Log10(pitch / 55.0) * InverseLog2)) + 33.0f;
+            var fNote = (float)(12 * Math.Log10(pitch / 55) * InverseLog2) + 33;
             note = (int)(fNote + 0.5f);
             cents = (int)((note - fNote) * 100);
             return true;
@@ -78,7 +77,7 @@ namespace ManagedBass.Pitch
 
             note -= MinMidiNoteA0;
 
-            int octave = (note + 9) / 12;
+            var octave = (note + 9) / 12;
             note = note % 12;
             string noteText = null;
 
@@ -133,7 +132,8 @@ namespace ManagedBass.Pitch
                     break;
             }
 
-            if (showOctave) noteText += " " + octave.ToString();
+            if (showOctave)
+                noteText += " " + octave;
 
             return noteText;
         }

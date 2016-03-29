@@ -26,6 +26,6 @@ namespace ManagedBass
         /// to any sample data, by setting DSP/FX on the stream and feeding the data through <see cref="Bass.ChannelGetData(int,IntPtr,int)"/>.
         /// The dummy stream should have the same sample format as the data being fed through it.
         /// </summary>
-        Dummy = 0,
+        Dummy = 0
     }
 }

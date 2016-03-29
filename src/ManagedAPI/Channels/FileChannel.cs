@@ -7,9 +7,9 @@ namespace ManagedBass
     /// <summary>
     /// Stream an audio file using Bass' file handling or from Memory.
     /// </summary>
-    public class FileChannel : Channel
+    public sealed class FileChannel : Channel
     {
-        GCHandle GCPin;
+        GCHandle _gcPin;
 
         /// <summary>
         /// Path of the loaded file or null if loaded from Memory.
@@ -33,17 +33,17 @@ namespace ManagedBass
 
         public FileChannel(byte[] Memory, int Offset, long Length, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
-            GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
+            _gcPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
-            Handle = Bass.CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution));
+            Handle = Bass.CreateStream(_gcPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution));
         }
         
         public override void Dispose()
         {
             base.Dispose();
 
-			if (GCPin != null && GCPin.IsAllocated) 
-                GCPin.Free();
+			if (_gcPin.IsAllocated) 
+                _gcPin.Free();
         }
     }
 }

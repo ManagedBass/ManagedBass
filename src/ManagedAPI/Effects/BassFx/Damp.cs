@@ -9,10 +9,10 @@ namespace ManagedBass.Fx
     public class DampParameters : IEffectParameter
     {
         public float fTarget = 1f;
-        public float fQuiet = 0;
-        public float fRate = 0;
-        public float fGain = 0;
-        public float fDelay = 0;
+        public float fQuiet;
+        public float fRate;
+        public float fGain;
+        public float fDelay;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
         public EffectType FXType => EffectType.Damp;

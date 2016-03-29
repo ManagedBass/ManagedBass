@@ -24,6 +24,6 @@ namespace ManagedBass
         /// Enable the Input.
         /// If the device only allows one Input at a time, then any previously enabled Input will be disabled by this.
         /// </summary>
-        On = 0x20000,
+        On = 0x20000
     }
 }

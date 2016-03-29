@@ -7,10 +7,10 @@ namespace ManagedBass
     /// <summary>
     /// Streams audio through a UserStreamCallback.
     /// </summary>
-    public class UserStream : Channel
+    public sealed class UserStream : Channel
     {
-        StreamProcedure Procedure;
-        UserStreamCallback call;
+        readonly StreamProcedure _procedure;
+        readonly UserStreamCallback _call;
 
         public UserStream(UserStreamCallback callback,
                           PlaybackDevice Device,
@@ -18,20 +18,21 @@ namespace ManagedBass
                           Resolution Resolution = Resolution.Short,
                           bool IsMono = false)
         {
-            call = callback;
-            Procedure = new StreamProcedure(Callback);
+            _call = callback;
+            _procedure = Callback;
 
             // Stream Flags
-            BassFlags Flags = FlagGen(IsDecoder, Resolution);
+            var flags = FlagGen(IsDecoder, Resolution);
 
             // Set Mono            
-            if (IsMono) Flags |= BassFlags.Mono;
+            if (IsMono)
+                flags |= BassFlags.Mono;
 
-            Handle = Bass.CreateStream(44100, 2, Flags, Procedure, IntPtr.Zero);
+            Handle = Bass.CreateStream(44100, 2, flags, _procedure, IntPtr.Zero);
 
             Bass.ChannelSetDevice(Handle, Device.DeviceIndex);
         }
 
-        int Callback(int handle, IntPtr Buffer, int Length, IntPtr User) => call.Invoke(new BufferProvider(Buffer, Length));
+        int Callback(int Handle, IntPtr Buffer, int Length, IntPtr User) => _call.Invoke(new BufferProvider(Buffer, Length));
     }
 }

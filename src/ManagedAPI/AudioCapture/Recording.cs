@@ -5,23 +5,21 @@ namespace ManagedBass
     /// <summary>
     /// Capture audio from Microphone
     /// </summary>
-    public class Recording : Channel, IAudioCaptureClient
+    public sealed class Recording : Channel, IAudioCaptureClient
     {
-        #region Fields
-        RecordProcedure RecordProcedure;
-        int DeviceIndex;
-        #endregion
-
+        readonly RecordProcedure RecordProcedure;
+        
         public Recording(RecordingDevice Device = null, int Channels = 2, int SampleRate = 44100, Resolution Resolution = Resolution.Short)
         {
-            if (Device == null) Device = RecordingDevice.DefaultDevice;
+            if (Device == null)
+                Device = RecordingDevice.DefaultDevice;
 
             Device.Init();
-            DeviceIndex = Device.DeviceIndex;
+            var deviceIndex = Device.DeviceIndex;
 
-            Bass.CurrentRecordingDevice = DeviceIndex;
+            Bass.CurrentRecordingDevice = deviceIndex;
 
-            RecordProcedure = new RecordProcedure(Processing);
+            RecordProcedure = Processing;
 
             Handle = Bass.RecordStart(SampleRate, Channels, BassFlags.RecordPause | Resolution.ToBassFlag(), RecordProcedure);
         }
@@ -33,7 +31,7 @@ namespace ManagedBass
         #region Callback
         public event Action<BufferProvider> DataAvailable;
 
-        bool Processing(int Handle, IntPtr Buffer, int Length, IntPtr User)
+        bool Processing(int HRecord, IntPtr Buffer, int Length, IntPtr User)
         {
             DataAvailable?.Invoke(new BufferProvider(Buffer, Length));
 

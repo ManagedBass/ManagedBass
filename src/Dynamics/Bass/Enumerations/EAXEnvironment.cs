@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ManagedBass
+﻿namespace ManagedBass
 {
     /// <summary>
     /// EAX environment constants to be used with <see cref="Bass.SetEAXParameters" />
@@ -143,7 +141,7 @@ namespace ManagedBass
         Psychotic = 25,
 
         /// <summary>
-        /// total number of environments
+        /// Total number of environments
         /// </summary>
         Count = 26
     }

@@ -1,5 +1,3 @@
-using System;
-
 namespace ManagedBass.Cd
 {
 	/// <summary>

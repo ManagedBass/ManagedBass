@@ -14,7 +14,7 @@ namespace ManagedBass
     public class MediaPlayer : Channel, INotifyPropertyChanged
     {
         #region Frequency
-        double freq = 44100;
+        double _freq = 44100;
         
         /// <summary>
         /// Gets or Sets the Playback Frequency in Hertz.
@@ -22,20 +22,20 @@ namespace ManagedBass
         /// </summary>
         public override double Frequency
         {
-            get { return freq; }
+            get { return _freq; }
             set
             {
-                if (Bass.ChannelSetAttribute(Handle, ChannelAttribute.Frequency, value))
-                {
-                    freq = value;
-                    OnPropertyChanged();
-                }
+                if (!Bass.ChannelSetAttribute(Handle, ChannelAttribute.Frequency, value))
+                    return;
+
+                _freq = value;
+                OnPropertyChanged();
             }
         }
         #endregion
 
         #region Balance
-        double pan = 0;
+        double _pan;
         
         /// <summary>
         /// Gets or Sets Balance (Panning) (-1 ... 0 ... 1).
@@ -45,78 +45,78 @@ namespace ManagedBass
         /// </summary>
         public override double Balance
         {
-            get { return pan; }
+            get { return _pan; }
             set
             {
-                if (Bass.ChannelSetAttribute(Handle, ChannelAttribute.Pan, value))
-                {
-                    pan = value;
-                    OnPropertyChanged();
-                }
+                if (!Bass.ChannelSetAttribute(Handle, ChannelAttribute.Pan, value))
+                    return;
+
+                _pan = value;
+                OnPropertyChanged();
             }
         }
         #endregion
 
         #region Device
-        protected PlaybackDevice dev;
+        PlaybackDevice _dev;
 
         /// <summary>
         /// Gets or Sets the Playback Device used.
         /// </summary>
         public override PlaybackDevice Device
         {
-            get { return dev ?? base.Device; }
+            get { return _dev ?? base.Device; }
             set
             {
                 if (!value.DeviceInfo.IsInitialized)
                     if (!value.Init())
                         return;
 
-                if (Bass.ChannelSetDevice(Handle, value.DeviceIndex))
-                {
-                    dev = value;
-                    OnPropertyChanged();
-                }
+                if (!Bass.ChannelSetDevice(Handle, value.DeviceIndex))
+                    return;
+
+                _dev = value;
+                OnPropertyChanged();
             }
         }
         #endregion
 
         #region Volume
-        double vol = 0.5;
+        double _vol = 0.5;
 
         /// <summary>
         /// Gets or Sets the Playback Volume.
         /// </summary>
         public override double Volume
         {
-            get { return vol; }
+            get { return _vol; }
             set
             {
-                if (Bass.ChannelSetAttribute(Handle, ChannelAttribute.Volume, value))
-                {
-                    vol = value;
-                    OnPropertyChanged();
-                }
+                if (!Bass.ChannelSetAttribute(Handle, ChannelAttribute.Volume, value))
+                    return;
+
+                _vol = value;
+                OnPropertyChanged();
             }
         }
         #endregion
 
         #region Loop
-        bool loop = false;
+        bool _loop;
 
         /// <summary>
         /// Gets or Sets whether the Playback is looped.
         /// </summary>
         public override bool Loop
         {
-            get { return loop; }
+            get { return _loop; }
             set
             {
-                if (value ? AddFlag(BassFlags.Loop) : RemoveFlag(BassFlags.Loop))
-                {
-                    loop = value;
-                    OnPropertyChanged();
-                }
+                if (value ? !AddFlag(BassFlags.Loop) : !RemoveFlag(BassFlags.Loop))
+                    return;
+
+                _loop = value;
+                OnPropertyChanged();
             }
         }
         #endregion
@@ -128,17 +128,17 @@ namespace ManagedBass
         /// <returns><see langword="true"/> on Success, <see langword="false"/> on failure</returns>
         protected virtual int OnLoad(string FileName) => Bass.CreateStream(FileName);
 
-        string title = "", artist = "", album = "";
+        string _title = "", _artist = "", _album = "";
 
         /// <summary>
         /// Title of the Loaded Media.
         /// </summary>
         public string Title 
         {
-            get { return title; }
+            get { return _title; }
             private set
             {
-                title = value;
+                _title = value;
                 OnPropertyChanged();
             }
         }
@@ -148,10 +148,10 @@ namespace ManagedBass
         /// </summary>
         public string Artist
         {
-            get { return artist; }
+            get { return _artist; }
             private set
             {
-                artist = value;
+                _artist = value;
                 OnPropertyChanged();
             }
         }
@@ -161,10 +161,10 @@ namespace ManagedBass
         /// </summary>
         public string Album
         {
-            get { return album; }
+            get { return _album; }
             private set
             {
-                album = value;
+                _album = value;
                 OnPropertyChanged();
             }
         }
@@ -183,15 +183,15 @@ namespace ManagedBass
             }
             catch { }
 
-            if (dev != null)
-                PlaybackDevice.CurrentDevice = dev;
+            if (_dev != null)
+                PlaybackDevice.CurrentDevice = _dev;
 
             var currentDev = Bass.CurrentDevice;
 
             if (currentDev == -1 || !Bass.GetDeviceInfo(Bass.CurrentDevice).IsInitialized)
                 Bass.Init(currentDev);
 
-            int h = OnLoad(FileName);
+            var h = OnLoad(FileName);
 
             if (h == 0)
                 return false;
@@ -221,10 +221,10 @@ namespace ManagedBass
 
         protected virtual void InitProperties()
         {
-            Frequency = freq;
-            Balance = pan;
-            Volume = vol;
-            Loop = loop;
+            Frequency = _freq;
+            Balance = _pan;
+            Volume = _vol;
+            Loop = _loop;
         }
 
         protected void OnPropertyChanged([CallerMemberName] string PropertyName = "")

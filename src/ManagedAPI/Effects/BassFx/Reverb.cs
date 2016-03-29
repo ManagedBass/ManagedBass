@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ManagedBass.Fx
 {
@@ -9,12 +8,12 @@ namespace ManagedBass.Fx
     [StructLayout(LayoutKind.Sequential)]
     public class ReverbParameters : IEffectParameter
     {
-        public float fDryMix = 0;
+        public float fDryMix;
         public float fWetMix = 1f;
         public float fRoomSize = 0.5f;
         public float fDamp = 0.5f;
         public float fWidth = 1f;
-        public int lMode = 0;
+        public int lMode;
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
         public EffectType FXType => EffectType.Freeverb;

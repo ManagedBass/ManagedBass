@@ -26,6 +26,6 @@ namespace ManagedBass
         /// <summary>
         /// Optional Flag: If set it returns RMS levels instead of peak leavels
         /// </summary>
-        RMS = 4,
+        RMS = 4
     }
 }

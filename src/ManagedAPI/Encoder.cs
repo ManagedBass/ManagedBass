@@ -9,7 +9,7 @@ namespace ManagedBass.Enc
 
         public int Handle { get; protected set; }
 
-        public Encoder(int Channel) { this.Channel = Channel; }
+        protected Encoder(int Channel) { this.Channel = Channel; }
 
         public bool AddChunk(string ID, IntPtr buffer, int length)
         {
@@ -21,9 +21,9 @@ namespace ManagedBass.Enc
             if (!Bass.ChannelGetInfo(Channel).IsDecodingChannel)
                 throw new InvalidOperationException("Not a Decoding Channel");
 
-            int BlockLength = (int)Bass.ChannelSeconds2Bytes(Channel, 2);
+            var BlockLength = (int)Bass.ChannelSeconds2Bytes(Channel, 2);
 
-            byte[] Buffer = new byte[BlockLength];
+            var Buffer = new byte[BlockLength];
 
             var gch = GCHandle.Alloc(Buffer, GCHandleType.Pinned);
 
@@ -54,7 +54,7 @@ namespace ManagedBass.Enc
             : base(Channel)
         {
             // Get the Length of the ACMFormat structure
-            int SuggestedFormatLength = BassEnc.GetACMFormat(0);
+            var SuggestedFormatLength = BassEnc.GetACMFormat(0);
             var ACMFormat = Marshal.AllocHGlobal(SuggestedFormatLength);
 
             // Retrieve ACMFormat and Init Encoding

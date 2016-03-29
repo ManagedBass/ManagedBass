@@ -128,7 +128,7 @@ namespace ManagedBass
         /// <summary>
         /// <see cref="BassFx"/>: Pitch Shift using FFT (multi channel).
         /// </summary>
-        Freeverb = 65558,
+        Freeverb = 65558
         #endregion
     }
 }

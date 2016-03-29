@@ -12,16 +12,16 @@ namespace ManagedBass
         /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle"/> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MusicFree")]
-        public extern static bool MusicFree(int Handle);
+        public static extern bool MusicFree(int Handle);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
-        extern static int BASS_MusicLoad(bool mem, string file, long offset, int Length, BassFlags flags, int freq);
+        static extern int BASS_MusicLoad(bool mem, string file, long offset, int Length, BassFlags flags, int freq);
 
         [DllImport(DllName)]
-        extern static int BASS_MusicLoad(bool mem, IntPtr file, long offset, int Length, BassFlags flags, int freq);
+        static extern int BASS_MusicLoad(bool mem, IntPtr file, long offset, int Length, BassFlags flags, int freq);
 
         [DllImport(DllName)]
-        extern static int BASS_MusicLoad(bool mem, byte[] file, long offset, int Length, BassFlags flags, int freq);
+        static extern int BASS_MusicLoad(bool mem, byte[] file, long offset, int Length, BassFlags flags, int freq);
                 
 		/// <summary>
 		/// Loads a MOD music file - MO3 / IT / XM / S3M / MTM / MOD / UMX formats.

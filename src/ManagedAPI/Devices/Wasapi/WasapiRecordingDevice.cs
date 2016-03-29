@@ -12,17 +12,15 @@ namespace ManagedBass.Wasapi
         {
             if (Singleton.ContainsKey(Device))
                 return Singleton[Device] as WasapiRecordingDevice;
-            else
-            {
-                WasapiDeviceInfo info;
-                if (!(BassWasapi.GetDeviceInfo(Device, out info) && !info.IsLoopback && info.IsInput))
-                    throw new ArgumentException("Invalid WasapiRecordingDevice Index");
 
-                var Dev = new WasapiRecordingDevice(Device);
-                Singleton.Add(Device, Dev);
+            WasapiDeviceInfo info;
+            if (!(BassWasapi.GetDeviceInfo(Device, out info) && !info.IsLoopback && info.IsInput))
+                throw new ArgumentException("Invalid WasapiRecordingDevice Index");
 
-                return Dev;
-            }
+            var dev = new WasapiRecordingDevice(Device);
+            Singleton.Add(Device, dev);
+
+            return dev;
         }
 
         public static IEnumerable<WasapiRecordingDevice> Devices
@@ -31,7 +29,7 @@ namespace ManagedBass.Wasapi
             {
                 WasapiDeviceInfo dev;
 
-                for (int i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
+                for (var i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
                     if (dev.IsInput && !dev.IsLoopback)
                         yield return Get(i);
             }
@@ -39,24 +37,24 @@ namespace ManagedBass.Wasapi
 
         public bool Init(int Frequency = 44100, int Channels = 2, bool Shared = true, bool UseEventSync = false, int Buffer = 0, int Period = 0)
         {
-            return base._Init(Frequency, Channels, Shared, UseEventSync, Buffer, Period);
+            return _Init(Frequency, Channels, Shared, UseEventSync, Buffer, Period);
         }
 
-        public static WasapiRecordingDevice DefaultDevice => Devices.First(dev => dev.DeviceInfo.IsDefault);
+        public static WasapiRecordingDevice DefaultDevice => Devices.First(Dev => Dev.DeviceInfo.IsDefault);
 
         public static int Count
         {
             get
             {
-                int Count = 0;
+                var count = 0;
 
                 WasapiDeviceInfo dev;
 
-                for (int i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
+                for (var i = 0; BassWasapi.GetDeviceInfo(i, out dev); ++i)
                     if (dev.IsInput && !dev.IsLoopback)
-                        Count++;
+                        count++;
 
-                return Count;
+                return count;
             }
         }
     }

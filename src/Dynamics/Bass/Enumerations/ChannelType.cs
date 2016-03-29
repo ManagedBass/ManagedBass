@@ -258,6 +258,6 @@ namespace ManagedBass
         /// <summary>
         /// Wave format stream, Float 32-bit.
         /// </summary>
-        WaveFloat = 327683,
+        WaveFloat = 327683
     }
 }

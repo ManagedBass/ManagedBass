@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using static System.Runtime.InteropServices.Marshal;
 
 namespace ManagedBass
@@ -7,18 +6,18 @@ namespace ManagedBass
     /// <summary>
     /// Streams a MOD music file.
     /// </summary>
-    public class MusicModule : Channel
+    public sealed class MusicModule : Channel
     {
         public MusicModule(string FilePath, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
             Handle = Bass.MusicLoad(FilePath, 0, 0, FlagGen(IsDecoder, Resolution), 0);
         }
 
-        MusicModule(byte[] Memory, int Length, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
+        public MusicModule(byte[] Memory, int Length, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
-            GCHandle GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
-            Handle = Bass.MusicLoad(GCPin.AddrOfPinnedObject(), 0, Length, FlagGen(IsDecoder, Resolution));
-            GCPin.Free();
+            var gcPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
+            Handle = Bass.MusicLoad(gcPin.AddrOfPinnedObject(), 0, Length, FlagGen(IsDecoder, Resolution));
+            gcPin.Free();
         }
 
         public string Title => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicName));
@@ -29,19 +28,19 @@ namespace ManagedBass
 
         public string Instrument(int Index) => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicInstrument + Index));
 
-        public string MusicSampleName(int index) => Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicSample + index));
+        public string MusicSampleName(int Index) => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicSample + Index));
 
         public byte[] MusicOrders
         {
             get
             {
-                int n = (int)Bass.ChannelGetLength(Handle, PositionFlags.MusicOrders);
+                var n = (int)Bass.ChannelGetLength(Handle, PositionFlags.MusicOrders);
 
-                byte[] b = new byte[n];
+                var b = new byte[n];
 
-                IntPtr ptr = Bass.ChannelGetTags(Handle, TagType.MusicOrders);
+                var ptr = Bass.ChannelGetTags(Handle, TagType.MusicOrders);
 
-                Marshal.Copy(ptr, b, 0, n);
+                Copy(ptr, b, 0, n);
 
                 return b;
             }
@@ -51,7 +50,7 @@ namespace ManagedBass
         {
             get
             {
-                int channels = 0;
+                var channels = 0;
                 float dummy;
 
                 while (Bass.ChannelGetAttribute(Handle, ChannelAttribute.MusicVolumeChannel + channels, out dummy))
@@ -65,7 +64,7 @@ namespace ManagedBass
         {
             get
             {
-                int instruments = 0;
+                var instruments = 0;
                 float dummy;
 
                 while (Bass.ChannelGetAttribute(Handle, ChannelAttribute.MusicVolumeInstrument + instruments, out dummy))

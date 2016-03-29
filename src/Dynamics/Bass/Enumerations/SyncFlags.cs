@@ -235,7 +235,7 @@ namespace ManagedBass
         /// param : Optional limit the sync to a certain envelope Type (one of the BASSMIXEnvelope values).
         /// data : Will contain the envelope Type in the LOWORD and the current node number in the HIWORD.
         /// </summary>
-        MixerEnvelopeNode = 66049,
+        MixerEnvelopeNode = 66049
         #endregion
     }
 }

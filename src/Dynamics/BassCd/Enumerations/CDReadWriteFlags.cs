@@ -91,6 +91,6 @@ namespace ManagedBass.Cd
         /// <summary>
         /// The drive can read UPC numbers.
         /// </summary>
-        UPC = 1073741824,
+        UPC = 1073741824
     }
 }

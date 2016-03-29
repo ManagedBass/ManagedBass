@@ -13,54 +13,55 @@ namespace ManagedBass
     /// <typeparam name="T">Type of the <see cref="IEffectParameter"/></typeparam>
     public abstract class Effect<T> : IDisposable, INotifyPropertyChanged where T : class, IEffectParameter, new()
     {
-        int Channel, EffectHandle, hfsync;
+        int _channel, _effectHandle, _hfsync;
         protected T Parameters = new T();
-        GCHandle gch;
-        SyncProcedure freeproc;
-        bool mediaPlayer, wasActive;
+        GCHandle _gch;
+        readonly SyncProcedure _freeproc;
+        readonly bool _mediaPlayer;
+        bool _wasActive;
 
         protected Effect(int Handle, int Priority)
         {
-            this.Channel = Handle;
-            this.priority = Priority;
+            _channel = Handle;
+            _priority = Priority;
 
-            gch = GCHandle.Alloc(Parameters, GCHandleType.Pinned);
+            _gch = GCHandle.Alloc(Parameters, GCHandleType.Pinned);
 
-            freeproc = (a, b, c, d) => Dispose();
+            _freeproc = (a, b, c, d) => Dispose();
 
-            hfsync = Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, freeproc);
+            _hfsync = Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, _freeproc);
         }
 
         protected Effect(MediaPlayer player, int Priority) : this(player.Handle, Priority)
         {
-            mediaPlayer = true;
+            _mediaPlayer = true;
 
             player.MediaLoaded += NewHandle =>
                 {
-                    if (wasActive)
+                    if (_wasActive)
                         IsActive = false;
 
-                    Bass.ChannelRemoveSync(Channel, hfsync);
+                    Bass.ChannelRemoveSync(_channel, _hfsync);
 
-                    Channel = NewHandle;
-                    hfsync = Bass.ChannelSetSync(NewHandle, SyncFlags.Free, 0, freeproc);
+                    _channel = NewHandle;
+                    _hfsync = Bass.ChannelSetSync(NewHandle, SyncFlags.Free, 0, _freeproc);
 
-                    IsActive = wasActive;
+                    IsActive = _wasActive;
                 };
         }
         
-        int priority;
+        int _priority;
 
         /// <summary>
         /// Priority of the Effect in DSP chain.
         /// </summary>
         public int Priority
         {
-            get { return priority; }
+            get { return _priority; }
             set
             {
-                if (IsActive && Bass.FXSetPriority(EffectHandle, value))
-                    priority = value;
+                if (IsActive && Bass.FXSetPriority(_effectHandle, value))
+                    _priority = value;
             }
         }
 
@@ -87,14 +88,14 @@ namespace ManagedBass
             {
                 IsActive = false;
 
-                wasActive = true;
+                _wasActive = true;
             }
-            else wasActive = false;
+            else _wasActive = false;
 
-            Channel = EffectHandle = 0;
+            _channel = _effectHandle = 0;
 
-            if (!mediaPlayer)
-                gch.Free();
+            if (!_mediaPlayer)
+                _gch.Free();
         }
 
         /// <summary>
@@ -103,7 +104,7 @@ namespace ManagedBass
         protected void Update()
         {
             if (IsActive) 
-                Bass.FXSetParameters(EffectHandle, gch.AddrOfPinnedObject());
+                Bass.FXSetParameters(_effectHandle, _gch.AddrOfPinnedObject());
         }
 
         /// <summary>
@@ -112,9 +113,9 @@ namespace ManagedBass
         public void Default()
         {
             // Reallocate memory for Parameters
-            gch.Free();
+            _gch.Free();
             Parameters = new T();
-            gch = GCHandle.Alloc(Parameters, GCHandleType.Pinned);
+            _gch = GCHandle.Alloc(Parameters, GCHandleType.Pinned);
 
             Update();
         }
@@ -126,19 +127,19 @@ namespace ManagedBass
         {
             set
             {
-                if (Channel != 0)
-                {
-                    if (value && !IsActive)
-                    {
-                        EffectHandle = Bass.ChannelSetFX(Channel, Parameters.FXType, 1);
-                        Update();
-                    }
-                    else if (!value && IsActive) if (Bass.ChannelRemoveFX(Channel, EffectHandle)) EffectHandle = 0;
+                if (_channel == 0)
+                    return;
 
-                    OnPropertyChanged();
+                if (value && !IsActive)
+                {
+                    _effectHandle = Bass.ChannelSetFX(_channel, Parameters.FXType, 1);
+                    Update();
                 }
+                else if (!value && IsActive) if (Bass.ChannelRemoveFX(_channel, _effectHandle)) _effectHandle = 0;
+
+                OnPropertyChanged();
             }
-            get { return Channel != 0 && EffectHandle != 0; }
+            get { return _channel != 0 && _effectHandle != 0; }
         }
 
         protected void OnPropertyChanged([CallerMemberName]string PropertyName = "")

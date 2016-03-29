@@ -105,6 +105,6 @@ namespace ManagedBass.Enc
         /// <summary>
         /// Free the encoder when the channel is freed.
         /// </summary>
-        AutoFree = 262144,
+        AutoFree = 262144
     }
 }

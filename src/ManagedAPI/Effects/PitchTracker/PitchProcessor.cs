@@ -10,54 +10,44 @@ namespace ManagedBass.Pitch
         const int kScanHiSize = 31;
         const float kScanHiFreqStep = 1.005f;
 
-        float m_minPitch;
-        float m_maxPitch;
-        int m_blockLen14;	   // 1/4 block len
-        int m_blockLen24;	   // 2/4 block len
-        int m_blockLen34;	   // 3/4 block len
-        int m_blockLen44;	   // 4/4 block len
-        double m_sampleRate;
-        float m_detectLevelThreshold;
+        readonly int m_blockLen44;	   // 4/4 block len
 
-        int m_numCourseSteps;
-        float[] m_pCourseFreqOffset;
-        float[] m_pCourseFreq;
-        float[] m_scanHiOffset = new float[kScanHiSize];
-        float[] m_peakBuf = new float[kScanHiSize];
+        readonly float m_detectLevelThreshold;
+
+        readonly int m_numCourseSteps;
+        readonly float[] m_pCourseFreqOffset;
+        readonly float[] m_pCourseFreq;
+        readonly float[] m_scanHiOffset = new float[kScanHiSize];
+        readonly float[] m_peakBuf = new float[kScanHiSize];
         int m_prevPitchIdx;
-        float[] m_detectCurve;
+        readonly float[] m_detectCurve;
 
-        public PitchProcessor(double sampleRate, float minPitch, float maxPitch, float detectLevelThreshold)
+        public PitchProcessor(double SampleRate, float MinPitch, float MaxPitch, float DetectLevelThreshold)
         {
-            m_sampleRate = sampleRate;
-            m_minPitch = minPitch;
-            m_maxPitch = maxPitch;
-            m_detectLevelThreshold = detectLevelThreshold;
+            m_detectLevelThreshold = DetectLevelThreshold;
 
-            m_blockLen44 = (int)(m_sampleRate / m_minPitch + 0.5f);
-            m_blockLen34 = (m_blockLen44 * 3) / 4;
-            m_blockLen24 = m_blockLen44 / 2;
-            m_blockLen14 = m_blockLen44 / 4;
-
-            m_numCourseSteps = (int)((Math.Log((double)m_maxPitch / (double)m_minPitch) / Math.Log(2.0)) * kCourseOctaveSteps + 0.5) + 3;
+            m_blockLen44 = (int)(SampleRate / MinPitch + 0.5);
+        
+            m_numCourseSteps = (int)(Math.Log((double)MaxPitch / MinPitch) / Math.Log(2.0) * kCourseOctaveSteps + 0.5) + 3;
 
             m_pCourseFreqOffset = new float[m_numCourseSteps + 10000];
             m_pCourseFreq = new float[m_numCourseSteps + 10000];
 
             m_detectCurve = new float[m_numCourseSteps];
 
-            var freqStep = 1.0 / Math.Pow(2.0, 1.0 / kCourseOctaveSteps);
-            var curFreq = m_maxPitch / freqStep;
+            var freqStep = 1 / Math.Pow(2.0, 1.0 / kCourseOctaveSteps);
+            var curFreq = MaxPitch / freqStep;
 
             // frequency is stored from high to low
-            for (int idx = 0; idx < m_numCourseSteps; idx++)
+            for (var i = 0; i < m_numCourseSteps; i++)
             {
-                m_pCourseFreq[idx] = (float)curFreq;
-                m_pCourseFreqOffset[idx] = (float)(m_sampleRate / curFreq);
+                m_pCourseFreq[i] = (float)curFreq;
+                m_pCourseFreqOffset[i] = (float)(SampleRate / curFreq);
                 curFreq *= freqStep;
             }
 
-            for (int idx = 0; idx < kScanHiSize; idx++) m_scanHiOffset[idx] = (float)Math.Pow(kScanHiFreqStep, (kScanHiSize / 2) - idx);
+            for (var i = 0; i < kScanHiSize; i++)
+                m_scanHiOffset[i] = (float)Math.Pow(kScanHiFreqStep, kScanHiSize / 2 - i);
         }
         
         /// <summary>
@@ -65,14 +55,12 @@ namespace ManagedBass.Pitch
         /// </summary>
         public float DetectPitch(float[] samplesLo, float[] samplesHi, int numSamples)
         {
-            var pitch = 0.0f;
-
             // Level is too low
             if (!LevelIsAbove(samplesLo, numSamples, m_detectLevelThreshold) &&
-                !LevelIsAbove(samplesHi, numSamples, m_detectLevelThreshold)) return 0;
+                !LevelIsAbove(samplesHi, numSamples, m_detectLevelThreshold))
+                return 0;
 
-            pitch = DetectPitchLo(samplesLo, samplesHi);
-            return pitch;
+            return DetectPitchLo(samplesLo, samplesHi);
         }
 
         /// <summary>
@@ -84,14 +72,13 @@ namespace ManagedBass.Pitch
 
             const int skipSize = 8, peakScanSize = 23, peakScanSizeHalf = peakScanSize / 2;
 
-            var peakThresh1 = 200.0f;
-            var peakThresh2 = 600.0f;
+            const float peakThresh1 = 200.0f, peakThresh2 = 600.0f;
             var bufferSwitched = false;
 
-            for (int idx = 0; idx < m_numCourseSteps; idx += skipSize)
+            for (var idx = 0; idx < m_numCourseSteps; idx += skipSize)
             {
                 var blockLen = Math.Min(m_blockLen44, (int)m_pCourseFreqOffset[idx] * 2);
-                float[] curSamples = null;
+                float[] curSamples;
 
                 // 258 is at 250 Hz, which is the switchover frequency for the two filters
                 var loBuffer = idx >= 258;
@@ -111,62 +98,62 @@ namespace ManagedBass.Pitch
                 var stepSizeLoRes = blockLen / 10;
                 var stepSizeHiRes = Math.Max(1, Math.Min(5, idx * 5 / m_numCourseSteps));
 
-                float fValue = RatioAbsDiffLinear(curSamples, idx, blockLen, stepSizeLoRes, false);
+                var fValue = RatioAbsDiffLinear(curSamples, idx, blockLen, stepSizeLoRes, false);
 
-                if (fValue > peakThresh1)
+                if (!(fValue > peakThresh1))
+                    continue;
+
+                // Do a closer search for the peak
+                var peakIdx = -1;
+                var peakVal = 0.0f;
+                var prevVal = 0.0f;
+                var dir = 4;		 // start going forward
+                var curPos = idx;	 // start at center of the scan range
+                var begSearch = Math.Max(idx - peakScanSizeHalf, 0);
+                var endSearch = Math.Min(idx + peakScanSizeHalf, m_numCourseSteps - 1);
+
+                while (curPos >= begSearch && curPos < endSearch)
                 {
-                    // Do a closer search for the peak
-                    var peakIdx = -1;
-                    var peakVal = 0.0f;
-                    var prevVal = 0.0f;
-                    var dir = 4;		 // start going forward
-                    var curPos = idx;	 // start at center of the scan range
-                    var begSearch = Math.Max(idx - peakScanSizeHalf, 0);
-                    var endSearch = Math.Min(idx + peakScanSizeHalf, m_numCourseSteps - 1);
+                    var curVal = RatioAbsDiffLinear(curSamples, curPos, blockLen, stepSizeHiRes, true);
 
-                    while (curPos >= begSearch && curPos < endSearch)
+                    if (peakVal < curVal)
                     {
-                        var curVal = RatioAbsDiffLinear(curSamples, curPos, blockLen, stepSizeHiRes, true);
+                        peakVal = curVal;
+                        peakIdx = curPos;
+                    }
 
-                        if (peakVal < curVal)
+                    if (prevVal > curVal)
+                    {
+                        dir = -dir >> 1;
+
+                        if (dir == 0)
                         {
-                            peakVal = curVal;
-                            peakIdx = curPos;
-                        }
-
-                        if (prevVal > curVal)
-                        {
-                            dir = -dir >> 1;
-
-                            if (dir == 0)
+                            if (peakVal > peakThresh2 && peakIdx >= 6 && peakIdx <= m_numCourseSteps - 7)
                             {
-                                if (peakVal > peakThresh2 && peakIdx >= 6 && peakIdx <= m_numCourseSteps - 7)
+                                var fValL = RatioAbsDiffLinear(curSamples, peakIdx - 5, blockLen, stepSizeHiRes, true);
+                                var fValR = RatioAbsDiffLinear(curSamples, peakIdx + 5, blockLen, stepSizeHiRes, true);
+                                var fPointy = peakVal / (fValL + fValR) * 2.0f;
+
+                                var minPointy = m_prevPitchIdx > 0 && Math.Abs(m_prevPitchIdx - peakIdx) < 10 ? 1.2f : 1.5f;
+
+                                if (fPointy > minPointy)
                                 {
-                                    var fValL = RatioAbsDiffLinear(curSamples, peakIdx - 5, blockLen, stepSizeHiRes, true);
-                                    var fValR = RatioAbsDiffLinear(curSamples, peakIdx + 5, blockLen, stepSizeHiRes, true);
-                                    var fPointy = peakVal / (fValL + fValR) * 2.0f;
+                                    var pitchHi = DetectPitchHi(curSamples, peakIdx);
 
-                                    var minPointy = (m_prevPitchIdx > 0 && Math.Abs(m_prevPitchIdx - peakIdx) < 10) ? 1.2f : 1.5f;
-
-                                    if (fPointy > minPointy)
+                                    if (pitchHi > 1.0f)
                                     {
-                                        var pitchHi = DetectPitchHi(curSamples, peakIdx);
-
-                                        if (pitchHi > 1.0f)
-                                        {
-                                            m_prevPitchIdx = peakIdx;
-                                            return pitchHi;
-                                        }
+                                        m_prevPitchIdx = peakIdx;
+                                        return pitchHi;
                                     }
                                 }
-
-                                break;
                             }
-                        }
 
-                        prevVal = curVal;
-                        curPos += dir;
+                            break;
+                        }
                     }
+
+                    prevVal = curVal;
+                    curPos += dir;
                 }
             }
 
@@ -186,11 +173,12 @@ namespace ManagedBass.Pitch
 
             Array.Clear(m_peakBuf, 0, m_peakBuf.Length);
 
-            float offset = m_pCourseFreqOffset[lowFreqIdx];
+            var offset = m_pCourseFreqOffset[lowFreqIdx];
 
             while (curPos >= 0 && curPos < kScanHiSize)
             {
-                if (m_peakBuf[curPos] == 0.0f) m_peakBuf[curPos] = SumAbsDiffHermite(samples, offset * m_scanHiOffset[curPos], m_blockLen44, 1);
+                if (m_peakBuf[curPos] == 0)
+                    m_peakBuf[curPos] = SumAbsDiffHermite(samples, offset * m_scanHiOffset[curPos], m_blockLen44, 1);
 
                 if (peakIdx < 0 || m_peakBuf[peakIdx] < m_peakBuf[curPos]) peakIdx = curPos;
 
@@ -209,9 +197,9 @@ namespace ManagedBass.Pitch
                         var y2 = (float)Math.Log10(m_peakBuf[peakIdx] - minVal);
                         var y3 = (float)Math.Log10(m_peakBuf[peakIdx + 1] - minVal);
 
-                        var fIdx = (float)peakIdx + (y3 - y1) / (2.0f * (2.0f * y2 - y1 - y3));
+                        var fIdx = peakIdx + (y3 - y1) / (2.0f * (2.0f * y2 - y1 - y3));
 
-                        return (float)Math.Pow(kScanHiFreqStep, fIdx - (kScanHiSize / 2)) * m_pCourseFreq[lowFreqIdx];
+                        return (float)Math.Pow(kScanHiFreqStep, fIdx - kScanHiSize / 2.0) * m_pCourseFreq[lowFreqIdx];
                     }
                 }
 
@@ -225,14 +213,14 @@ namespace ManagedBass.Pitch
         /// <summary>
         /// Returns true if the level is above the specified value
         /// </summary>
-        bool LevelIsAbove(float[] buffer, int len, float level)
+        static bool LevelIsAbove(float[] buffer, int len, float level)
         {
             if (buffer == null || buffer.Length == 0) 
                 return false;
 
             var endIdx = Math.Min(buffer.Length, len);
 
-            for (int idx = 0; idx < endIdx; idx++)
+            for (var idx = 0; idx < endIdx; idx++)
                 if (Math.Abs(buffer[idx]) >= level)
                     return true;
 
@@ -242,7 +230,7 @@ namespace ManagedBass.Pitch
         /// <summary>
         /// // 4-point, 3rd-order Hermite (x-form)
         /// </summary>
-        float InterpolateHermite(float fY0, float fY1, float fY2, float fY3, float frac)
+        static float InterpolateHermite(float fY0, float fY1, float fY2, float fY3, float frac)
         {
             var c1 = 0.5f * (fY2 - fY0);
             var c3 = 1.5f * (fY1 - fY2) + 0.5f * (fY3 - fY0);
@@ -255,7 +243,7 @@ namespace ManagedBass.Pitch
         /// Linear interpolation
         /// nFrac is based on 1.0 = 256
         /// </summary>
-        float InterpolateLinear(float y0, float y1, float frac) => y0 * (1.0f - frac) + y1 * frac;
+        static float InterpolateLinear(float y0, float y1, float frac) => y0 * (1.0f - frac) + y1 * frac;
 
         /// <summary>
         /// Medium Low res SumAbsDiff
@@ -269,13 +257,12 @@ namespace ManagedBass.Pitch
             var rect = 0.0f;
             var absDiff = 0.01f;   // prevent divide by zero
             var count = 0;
-            float interp, sample;
 
             // Do a scan using linear interpolation and the specified step size
-            for (int idx = 0; idx < blockLen; idx += stepSize, count++)
+            for (var idx = 0; idx < blockLen; idx += stepSize, count++)
             {
-                sample = samples[idx];
-                interp = InterpolateLinear(samples[offsetInt + idx], samples[offsetInt + idx + 1], offsetFrac);
+                var sample = samples[idx];
+                var interp = InterpolateLinear(samples[offsetInt + idx], samples[offsetInt + idx + 1], offsetFrac);
                 absDiff += Math.Abs(sample - interp);
                 rect += Math.Abs(sample) + Math.Abs(interp);
             }
@@ -290,7 +277,7 @@ namespace ManagedBass.Pitch
         /// <summary>
         /// Medium High res SumAbsDiff
         /// </summary>
-        float SumAbsDiffHermite(float[] samples, float fOffset, int blockLen, int stepSize)
+        static float SumAbsDiffHermite(float[] samples, float fOffset, int blockLen, int stepSize)
         {
             var offsetInt = (int)fOffset;
             var offsetFrac = fOffset - offsetInt;
@@ -298,7 +285,7 @@ namespace ManagedBass.Pitch
             var count = 0;
 
             // do a scan using linear interpolation and the specified step size
-            for (int idx = 0; idx < blockLen; idx += stepSize, count++)
+            for (var idx = 0; idx < blockLen; idx += stepSize, count++)
             {
                 var offsetIdx = offsetInt + idx;
 
