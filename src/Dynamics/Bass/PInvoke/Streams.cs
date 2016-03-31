@@ -175,7 +175,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default)
         {
-            return BASS_StreamCreateFile(true, new IntPtr(Memory.ToInt32() + Offset), 0, Length, Flags);
+            return BASS_StreamCreateFile(true, new IntPtr(Memory.ToInt64() + Offset), 0, Length, Flags);
         }
 
         /// <summary>

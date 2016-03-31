@@ -54,7 +54,7 @@ namespace ManagedBass.Wma
 
         public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default)
         {
-            return BASS_WMA_StreamCreateFile(true, Memory, Offset, Length, Flags);
+            return BASS_WMA_StreamCreateFile(true, new IntPtr(Memory.ToInt64() + Offset), 0, Length, Flags);
         }
 
         public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
@@ -77,9 +77,9 @@ namespace ManagedBass.Wma
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_WMA_StreamCreateFileAuth(bool mem, string file, long offset, long length, BassFlags flags, string user, string pass);
 
-        public static int CreateStream(string File, long Length, BassFlags Flags, string UserName, string Password)
+        public static int CreateStream(string File, BassFlags Flags, string UserName, string Password)
         {
-            return BASS_WMA_StreamCreateFileAuth(false, File, 0, Length, Flags | BassFlags.Unicode, UserName, Password);
+            return BASS_WMA_StreamCreateFileAuth(false, File, 0, 0, Flags | BassFlags.Unicode, UserName, Password);
         }
 
         public static int CreateStream(IntPtr Memory, long Length, BassFlags Flags, string UserName, string Password)

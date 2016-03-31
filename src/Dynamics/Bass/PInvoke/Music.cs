@@ -19,10 +19,7 @@ namespace ManagedBass
 
         [DllImport(DllName)]
         static extern int BASS_MusicLoad(bool mem, IntPtr file, long offset, int Length, BassFlags flags, int freq);
-
-        [DllImport(DllName)]
-        static extern int BASS_MusicLoad(bool mem, byte[] file, long offset, int Length, BassFlags flags, int freq);
-                
+        
 		/// <summary>
 		/// Loads a MOD music file - MO3 / IT / XM / S3M / MTM / MOD / UMX formats.
 		/// </summary>
@@ -86,8 +83,8 @@ namespace ManagedBass
 		/// Loads a MOD music file - MO3 / IT / XM / S3M / MTM / MOD / UMX formats from memory.
 		/// </summary>
 		/// <param name="Memory">An unmanaged pointer to the memory location as an IntPtr.</param>
-		/// <param name="Offset">File offset to load the MOD music from.</param>
-		/// <param name="Length">Data length... 0 = use all data up to the end of file. If length over-runs the end of the file, it'll automatically be lowered to the end of the file.</param>
+		/// <param name="Offset">Memory offset to load the MOD music from.</param>
+		/// <param name="Length">Data length.</param>
 		/// <param name="Flags">A combination of <see cref="BassFlags"/>.</param>
 		/// <param name="Frequency">Sample rate to render/play the MOD music at... 0 = the rate specified in the <see cref="Init" /> call.</param>
 		/// <returns>If successful, the loaded music's handle is returned, else 0 is returned. Use <see cref="LastError" /> to get the error code.</returns>
@@ -143,15 +140,15 @@ namespace ManagedBass
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
 		public static int MusicLoad(IntPtr Memory, long Offset, int Length, BassFlags Flags = BassFlags.Default, int Frequency = 44100)
         {
-            return BASS_MusicLoad(true, Memory, Offset, Length, Flags, Frequency);
+            return BASS_MusicLoad(true, new IntPtr(Memory.ToInt64() + Offset), 0, Length, Flags, Frequency);
         }
 
         /// <summary>
 		/// Loads a MOD music file - MO3 / IT / XM / S3M / MTM / MOD / UMX formats from memory.
 		/// </summary>
 		/// <param name="Memory">byte[] containing the music data.</param>
-		/// <param name="Offset">File offset to load the MOD music from.</param>
-		/// <param name="Length">Data length... 0 = use all data up to the end of file. If length over-runs the end of the file, it'll automatically be lowered to the end of the file.</param>
+		/// <param name="Offset">Memory offset to load the MOD music from.</param>
+		/// <param name="Length">Data length.</param>
 		/// <param name="Flags">A combination of <see cref="BassFlags"/>.</param>
 		/// <param name="Frequency">Sample rate to render/play the MOD music at... 0 = the rate specified in the <see cref="Init" /> call.</param>
 		/// <returns>If successful, the loaded music's handle is returned, else 0 is returned. Use <see cref="LastError" /> to get the error code.</returns>
@@ -207,7 +204,16 @@ namespace ManagedBass
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int MusicLoad(byte[] Memory, long Offset, int Length, BassFlags Flags = BassFlags.Default, int Frequency = 44100)
         {
-            return BASS_MusicLoad(true, Memory, Offset, Length, Flags, Frequency);
+            var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
+
+            var Handle = MusicLoad(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
+
+            if (Handle == 0)
+                GCPin.Free();
+
+            else ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
+
+            return Handle;
         }
     }
 }

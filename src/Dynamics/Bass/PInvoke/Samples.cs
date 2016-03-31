@@ -308,7 +308,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int SampleLoad(IntPtr Memory, long Offset, int Length, int MaxNoOfPlaybacks, BassFlags Flags)
         {
-            return BASS_SampleLoad(true, new IntPtr(Memory.ToInt32() + Offset), 0, Length, MaxNoOfPlaybacks, Flags);
+            return BASS_SampleLoad(true, new IntPtr(Memory.ToInt64() + Offset), 0, Length, MaxNoOfPlaybacks, Flags);
         }
         
         /// <summary>

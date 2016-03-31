@@ -72,7 +72,7 @@ namespace ManagedBass.Dsd
 
         public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default, int Frequency = 44100)
         {
-            return BASS_DSD_StreamCreateFile(true, Memory, Offset, Length, Flags, Frequency);
+            return BASS_DSD_StreamCreateFile(true, new IntPtr(Memory.ToInt64() + Offset), 0, Length, Flags, Frequency);
         }
 
         public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags, int Frequency = 44100)
