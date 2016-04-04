@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using static System.Runtime.InteropServices.Marshal;
+using static ManagedBass.Bass;
+using static ManagedBass.Extensions;
 
 namespace ManagedBass.Tags
 {
-    public class TagReader
+    public sealed class TagReader
     {
-        TagReader() { }
-
         #region Properties
         public Dictionary<string, string> Other { get; } = new Dictionary<string, string>();
+        public List<PictureTag> Pictures { get; } = new List<PictureTag>();
 
         public string Title { get; private set; }
         public string Artist { get; private set; }
@@ -33,266 +34,128 @@ namespace ManagedBass.Tags
         public string Rating { get; private set; }
         public string ISRC { get; private set; }
         public string Remixer { get; private set; }
+        public string Lyrics { get; private set; }
         #endregion
 
         public static TagReader Read(string FileName)
         {
-            Bass.Init();
+            Init();
 
-            var h = Bass.CreateStream(FileName, Flags: BassFlags.Prescan);
+            var h = CreateStream(FileName, Flags: BassFlags.Prescan);
 
-            TagReader Result = null;
+            TagReader result = null;
 
             if (h != 0)
             {
-                Result = Read(h);
+                result = Read(h);
 
-                Bass.StreamFree(h);
+                StreamFree(h);
             }
             else
             {
-                h = Bass.MusicLoad(FileName, Flags: BassFlags.Prescan);
+                h = MusicLoad(FileName, Flags: BassFlags.Prescan);
 
                 if (h != 0)
                 {
-                    Result = Read(h);
+                    result = Read(h);
 
-                    Bass.MusicFree(h);
+                    MusicFree(h);
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(Result.Title))
-                Result.Title = System.IO.Path.GetFileNameWithoutExtension(FileName);
+            if (!string.IsNullOrWhiteSpace(result?.Title))
+                result.Title = System.IO.Path.GetFileNameWithoutExtension(FileName);
 
-            return Result;
+            return result;
         }
 
         public static TagReader Read(int Channel)
         {
-            var TH = new TagReader();
-            var info = Bass.ChannelGetInfo(Channel);
-            var ctype = info.ChannelType;
-
-            IntPtr ptr;
-
-            // Mp3, Mp2, Mp1
-            if (ctype.Is(ChannelType.MP3, ChannelType.MP2, ChannelType.MP1))
+            var result = new TagReader();
+            var info = ChannelGetInfo(Channel);
+            
+            switch (info.ChannelType)
             {
-                // ID3v2
-                ptr = Bass.ChannelGetTags(Channel, TagType.ID3v2);
-                
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadID3v2(ptr);
-                    return TH;
-                }
+                case ChannelType.MP1:
+                case ChannelType.MP2:
+                case ChannelType.MP3:
+                    if (result.ReadID3v2(Channel)) { }
 
-                // ID3v1
-                ptr = Bass.ChannelGetTags(Channel, TagType.ID3);
+                    else if (result.ReadID3v1(Channel)) { }
 
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadID3v1(ptr);
-                    return TH;
-                }
+                    else if (result.ReadApe(Channel)) { }
 
-                // APE
-                ptr = Bass.ChannelGetTags(Channel, TagType.APE);
+                    else if (result.ReadBWF(Channel)) { }
+                    break;
 
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadApe(ptr);
-                    return TH;
-                }
+                case ChannelType.OGG:
+                    if (result.ReadOgg(Channel)) { }
 
-                // BWF
-                ptr = Bass.ChannelGetTags(Channel, TagType.RiffBext);
+                    else if (result.ReadApe(Channel)) { }
+                    break;
 
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadBWF(ptr);
-                    return TH;
-                }
+                case ChannelType.MP4:
+                case ChannelType.AAC:
+                    if (result.ReadMp4(Channel)) { }
+
+                    else if (result.ReadID3v2(Channel)) { }
+
+                    else if (result.ReadApe(Channel)) { }
+
+                    else if (result.ReadOgg(Channel)) { }
+                    break;
+
+                case ChannelType.Wave:
+                case ChannelType.WavePCM:
+                case ChannelType.WaveFloat:
+                    if (result.ReadRiffInfo(Channel)) { }
+
+                    else if (result.ReadBWF(Channel)) { }
+
+                    else if (result.ReadID3v2(Channel)) { }
+                    break;
+
+                case ChannelType.DSD:
+                    result.Title = PtrToStringAnsi(ChannelGetTags(Channel, TagType.DSDTitle));
+                    result.Artist = PtrToStringAnsi(ChannelGetTags(Channel, TagType.DSDArtist));
+                    break;
+
+                case ChannelType.MOD:
+                    result.Title = PtrToStringAnsi(ChannelGetTags(Channel, TagType.MusicName));
+                    result.Artist = PtrToStringAnsi(ChannelGetTags(Channel, TagType.MusicAuth));
+                    result.Comment = PtrToStringAnsi(ChannelGetTags(Channel, TagType.MusicMessage));
+                    break;
+
+                default:
+                    if (result.ReadApe(Channel)) { }
+
+                    else if (result.ReadOgg(Channel)) { }
+
+                    else if (result.ReadID3v2(Channel)) { }
+
+                    else if (result.ReadID3v1(Channel)) { }
+                    break;
             }
 
-            else if (ctype == ChannelType.OGG)
+            if (string.IsNullOrWhiteSpace(result.Lyrics))
             {
-                // OGG
-                ptr = Bass.ChannelGetTags(Channel, TagType.OGG);
+                var ptr = ChannelGetTags(Channel, TagType.Lyrics3v2);
 
                 if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadOgg(ptr);
-                    
-                    var encoder = Extensions.PtrToStringUtf8(Bass.ChannelGetTags(Channel, TagType.OggEncoder));
-                    if (!string.IsNullOrWhiteSpace(encoder))
-                        TH.Encoder = encoder;
-
-                    return TH;
-                }
-
-                // APE
-                ptr = Bass.ChannelGetTags(Channel, TagType.APE);
-
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadApe(ptr);
-                    return TH;
-                }
+                    result.Lyrics = PtrToStringAnsi(ptr);
             }
 
-            // WMA
-            else if (ctype == ChannelType.WMA)
-            {
-                ptr = Bass.ChannelGetTags(Channel, TagType.WMA);
-
-                // TODO: Implement specific to WMA
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadApe(ptr);
-                    return TH;
-                }
-            }
-
-            // Mp4, Aac
-            else if (ctype.Is(ChannelType.MP4, ChannelType.AAC))
-            {
-                // Mp4
-                ptr = Bass.ChannelGetTags(Channel, TagType.MP4);
-
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadMp4(ptr);
-                    return TH;
-                }
-
-                // ID3v2
-                ptr = Bass.ChannelGetTags(Channel, TagType.ID3v2);
-                
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadID3v2(ptr);
-                    return TH;
-                }
-
-                // APE
-                ptr = Bass.ChannelGetTags(Channel, TagType.APE);
-
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadApe(ptr);
-                    return TH;
-                }
-
-                // OGG
-                ptr = Bass.ChannelGetTags(Channel, TagType.OGG);
-
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadOgg(ptr);
-                    
-                    var encoder = Extensions.PtrToStringUtf8(Bass.ChannelGetTags(Channel, TagType.OggEncoder));
-                    if (!string.IsNullOrWhiteSpace(encoder))
-                        TH.Encoder = encoder;
-
-                    return TH;
-                }
-            }
-
-            // Wave
-            else if (ctype == ChannelType.Wave)
-            {
-                // RiffInfo
-                ptr = Bass.ChannelGetTags(Channel, TagType.RiffInfo);
-                
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadRiffInfo(ptr);
-                    return TH;
-                }
-
-                // BWF
-                ptr = Bass.ChannelGetTags(Channel, TagType.RiffBext);
-                
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadBWF(ptr);
-                    return TH;
-                }
-
-                // ID3v2
-                ptr = Bass.ChannelGetTags(Channel, TagType.ID3v2);
-                
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadID3v2(ptr);
-                    return TH;
-                }
-            }
-
-            else if (ctype == ChannelType.DSD)
-            {
-                TH.Title = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.DSDTitle));
-                TH.Artist = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.DSDArtist));
-            }
-
-            else if (ctype.HasFlag(ChannelType.MOD))
-            {
-                TH.Title = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.MusicName));
-                TH.Artist = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.MusicAuth));
-                TH.Comment = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.MusicMessage));
-            }
-
-            else
-            {
-                // APE
-                ptr = Bass.ChannelGetTags(Channel, TagType.APE);
-
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadApe(ptr);
-                    return TH;
-                }
-
-                // OGG
-                ptr = Bass.ChannelGetTags(Channel, TagType.OGG);
-
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadOgg(ptr);
-                    
-                    var encoder = Extensions.PtrToStringUtf8(Bass.ChannelGetTags(Channel, TagType.OggEncoder));
-                    if (!string.IsNullOrWhiteSpace(encoder))
-                        TH.Encoder = encoder;
-
-                    return TH;
-                }
-
-                // ID3v2
-                ptr = Bass.ChannelGetTags(Channel, TagType.ID3v2);
-                
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadID3v2(ptr);
-                    return TH;
-                }
-
-                // ID3v1
-                ptr = Bass.ChannelGetTags(Channel, TagType.ID3);
-
-                if (ptr != IntPtr.Zero)
-                {
-                    TH.ReadID3v1(ptr);
-                    return TH;
-                }
-            }
-
-            return TH;
+            return result;
         }
 
-        void ReadApe(IntPtr ptr)
+        public bool ReadApe(int Channel)
         {
-            var arr = Extensions.ExtractMultiStringUtf8(ptr);
+            var ptr = ChannelGetTags(Channel, TagType.APE);
+
+            if (ptr == IntPtr.Zero)
+                return false;
+
+            var arr = ExtractMultiStringUtf8(ptr);
 
             foreach (var item in arr)
             {
@@ -391,11 +254,18 @@ namespace ManagedBass.Tags
                         break;
                 }
             }
+
+            return true;
         }
 
-        void ReadOgg(IntPtr ptr)
+        public bool ReadOgg(int Channel)
         {
-            var arr = Extensions.ExtractMultiStringUtf8(ptr);
+            var ptr = ChannelGetTags(Channel, TagType.OGG);
+
+            if (ptr == IntPtr.Zero)
+                return false;
+
+            var arr = ExtractMultiStringUtf8(ptr);
 
             foreach (var item in arr)
             {
@@ -420,7 +290,7 @@ namespace ManagedBass.Tags
                     case "albumartist":
                         AlbumArtist = Value;
                         break;
-                        
+
                     case "tracknumber":
                         Track = Value;
                         break;
@@ -494,11 +364,22 @@ namespace ManagedBass.Tags
                         break;
                 }
             }
+
+            var encoder = PtrToStringUtf8(ChannelGetTags(Channel, TagType.OggEncoder));
+            if (!string.IsNullOrWhiteSpace(encoder))
+                Encoder = encoder;
+
+            return true;
         }
 
-        void ReadRiffInfo(IntPtr ptr)
+        public bool ReadRiffInfo(int Channel)
         {
-            var arr = Extensions.ExtractMultiStringAnsi(ptr);
+            var ptr = ChannelGetTags(Channel, TagType.RiffInfo);
+
+            if (ptr == IntPtr.Zero)
+                return false;
+
+            var arr = ExtractMultiStringAnsi(ptr);
 
             foreach (var item in arr)
             {
@@ -598,11 +479,18 @@ namespace ManagedBass.Tags
                         break;
                 }
             }
+
+            return true;
         }
 
-        void ReadMp4(IntPtr ptr)
+        public bool ReadMp4(int Channel)
         {
-            var arr = Extensions.ExtractMultiStringUtf8(ptr);
+            var ptr = ChannelGetTags(Channel, TagType.MP4);
+
+            if (ptr == IntPtr.Zero)
+                return false;
+
+            var arr = ExtractMultiStringUtf8(ptr);
 
             foreach (var item in arr)
             {
@@ -669,11 +557,18 @@ namespace ManagedBass.Tags
                         break;
                 }
             }
+
+            return true;
         }
 
-        void ReadID3v1(IntPtr ptr)
+        public bool ReadID3v1(int Channel)
         {
-            var id3v1 = (ID3v1Tag)Marshal.PtrToStructure(ptr, typeof(ID3v1Tag));
+            var ptr = ChannelGetTags(Channel, TagType.ID3);
+
+            if (ptr == IntPtr.Zero)
+                return false;
+            
+            var id3v1 = (ID3v1Tag)PtrToStructure(ptr, typeof(ID3v1Tag));
 
             Title = id3v1.Title;
             Artist = id3v1.Artist;
@@ -682,11 +577,20 @@ namespace ManagedBass.Tags
             Genre = id3v1.Genre;
             Track = id3v1.TrackNo.ToString();
             Comment = id3v1.Comment;
+
+            return true;
         }
 
-        void ReadID3v2(IntPtr ptr)
+        public bool ReadID3v2(int Channel)
         {
-            foreach (var frame in new ID3v2Tag(ptr).TextFrames)
+            var ptr = ChannelGetTags(Channel, TagType.ID3v2);
+
+            if (ptr == IntPtr.Zero)
+                return false;
+
+            var id3v2 = new ID3v2Tag(ptr);
+
+            foreach (var frame in id3v2.TextFrames)
             {
                 switch (frame.Key)
                 {
@@ -801,16 +705,27 @@ namespace ManagedBass.Tags
                         break;
                 }
             }
+
+            Pictures.AddRange(id3v2.PictureFrames);
+
+            return true;
         }
 
-        void ReadBWF(IntPtr ptr)
+        public bool ReadBWF(int Channel)
         {
-            var tag = (BextTag)Marshal.PtrToStructure(ptr, typeof(BextTag));
+            var ptr = ChannelGetTags(Channel, TagType.RiffBext);
+
+            if (ptr == IntPtr.Zero)
+                return false;
+
+            var tag = (BextTag)PtrToStructure(ptr, typeof(BextTag));
 
             Title = tag.Description;
             Artist = tag.Originator;
             Encoder = tag.OriginatorReference;
             Year = tag.OriginationDate.Split('-')[0];
+
+            return true;
         }
     }
 }

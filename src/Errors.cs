@@ -1,7 +1,9 @@
-﻿namespace ManagedBass
+﻿using ManagedBass.Asio;
+
+namespace ManagedBass
 {
     /// <summary>
-    /// Bass Error Codes returned by <see cref="Bass.LastError" />.
+    /// Bass Error Codes returned by <see cref="Bass.LastError" /> and <see cref="BassAsio.LastError"/>.
     /// </summary>
     public enum Errors
     {

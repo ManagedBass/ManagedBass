@@ -60,18 +60,18 @@ namespace ManagedBass
             throw new PlatformNotSupportedException("Only available on Windows");
         }
 
-        internal static bool Unload(IntPtr hLib)
+        internal static bool Unload(IntPtr HLib)
         {
-            if (IsWindows) return WindowsNative.FreeLibrary(hLib);
+            if (IsWindows) return WindowsNative.FreeLibrary(HLib);
             throw new PlatformNotSupportedException("Only available on Windows");
         }
 
         /// <summary>
-        /// Returns the <param name="n">n'th (max 15)</param> pair of Speaker Assignment Flags
+        /// Returns the <param name="N">n'th (max 15)</param> pair of Speaker Assignment Flags
         /// </summary>
-        public static BassFlags SpeakerN(int n) => (BassFlags)(n << 24);
+        public static BassFlags SpeakerN(int N) => (BassFlags)(N << 24);
 
-        static bool? floatable;
+        static bool? _floatable;
 
         /// <summary>
         /// Check whether Floating point streams are supported in the Current Environment.
@@ -80,28 +80,28 @@ namespace ManagedBass
         {
             get
             {
-                if (floatable.HasValue) 
-                    return floatable.Value;
+                if (_floatable.HasValue) 
+                    return _floatable.Value;
 
                 // try creating a floating-point stream
                 var hStream = Bass.CreateStream(44100, 1, BassFlags.Float, StreamProcedureType.Dummy);
 
-                floatable = hStream != 0;
+                _floatable = hStream != 0;
 
                 // floating-point channels are supported! (free the test stream)
-                if (floatable.Value) 
+                if (_floatable.Value) 
                     Bass.StreamFree(hStream);
 
-                return floatable.Value;
+                return _floatable.Value;
             }
         }
 
-        internal static Version GetVersion(int num)
+        internal static Version GetVersion(int Num)
         {
-            return new Version(num >> 24 & 0xff,
-                               num >> 16 & 0xff,
-                               num >> 8 & 0xff,
-                               num & 0xff);
+            return new Version(Num >> 24 & 0xff,
+                               Num >> 16 & 0xff,
+                               Num >> 8 & 0xff,
+                               Num & 0xff);
         }
 
         #region Converters
@@ -109,7 +109,7 @@ namespace ManagedBass
         // ms = samples * 1000 / samplerate. 
         // bytes = samples * bits * channels / 8. 
 
-        public static long BytesToSamples(long bytes, int bits, int channels) => bytes * 8 / bits / channels;
+        public static long BytesToSamples(long Bytes, int bits, int channels) => Bytes * 8 / bits / channels;
 
         public static long MilisecondsToSamples(int samplerate, long ms) => ms * samplerate / 1000;
 

@@ -144,7 +144,7 @@ namespace ManagedBass.Tags
 
                     var _MIMEType = ReadText(Length, TextEncodings.Ascii, ref Length, true);
 
-                    var _PictureType = (ID3PictureTypes)ReadByte();
+                    var _PictureType = (PictureTypes)ReadByte();
 
                     Length--;
 
@@ -154,7 +154,7 @@ namespace ManagedBass.Tags
 
                     Read(_Data, 0, Length);
 
-                    PictureFrames.Add(new ID3Picture
+                    PictureFrames.Add(new PictureTag
                     {
                         Data = _Data,
                         MimeType = _MIMEType,
@@ -176,7 +176,7 @@ namespace ManagedBass.Tags
 
         public Dictionary<string, string> TextFrames { get; } = new Dictionary<string, string>();
 
-        public List<ID3Picture> PictureFrames { get; } = new List<ID3Picture>();
+        public List<PictureTag> PictureFrames { get; } = new List<PictureTag>();
 
         #region Streaming
         string ReadText(int MaxLength, TextEncodings TEncoding)

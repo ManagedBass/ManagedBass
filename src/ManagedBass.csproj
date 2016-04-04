@@ -225,8 +225,8 @@
     <Compile Include="ManagedAPI\Tags\ApeBinaryTag.cs" />
     <Compile Include="ManagedAPI\Tags\ADXLoopTag.cs" />
     <Compile Include="Dynamics\BassDsd\DSDComment.cs" />
-    <Compile Include="ManagedAPI\Tags\ID3\ID3Picture.cs" />
-    <Compile Include="ManagedAPI\Tags\ID3\ID3PictureTypes.cs" />
+    <Compile Include="ManagedAPI\Tags\ID3\PictureTag.cs" />
+    <Compile Include="ManagedAPI\Tags\ID3\PictureTypes.cs" />
     <Compile Include="ManagedAPI\Tags\TagReader.cs" />
     <Compile Include="ManagedAPI\Tags\ID3\ID3v2Tag.cs" />
     <Compile Include="ManagedAPI\Tags\BextTag.cs" />

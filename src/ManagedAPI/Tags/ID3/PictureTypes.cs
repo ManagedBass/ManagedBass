@@ -1,6 +1,6 @@
 namespace ManagedBass.Tags
 {
-    public enum ID3PictureTypes
+    public enum PictureTypes
     {
         Other,
         FileIcon,

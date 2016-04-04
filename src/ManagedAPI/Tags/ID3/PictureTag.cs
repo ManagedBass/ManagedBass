@@ -1,10 +1,10 @@
 namespace ManagedBass.Tags
 {
-    public class ID3Picture
+    public class PictureTag
     {
         public string MimeType;
 
-        public ID3PictureTypes PictureType;
+        public PictureTypes PictureType;
 
         public byte[] Data;
     }
