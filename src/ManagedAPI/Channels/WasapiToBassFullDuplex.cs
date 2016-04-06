@@ -17,7 +17,7 @@
         {
             var info = WasapiDevice.DeviceInfo;
 
-            this._wasapiDevice = WasapiDevice;
+            _wasapiDevice = WasapiDevice;
 
             Handle = Bass.CreateStream(info.MixFrequency, info.MixChannels, Decode ? BassFlags.Decode : 0, StreamProcedureType.Push);
 

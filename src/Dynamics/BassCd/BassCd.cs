@@ -242,11 +242,42 @@ namespace ManagedBass.Cd
         }
         #endregion
 
+        /// <summary>
+        /// Retrieves the drive and track number of a CD stream.
+        /// </summary>
+        /// <param name="Handle">The CD stream handle.</param>
+        /// <returns>
+        /// If an error occurs, -1 is returned, use <see cref="Bass.LastError" /> to get the error code. 
+        /// If successful, the track number is returned in the low word (low 16-bits), and the drive is returned in the high word (high 16-bits).
+        /// </returns>
+        /// <remarks>
+        /// If the track has just changed, this function will give the new track number even if the old track is still being heard due to buffering.
+        /// The <see cref="PositionFlags.CDTrack"/> mode can be used with <see cref="Bass.ChannelGetPosition(int, PositionFlags)" /> to get the track currently being heard.
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamGetTrack")]
-        public static extern int StreamGetTrack(int handle);
+        public static extern int StreamGetTrack(int Handle);
 
+
+        /// <summary>
+        /// Changes the track of a CD stream.
+        /// </summary>
+        /// <param name="Handle">The CD stream handle.</param>
+        /// <param name="Track">The new track... 0 = the first track, BASS_CD_TRACK_PREGAP = 1st track pregap (not all drives support reading of the 1st track pregap).</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// The stream's current position is set to the start of the new track.
+        /// <para>
+        /// This function is identical to using the <see cref="PositionFlags.CDTrack"/> mode with <see cref="Bass.ChannelSetPosition(int, long, PositionFlags)" />.
+        /// Either can be used with a <see cref="SyncFlags.End"/> sync (set via <see cref="Bass.ChannelSetSync(int, SyncFlags, long, SyncProcedure, IntPtr)" />) to play one track after another.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NoCD">There's no CD in the drive.</exception>
+        /// <exception cref="Errors.CDTrack"><paramref name="Track" /> is invalid.</exception>
+        /// <exception cref="Errors.NotAudioTrack">The track is not an audio track.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamSetTrack")]
-        public static extern bool StreamSetTrack(int handle, int track);
+        public static extern bool StreamSetTrack(int Handle, int Track);
         
 		/// <summary>
 		/// Opens, closes, locks or unlocks a drive door.
@@ -316,7 +347,7 @@ namespace ManagedBass.Cd
 		/// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_CD_SetOffset")]
         public static extern bool SetOffset(int Drive, int Offset);
-
+        
         [DllImport(DllName, EntryPoint = "BASS_CD_GetID")]
         public static extern string GetID(int Drive, CDID ID);
         
@@ -360,23 +391,128 @@ namespace ManagedBass.Cd
         [DllImport(DllName, EntryPoint = "BASS_CD_GetTracks")]
         public static extern int GetTracks(int Drive);
 
+        /// <summary>
+        /// Retrieves the length (in bytes) of a track.
+        /// </summary>
+        /// <param name="Drive">The drive... 0 = the first drive.</param>
+        /// <param name="Track">The track to retrieve the length of... 0 = the first track.</param>
+        /// <returns>If an error occurs, -1 is returned, use <see cref="Bass.LastError" /> to get the error code. If successful, the length of the track is returned.</returns>
+        /// <remarks>
+        /// CD audio is always 44100hz stereo 16-bit.
+        /// That's 176400 bytes per second.
+        /// So dividing the track length by 176400 gives the length in seconds.
+        /// </remarks>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
+        /// <exception cref="Errors.NoCD">There's no CD in the drive.</exception>
+        /// <exception cref="Errors.CDTrack">The <paramref name="Track" /> number is invalid.</exception>
+        /// <exception cref="Errors.NotAudioTrack">The track is not an audio track.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_GetTrackLength")]
         public static extern int GetTrackLength(int Drive, int Track);
 
+        /// <summary>
+        /// Retrieves the pregap length (in bytes) of a track.
+        /// </summary>
+        /// <param name="Drive">The drive... 0 = the first drive.</param>
+        /// <param name="Track">The track to retrieve the pregap length of... 0 = the first track.</param>
+        /// <returns>If an error occurs, -1 is returned, use <see cref="Bass.LastError" /> to get the error code. 
+        /// If successful, the pregap length of the track is returned. To translate the pregap length from bytes to frames, divide by 2352.</returns>
+        /// <remarks>
+        /// The drive needs to support sub-channel reading in order to detect all but the first pregap length. 
+        /// <see cref="CDInfo.ReadWriteFlags" /> can be used to check whether the drive can read sub-channel data.
+        /// <para>
+        /// A track's pregap is actually played as part of the preceeding track. 
+        /// So to remove the gap from the end of a track, you would get the pregap length of the following track. 
+        /// The gap will usually contain silence, but it doesn't have to - it could contain crowd noise in a live recording, for example.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
+        /// <exception cref="Errors.NoCD">There's no CD in the drive.</exception>
+        /// <exception cref="Errors.CDTrack">The <paramref name="Track" /> number is invalid.</exception>
+        /// <exception cref="Errors.NotAudioTrack">The track is not an audio track.</exception>
+        /// <exception cref="Errors.NotAvailable">Reading sub-channel data is not supported by the drive.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_GetTrackPregap")]
         public static extern int GetTrackPregap(int Drive, int Track);
 
+        /// <summary>
+        /// Retrieves the current position and track on a drive.
+        /// </summary>
+        /// <param name="Drive">The drive... 0 = the first drive.</param>
+        /// <returns>
+        /// If an error occurs, -1 is returned, use <see cref="Bass.LastError" /> to get the error code. 
+        /// If successful, the HIWORD contains the track number (0=first), and the LOWORD contains the offset (in frames).
+        /// </returns>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_Analog_GetPosition")]
-        public static extern int AnalogGetPosition(int drive);
+        public static extern int AnalogGetPosition(int Drive);
 
+        /// <summary>
+        /// Checks if analog playback is in progress on a drive.
+        /// </summary>
+        /// <param name="Drive">The drive... 0 = the first drive.</param>
+        /// <returns>The return value is <see cref="PlaybackState.Stopped"/> or <see cref="PlaybackState.Playing"/>.</returns>
         [DllImport(DllName, EntryPoint = "BASS_CD_Analog_IsActive")]
-        public static extern bool AnalogIsActive(int drive);
+        public static extern bool AnalogIsActive(int Drive);
 
+        /// <summary>
+        /// Starts analog playback of an audio CD track.
+        /// </summary>
+        /// <param name="Drive">The drive... 0 = the first drive.</param>
+        /// <param name="Track">The track... 0 = the first track.</param>
+        /// <param name="Position">Position (in frames) to start playback from. There are 75 frames per second.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// Some old CD drives may not be able to digitally extract audio data (or not quickly enough to sustain playback), so that it's not possible to use <see cref="CreateStream(int, int, BassFlags)" /> to stream CD tracks. 
+        /// This is where the analog playback option can come in handy.
+        /// </para>
+        /// <para>
+        /// In analog playback, the sound bypasses Bass - it goes directly from the CD drive to the soundcard (assuming the drive is cabled up to the soundcard). 
+        /// This means that Bass output does not need to be initialized to use analog playback.
+        /// It also means it's not possible to apply any DSP/FX to the sound, and nor is it possible to visualise it (unless you record the sound from the soundcard).
+        /// </para>
+        /// <para>
+        /// Analog playback is not possible while digital streaming is in progress - the streaming will kill the analog playback.
+        /// So if you wish to switch from digital to analog playback, you should first free the stream using <see cref="Bass.StreamFree" />.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is not valid.</exception>
+        /// <exception cref="Errors.NoCD">There's no CD in the drive.</exception>
+        /// <exception cref="Errors.CDTrack"><paramref name="Track" /> is invalid.</exception>
+        /// <exception cref="Errors.NotAudioTrack">The track is not an audio track.</exception>
+        /// <exception cref="Errors.Position"><paramref name="Position" /> is invalid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_Analog_Play")]
-        public static extern bool AnalogPlay(int drive, int track, int pos);
+        public static extern bool AnalogPlay(int Drive, int Track, int Position);
 
+        /// <summary>
+        /// Starts analog playback of an audio CD track, using a CDA file on the CD.
+        /// </summary>
+        /// <param name="FileName">The CDA filename... for example, "D:\Track01.cda".</param>
+        /// <param name="Position">Position (in frames) to start playback from. There are 75 frames per second.</param>
+        /// <returns>If successful, the number of the drive being used is returned, else -1 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// Some old CD drives may not be able to digitally extract audio data (or not quickly enough to sustain playback), so that it's not possible to use <see cref="CreateStream(string, BassFlags)" /> to stream CD tracks.
+        /// This is where the analog playback option can come in handy.
+        /// </para>
+        /// <para>
+        /// In analog playback, the sound bypasses Bass - it goes directly from the CD drive to the soundcard (assuming the drive is cabled up to the soundcard). 
+        /// This means that Bass output does not need to be initialized to use analog playback.
+        /// It also means it's not possible to apply any DSP/FX to the sound, and nor is it possible to visualise it (unless you record the sound from the soundcard).
+        /// </para>
+        /// <para>
+        /// Analog playback is not possible while digital streaming is in progress - the streaming will kill the analog playback.
+        /// So if you wish to switch from digital to analog playback, you should first free the stream using <see cref="Bass.StreamFree" />.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.FileOpen">The file could not be opened.</exception>
+        /// <exception cref="Errors.FileFormat">The file was not recognised as a CDA file.</exception>
+        /// <exception cref="Errors.Device">The Drive could not be found.</exception>
+        /// <exception cref="Errors.Position"><paramref name="Position" /> is invalid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_Analog_PlayFile")]
-        public static extern bool AnalogPlay(string file, int pos);
+        public static extern bool AnalogPlay(string FileName, int Position);
         
 		/// <summary>
 		/// Stops analog playback on a drive.

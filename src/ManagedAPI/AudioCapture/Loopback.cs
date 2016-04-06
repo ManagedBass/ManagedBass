@@ -13,7 +13,7 @@ namespace ManagedBass.Wasapi
 
         public Loopback(WasapiLoopbackDevice Device, bool IncludeSilence = true)
         {
-            this._device = Device;
+            _device = Device;
 
             if (IncludeSilence)
             {

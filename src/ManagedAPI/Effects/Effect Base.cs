@@ -135,7 +135,9 @@ namespace ManagedBass
                     _effectHandle = Bass.ChannelSetFX(_channel, Parameters.FXType, 1);
                     Update();
                 }
-                else if (!value && IsActive) if (Bass.ChannelRemoveFX(_channel, _effectHandle)) _effectHandle = 0;
+
+                else if (!value && IsActive && Bass.ChannelRemoveFX(_channel, _effectHandle))
+                    _effectHandle = 0;
 
                 OnPropertyChanged();
             }

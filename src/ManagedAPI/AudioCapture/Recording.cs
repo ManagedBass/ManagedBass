@@ -6,9 +6,7 @@ namespace ManagedBass
     /// Capture audio from Microphone
     /// </summary>
     public sealed class Recording : Channel, IAudioCaptureClient
-    {
-        readonly RecordProcedure RecordProcedure;
-        
+    {   
         public Recording(RecordingDevice Device = null, int Channels = 2, int SampleRate = 44100, Resolution Resolution = Resolution.Short)
         {
             if (Device == null)
@@ -18,10 +16,8 @@ namespace ManagedBass
             var deviceIndex = Device.DeviceIndex;
 
             Bass.CurrentRecordingDevice = deviceIndex;
-
-            RecordProcedure = Processing;
-
-            Handle = Bass.RecordStart(SampleRate, Channels, BassFlags.RecordPause | Resolution.ToBassFlag(), RecordProcedure);
+            
+            Handle = Bass.RecordStart(SampleRate, Channels, BassFlags.RecordPause | Resolution.ToBassFlag(), Processing);
         }
 
         public bool IsActive => Bass.ChannelIsActive(Handle) == PlaybackState.Playing;

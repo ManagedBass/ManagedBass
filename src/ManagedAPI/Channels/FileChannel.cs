@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
@@ -9,8 +8,6 @@ namespace ManagedBass
     /// </summary>
     public sealed class FileChannel : Channel
     {
-        GCHandle _gcPin;
-
         /// <summary>
         /// Path of the loaded file or null if loaded from Memory.
         /// </summary>
@@ -33,17 +30,7 @@ namespace ManagedBass
 
         public FileChannel(byte[] Memory, int Offset, long Length, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
-            _gcPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
-
-            Handle = Bass.CreateStream(_gcPin.AddrOfPinnedObject(), Offset, Length, FlagGen(IsDecoder, Resolution));
-        }
-        
-        public override void Dispose()
-        {
-            base.Dispose();
-
-			if (_gcPin.IsAllocated) 
-                _gcPin.Free();
+            Handle = Bass.CreateStream(Memory, Offset, Length, FlagGen(IsDecoder, Resolution));
         }
     }
 }

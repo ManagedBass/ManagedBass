@@ -7,11 +7,9 @@ namespace ManagedBass
     /// </summary>
     public sealed class Silence : Channel
     {
-        readonly StreamProcedure _procedure = (h, b, l, u) => l;
-
         public Silence(PlaybackDevice Device)
         {
-            Handle = Bass.CreateStream(44100, 1, BassFlags.Byte, _procedure, IntPtr.Zero);
+            Handle = Bass.CreateStream(44100, 1, BassFlags.Byte, (h, b, l, u) => l, IntPtr.Zero);
             Bass.ChannelSetDevice(Handle, Device.DeviceIndex);
             Bass.ChannelSetAttribute(Handle, ChannelAttribute.Volume, 0);
         }

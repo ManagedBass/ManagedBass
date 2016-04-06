@@ -45,19 +45,19 @@ namespace ManagedBass.Wasapi
 
             Bass.Init(0);
 
-            MixerStream = BassMix.CreateMixerStream(info.Frequency, info.Channels, BassFlags.Float | BassFlags.Decode);
+            _mixerStream = BassMix.CreateMixerStream(info.Frequency, info.Channels, BassFlags.Float | BassFlags.Decode);
 
             return result;
         }
 
         #region Callback
-        int MixerStream;
+        int _mixerStream;
 
-        Dictionary<Action<BufferProvider>, Tuple<StreamProcedure, int>> dict = new Dictionary<Action<BufferProvider>, Tuple<StreamProcedure, int>>();
+        readonly Dictionary<Action<BufferProvider>, Tuple<StreamProcedure, int>> _dict = new Dictionary<Action<BufferProvider>, Tuple<StreamProcedure, int>>();
 
         public override int OnProc(IntPtr Buffer, int Length, IntPtr User)
         {
-            return Bass.ChannelGetData(MixerStream, Buffer, Length);
+            return Bass.ChannelGetData(_mixerStream, Buffer, Length);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace ManagedBass.Wasapi
                 || (!info.IsDecodingChannel && info.ChannelType != ChannelType.Recording))
                 return false;
 
-            return BassMix.MixerAddChannel(MixerStream, Channel, BassFlags.Default);
+            return BassMix.MixerAddChannel(_mixerStream, Channel, BassFlags.Default);
         }
 
         /// <summary>
@@ -99,16 +99,16 @@ namespace ManagedBass.Wasapi
 
                 AddOutputSource(handle);
 
-                dict.Add(value, new Tuple<StreamProcedure, int>(sproc, handle));
+                _dict.Add(value, new Tuple<StreamProcedure, int>(sproc, handle));
             }
             remove
             {
-                var t = dict[value].Item2;
+                var t = _dict[value].Item2;
 
                 RemoveOutputSource(t);
 
                 Bass.StreamFree(t);
-                dict.Remove(value);
+                _dict.Remove(value);
             }
         }
         #endregion

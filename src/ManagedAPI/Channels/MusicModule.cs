@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
 using static System.Runtime.InteropServices.Marshal;
 
 namespace ManagedBass
@@ -13,11 +13,14 @@ namespace ManagedBass
             Handle = Bass.MusicLoad(FilePath, 0, 0, FlagGen(IsDecoder, Resolution), 0);
         }
 
+        public MusicModule(IntPtr Memory, int Length, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
+        {
+            Handle = Bass.MusicLoad(Memory, 0, Length, FlagGen(IsDecoder, Resolution));
+        }
+
         public MusicModule(byte[] Memory, int Length, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
         {
-            var gcPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
-            Handle = Bass.MusicLoad(gcPin.AddrOfPinnedObject(), 0, Length, FlagGen(IsDecoder, Resolution));
-            gcPin.Free();
+            Handle = Bass.MusicLoad(Memory, 0, Length, FlagGen(IsDecoder, Resolution));
         }
 
         public string Title => PtrToStringAnsi(Bass.ChannelGetTags(Handle, TagType.MusicName));

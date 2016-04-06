@@ -92,7 +92,6 @@ namespace ManagedBass.Pitch
             m_real = new double[m_order + 1];
             m_imag = new double[m_order + 1];
             m_z = new double[m_order + 1];
-            var ln10 = Math.Log(10.0);
 
             // Butterworth, Chebyshev parameters
             var n = m_order;

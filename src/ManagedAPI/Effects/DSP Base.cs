@@ -50,27 +50,20 @@ namespace ManagedBass
         }
 
         public Resolution Resolution { get; private set; }
-
-        readonly DSPProcedure _dspProc;
-        readonly SyncProcedure _freeproc;
-
+        
         static DSP() { Bass.FloatingPointDSP = true; }
 
         protected DSP(int Channel, int Priority)
         {
             this.Channel = Channel;
-
-            _dspProc = OnDsp;
-
+            
             _priority = Priority;
 
-            Handle = Bass.ChannelSetDSP(Channel, _dspProc, Priority: _priority);
+            Handle = Bass.ChannelSetDSP(Channel, OnDsp, Priority: _priority);
 
             Resolution = Bass.ChannelGetInfo(Channel).Resolution;
-
-            _freeproc = (a, b, c, d) => Dispose();
-
-            Bass.ChannelSetSync(Channel, SyncFlags.Free, 0, _freeproc);
+            
+            Bass.ChannelSetSync(Channel, SyncFlags.Free, 0, (a, b, c, d) => Dispose());
 
             if (Handle != 0) 
                 IsAssigned = true;
@@ -79,8 +72,6 @@ namespace ManagedBass
 
         protected DSP(MediaPlayer player, int Priority)
         {
-            _dspProc = OnDsp;
-
             _priority = Priority;
 
             Reassign(player.Handle);
@@ -92,7 +83,7 @@ namespace ManagedBass
         {
             Channel = h;
 
-            Handle = Bass.ChannelSetDSP(Channel, _dspProc, Priority: _priority);
+            Handle = Bass.ChannelSetDSP(Channel, OnDsp, Priority: _priority);
 
             if (Channel != 0)
                 Resolution = Bass.ChannelGetInfo(Channel).Resolution;

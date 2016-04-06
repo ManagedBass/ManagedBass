@@ -150,7 +150,7 @@ namespace ManagedBass
         /// To stream a file from the internet, use <see cref="CreateStream(string, int, BassFlags, DownloadProcedure, IntPtr)" />.
         /// To stream from other locations, see <see cref="CreateStream(StreamSystem, BassFlags, FileProcedures, IntPtr)" />.
         /// </para>
-        /// <para>Don't forget to pin your memory object when using this overload.</para>
+        /// <para>The Memory buffer must be pinned when using this overload.</para>
         /// <para><b>Platform-specific</b></para>
         /// <para>
         /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
@@ -246,23 +246,23 @@ namespace ManagedBass
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
         {
-            var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
+            var gcPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
-            var Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
+            var handle = CreateStream(gcPin.AddrOfPinnedObject(), Offset, Length, Flags);
 
-            if (Handle == 0)
-                GCPin.Free();
+            if (handle == 0)
+                gcPin.Free();
 
-            else ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
+            else ChannelSetSync(handle, SyncFlags.Free, 0, (a, b, c, d) => gcPin.Free());
 
-            return Handle;
+            return handle;
         }
         #endregion
 
         #region FileUser
         [DllImport(DllName)]
         static extern int BASS_StreamCreateFileUser(StreamSystem System, BassFlags Flags, [In, Out] FileProcedures Procedures, IntPtr User);
-        
+
         /// <summary>
         /// Creates a sample stream from an MP3, MP2, MP1, OGG, WAV, AIFF or plugin supported file via user callback functions.
         /// </summary>
@@ -289,10 +289,6 @@ namespace ManagedBass
         /// It's not so important for seeking (<see cref="FileSeekProcedure" />) to be fast, as that is generally not required during decoding, except when looping a file.
         /// </para>
         /// <para>In all cases, BASS will automatically stall playback of the stream when insufficient data is available, and resume it when enough data does become available.</para>
-        /// <para>
-        /// A copy is made of the procs callback function table, so it does not have to persist beyond this function call. 
-        /// This means it is not required to pin the <paramref name="Procedures" /> instance, but it is still required to keep a reference as long as BASS uses the callback delegates in order to prevent the callbacks from being garbage collected.
-        /// </para>
         /// <para><b>Platform-specific</b></para>
         /// <para>
         /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
@@ -303,6 +299,11 @@ namespace ManagedBass
         /// Media Foundation codecs are also supported on Windows 7 and updated versions of Vista, including support for AAC/MP4 and WMA.
         /// On iOS and OSX, CoreAudio codecs are supported, adding support for any file formats that have a codec installed.
         /// Media Foundation and CoreAudio codecs are only tried after the built-in decoders and any plugins have rejected the file.
+        /// </para>
+        /// <para>
+        /// A copy is made of the <paramref name="Procedures"/> callback function table, so it does not have to persist beyond this function call.
+        /// Unlike Bass.Net, a reference to <paramref name="Procedures"/> doesn't need to be held by you manually.
+        /// ManagedBass automatically holds a reference and frees it when the Channel is freed.
         /// </para>
         /// </remarks>
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
@@ -329,7 +330,73 @@ namespace ManagedBass
         #region Url
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_StreamCreateURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr));
-
+        
+        /// <summary>
+        /// Creates a sample stream from an MP3, MP2, MP1, OGG, WAV, AIFF or plugin supported file on the internet, optionally receiving the downloaded data in a callback.
+        /// </summary>
+        /// <param name="Url">
+        /// URL of the file to stream.
+        /// Should begin with "http://", "https://" or "ftp://", or another add-on supported protocol.
+        /// The URL can be followed by custom HTTP request headers to be sent to the server;
+        /// the URL and each header should be terminated with a carriage return and line feed ("\r\n").
+        /// </param>
+        /// <param name="Offset">File position to start streaming from. This is ignored by some servers, specifically when the file length is unknown, for example a Shout/Icecast server.</param>
+        /// <param name="Flags">A combination of <see cref="BassFlags" /></param>
+        /// <param name="Procedure">Callback function to receive the file as it is downloaded... <see langword="null" /> = no callback.</param>
+        /// <param name="User">User instance data to pass to the callback function.</param>
+        /// <returns>If successful, the new stream's handle is returned, else 0 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// Use <see cref="ChannelGetInfo(int, out ChannelInfo)" /> to retrieve information on the format (sample rate, resolution, channels) of the stream.
+        /// The playback length of the stream can be retrieved using <see cref="ChannelGetLength(int, PositionFlags)" />.
+        /// </para>
+        /// <para>
+        /// When playing the stream, BASS will stall the playback if there is insufficient data to continue playing.
+        /// Playback will automatically be resumed when sufficient data has been downloaded.
+        /// <see cref="ChannelIsActive" /> can be used to check if the playback is stalled, and the progress of the file download can be checked with <see cref="StreamGetFilePosition" />.
+        /// </para>
+        /// <para>When streaming in blocks (<see cref="BassFlags.StreamDownloadBlocks"/>), be careful not to stop/pause the stream for too long, otherwise the connection may timeout due to there being no activity and the stream will end prematurely.</para>
+        /// <para>
+        /// When streaming from Shoutcast servers, metadata (track titles) may be sent by the server.
+        /// The data can be retrieved with <see cref="ChannelGetTags" />.
+        /// A sync can also be set (using <see cref="ChannelSetSync" />) so that you are informed when metadata is received.
+        /// A <see cref="SyncFlags.OggChange"/> sync can be used to be informed of when a new logical bitstream begins in an Icecast/OGG stream.
+        /// </para>
+        /// <para>
+        /// When using an <paramref name="Offset" />, the file length returned by <see cref="StreamGetFilePosition" /> can be used to check that it was successful by comparing it with the original file length.
+        /// Another way to check is to inspect the HTTP headers retrieved with <see cref="ChannelGetTags" />.
+        /// </para>
+        /// <para>Custom HTTP request headers may be ignored by some plugins, notably BassWma.</para>
+        /// <para>
+        /// Unlike Bass.Net, a reference to <paramref name="Procedure"/> doesn't need to be held by you manually.
+        /// ManagedBass automatically holds a reference and frees it when the Channel is freed.
+        /// </para>
+        /// <para><b>Platform-specific</b></para>
+        /// <para>
+        /// Away from Windows, all mixing is done in software (by Bass), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
+        /// The <see cref="BassFlags.FX"/> flag is also ignored.
+        /// </para>
+        /// <para>
+        /// On Windows and Windows CE, ACM codecs are supported with compressed WAV files.
+        /// Media Foundation codecs are also supported on Windows 7 and updated versions of Vista, including support for AAC and WMA.
+        /// On iOS and OSX, CoreAudio codecs are supported, including support for AAC and ALAC.
+        /// Media Foundation and CoreAudio codecs are only tried after the built-in decoders and any plugins have rejected the file.
+        /// Built-in support for IMA and Microsoft ADPCM WAV files is provided on Linux/Android/Windows CE, while they are supported via ACM and CoreAudio codecs on Windows and OSX/iOS.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.NotAvailable">Only decoding channels (<see cref="BassFlags.Decode"/>) are allowed when using the "no sound" device. The <see cref="BassFlags.AutoFree"/> flag is also unavailable to decoding channels.</exception>
+        /// <exception cref="Errors.NoInternet">No internet connection could be opened. Can be caused by a bad proxy setting.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Url" /> is not a valid URL.</exception>
+        /// <exception cref="Errors.Timeout">The server did not respond to the request within the timeout period, as set with <see cref="NetTimeOut"/> config option.</exception>
+        /// <exception cref="Errors.FileOpen">The file could not be opened.</exception>
+        /// <exception cref="Errors.FileFormat">The file's format is not recognised/supported.</exception>
+        /// <exception cref="Errors.Codec">The file uses a codec that's not available/supported. This can apply to WAV and AIFF files, and also MP3 files when using the "MP3-free" BASS version.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If the stream is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
+        /// <exception cref="Errors.Speaker">The specified Speaker flags are invalid. The device/drivers do not support them, they are attempting to assign a stereo stream to a mono speaker or 3D functionality is enabled.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int CreateStream(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr))
         {
             var h = BASS_StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User);
@@ -341,9 +408,43 @@ namespace ManagedBass
         }
         #endregion
 
+        #region StreamProcedure
         [DllImport(DllName)]
         static extern int BASS_StreamCreate(int Frequency, int Channels, BassFlags Flags, StreamProcedure Procedure, IntPtr User);
 
+        /// <summary>
+        /// Creates a user sample stream.
+        /// </summary>
+        /// <param name="Frequency">The default sample rate. The sample rate can be changed using <see cref="ChannelSetAttribute(int, ChannelAttribute, float)" />.</param>
+        /// <param name="Channels">The number of channels... 1 = mono, 2 = stereo, 4 = quadraphonic, 6 = 5.1, 8 = 7.1. More than stereo requires WDM drivers, and the Speaker flags are ignored.</param>
+        /// <param name="Flags">A combination of <see cref="BassFlags"/>.</param>
+        /// <param name="Procedure">The user defined stream writing function (see <see cref="StreamProcedure" />).</param>
+        /// <param name="User">User instance data to pass to the callback function.</param>
+        /// <returns>If successful, the new stream's handle is returned, else 0 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// Sample streams allow any sample data to be played through Bass, and are particularly useful for playing a large amount of sample data without requiring a large amount of memory.
+        /// If you wish to play a sample format that BASS does not support, then you can create a stream and decode the sample data into it.
+        /// </para>
+        /// <para>
+        /// Bass can automatically stream MP3, MP2, MP1, OGG, WAV and AIFF files, using <see cref="CreateStream(string,long,long,BassFlags)" />, and also from HTTP and FTP servers, 
+        /// using <see cref="CreateStream(string,int,BassFlags,DownloadProcedure,IntPtr)" />, <see cref="CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)" /> allows streaming from other sources too.
+        /// </para>
+        /// <para>However, the callback method must deliver PCM sample data as specified, so opening an MP3 file and just passing that file data will not work here.</para>
+        /// <para>
+        /// Unlike Bass.Net, a reference to <paramref name="Procedure"/> doesn't need to be held by you manually.
+        /// ManagedBass automatically holds a reference and frees it when the Channel is freed.
+        /// </para>
+        /// <para><b>Platform-specific</b></para>
+        /// <para>Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary. The <see cref="BassFlags.FX"/> flag is also ignored.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.NotAvailable">Only decoding channels (<see cref="BassFlags.Decode"/>) are allowed when using the "no sound" device. The <see cref="BassFlags.AutoFree"/> flag is also unavailable to decoding channels.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If the stream is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
+        /// <exception cref="Errors.Speaker">The specified Speaker flags are invalid. The device/drivers do not support them, they are attempting to assign a stereo stream to a mono speaker or 3D functionality is enabled.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int CreateStream(int Frequency, int Channels, BassFlags Flags, StreamProcedure Procedure, IntPtr User = default(IntPtr))
         {
             var h = BASS_StreamCreate(Frequency, Channels, Flags, Procedure, User);
@@ -353,40 +454,300 @@ namespace ManagedBass
 
             return h;
         }
+        #endregion
 
-        [DllImport(DllName, EntryPoint = "BASS_StreamCreate")]
-        public static extern int CreateStream(int Frequency, int Channels, BassFlags Flags, StreamProcedureType Procedure, IntPtr User = default(IntPtr));
+        #region Dummy/Push
+        [DllImport(DllName)]
+        static extern int BASS_StreamCreate(int Frequency, int Channels, BassFlags Flags, StreamProcedureType ProcedureType, IntPtr User = default(IntPtr));
+
+        /// <summary>
+        /// Creates a Dummy or Push stream.
+        /// </summary>
+        /// <param name="Frequency">The default sample rate. The sample rate can be changed using <see cref="ChannelSetAttribute(int, ChannelAttribute, float)" />.</param>
+        /// <param name="Channels">The number of channels... 1 = mono, 2 = stereo, 4 = quadraphonic, 6 = 5.1, 8 = 7.1. More than stereo requires WDM drivers, and the SPEAKER flags are ignored.</param>
+        /// <param name="Flags">A combination of <see cref="BassFlags"/>.</param>
+        /// <param name="ProcedureType">The type of stream.</param>
+        /// <returns>If successful, the new stream's handle is returned, else 0 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// A dummy stream doesn't have any sample data of its own, but a decoding dummy stream (with <see cref="BassFlags.Decode"/> flag) can be used to apply DSP/FX processing to any sample data, 
+        /// by setting DSP/FX on the stream and feeding the data through <see cref="ChannelGetData(int,IntPtr,int)" />. 
+        /// <para>The dummy stream should have the same sample format as the data being fed through it.</para>
+        /// <para><b>Platform-specific</b></para>
+        /// <para>Away from Windows, all mixing is done in software (by Bass), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary. The <see cref="BassFlags.FX"/> flag is also ignored.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.NotAvailable">Only decoding channels (<see cref="BassFlags.Decode"/>) are allowed when using the "no sound" device. The <see cref="BassFlags.AutoFree"/> flag is also unavailable to decoding channels.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If the stream is more than stereo or the <see cref="BassFlags.Float"/> flag is used, it could be that they are not supported.</exception>
+        /// <exception cref="Errors.Speaker">The specified Speaker flags are invalid. The device/drivers do not support them, they are attempting to assign a stereo stream to a mono speaker or 3D functionality is enabled.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.No3D">Could not initialize 3D support.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
+        public static int CreateStream(int Frequency, int Channels, BassFlags Flags, StreamProcedureType ProcedureType)
+        {
+            return BASS_StreamCreate(Frequency, Channels, Flags, ProcedureType);
+        }
+        #endregion
 
         #region Stream Put Data
+        /// <summary>
+        /// Adds sample data to a "push" stream.
+        /// </summary>
+        /// <param name="Handle">The stream handle (as created with <see cref="CreateStream(int,int,BassFlags,StreamProcedureType)" />).</param>
+        /// <param name="Buffer">Pointer to the sample data (<see cref="IntPtr.Zero"/> = allocate space in the queue buffer so that there is at least length bytes of free space).</param>
+        /// <param name="Length">The amount of data in bytes, optionally using the <see cref="StreamProcedureType.End"/> flag to signify the end of the stream. 0 can be used to just check how much data is queued.</param>
+        /// <returns>If successful, the amount of queued data is returned, else -1 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// As much data as possible will be placed in the stream's playback buffer, and any remainder will be queued for when more space becomes available, ie. as the buffered data is played. 
+        /// With a decoding channel, there is no playback buffer, so all data is queued in that case.
+        /// There is no limit to the amount of data that can be queued, besides available memory.
+        /// The queue buffer will be automatically enlarged as required to hold the data, but it can also be enlarged in advance.
+        /// The queue buffer is freed when the stream ends or is reset, eg. via <see cref="ChannelPlay" /> (with restart = <see langword="true"/>) or <see cref="ChannelSetPosition(int, long, PositionFlags)" /> (with Position = 0).
+        /// </para>
+        /// <para>DSP/FX are applied when the data reaches the playback buffer, or the <see cref="ChannelGetData(int,IntPtr,int)" /> call in the case of a decoding channel.</para>
+        /// <para>
+        /// Data should be provided at a rate sufficent to sustain playback.
+        /// If the buffer gets exhausted, Bass will automatically stall playback of the stream, until more data is provided. 
+        /// <see cref="ChannelGetData(int,IntPtr,int)" /> (<see cref="DataFlags.Available"/>) can be used to check the buffer level, and <see cref="ChannelIsActive" /> can be used to check if playback has stalled. 
+        /// A <see cref="SyncFlags.Stalled"/> sync can also be set via <see cref="ChannelSetSync" />, to be triggered upon playback stalling or resuming.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The stream is not using the push system.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Length" /> is not valid, it must equate to a whole number of samples.</exception>
+        /// <exception cref="Errors.Ended">The stream has ended.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         [DllImport(DllName, EntryPoint = "BASS_StreamPutData")]
         public static extern int StreamPutData(int Handle, IntPtr Buffer, int Length);
 
+        /// <summary>
+        /// Adds sample data to a "push" stream.
+        /// </summary>
+        /// <param name="Handle">The stream handle (as created with <see cref="CreateStream(int,int,BassFlags,StreamProcedureType)" />).</param>
+        /// <param name="Buffer">byte sample data buffer (<see langword="null"/> = allocate space in the queue buffer so that there is at least length bytes of free space).</param>
+        /// <param name="Length">The amount of data in bytes, optionally using the <see cref="StreamProcedureType.End"/> flag to signify the end of the stream. 0 can be used to just check how much data is queued.</param>
+        /// <returns>If successful, the amount of queued data is returned, else -1 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// As much data as possible will be placed in the stream's playback buffer, and any remainder will be queued for when more space becomes available, ie. as the buffered data is played. 
+        /// With a decoding channel, there is no playback buffer, so all data is queued in that case.
+        /// There is no limit to the amount of data that can be queued, besides available memory.
+        /// The queue buffer will be automatically enlarged as required to hold the data, but it can also be enlarged in advance.
+        /// The queue buffer is freed when the stream ends or is reset, eg. via <see cref="ChannelPlay" /> (with restart = <see langword="true"/>) or <see cref="ChannelSetPosition(int, long, PositionFlags)" /> (with Position = 0).
+        /// </para>
+        /// <para>DSP/FX are applied when the data reaches the playback buffer, or the <see cref="ChannelGetData(int,IntPtr,int)" /> call in the case of a decoding channel.</para>
+        /// <para>
+        /// Data should be provided at a rate sufficent to sustain playback.
+        /// If the buffer gets exhausted, Bass will automatically stall playback of the stream, until more data is provided. 
+        /// <see cref="ChannelGetData(int,IntPtr,int)" /> (<see cref="DataFlags.Available"/>) can be used to check the buffer level, and <see cref="ChannelIsActive" /> can be used to check if playback has stalled. 
+        /// A <see cref="SyncFlags.Stalled"/> sync can also be set via <see cref="ChannelSetSync" />, to be triggered upon playback stalling or resuming.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The stream is not using the push system.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Length" /> is not valid, it must equate to a whole number of samples.</exception>
+        /// <exception cref="Errors.Ended">The stream has ended.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         [DllImport(DllName, EntryPoint = "BASS_StreamPutData")]
         public static extern int StreamPutData(int Handle, byte[] Buffer, int Length);
 
+        /// <summary>
+        /// Adds sample data to a "push" stream.
+        /// </summary>
+        /// <param name="Handle">The stream handle (as created with <see cref="CreateStream(int,int,BassFlags,StreamProcedureType)" />).</param>
+        /// <param name="Buffer">short sample data buffer (<see langword="null"/> = allocate space in the queue buffer so that there is at least length bytes of free space).</param>
+        /// <param name="Length">The amount of data in bytes, optionally using the <see cref="StreamProcedureType.End"/> flag to signify the end of the stream. 0 can be used to just check how much data is queued.</param>
+        /// <returns>If successful, the amount of queued data is returned, else -1 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// As much data as possible will be placed in the stream's playback buffer, and any remainder will be queued for when more space becomes available, ie. as the buffered data is played. 
+        /// With a decoding channel, there is no playback buffer, so all data is queued in that case.
+        /// There is no limit to the amount of data that can be queued, besides available memory.
+        /// The queue buffer will be automatically enlarged as required to hold the data, but it can also be enlarged in advance.
+        /// The queue buffer is freed when the stream ends or is reset, eg. via <see cref="ChannelPlay" /> (with restart = <see langword="true"/>) or <see cref="ChannelSetPosition(int, long, PositionFlags)" /> (with Position = 0).
+        /// </para>
+        /// <para>DSP/FX are applied when the data reaches the playback buffer, or the <see cref="ChannelGetData(int,IntPtr,int)" /> call in the case of a decoding channel.</para>
+        /// <para>
+        /// Data should be provided at a rate sufficent to sustain playback.
+        /// If the buffer gets exhausted, Bass will automatically stall playback of the stream, until more data is provided. 
+        /// <see cref="ChannelGetData(int,IntPtr,int)" /> (<see cref="DataFlags.Available"/>) can be used to check the buffer level, and <see cref="ChannelIsActive" /> can be used to check if playback has stalled. 
+        /// A <see cref="SyncFlags.Stalled"/> sync can also be set via <see cref="ChannelSetSync" />, to be triggered upon playback stalling or resuming.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The stream is not using the push system.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Length" /> is not valid, it must equate to a whole number of samples.</exception>
+        /// <exception cref="Errors.Ended">The stream has ended.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         [DllImport(DllName, EntryPoint = "BASS_StreamPutData")]
         public static extern int StreamPutData(int Handle, short[] Buffer, int Length);
 
+        /// <summary>
+        /// Adds sample data to a "push" stream.
+        /// </summary>
+        /// <param name="Handle">The stream handle (as created with <see cref="CreateStream(int,int,BassFlags,StreamProcedureType)" />).</param>
+        /// <param name="Buffer">int sample data buffer (<see langword="null"/> = allocate space in the queue buffer so that there is at least length bytes of free space).</param>
+        /// <param name="Length">The amount of data in bytes, optionally using the <see cref="StreamProcedureType.End"/> flag to signify the end of the stream. 0 can be used to just check how much data is queued.</param>
+        /// <returns>If successful, the amount of queued data is returned, else -1 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// As much data as possible will be placed in the stream's playback buffer, and any remainder will be queued for when more space becomes available, ie. as the buffered data is played. 
+        /// With a decoding channel, there is no playback buffer, so all data is queued in that case.
+        /// There is no limit to the amount of data that can be queued, besides available memory.
+        /// The queue buffer will be automatically enlarged as required to hold the data, but it can also be enlarged in advance.
+        /// The queue buffer is freed when the stream ends or is reset, eg. via <see cref="ChannelPlay" /> (with restart = <see langword="true"/>) or <see cref="ChannelSetPosition(int, long, PositionFlags)" /> (with Position = 0).
+        /// </para>
+        /// <para>DSP/FX are applied when the data reaches the playback buffer, or the <see cref="ChannelGetData(int,IntPtr,int)" /> call in the case of a decoding channel.</para>
+        /// <para>
+        /// Data should be provided at a rate sufficent to sustain playback.
+        /// If the buffer gets exhausted, Bass will automatically stall playback of the stream, until more data is provided. 
+        /// <see cref="ChannelGetData(int,IntPtr,int)" /> (<see cref="DataFlags.Available"/>) can be used to check the buffer level, and <see cref="ChannelIsActive" /> can be used to check if playback has stalled. 
+        /// A <see cref="SyncFlags.Stalled"/> sync can also be set via <see cref="ChannelSetSync" />, to be triggered upon playback stalling or resuming.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The stream is not using the push system.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Length" /> is not valid, it must equate to a whole number of samples.</exception>
+        /// <exception cref="Errors.Ended">The stream has ended.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         [DllImport(DllName, EntryPoint = "BASS_StreamPutData")]
         public static extern int StreamPutData(int Handle, int[] Buffer, int Length);
 
+        /// <summary>
+        /// Adds sample data to a "push" stream.
+        /// </summary>
+        /// <param name="Handle">The stream handle (as created with <see cref="CreateStream(int,int,BassFlags,StreamProcedureType)" />).</param>
+        /// <param name="Buffer">float sample data buffer (<see langword="null"/> = allocate space in the queue buffer so that there is at least length bytes of free space).</param>
+        /// <param name="Length">The amount of data in bytes, optionally using the <see cref="StreamProcedureType.End"/> flag to signify the end of the stream. 0 can be used to just check how much data is queued.</param>
+        /// <returns>If successful, the amount of queued data is returned, else -1 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// As much data as possible will be placed in the stream's playback buffer, and any remainder will be queued for when more space becomes available, ie. as the buffered data is played. 
+        /// With a decoding channel, there is no playback buffer, so all data is queued in that case.
+        /// There is no limit to the amount of data that can be queued, besides available memory.
+        /// The queue buffer will be automatically enlarged as required to hold the data, but it can also be enlarged in advance.
+        /// The queue buffer is freed when the stream ends or is reset, eg. via <see cref="ChannelPlay" /> (with restart = <see langword="true"/>) or <see cref="ChannelSetPosition(int, long, PositionFlags)" /> (with Position = 0).
+        /// </para>
+        /// <para>DSP/FX are applied when the data reaches the playback buffer, or the <see cref="ChannelGetData(int,IntPtr,int)" /> call in the case of a decoding channel.</para>
+        /// <para>
+        /// Data should be provided at a rate sufficent to sustain playback.
+        /// If the buffer gets exhausted, Bass will automatically stall playback of the stream, until more data is provided. 
+        /// <see cref="ChannelGetData(int,IntPtr,int)" /> (<see cref="DataFlags.Available"/>) can be used to check the buffer level, and <see cref="ChannelIsActive" /> can be used to check if playback has stalled. 
+        /// A <see cref="SyncFlags.Stalled"/> sync can also be set via <see cref="ChannelSetSync" />, to be triggered upon playback stalling or resuming.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The stream is not using the push system.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Length" /> is not valid, it must equate to a whole number of samples.</exception>
+        /// <exception cref="Errors.Ended">The stream has ended.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         [DllImport(DllName, EntryPoint = "BASS_StreamPutData")]
         public static extern int StreamPutData(int Handle, float[] Buffer, int Length);
         #endregion
 
         #region Stream Put File Data
+        /// <summary>
+        /// Adds data to a "push buffered" user file stream's buffer.
+        /// </summary>
+        /// <param name="Handle">The stream handle (as created with <see cref="CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)" /> and the <see cref="StreamSystem.BufferPush"/> system flag.).</param>
+        /// <param name="Buffer">Pointer to the file data.</param>
+        /// <param name="Length">The amount of data in bytes, or <see cref="StreamProcedureType.End"/> to end the file.</param>
+        /// <returns>If successful, the number of bytes read from buffer is returned, else -1 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>If there is not enough space in the stream's file buffer to receive all of the data, then only the amount that will fit is read from buffer. <see cref="StreamGetFilePosition" /> can be used to check the amount of space in the buffer.</para>
+        /// <para>
+        /// File data should be provided at a rate sufficent to sustain playback.
+        /// If there is insufficient file data, and the playback buffer is subsequently exhausted, Bass will automatically stall playback of the stream, until more data is available.
+        /// A <see cref="SyncFlags.Stalled"/> sync can be set via <see cref="ChannelSetSync" />, to be triggered upon playback stalling or resuming.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The stream is not using the <see cref="StreamSystem.BufferPush"/> file system.</exception>
+        /// <exception cref="Errors.Ended">The stream has ended.</exception>
         [DllImport(DllName, EntryPoint = "BASS_StreamPutFileData")]
         public static extern int StreamPutFileData(int Handle, IntPtr Buffer, int Length);
 
+        /// <summary>
+        /// Adds data to a "push buffered" user file stream's buffer.
+        /// </summary>
+        /// <param name="Handle">The stream handle (as created with <see cref="CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)" /> and the <see cref="StreamSystem.BufferPush"/> system flag.).</param>
+        /// <param name="Buffer">byte buffer.</param>
+        /// <param name="Length">The amount of data in bytes, or <see cref="StreamProcedureType.End"/> to end the file.</param>
+        /// <returns>If successful, the number of bytes read from buffer is returned, else -1 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>If there is not enough space in the stream's file buffer to receive all of the data, then only the amount that will fit is read from buffer. <see cref="StreamGetFilePosition" /> can be used to check the amount of space in the buffer.</para>
+        /// <para>
+        /// File data should be provided at a rate sufficent to sustain playback.
+        /// If there is insufficient file data, and the playback buffer is subsequently exhausted, Bass will automatically stall playback of the stream, until more data is available.
+        /// A <see cref="SyncFlags.Stalled"/> sync can be set via <see cref="ChannelSetSync" />, to be triggered upon playback stalling or resuming.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The stream is not using the <see cref="StreamSystem.BufferPush"/> file system.</exception>
+        /// <exception cref="Errors.Ended">The stream has ended.</exception>
         [DllImport(DllName, EntryPoint = "BASS_StreamPutFileData")]
         public static extern int StreamPutFileData(int Handle, byte[] Buffer, int Length);
 
+        /// <summary>
+        /// Adds data to a "push buffered" user file stream's buffer.
+        /// </summary>
+        /// <param name="Handle">The stream handle (as created with <see cref="CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)" /> and the <see cref="StreamSystem.BufferPush"/> system flag.).</param>
+        /// <param name="Buffer">short buffer.</param>
+        /// <param name="Length">The amount of data in bytes, or <see cref="StreamProcedureType.End"/> to end the file.</param>
+        /// <returns>If successful, the number of bytes read from buffer is returned, else -1 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>If there is not enough space in the stream's file buffer to receive all of the data, then only the amount that will fit is read from buffer. <see cref="StreamGetFilePosition" /> can be used to check the amount of space in the buffer.</para>
+        /// <para>
+        /// File data should be provided at a rate sufficent to sustain playback.
+        /// If there is insufficient file data, and the playback buffer is subsequently exhausted, Bass will automatically stall playback of the stream, until more data is available.
+        /// A <see cref="SyncFlags.Stalled"/> sync can be set via <see cref="ChannelSetSync" />, to be triggered upon playback stalling or resuming.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The stream is not using the <see cref="StreamSystem.BufferPush"/> file system.</exception>
+        /// <exception cref="Errors.Ended">The stream has ended.</exception>
         [DllImport(DllName, EntryPoint = "BASS_StreamPutFileData")]
         public static extern int StreamPutFileData(int Handle, short[] Buffer, int Length);
 
+        /// <summary>
+        /// Adds data to a "push buffered" user file stream's buffer.
+        /// </summary>
+        /// <param name="Handle">The stream handle (as created with <see cref="CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)" /> and the <see cref="StreamSystem.BufferPush"/> system flag.).</param>
+        /// <param name="Buffer">int buffer.</param>
+        /// <param name="Length">The amount of data in bytes, or <see cref="StreamProcedureType.End"/> to end the file.</param>
+        /// <returns>If successful, the number of bytes read from buffer is returned, else -1 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>If there is not enough space in the stream's file buffer to receive all of the data, then only the amount that will fit is read from buffer. <see cref="StreamGetFilePosition" /> can be used to check the amount of space in the buffer.</para>
+        /// <para>
+        /// File data should be provided at a rate sufficent to sustain playback.
+        /// If there is insufficient file data, and the playback buffer is subsequently exhausted, Bass will automatically stall playback of the stream, until more data is available.
+        /// A <see cref="SyncFlags.Stalled"/> sync can be set via <see cref="ChannelSetSync" />, to be triggered upon playback stalling or resuming.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The stream is not using the <see cref="StreamSystem.BufferPush"/> file system.</exception>
+        /// <exception cref="Errors.Ended">The stream has ended.</exception>
         [DllImport(DllName, EntryPoint = "BASS_StreamPutFileData")]
         public static extern int StreamPutFileData(int Handle, int[] Buffer, int Length);
 
+        /// <summary>
+        /// Adds data to a "push buffered" user file stream's buffer.
+        /// </summary>
+        /// <param name="Handle">The stream handle (as created with <see cref="CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)" /> and the <see cref="StreamSystem.BufferPush"/> system flag.).</param>
+        /// <param name="Buffer">float buffer.</param>
+        /// <param name="Length">The amount of data in bytes, or <see cref="StreamProcedureType.End"/> to end the file.</param>
+        /// <returns>If successful, the number of bytes read from buffer is returned, else -1 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>If there is not enough space in the stream's file buffer to receive all of the data, then only the amount that will fit is read from buffer. <see cref="StreamGetFilePosition" /> can be used to check the amount of space in the buffer.</para>
+        /// <para>
+        /// File data should be provided at a rate sufficent to sustain playback.
+        /// If there is insufficient file data, and the playback buffer is subsequently exhausted, Bass will automatically stall playback of the stream, until more data is available.
+        /// A <see cref="SyncFlags.Stalled"/> sync can be set via <see cref="ChannelSetSync" />, to be triggered upon playback stalling or resuming.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The stream is not using the <see cref="StreamSystem.BufferPush"/> file system.</exception>
+        /// <exception cref="Errors.Ended">The stream has ended.</exception>
         [DllImport(DllName, EntryPoint = "BASS_StreamPutFileData")]
         public static extern int StreamPutFileData(int Handle, float[] Buffer, int Length);
         #endregion

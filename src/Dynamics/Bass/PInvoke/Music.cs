@@ -50,10 +50,6 @@ namespace ManagedBass
         /// That is always the case with XM files (or MOD files in FT2 mode) when using normal ramping, and possibly with all formats when using sensitive ramping; senstitive ramping will only ramp-in when necessary to avoid a click.
         /// Generally, normal ramping is recommended for XM files, and sensitive ramping for the other formats, but some XM files may also sound better using sensitive ramping.
         /// </para>
-		/// <para>
-        /// When loading a MOD music from memory, BASS does not use the memory after it's loaded the MOD music.
-        /// So you can do whatever you want with the memory after calling this function.
-        /// </para>
         /// <para><b>Platform-specific</b></para>
 		/// <para>
         /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
@@ -109,12 +105,8 @@ namespace ManagedBass
         /// That is always the case with XM files (or MOD files in FT2 mode) when using normal ramping, and possibly with all formats when using sensitive ramping; senstitive ramping will only ramp-in when necessary to avoid a click.
         /// Generally, normal ramping is recommended for XM files, and sensitive ramping for the other formats, but some XM files may also sound better using sensitive ramping.
         /// </para>
-		/// <para>
-        /// When loading a MOD music from memory, BASS does not use the memory after it's loaded the MOD music.
-        /// So you can do whatever you want with the memory after calling this function.
-        /// </para>
         /// <para>
-        /// When loading a MOD music from memory, BASS does not use the memory after it's loaded the MOD music.
+        /// When loading a MOD music from memory, Bass does not use the memory after it has loaded the MOD music.
         /// So you can do whatever you want with the memory after calling this function.
 		/// This means there is no need to pin the memory buffer for this method.
         /// </para>
@@ -174,13 +166,8 @@ namespace ManagedBass
         /// Generally, normal ramping is recommended for XM files, and sensitive ramping for the other formats, but some XM files may also sound better using sensitive ramping.
         /// </para>
 		/// <para>
-        /// When loading a MOD music from memory, BASS does not use the memory after it's loaded the MOD music.
+        /// When loading a MOD music from memory, Bass does not use the memory after it has loaded the MOD music.
         /// So you can do whatever you want with the memory after calling this function.
-        /// </para>
-        /// <para>
-        /// When loading a MOD music from memory, BASS does not use the memory after it's loaded the MOD music.
-        /// So you can do whatever you want with the memory after calling this function.
-		/// This means there is no need to pin the memory buffer for this method.
         /// </para>
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
@@ -204,16 +191,16 @@ namespace ManagedBass
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int MusicLoad(byte[] Memory, long Offset, int Length, BassFlags Flags = BassFlags.Default, int Frequency = 44100)
         {
-            var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
+            var gcPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
-            var Handle = MusicLoad(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
+            var handle = MusicLoad(gcPin.AddrOfPinnedObject(), Offset, Length, Flags);
 
-            if (Handle == 0)
-                GCPin.Free();
+            if (handle == 0)
+                gcPin.Free();
 
-            else ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
+            else ChannelSetSync(handle, SyncFlags.Free, 0, (a, b, c, d) => gcPin.Free());
 
-            return Handle;
+            return handle;
         }
     }
 }

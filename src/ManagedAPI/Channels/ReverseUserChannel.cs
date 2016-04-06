@@ -12,19 +12,17 @@ namespace ManagedBass
         readonly int _dHandle;
         int _qLength, _bytesRead;
         long _pos, _dur, _diff;
-        readonly StreamProcedure _proc;
         float[] _buffer;
 
         public ReverseUserChannel(Channel DecodingSource)
         {
-			_decoder = DecodingSource;
+            _decoder = DecodingSource;
             _dHandle = DecodingSource.Handle;
-            _proc = Callback;
 
-			if (!_decoder.IsDecodingChannel)
+            if (!_decoder.IsDecodingChannel)
                 throw new ArgumentException("Not a Decoding Channel!");
 			
-			Handle = Bass.CreateStream((int)_decoder.Frequency, _decoder.ChannelCount, BassFlags.Float, _proc);
+			Handle = Bass.CreateStream((int)_decoder.Frequency, _decoder.ChannelCount, BassFlags.Float, Callback);
                         
             Bass.ChannelSetPosition(_dHandle, Bass.ChannelGetLength(_dHandle) - 1);
         }

@@ -14,21 +14,21 @@ namespace ManagedBass
     public class Plugin
     {
         public string DllName { get; }
-        int HPlugin;
-        PluginInfo? info;
+        int _hPlugin;
+        PluginInfo? _info;
 
         public Version Version
         {
             get
             {
-                if (info != null)
-                    return info.Value.Version;
+                if (_info != null)
+                    return _info.Value.Version;
 
                 Load();
 
-                info = Bass.PluginGetInfo(HPlugin);
+                _info = Bass.PluginGetInfo(_hPlugin);
 
-                return info.Value.Version;
+                return _info.Value.Version;
             }
         }
 
@@ -36,14 +36,14 @@ namespace ManagedBass
         {
             get
             {
-                if (info == null)
+                if (_info == null)
                 {
                     Load();
 
-                    info = Bass.PluginGetInfo(HPlugin);
+                    _info = Bass.PluginGetInfo(_hPlugin);
                 }
 
-                return info.Value.Formats;
+                return _info.Value.Formats;
             }
         }
 
@@ -74,16 +74,16 @@ namespace ManagedBass
         /// </summary>
         public void Load(string Folder = null)
         {
-            if (HPlugin != 0)
+            if (_hPlugin != 0)
                 return;
 
             // Try for Windows, Linux/Android and OSX Libraries respectively.
-            HPlugin = new[] { DllName + ".dll", "lib" + DllName + ".so", "lib" + DllName + ".dylib" }
+            _hPlugin = new[] { DllName + ".dll", "lib" + DllName + ".so", "lib" + DllName + ".dylib" }
                               .Select(lib => Folder != null ? Path.Combine(Folder, lib) : lib)
                               .Select(Bass.PluginLoad)
                               .FirstOrDefault(h => h != 0);
             
-            if (HPlugin == 0)
+            if (_hPlugin == 0)
                 throw new DllNotFoundException(DllName);
 
             // Always Support MP4 files in BassAAC.CreateStream()
@@ -93,8 +93,8 @@ namespace ManagedBass
 
         public void Unload()
         {
-            if (HPlugin != 0 && Bass.PluginFree(HPlugin))
-                HPlugin = 0;
+            if (_hPlugin != 0 && Bass.PluginFree(_hPlugin))
+                _hPlugin = 0;
         }
 
         #region Instances

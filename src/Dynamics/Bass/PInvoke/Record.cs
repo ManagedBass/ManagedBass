@@ -54,10 +54,10 @@ namespace ManagedBass
         /// <summary>
         /// Starts recording.
         /// </summary>
-        /// <param name="freq">The sample rate to record at.</param>
-        /// <param name="chans">The number of channels... 1 = mono, 2 = stereo, etc.</param>
-        /// <param name="flags">Any combination of <see cref="BassFlags.Byte"/>, <see cref="BassFlags.Float"/> and <see cref="BassFlags.RecordPause"/>.</param>
-        /// <param name="proc">The user defined function to receive the recorded sample data... can be <see langword="null" /> if you do not wish to use a callback.</param>
+        /// <param name="Frequency">The sample rate to record at.</param>
+        /// <param name="Channels">The number of channels... 1 = mono, 2 = stereo, etc.</param>
+        /// <param name="Flags">Any combination of <see cref="BassFlags.Byte"/>, <see cref="BassFlags.Float"/> and <see cref="BassFlags.RecordPause"/>.</param>
+        /// <param name="Procedure">The user defined function to receive the recorded sample data... can be <see langword="null" /> if you do not wish to use a callback.</param>
         /// <param name="User">User instance data to pass to the callback function.</param>
         /// <returns>If successful, the new recording's handle is returned, else <see langword="false" /> is returned. Use <see cref="LastError"/> to get the error code.</returns>
         /// <remarks>
@@ -76,6 +76,10 @@ namespace ManagedBass
         /// On OSX and iOS, the device is instructed (when possible) to deliver data at the period set in the HIWORD of flags, even when a callback function is not used.
         /// On other platforms, it is up the the system when data arrives from the device.
         /// </para>
+        /// <para>
+        /// Unlike Bass.Net, a reference to <paramref name="Procedure"/> doesn't need to be held by you manually.
+        /// ManagedBass automatically holds a reference and frees it when the Channel is freed.
+        /// </para>
         /// </remarks>
         /// <exception cref="Errors.Init"><see cref="RecordInit" /> has not been successfully called.</exception>
         /// <exception cref="Errors.Busy">
@@ -93,12 +97,12 @@ namespace ManagedBass
         /// </exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
-        public static int RecordStart(int freq, int chans, BassFlags flags, RecordProcedure proc, IntPtr User = default(IntPtr))
+        public static int RecordStart(int Frequency, int Channels, BassFlags Flags, RecordProcedure Procedure, IntPtr User = default(IntPtr))
         {
-            var h = BASS_RecordStart(freq, chans, flags, proc, User);
+            var h = BASS_RecordStart(Frequency, Channels, Flags, Procedure, User);
 
             if (h != 0)
-                Extensions.ChannelReferences.Add(h, 0, proc);
+                Extensions.ChannelReferences.Add(h, 0, Procedure);
 
             return h;
         }
@@ -106,7 +110,7 @@ namespace ManagedBass
         /// <summary>
 		/// Starts recording.
 		/// </summary>
-		/// <param name="freq">The sample rate to record at.</param>
+		/// <param name="Frequency">The sample rate to record at.</param>
 		/// <param name="chans">The number of channels... 1 = mono, 2 = stereo.</param>
 		/// <param name="flags">Any combination of <see cref="BassFlags.Byte"/>, <see cref="BassFlags.Float"/> and <see cref="BassFlags.RecordPause"/>.</param>
 		/// <param name="period">
@@ -117,9 +121,9 @@ namespace ManagedBass
 		/// <param name="proc">The user defined function to receive the recorded sample data... can be <see langword="null" /> if you do not wish to use a callback.</param>
 		/// <param name="user">User instance data to pass to the callback function.</param>
 		/// <returns>If successful, the new recording's handle is returned, else <see langword="false" /> is returned. Use <see cref="LastError"/> to get the error code.</returns>
-        public static int RecordStart(int freq, int chans, BassFlags flags, int period, RecordProcedure proc, IntPtr user)
+        public static int RecordStart(int Frequency, int chans, BassFlags flags, int period, RecordProcedure proc, IntPtr user)
 		{
-			return RecordStart(freq, chans, (BassFlags)BitHelper.MakeLong((short)flags, (short)period), proc, user);
+			return RecordStart(Frequency, chans, (BassFlags)BitHelper.MakeLong((short)flags, (short)period), proc, user);
 		}
         #endregion
 

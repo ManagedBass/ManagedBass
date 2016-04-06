@@ -38,16 +38,14 @@ namespace ManagedBass
                 _hchannel = value;
 
                 // Init Events
-                ChannelSetSync(Handle, SyncFlags.Free, 0, _freeDelegate);
-                ChannelSetSync(Handle, SyncFlags.End, 0, _endDelegate);
-                ChannelSetSync(Handle, SyncFlags.Stop, 0, _failDelegate);
+                ChannelSetSync(Handle, SyncFlags.Free, 0, OnFree);
+                ChannelSetSync(Handle, SyncFlags.End, 0, OnMediaEnded);
+                ChannelSetSync(Handle, SyncFlags.Stop, 0, OnMediaFailed);
             }
         }
         #endregion
 
         #region Events
-        readonly SyncProcedure _freeDelegate, _endDelegate, _failDelegate;
-
         void OnFree(int handle, int channel, int data, IntPtr User)
         {
             try
@@ -121,10 +119,6 @@ namespace ManagedBass
         protected Channel()
         {
             _syncContext = SynchronizationContext.Current;
-
-            _freeDelegate = OnFree;
-            _endDelegate = OnMediaEnded;
-            _failDelegate = OnMediaFailed;
         }
 
         public Channel(int Handle) : this() { this.Handle = Handle; }

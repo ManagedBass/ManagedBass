@@ -9,7 +9,6 @@ namespace ManagedBass
     /// </summary>
     public sealed class ManagedFileChannel : Channel
     {
-        readonly FileProcedures _procs;
         readonly FileStream _stream;
 
         /// <summary>
@@ -29,7 +28,7 @@ namespace ManagedBass
 
             this.FileName = FileName;
 
-            _procs = new FileProcedures
+            var procs = new FileProcedures
             {
                 Close = u => _stream.Dispose(),
                 Length = u => _stream.Length,
@@ -37,7 +36,7 @@ namespace ManagedBass
                 Seek = SeekProc
             };
 
-            Handle = Bass.CreateStream(StreamSystem.Buffer, FlagGen(IsDecoder, Resolution), _procs);
+            Handle = Bass.CreateStream(StreamSystem.Buffer, FlagGen(IsDecoder, Resolution), procs);
         }
 
         byte[] b;

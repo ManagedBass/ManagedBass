@@ -11,10 +11,16 @@ namespace ManagedBass.Enc
         /// <summary>
         /// Creates a new instance of <see cref="ACMEncodedFileWriter"/>.
         /// </summary>
-        public ACMEncodedFileWriter(string FileName, WaveFormatTag encoding,
-            int Channels = 2, int SampleRate = 44100, Resolution Resolution = Resolution.Short, EncodeFlags flags = EncodeFlags.Default)
-            : base(FileName, Bass.CreateStream(SampleRate, Channels, Resolution.ToBassFlag() | BassFlags.Decode, StreamProcedureType.Push),
-                   EncodeFlags.Default, encoding)
+        public ACMEncodedFileWriter(string FileName, 
+                                    WaveFormatTag Encoding,
+                                    int Channels = 2,
+                                    int SampleRate = 44100,
+                                    Resolution Resolution = Resolution.Short,
+                                    EncodeFlags Flags = EncodeFlags.Default)
+            : base(FileName, 
+                   Bass.CreateStream(SampleRate, Channels, Resolution.ToBassFlag() | BassFlags.Decode, StreamProcedureType.Push),
+                   Flags,
+                   Encoding)
         {
             this.Resolution = Resolution;
         }

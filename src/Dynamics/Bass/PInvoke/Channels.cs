@@ -37,7 +37,7 @@ namespace ManagedBass
         #region ChannelDSP
         [DllImport(DllName)]
         static extern int BASS_ChannelSetDSP(int Handle, DSPProcedure Procedure, IntPtr User, int Priority);
-        
+
         /// <summary>
         /// Sets up a User DSP function on a stream, MOD music, or recording channel.
         /// </summary>
@@ -66,6 +66,10 @@ namespace ManagedBass
         /// <para>
         /// DSP functions can be applied to MOD musics and streams, but not samples.
         /// If you want to apply a DSP function to a sample, then you should stream the sample.
+        /// </para>
+        /// <para>
+        /// Unlike Bass.Net, a reference to <paramref name="Procedure"/> doesn't need to be held by you manually.
+        /// ManagedBass automatically holds a reference and frees it when the Channel is freed or DSP is removed via <see cref="ChannelRemoveDSP"/>.
         /// </para>
         /// </remarks>
         public static int ChannelSetDSP(int Handle, DSPProcedure Procedure, IntPtr User = default(IntPtr), int Priority = 0)
@@ -102,7 +106,7 @@ namespace ManagedBass
         #region ChannelSync
         [DllImport(DllName)]
         static extern int BASS_ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedure Procedure, IntPtr User);
-        
+
         /// <summary>
         /// Sets up a synchronizer on a MOD music, stream or recording channel.
         /// </summary>
@@ -133,6 +137,10 @@ namespace ManagedBass
         /// Those sync types should be set before starting playback or pre-buffering (ie. before any rendering), to avoid missing any early sync events.
         /// </para>
         /// <para>With recording channels, <see cref="SyncFlags.Position"/> syncs are triggered just before the <see cref="RecordProcedure" /> receives the block of data containing the sync position.</para>
+        /// <para>
+        /// Unlike Bass.Net, a reference to <paramref name="Procedure"/> doesn't need to be held by you manually.
+        /// ManagedBass automatically holds a reference and frees it when the Channel is freed or Sync is removed via <see cref="ChannelRemoveSync"/>.
+        /// </para>
         /// </remarks>
         public static int ChannelSetSync(int Handle, SyncFlags Type, long Parameter, SyncProcedure Procedure, IntPtr User = default(IntPtr))
         {

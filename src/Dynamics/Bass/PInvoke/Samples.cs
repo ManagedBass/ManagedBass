@@ -331,7 +331,7 @@ namespace ManagedBass
         /// </para>
 		/// <para>To play a sample, first a channel must be obtained using <see cref="SampleGetChannel" />, which can then be played using <see cref="ChannelPlay" />.</para>
 		/// <para>If you want to play a large or one-off sample, then it would probably be better to stream it instead with <see cref="CreateStream(byte[], long, long, BassFlags)" />.</para>
-        /// <para>There is no need to pin the memory buffer for this method, since after loading a sample from memory, the memory can safely be discarded, as a copy is made.</para>
+        /// <para>The <paramref name="Memory"/> can be safely discarded after calling this method, as a copy of it is made by Bass.</para>
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
         /// The <see cref="BassFlags.VAM"/> flag requires DirectX 7 (or above).

@@ -4,28 +4,29 @@ namespace ManagedBass.Pitch
 {
     class CircularBuffer : IDisposable
     {
-        int m_bufSize, m_begBufOffset, m_availBuf;
-        float[] m_buffer;
+        readonly int m_bufSize;
+        int _mBegBufOffset, _mAvailBuf;
+        float[] _mBuffer;
         
         public CircularBuffer(int BufferCount) 
         {            
             m_bufSize = BufferCount;
             
             if (m_bufSize > 0)
-                m_buffer = new float[m_bufSize];
+                _mBuffer = new float[m_bufSize];
         }
 
-        public void Dispose() => m_buffer = null;
+        public void Dispose() => _mBuffer = null;
 
         /// <summary>
         /// Reset to the beginning of the Buffer
         /// </summary>
-        public void Reset() => StartPosition = m_begBufOffset = m_availBuf = 0;
+        public void Reset() => StartPosition = _mBegBufOffset = _mAvailBuf = 0;
         
         /// <summary>
         /// Clear the Buffer
         /// </summary>
-        public void Clear() => Array.Clear(m_buffer, 0, m_buffer.Length);
+        public void Clear() => Array.Clear(_mBuffer, 0, _mBuffer.Length);
 
         /// <summary>
         /// Get or set the start position
@@ -37,8 +38,8 @@ namespace ManagedBass.Pitch
         /// </summary>
         public int Available 
         {
-            get { return m_availBuf; } 
-            set { m_availBuf = Math.Min(value, m_bufSize); }
+            get { return _mAvailBuf; } 
+            set { _mAvailBuf = Math.Min(value, m_bufSize); }
         }
 
         /// <summary>
@@ -48,34 +49,34 @@ namespace ManagedBass.Pitch
         {
             count = Math.Min(count, m_bufSize);
 
-            var startPos = m_availBuf != m_bufSize ? m_availBuf : m_begBufOffset;
+            var startPos = _mAvailBuf != m_bufSize ? _mAvailBuf : _mBegBufOffset;
             var pass1Count = Math.Min(count, m_bufSize - startPos);
             var pass2Count = count - pass1Count;
 
-            Array.Copy(m_pInBuffer, 0, m_buffer, startPos, pass1Count);
+            Array.Copy(m_pInBuffer, 0, _mBuffer, startPos, pass1Count);
 
             if (pass2Count > 0) 
-                Array.Copy(m_pInBuffer, pass1Count, m_buffer, 0, pass2Count);
+                Array.Copy(m_pInBuffer, pass1Count, _mBuffer, 0, pass2Count);
 
             if (pass2Count == 0)
             {
                 // did not wrap around
-                if (m_availBuf != m_bufSize) m_availBuf += count;   // have never wrapped around
+                if (_mAvailBuf != m_bufSize) _mAvailBuf += count;   // have never wrapped around
                 else
                 {
-                    m_begBufOffset += count;
+                    _mBegBufOffset += count;
                     StartPosition += count;
                 }
             }
             else
             {
                 // wrapped around
-                if (m_availBuf != m_bufSize)
+                if (_mAvailBuf != m_bufSize)
                     StartPosition += pass2Count;  // first time wrap-around
                 else StartPosition += count;
 
-                m_begBufOffset = pass2Count;
-                m_availBuf = m_bufSize;
+                _mBegBufOffset = pass2Count;
+                _mAvailBuf = m_bufSize;
             }
 
             return count;
@@ -87,18 +88,18 @@ namespace ManagedBass.Pitch
         public bool Read(float[] outBuffer, long startRead, int readCount)
         {
             var endRead = (int)(startRead + readCount);
-            var endAvail = (int)(StartPosition + m_availBuf);
+            var endAvail = (int)(StartPosition + _mAvailBuf);
 
             if (startRead < StartPosition || endRead > endAvail) return false;
 
-            var startReadPos = (int)((startRead - StartPosition + m_begBufOffset) % m_bufSize);
+            var startReadPos = (int)((startRead - StartPosition + _mBegBufOffset) % m_bufSize);
             var block1Samples = Math.Min(readCount, m_bufSize - startReadPos);
             var block2Samples = readCount - block1Samples;
 
-            Array.Copy(m_buffer, startReadPos, outBuffer, 0, block1Samples);
+            Array.Copy(_mBuffer, startReadPos, outBuffer, 0, block1Samples);
             
             if (block2Samples > 0)
-                Array.Copy(m_buffer, 0, outBuffer, block1Samples, block2Samples);
+                Array.Copy(_mBuffer, 0, outBuffer, block1Samples, block2Samples);
 
             return true;
         }
