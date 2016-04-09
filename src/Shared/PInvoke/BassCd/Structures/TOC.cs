@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if WINDOWS || LINUX
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass.Cd
@@ -41,3 +42,4 @@ namespace ManagedBass.Cd
         }
     }
 }
+#endif

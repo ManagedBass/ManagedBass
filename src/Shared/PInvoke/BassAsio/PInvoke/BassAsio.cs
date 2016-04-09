@@ -21,9 +21,9 @@ namespace ManagedBass.Asio
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
 
-        public static void Unload() => Extensions.Unload(hLib);
+        public static void Unload() => DynamicLibrary.Unload(hLib);
 
         #region AddDevice
         [DllImport(DllName, CharSet = CharSet.Unicode)]
@@ -54,7 +54,7 @@ namespace ManagedBass.Asio
             return Unicode ? BASS_ASIO_AddDevice(ClsID, Driver, Name)
                            : BASS_ASIO_AddDeviceAnsi(ClsID, Driver, Name);
         }
-        #endregion
+#endregion
 
         /// <summary>
 		/// Checks if a sample rate is supported by the device.
@@ -89,7 +89,7 @@ namespace ManagedBass.Asio
         /// </returns>
 		/// <remarks>Error codes are stored for each thread. So if you happen to call 2 or more BassAsio functions at the same time, they will not interfere with eachother's error codes.</remarks>
         public static Errors LastError => BASS_ASIO_ErrorGetCode();
-        #endregion
+#endregion
 
         /// <summary>
 		/// Releases the Asio device/driver.
@@ -123,7 +123,7 @@ namespace ManagedBass.Asio
 		/// <returns>The BASSASIO CPU usage as a percentage of total CPU time.</returns>
 		/// <remarks>This function includes the time taken by the <see cref="AsioProcedure" /> callback functions.</remarks>
         public static double CPUUsage => BASS_ASIO_GetCPU();
-        #endregion
+#endregion
 
         #region Current Device
         [DllImport(DllName)]
@@ -159,7 +159,7 @@ namespace ManagedBass.Asio
                     throw new BassException(LastError);
             }
         }
-        #endregion
+#endregion
 
         #region GetDeviceInfo
         /// <summary>
@@ -209,7 +209,7 @@ namespace ManagedBass.Asio
                 return i;
             }
         }
-        #endregion
+#endregion
 
         #region GetInfo
 		/// <summary>
@@ -244,7 +244,7 @@ namespace ManagedBass.Asio
                 return info;
             }
         }
-        #endregion
+#endregion
 
         /// <summary>
 		/// Retrieves the latency of input or output channels of the current Asio device
@@ -293,7 +293,7 @@ namespace ManagedBass.Asio
                     throw new BassException(LastError);
             }
         }
-        #endregion
+#endregion
 
         #region Version
         [DllImport(DllName)]
@@ -303,7 +303,7 @@ namespace ManagedBass.Asio
         /// Gets the version of BassAsio that is Loaded.
         /// </summary>
         public static Version Version => Extensions.GetVersion(BASS_ASIO_GetVersion());
-        #endregion
+#endregion
 
         /// <summary>
 		/// Initializes an Asio device/driver.
@@ -339,7 +339,7 @@ namespace ManagedBass.Asio
 		/// </summary>
 		/// <returns>Returns <see langword="true" />, if the device has been started, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         public static bool IsStarted => BASS_ASIO_IsStarted();
-        #endregion
+#endregion
         
 		/// <summary>
 		/// Set the direct input monitoring state.
@@ -431,7 +431,7 @@ namespace ManagedBass.Asio
                 else throw new BassException(LastError);
             }
         }
-        #endregion
+#endregion
 
         /// <summary>
 		/// Starts the current Asio device.

@@ -61,15 +61,18 @@ namespace ManagedBass
             if (Path.HasExtension(FilePath))
                 return BASS_PluginLoad(FilePath);
 
+            var dir = Path.GetDirectoryName(FilePath);
+            var fileName = Path.GetFileName(FilePath);
+
 #if WINDOWS
-            return BASS_PluginLoad(FilePath + ".dll");
+            return BASS_PluginLoad($"{dir}{fileName}.dll");
 #elif __ANDROID__ || LINUX
-            return BASS_PluginLoad($"lib{FilePath}.so");
+            return BASS_PluginLoad($"{dir}lib{fileName}.so");
 #elif __IOS__ || OSX
-            return BASS_PluginLoad($"lib{FilePath}.dylib");
+            return BASS_PluginLoad($"{dir}lib{fileName}.dylib");
 #else
             // Try for Windows, Linux/Android and OSX Libraries respectively.
-            return new[] { FilePath + ".dll", "lib" + FilePath + ".so", "lib" + FilePath + ".dylib" }
+            return new[] { $"{dir}{fileName}.dll", $"{dir}lib{fileName}.so", $"{dir}lib{fileName}.dylib" }
                            .Select(PluginLoad)
                            .FirstOrDefault(HLib => HLib != 0);
 #endif
@@ -89,6 +92,7 @@ namespace ManagedBass
         [DllImport(DllName, EntryPoint = "BASS_PluginFree")]
         public static extern bool PluginFree(int Handle);
 
+#if !__IOS__
         /// <summary>
         /// Loads all BASS add-ons (bass*.dll or libbass*.so or libbass*.dylib) contained in the specified directory.
         /// </summary>
@@ -107,7 +111,7 @@ namespace ManagedBass
             Wildcards = new[] { "bass*.dll" };
 #elif __ANDROID__ || LINUX
             Wildcards = new[] { "libbass*.so" };
-#elif __IOS__ || OSX
+#elif OSX
             Wildcards = new[] { "libbass*.dylib" };
 #else
             Wildcards = new[] { "bass*.dll", "libbass*.so", "libbass*.dylib" };
@@ -129,5 +133,6 @@ namespace ManagedBass
 
             return list;
         }
+#endif
     }
 }

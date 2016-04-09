@@ -26,7 +26,7 @@ namespace ManagedBass
     /// On Windows, DisplayPort devices will have <see cref="DeviceType.HDMI"/> rather than <see cref="DeviceType.DisplayPort"/>.
     /// </para>
     /// <para>
-    /// Depending on the <see cref="Bass.UnicodeDeviceInformation" /> config setting, <see cref="DeviceInfo.Name"/> and <see cref="DeviceInfo.Driver"/> can be in ANSI or UTF-8 form on Windows.
+    /// Depending on the Bass.UnicodeDeviceInformation config setting, <see cref="Name"/> and <see cref="Driver"/> can be in ANSI or UTF-8 form on Windows.
     /// They are always in UTF-16 form on Windows CE, and UTF-8 on other platforms.
     /// </para>
     /// </remarks>

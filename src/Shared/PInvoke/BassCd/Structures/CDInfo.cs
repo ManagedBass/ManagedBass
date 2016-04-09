@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS || LINUX
+using System;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass.Cd
@@ -70,3 +71,4 @@ namespace ManagedBass.Cd
         public CDReadWriteFlags ReadWriteFlags => rwflags;
     }
 }
+#endif

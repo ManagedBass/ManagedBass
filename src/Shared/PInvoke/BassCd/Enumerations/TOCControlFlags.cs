@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS || LINUX
+using System;
 
 namespace ManagedBass.Cd
 {
@@ -29,3 +30,4 @@ namespace ManagedBass.Cd
         DataTrack = 4
     }
 }
+#endif

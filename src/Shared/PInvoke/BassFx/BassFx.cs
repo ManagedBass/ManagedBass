@@ -8,17 +8,22 @@ namespace ManagedBass.Fx
     /// </summary>
     public static class BassFx
     {
+#if __IOS__
+        const string DllName = "__internal";
+#else
         const string DllName = "bass_fx";
+#endif
+
+#if !__IOS__
         static IntPtr hLib;
 
-#if WINDOWS
         /// <summary>
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
 
-        public static void Unload() => Extensions.Unload(hLib);
+        public static void Unload() => DynamicLibrary.Unload(hLib);
 #endif
 
         #region Version

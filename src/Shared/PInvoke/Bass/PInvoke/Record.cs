@@ -341,7 +341,7 @@ namespace ManagedBass
         /// <remarks>
         /// <para><b>Platform-specific</b></para>
         /// <para>
-        /// The returned string is in ANSI or UTF-8 form on Windows, depending on the <see cref="UnicodeDeviceInformation"/> setting.
+        /// The returned string is in ANSI or UTF-8 form on Windows, depending on the UnicodeDeviceInformation setting.
         /// It is in UTF-16 form ("WCHAR" rather than "char") on Windows CE, and in UTF-8 form on other platforms.
         /// </para>
         /// <para>On OSX, there is no master input (-1).</para>

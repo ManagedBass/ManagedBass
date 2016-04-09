@@ -1,5 +1,4 @@
-﻿using ManagedBass.Cd;
-using ManagedBass.Midi;
+﻿using ManagedBass.Midi;
 using System;
 
 namespace ManagedBass
@@ -132,7 +131,7 @@ namespace ManagedBass
         CDError = 1000,
 
         /// <summary>
-        /// CD add-on: Sync when the read speed is automatically changed due to the <see cref="BassCd.AutoSpeedReduction"/> setting.
+        /// CD add-on: Sync when the read speed is automatically changed due to the BassCd.AutoSpeedReduction setting.
         /// param : not used
         /// data : the new read speed.
         /// </summary>

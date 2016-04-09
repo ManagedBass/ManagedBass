@@ -478,6 +478,7 @@ namespace ManagedBass
             set { Configure(Configuration.NetVerificationBytes, value); }
         }
 
+#if LINUX || ANDROID
         /// <summary>
         /// Linux, Android and CE only: The output device Buffer Length in milliseconds.
         /// </summary>
@@ -501,6 +502,7 @@ namespace ManagedBass
             get { return GetConfig(Configuration.DeviceBufferLength); }
             set { Configure(Configuration.DeviceBufferLength, value); }
         }
+#endif
         
         /// <summary>
         /// Suppress silencing for corrupted MP3 frames. (default is false).

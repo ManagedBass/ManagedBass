@@ -8,17 +8,23 @@ namespace ManagedBass.Enc
     /// </summary>
     public static class BassEnc
     {
+#if __IOS__
+        const string DllName = "__internal";
+#else
         const string DllName = "bassenc";
-        static IntPtr _castProxy, hLib;
+#endif
+        static IntPtr _castProxy;
 
-#if WINDOWS
+#if !__IOS__
+        static IntPtr hLib;
+        
         /// <summary>
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
 
-        public static void Unload() => Extensions.Unload(hLib);
+        public static void Unload() => DynamicLibrary.Unload(hLib);
 #endif
 
         #region Version

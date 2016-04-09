@@ -1,4 +1,5 @@
-﻿namespace ManagedBass.Cd
+﻿#if WINDOWS || LINUX
+namespace ManagedBass.Cd
 {
     /// <summary>
     /// The Type of data received, used with <see cref="CDDataProcedure" />.
@@ -16,3 +17,4 @@
         C2
     }
 }
+#endif

@@ -11,22 +11,29 @@ namespace ManagedBass.Midi
     public static class BassMidi
     {
         const int BASS_MIDI_FONT_EX = 0x1000000;
+#if __IOS__
+        const string DllName = "__internal";
+#else
         const string DllName = "bassmidi";
-        static IntPtr hLib;
-
+#endif
+        
         public const int ChorusChannel = -1,
                          ReverbChannel = -2,
                          UserFXChannel = -3;
 
-#if WINDOWS
+#if !__IOS__
+        static IntPtr hLib;
+        
         /// <summary>
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
 
-        public static void Unload() => Extensions.Unload(hLib);
+        public static void Unload() => DynamicLibrary.Unload(hLib);
 #endif
+
+        public static readonly Plugin Plugin = new Plugin(DllName);
 
         #region Create Stream
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreate")]
@@ -265,6 +272,7 @@ namespace ManagedBass.Midi
             set { Bass.Configure(Configuration.MidiVoices, value); }
         }
 
+#if LINUX
         /// <summary>
         /// The number of MIDI Input ports to make available
         /// ports (int): Number of Input ports... 0 (min) - 10 (max).
@@ -280,6 +288,7 @@ namespace ManagedBass.Midi
             get { return Bass.GetConfig(Configuration.MidiInputPorts); }
             set { Bass.Configure(Configuration.MidiInputPorts, value); }
         }
+#endif
 
         /// <summary>
         /// Default soundfont usage
@@ -426,7 +435,7 @@ namespace ManagedBass.Midi
         {
             return BASS_MIDI_FontUnpack(handle, outfile, flags | BassFlags.Unicode);
         }
-        #endregion
+#endregion
 
         #region In
 #if !__ANDROID__
@@ -515,6 +524,6 @@ namespace ManagedBass.Midi
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InStop")]
         public static extern bool InStop(int Device);
 #endif
-        #endregion
+#endregion
     }
 }

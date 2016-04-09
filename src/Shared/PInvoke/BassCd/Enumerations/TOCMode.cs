@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS || LINUX
+using System;
 
 namespace ManagedBass.Cd
 {
@@ -27,3 +28,4 @@ namespace ManagedBass.Cd
         Index = 512
     }
 }
+#endif

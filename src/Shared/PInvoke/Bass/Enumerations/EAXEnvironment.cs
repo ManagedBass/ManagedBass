@@ -1,4 +1,5 @@
-﻿namespace ManagedBass
+﻿#if WINDOWS
+namespace ManagedBass
 {
     /// <summary>
     /// EAX environment constants to be used with <see cref="Bass.SetEAXParameters" />
@@ -146,3 +147,4 @@
         Count = 26
     }
 }
+#endif

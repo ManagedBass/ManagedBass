@@ -20,9 +20,9 @@ namespace ManagedBass.Winamp
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
 
-        public static void Unload() => Extensions.Unload(hLib);
+        public static void Unload() => DynamicLibrary.Unload(hLib);
 
         /// <summary>
         /// Winamp input timeout (in milliseconds) to wait until timing out, because the plugin is not using the output system.

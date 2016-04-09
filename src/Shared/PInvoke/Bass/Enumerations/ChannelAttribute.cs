@@ -68,7 +68,7 @@ namespace ManagedBass
         /// <para><b>Platform-specific</b></para>
         /// <para>
         /// On Windows, this attribute has no effect when speaker assignment is used,
-        /// except on Windows Vista and newer with the <see cref="Bass.VistaSpeakerAssignment"/> config option enabled.
+        /// except on Windows Vista and newer with the Bass.VistaSpeakerAssignment config option enabled.
         /// Balance control could be implemented via a <see cref="DSPProcedure"/> instead
         /// </para>
         /// </summary>

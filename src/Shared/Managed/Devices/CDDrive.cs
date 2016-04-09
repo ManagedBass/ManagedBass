@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS || LINUX
+using System;
 using System.Collections.Generic;
 
 namespace ManagedBass.Cd
@@ -77,3 +78,4 @@ namespace ManagedBass.Cd
         public void Dispose() => BassCd.Release(DriveIndex);
     }
 }
+#endif

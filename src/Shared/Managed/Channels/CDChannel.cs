@@ -1,4 +1,5 @@
-﻿namespace ManagedBass.Cd
+﻿#if WINDOWS || LINUX
+namespace ManagedBass.Cd
 {
     /// <summary>
     /// Stream audio from a CD file or track
@@ -19,3 +20,4 @@
         }
     }
 }
+#endif

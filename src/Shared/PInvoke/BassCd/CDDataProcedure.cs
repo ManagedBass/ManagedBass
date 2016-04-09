@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS || LINUX
+using System;
 
 namespace ManagedBass.Cd
 {
@@ -26,3 +27,4 @@ namespace ManagedBass.Cd
     /// </remarks>
     public delegate void CDDataProcedure(int Handle, int Position, CDDataType Type, IntPtr Buffer, int Length, IntPtr User);
 }
+#endif

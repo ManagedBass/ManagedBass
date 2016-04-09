@@ -36,7 +36,7 @@ namespace ManagedBass
         /// <remarks>
         /// <para>This function must be successfully called before using any sample, stream or MOD music functions. The recording functions may be used without having called this function.</para>
         /// <para>Playback is not possible with the "no sound" device, but it does allow the use of "decoding channels", eg. to decode files.</para>
-        /// <para>When specifying a class identifier (<paramref name="ClsID"/>), after successful initialization, you can use <see cref="GetDSoundObject(DSInterface)" /> to retrieve the DirectSound object, and through that access any special interfaces that the object may provide.</para>
+        /// <para>When specifying a class identifier (<paramref name="ClsID"/>), after successful initialization, you can use GetDSoundObject(DSInterface) to retrieve the DirectSound object, and through that access any special interfaces that the object may provide.</para>
         /// <para>
         /// Simultaneously using multiple devices is supported in the BASS API via a context switching system - instead of there being an extra "device" parameter in the function calls, the device to be used is set prior to calling the functions. <see cref="CurrentDevice" /> is used to switch the current device.
         /// When successful, <see cref="Init"/> automatically sets the current thread's device to the one that was just initialized.
@@ -48,7 +48,7 @@ namespace ManagedBass
         /// <para><b>Platform-specific</b></para>
         /// <para>
         /// On Linux, a 'Default' device is hardcoded to device number 1, which uses the default output set in the ALSA config; that could map directly to one of the other devices or it could use ALSA plugins.
-        /// If the <see cref="IncludeDefaultDevice" /> config option has been enbled, a "Default" device is also available on Windows, who's output will follow default device changes on Windows 7.
+        /// If the IncludeDefaultDevice config option has been enbled, a "Default" device is also available on Windows, who's output will follow default device changes on Windows 7.
         /// In both cases, the "Default" device will also be the default device (device = -1).
         /// </para>
         /// <para>
@@ -66,9 +66,9 @@ namespace ManagedBass
         /// The latency is also available without it on iOS, but not immediately following this function call unless the flag is used.
         /// </para>
         /// <para>
-        /// The <see cref="DeviceInitFlags.DMix"/> flag is only available on Linux, and allows multiple applications to share the device (if they all use 'dmix').
+        /// The DeviceInitFlags.DMix flag is only available on Linux, and allows multiple applications to share the device (if they all use 'dmix').
         /// It may also be possible for multiple applications to use exclusive access if the device is capable of hardware mixing.
-        /// If exclusive access initialization fails, the <see cref="DeviceInitFlags.DMix"/> flag will automatically be tried;
+        /// If exclusive access initialization fails, the DeviceInitFlags.DMix flag will automatically be tried;
         /// if that happens, it can be detected via <see cref="GetInfo" /> and the <see cref="BassInfo.InitFlags"/>.
         /// </para>
         /// <para>On Linux and Windows CE, the length of the device's buffer can be set via the <see cref="PlaybackBufferLength" /> config option.</para>
@@ -76,7 +76,6 @@ namespace ManagedBass
         /// <seealso cref="Free()"/>
         /// <seealso cref="CPUUsage"/>
         /// <seealso cref="GetDeviceInfo(int, out DeviceInfo,bool)"/>
-        /// <seealso cref="GetDSoundObject(int)"/>
         /// <seealso cref="GetInfo(out BassInfo)"/>
         /// <seealso cref="MusicLoad(string, long, int, BassFlags, int)"/>
         /// <seealso cref="CreateSample"/>
@@ -243,7 +242,7 @@ namespace ManagedBass
         /// The device setting is local to the current thread, so calling functions with different devices simultaneously in multiple threads is not a problem.
         /// </para>
         /// <para>The functions that use the device selection are the following: 
-		/// <see cref="Free()" />, <see cref="GetDSoundObject(int)" />, <see cref="GetInfo" />, <see cref="Start" />, <see cref="Stop" />, <see cref="Pause" />, <see cref="Volume" />, <see cref="Set3DFactors" />, <see cref="Get3DFactors" />, <see cref="Set3DPosition" />, <see cref="Get3DPosition" />, <see cref="SetEAXParameters" />, <see cref="GetEAXParameters" />.
+		/// <see cref="Free()" />, GetDSoundObject(int), <see cref="GetInfo" />, <see cref="Start" />, <see cref="Stop" />, <see cref="Pause" />, <see cref="Volume" />, <see cref="Set3DFactors" />, <see cref="Get3DFactors" />, <see cref="Set3DPosition" />, <see cref="Get3DPosition" />, SetEAXParameters, GetEAXParameters.
 		/// It also determines which device is used by a new sample/stream/music: <see cref="MusicLoad(string,long,int,BassFlags,int)" />, <see cref="SampleLoad(string,long,int,int,BassFlags)" />, <see cref="CreateStream(string,long,long,BassFlags)" />, etc...
         /// </para>
 		/// <para>
@@ -275,7 +274,7 @@ namespace ManagedBass
 		/// <param name="Info">A <see cref="DeviceInfo" /> object to retrieve the information into.</param>
         /// <param name="Airplay">Set to true on OSX to enumerate Airplay receivers instead of soundcards. 
 		/// A shared buffer is used for the Airplay receiver name information, which gets overwritten each time Airplay receiver information is requested, so it should be copied if needed. 
-		/// <see cref="EnableAirplayReceivers"/> can be used to change which of the receiver(s) are used.
+		/// EnableAirplayReceivers" can be used to change which of the receiver(s) are used.
         /// </param>
 		/// <returns>
         /// If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
@@ -287,7 +286,7 @@ namespace ManagedBass
         /// <para><b>Platform-specific</b></para>
 		/// <para>
         /// On Linux, a "Default" device is hardcoded to device number 1, which uses the default output set in the ALSA config, and the real devices start at number 2.
-		/// That is also the case on Windows when the <see cref="IncludeDefaultDevice"/> option is enabled.
+		/// That is also the case on Windows when the IncludeDefaultDevice option is enabled.
         /// </para>
 		/// </remarks>
         /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
@@ -302,7 +301,7 @@ namespace ManagedBass
 		/// <param name="Device">The device to get the information of... 0 = first.</param>
 		/// <param name="Airplay">Set to true on OSX to enumerate Airplay receivers instead of soundcards. 
 		/// A shared buffer is used for the Airplay receiver name information, which gets overwritten each time Airplay receiver information is requested, so it should be copied if needed. 
-		/// <see cref="EnableAirplayReceivers"/> can be used to change which of the receiver(s) are used.
+		/// EnableAirplayReceivers can be used to change which of the receiver(s) are used.
         /// </param>
         /// <returns>An instance of the <see cref="DeviceInfo" /> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
 		/// <remarks>
@@ -311,7 +310,7 @@ namespace ManagedBass
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
         /// On Linux, a "Default" device is hardcoded to device number 1, which uses the default output set in the ALSA config, and the real devices start at number 2.
-        /// That is also the case on Windows when the <see cref="IncludeDefaultDevice"/> option is enabled.
+        /// That is also the case on Windows when the IncludeDefaultDevice option is enabled.
         /// </para>
 		/// </remarks>
         /// <exception cref="Errors.Device">The device number specified is invalid.</exception>

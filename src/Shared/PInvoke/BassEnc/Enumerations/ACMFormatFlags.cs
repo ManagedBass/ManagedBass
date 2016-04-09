@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS
+using System;
 
 namespace ManagedBass.Enc
 {
@@ -39,3 +40,4 @@ namespace ManagedBass.Enc
         Suggest = 8
     }
 }
+#endif

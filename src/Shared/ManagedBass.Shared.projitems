@@ -244,6 +244,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Managed\Writers\WmaFileWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcedureDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Resolution.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WindowsNative.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicLibrary.cs" />
   </ItemGroup>
 </Project>

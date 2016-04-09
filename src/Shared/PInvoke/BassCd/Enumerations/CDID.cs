@@ -1,3 +1,4 @@
+#if WINDOWS || LINUX
 namespace ManagedBass.Cd
 {
 	/// <summary>
@@ -56,3 +57,4 @@ namespace ManagedBass.Cd
 		ReadCache = 767
 	}
 }
+#endif

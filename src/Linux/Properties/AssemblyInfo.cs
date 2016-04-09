@@ -6,4 +6,4 @@
 [assembly: AssemblyProduct ("ManagedBass")]
 [assembly: AssemblyCopyright ("(c) 2016 Mathew Sachin")]
 
-[assembly: AssemblyVersion ("0.20.0")]
+[assembly: AssemblyVersion ("0.21.0")]

@@ -1,4 +1,5 @@
-﻿namespace ManagedBass
+﻿#if WINDOWS
+namespace ManagedBass
 {
     /// <summary>
     /// Direct Sound interface flags for use with <see cref="Bass.GetDSoundObject(DSInterface)" />.
@@ -16,3 +17,4 @@
         IDirectSound3DListener = 2
     }
 }
+#endif

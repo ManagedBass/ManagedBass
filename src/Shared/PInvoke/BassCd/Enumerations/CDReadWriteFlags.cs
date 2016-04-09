@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS || LINUX
+using System;
 
 namespace ManagedBass.Cd
 {
@@ -94,3 +95,4 @@ namespace ManagedBass.Cd
         UPC = 1073741824
     }
 }
+#endif

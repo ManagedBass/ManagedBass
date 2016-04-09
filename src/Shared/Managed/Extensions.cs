@@ -53,21 +53,7 @@ namespace ManagedBass
                     return BassFlags.Default;
             }
         }
-
-#if WINDOWS
-        internal static IntPtr Load(string DllName, string Folder)
-        {
-            if (IsWindows) return WindowsNative.LoadLibrary(!string.IsNullOrWhiteSpace(Folder) ? Path.Combine(Folder, DllName + ".dll") : DllName);
-            throw new PlatformNotSupportedException("Only available on Windows");
-        }
-
-        internal static bool Unload(IntPtr HLib)
-        {
-            if (IsWindows) return WindowsNative.FreeLibrary(HLib);
-            throw new PlatformNotSupportedException("Only available on Windows");
-        }
-#endif
-
+        
         /// <summary>
         /// Returns the <param name="N">n'th (max 15)</param> pair of Speaker Assignment Flags
         /// </summary>

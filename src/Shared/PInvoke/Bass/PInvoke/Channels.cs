@@ -726,7 +726,7 @@ namespace ManagedBass
 		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
 		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
 		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
-		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or <see cref="DataFlags.Fixed"/> flag).</para>
+		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or DataFlags.Fixed flag).</para>
 		/// <para>When using the <see cref="DataFlags.Available"/> flag, the number of bytes in the channel's buffer is returned.</para>
 		/// </returns>
 		/// <remarks>
@@ -737,12 +737,12 @@ namespace ManagedBass
         /// </para>
 		/// <para>When requesting data from a decoding channel, data is decoded directly from the channel's source (no playback buffer) and as much data as the channel has available can be decoded at a time.</para>
 		/// <para>When retrieving sample data, 8-bit samples are unsigned (0 to 255), 16-bit samples are signed (-32768 to 32767), 32-bit floating-point samples range from -1 to +1 (not clipped, so can actually be outside this range).
-        /// That is unless the <see cref="DataFlags.Float"/> flag is used, in which case, the sample data will be converted to 32-bit floating-point if it is not already, or if the <see cref="DataFlags.Fixed"/> flag is used, in which case the data will be coverted to 8.24 fixed-point.
+        /// That is unless the <see cref="DataFlags.Float"/> flag is used, in which case, the sample data will be converted to 32-bit floating-point if it is not already, or if the DataFlags.Fixed flag is used, in which case the data will be coverted to 8.24 fixed-point.
         /// </para>
 		/// <para>
         /// Unless complex data is requested via the <see cref="DataFlags.FFTComplex"/> flag, the magnitudes of the first half of an FFT result are returned.
 		/// For example, with a 2048 sample FFT, there will be 1024 floating-point values returned.
-        /// If the <see cref="DataFlags.Fixed"/> flag is used, then the FFT values will be in 8.24 fixed-point form rather than floating-point.
+        /// If the DataFlags.Fixed flag is used, then the FFT values will be in 8.24 fixed-point form rather than floating-point.
         /// Each value, or "bin", ranges from 0 to 1 (can actually go higher if the sample data is floating-point and not clipped).
         /// The 1st bin contains the DC component, the 2nd contains the amplitude at 1/2048 of the channel's sample rate, followed by the amplitude at 2/2048, 3/2048, etc.
 		/// A Hann window is applied to the sample data to reduce leakage, unless the <see cref="DataFlags.FFTNoWindow"/> flag is used.
@@ -757,7 +757,7 @@ namespace ManagedBass
         /// </para>
 		/// <para>This function is most useful if you wish to visualize (eg. spectrum analyze) the sound.</para>
 		/// <para><b>Platform-specific:</b></para>
-		/// <para>The <see cref="DataFlags.Fixed"/> flag is only available on Android and Windows CE.</para>
+		/// <para>The DataFlags.Fixed flag is only available on Android and Windows CE.</para>
 		/// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.Ended">The channel has reached the end.</exception>
@@ -774,7 +774,7 @@ namespace ManagedBass
 		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
 		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
 		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
-		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or <see cref="DataFlags.Fixed"/> flag).</para>
+		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or DataFlags.Fixed flag).</para>
 		/// <para>When using the <see cref="DataFlags.Available"/> flag, the number of bytes in the channel's buffer is returned.</para>
 		/// </returns>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
@@ -788,7 +788,7 @@ namespace ManagedBass
 		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
 		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
 		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
-		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or <see cref="DataFlags.Fixed"/> flag).</para>
+		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or DataFlags.Fixed flag).</para>
 		/// <para>When using the <see cref="DataFlags.Available"/> flag, the number of bytes in the channel's buffer is returned.</para>
 		/// </returns>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
@@ -802,7 +802,7 @@ namespace ManagedBass
 		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
 		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
 		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
-		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or <see cref="DataFlags.Fixed"/> flag).</para>
+		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or DataFlags.Fixed flag).</para>
 		/// <para>When using the <see cref="DataFlags.Available"/> flag, the number of bytes in the channel's buffer is returned.</para>
 		/// </returns>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]
@@ -816,7 +816,7 @@ namespace ManagedBass
 		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
 		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
 		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>
-		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or <see cref="DataFlags.Fixed"/> flag).</para>
+		/// <para>When requesting sample data, the number of bytes written to buffer will be returned (not necessarily the same as the number of bytes read when using the <see cref="DataFlags.Float"/> or DataFlags.Fixed flag).</para>
 		/// <para>When using the <see cref="DataFlags.Available"/> flag, the number of bytes in the channel's buffer is returned.</para>
 		/// </returns>
         [DllImport(DllName, EntryPoint = "BASS_ChannelGetData")]

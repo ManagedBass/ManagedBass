@@ -73,10 +73,12 @@ namespace ManagedBass
         /// </summary>
         FFTComplex = 128,
 
+#if __ANDROID__
         /// <summary>
         /// flag: return 8.24 fixed-point data
         /// </summary>
         Fixed = 0x20000000,
+#endif
 
         /// <summary>
         /// flag: return floating-point sample data

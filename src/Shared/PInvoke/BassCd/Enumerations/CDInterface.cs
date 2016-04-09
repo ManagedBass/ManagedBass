@@ -1,4 +1,5 @@
-﻿namespace ManagedBass.Cd
+﻿#if WINDOWS || LINUX
+namespace ManagedBass.Cd
 {
     /// <summary>
     /// The interface to use to access CD drives (used with <see cref="BassCd.SetInterface" />).
@@ -37,3 +38,4 @@
         Linux
     }
 }
+#endif

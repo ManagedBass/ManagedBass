@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 
 namespace ManagedBass
 {
@@ -66,7 +65,7 @@ namespace ManagedBass
             }
         }
 
-        Plugin(string DllName) { this.DllName = DllName; }
+        internal Plugin(string DllName) { this.DllName = DllName; }
 
         /// <summary>
         /// Load the plugin into memory.
@@ -77,18 +76,16 @@ namespace ManagedBass
             if (_hPlugin != 0)
                 return;
 
-            // Try for Windows, Linux/Android and OSX Libraries respectively.
-            _hPlugin = new[] { DllName + ".dll", "lib" + DllName + ".so", "lib" + DllName + ".dylib" }
-                              .Select(lib => Folder != null ? Path.Combine(Folder, lib) : lib)
-                              .Select(Bass.PluginLoad)
-                              .FirstOrDefault(h => h != 0);
+            _hPlugin = Bass.PluginLoad(Folder != null ? Path.Combine(Folder, DllName) : DllName);
             
             if (_hPlugin == 0)
                 throw new DllNotFoundException(DllName);
 
+#if WINDOWS || LINUX || __ANDROID__
             // Always Support MP4 files in BassAAC.CreateStream()
             if (DllName == BassAAC.DllName)
                 Bass.Configure(Configuration.AacSupportMp4, true);
+#endif
         }
 
         public void Unload()
@@ -98,23 +95,15 @@ namespace ManagedBass
         }
 
         #region Instances
+#if WINDOWS
         /// <summary>
-        /// Wraps BassAAC: bass_aac.dll.
+        /// Wraps BassOFR: bass_ofr.dll
         /// </summary>
         /// <remarks>
-        /// MP4 and AAC both are always supported.
-        /// <para>Supports .aac, .adts, .mp4, .m4a, .m4b</para>
+        /// Supports: .ofr, .ofs
         /// </remarks>
-        public static readonly Plugin BassAAC = new Plugin("bass_aac");
-
-        /// <summary>
-        /// Wraps BassAC3: bassac3.dll
-        /// </summary>
-        /// <remarks>
-        /// Supports: .ac3
-        /// </remarks>
-        public static readonly Plugin BassAC3 = new Plugin("bass_ac3");
-
+        public static readonly Plugin BassOFR = new Plugin("bass_ofr");
+        
         /// <summary>
         /// Wraps BassADX: bassadx.dll
         /// </summary>
@@ -127,7 +116,16 @@ namespace ManagedBass
         /// Wraps BassAIX: bass_aix.dll
         /// </summary>
         public static readonly Plugin BassAIX = new Plugin("bass_aix");
-
+#endif
+        /// <summary>
+        /// Wraps BassAC3: bassac3.dll
+        /// </summary>
+        /// <remarks>
+        /// Supports: .ac3
+        /// </remarks>
+        public static readonly Plugin BassAC3 = new Plugin("bass_ac3");
+        
+#if WINDOWS || LINUX || __ANDROID__
         /// <summary>
         /// Wraps BassALAC: bassalac.dll
         /// </summary>
@@ -135,6 +133,16 @@ namespace ManagedBass
         /// Supports: .m4a, .aac, .mp4, .mov
         /// </remarks>
         public static readonly Plugin BassALAC = new Plugin("bassalac");
+
+        /// <summary>
+        /// Wraps BassAAC: bass_aac.dll.
+        /// </summary>
+        /// <remarks>
+        /// MP4 and AAC both are always supported.
+        /// <para>Supports .aac, .adts, .mp4, .m4a, .m4b</para>
+        /// </remarks>
+        public static readonly Plugin BassAAC = new Plugin("bass_aac");
+#endif
 
         /// <summary>
         /// Wraps BassAPE: bass_ape.dll
@@ -164,15 +172,7 @@ namespace ManagedBass
         /// Supports: .mpc, .mpp, .mp+
         /// </remarks>
         public static readonly Plugin BassMPC = new Plugin("bass_mpc");
-
-        /// <summary>
-        /// Wraps BassOFR: bass_ofr.dll
-        /// </summary>
-        /// <remarks>
-        /// Supports: .ofr, .ofs
-        /// </remarks>
-        public static readonly Plugin BassOFR = new Plugin("bass_ofr");
-
+        
         /// <summary>
         /// Wraps BassOPUS: bassopus.dll
         /// </summary>

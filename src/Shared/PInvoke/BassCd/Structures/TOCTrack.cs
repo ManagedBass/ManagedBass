@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS || LINUX
+using System;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass.Cd
@@ -25,3 +26,4 @@ namespace ManagedBass.Cd
         public TimeSpan Address => new TimeSpan(lba >> 24 & 15, lba >> 16 & 15, lba >> 8 & 15);
     }
 }
+#endif

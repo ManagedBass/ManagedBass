@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS || LINUX
+using System;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass.Cd
@@ -13,17 +14,19 @@ namespace ManagedBass.Cd
     public static class BassCd
     {
         const string DllName = "basscd";
-        static IntPtr _cddbServer, hLib;
+        static IntPtr _cddbServer;
 
-#if WINDOWS
+        static IntPtr hLib;
+
         /// <summary>
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
 
-        public static void Unload() => Extensions.Unload(hLib);
-#endif
+        public static void Unload() => DynamicLibrary.Unload(hLib);
+
+        public static readonly Plugin Plugin = new Plugin(DllName);
 
         /// <summary>
         /// Gets the number of CD Drives available.
@@ -41,7 +44,7 @@ namespace ManagedBass.Cd
             }
         }
 
-        #region Configuration
+#region Configuration
         /// <summary>
         /// Automatically free an existing stream when creating a new one on the same drive? (enabled by Default)
         /// </summary>
@@ -111,7 +114,7 @@ namespace ManagedBass.Cd
                 Bass.Configure(Configuration.CDDBServer, _cddbServer);
             }
         }
-        #endregion
+#endregion
         
 		/// <summary>
 		/// Releases a drive to allow other applications to access it.
@@ -205,7 +208,7 @@ namespace ManagedBass.Cd
             return info;
         }
 
-        #region CreateStream
+#region CreateStream
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreate")]
         public static extern int CreateStream(int Drive, int Track, BassFlags Flags);
 
@@ -242,7 +245,7 @@ namespace ManagedBass.Cd
 
             return h;
         }
-        #endregion
+#endregion
 
         /// <summary>
         /// Retrieves the drive and track number of a CD stream.
@@ -528,3 +531,4 @@ namespace ManagedBass.Cd
         public static extern bool AnalogStop(int Drive);
     }
 }
+#endif

@@ -21,9 +21,11 @@ namespace ManagedBass.Wma
         /// Load from a folder other than the Current Directory.
         /// <param name="Folder">If null (default), Load from Current Directory</param>
         /// </summary>
-        public static void Load(string Folder = null) => hLib = Extensions.Load(DllName, Folder);
+        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
 
-        public static void Unload() => Extensions.Unload(hLib);
+        public static void Unload() => DynamicLibrary.Unload(hLib);
+
+        public static readonly Plugin Plugin = new Plugin(DllName);
 
         [DllImport(DllName, EntryPoint = "BASS_WMA_GetWMObject")]
         public static extern IntPtr GetWMObject(int handle);
