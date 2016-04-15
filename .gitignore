@@ -13,6 +13,8 @@ packages/
 *.dll
 *.so
 *.exe
+*.dylib
+*.a
 
 # User-Specific files
 .vs/

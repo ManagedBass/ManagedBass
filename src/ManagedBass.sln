@@ -5,50 +5,52 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{3479219E-33A6-40A6-A60F-E1E31B450CA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedBass.Android", "Android\ManagedBass.Android.csproj", "{97979609-3441-4196-B0AC-0E839DB44B90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linux", "Linux\Linux.csproj", "{5836FB0C-47B9-4370-B523-6E3B01A63F86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedBass.iOS", "iOS\ManagedBass.iOS.csproj", "{BCD4A7C6-68EE-4382-96D0-F547095E4B67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSX", "OSX\OSX.csproj", "{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedBass.Linux", "Linux\ManagedBass.Linux.csproj", "{5836FB0C-47B9-4370-B523-6E3B01A63F86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows", "Windows\Windows.csproj", "{57C787D9-351E-4C61-9ABB-619F6F6AA03A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedBass.OSX", "OSX\ManagedBass.OSX.csproj", "{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedBass.Windows", "Windows\ManagedBass.Windows.csproj", "{57C787D9-351E-4C61-9ABB-619F6F6AA03A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "iOS\iOS.csproj", "{B07F0848-A4FB-406E-98D6-620CDAE881D9}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Shared\ManagedBass.Shared.projitems*{97979609-3441-4196-b0ac-0e839db44b90}*SharedItemsImports = 4
 		Shared\ManagedBass.Shared.projitems*{3479219e-33a6-40a6-a60f-e1e31b450ca7}*SharedItemsImports = 13
 		Shared\ManagedBass.Shared.projitems*{57c787d9-351e-4c61-9abb-619f6f6aa03a}*SharedItemsImports = 4
 		Shared\ManagedBass.Shared.projitems*{1e6370cd-b475-4fdc-9f6f-8a5ecfc9538c}*SharedItemsImports = 4
-		Shared\ManagedBass.Shared.projitems*{bcd4a7c6-68ee-4382-96d0-f547095e4b67}*SharedItemsImports = 4
 		Shared\ManagedBass.Shared.projitems*{5836fb0c-47b9-4370-b523-6e3b01a63f86}*SharedItemsImports = 4
+		Shared\ManagedBass.Shared.projitems*{b07f0848-a4fb-406e-98d6-620cdae881d9}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		AppStore|Any CPU = AppStore|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{97979609-3441-4196-B0AC-0E839DB44B90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97979609-3441-4196-B0AC-0E839DB44B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97979609-3441-4196-B0AC-0E839DB44B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97979609-3441-4196-B0AC-0E839DB44B90}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BCD4A7C6-68EE-4382-96D0-F547095E4B67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BCD4A7C6-68EE-4382-96D0-F547095E4B67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BCD4A7C6-68EE-4382-96D0-F547095E4B67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BCD4A7C6-68EE-4382-96D0-F547095E4B67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5836FB0C-47B9-4370-B523-6E3B01A63F86}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
+		{5836FB0C-47B9-4370-B523-6E3B01A63F86}.AppStore|Any CPU.Build.0 = Release|Any CPU
 		{5836FB0C-47B9-4370-B523-6E3B01A63F86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5836FB0C-47B9-4370-B523-6E3B01A63F86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5836FB0C-47B9-4370-B523-6E3B01A63F86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5836FB0C-47B9-4370-B523-6E3B01A63F86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
+		{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C}.AppStore|Any CPU.Build.0 = Release|Any CPU
 		{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57C787D9-351E-4C61-9ABB-619F6F6AA03A}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
+		{57C787D9-351E-4C61-9ABB-619F6F6AA03A}.AppStore|Any CPU.Build.0 = Release|Any CPU
 		{57C787D9-351E-4C61-9ABB-619F6F6AA03A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{57C787D9-351E-4C61-9ABB-619F6F6AA03A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57C787D9-351E-4C61-9ABB-619F6F6AA03A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57C787D9-351E-4C61-9ABB-619F6F6AA03A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B07F0848-A4FB-406E-98D6-620CDAE881D9}.AppStore|Any CPU.ActiveCfg = AppStore|Any CPU
+		{B07F0848-A4FB-406E-98D6-620CDAE881D9}.AppStore|Any CPU.Build.0 = AppStore|Any CPU
+		{B07F0848-A4FB-406E-98D6-620CDAE881D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B07F0848-A4FB-406E-98D6-620CDAE881D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B07F0848-A4FB-406E-98D6-620CDAE881D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B07F0848-A4FB-406E-98D6-620CDAE881D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
