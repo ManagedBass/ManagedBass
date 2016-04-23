@@ -1,5 +1,4 @@
-﻿using ManagedBass;
-using ManagedBass.Cd;
+﻿using ManagedBass.Cd;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -10,47 +9,48 @@ using System.Windows.Input;
 
 namespace MBassWPF
 {
-    public partial class CD : UserControl, INotifyPropertyChanged
+    public partial class CD : INotifyPropertyChanged
     {
-        public ObservableCollection<CDInfo> AvailableDrives { get; private set; }
+        public ObservableCollection<CDInfo> AvailableDrives { get; }
 
-        public ObservableCollection<string> CDAFiles { get; private set; }
+        public ObservableCollection<string> CDAFiles { get; }
 
-        CDInfo dev;
+        CDInfo _dev;
         public CDInfo SelectedDrive
         {
-            get { return dev; }
+            get { return _dev; }
             set
             {
-                dev = value;
+                _dev = value;
                 OnPropertyChanged();
 
                 CDAFiles.Clear();
 
-                CDInfo DevInfo;
+                CDInfo devInfo;
 
-                for (CurrentDriveIndex = 0; BassCd.GetInfo(CurrentDriveIndex, out DevInfo); ++CurrentDriveIndex)
-                    if (DevInfo.DriveLetter == SelectedDrive.DriveLetter)
+                for (_currentDriveIndex = 0; BassCd.GetInfo(_currentDriveIndex, out devInfo); ++_currentDriveIndex)
+                    if (devInfo.DriveLetter == SelectedDrive.DriveLetter)
                         break;
 
                 CDAFiles.Clear();
 
-                if (BassCd.IsReady(CurrentDriveIndex))
-                    foreach (var file in Directory.EnumerateFiles(SelectedDrive.DriveLetter + ":\\", "*.cda"))
-                        CDAFiles.Add(file);
+                if (!BassCd.IsReady(_currentDriveIndex))
+                    return;
 
+                foreach (var file in Directory.EnumerateFiles(SelectedDrive.DriveLetter + ":\\", "*.cda"))
+                    CDAFiles.Add(file);
             }
         }
 
-        int CurrentDriveIndex = 0;
+        int _currentDriveIndex;
 
-        string cda;
+        string _cda;
         public string SelectedCDA
         {
-            get { return cda; }
+            get { return _cda; }
             set
             {
-                cda = value;
+                _cda = value;
                 OnPropertyChanged();
             }
         }
@@ -74,25 +74,25 @@ namespace MBassWPF
         {
             AvailableDrives.Clear();
 
-            CDInfo DevInfo;
+            CDInfo devInfo;
 
-            for (int i = 0; BassCd.GetInfo(i, out DevInfo); ++i)
-                AvailableDrives.Add(DevInfo);
+            for (var i = 0; BassCd.GetInfo(i, out devInfo); ++i)
+                AvailableDrives.Add(devInfo);
         }
 
         void OnPropertyChanged([CallerMemberName] string e = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(e));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListBox b = sender as ListBox;
+            var b = sender as ListBox;
 
-            if (b == null) return;
+            if (b == null)
+                return;
 
             try
             {
@@ -102,23 +102,23 @@ namespace MBassWPF
             catch { }
         }
 
-        CDChannel CDC;
+        CDChannel _cdc;
 
         public void Play(object sender = null, RoutedEventArgs e = null)
         {
             if (BPlay.Content.ToString().Contains("Play"))
             {
-                if (BassCd.IsReady(CurrentDriveIndex))
-                {
-                    CDC = new CDChannel(SelectedCDA);
-                    CDC.Start();
+                if (!BassCd.IsReady(_currentDriveIndex))
+                    return;
 
-                    BPlay.Content = "/Resources/Stop.png";
-                }
+                _cdc = new CDChannel(SelectedCDA);
+                _cdc.Start();
+
+                BPlay.Content = "/Resources/Stop.png";
             }
             else
             {
-                CDC.Dispose();
+                _cdc.Dispose();
 
                 BPlay.Content = "/Resources/Play.png";
             }

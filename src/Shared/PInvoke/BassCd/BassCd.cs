@@ -44,7 +44,7 @@ namespace ManagedBass.Cd
             }
         }
 
-#region Configuration
+        #region Configuration
         /// <summary>
         /// Automatically free an existing stream when creating a new one on the same drive? (enabled by Default)
         /// </summary>
@@ -114,7 +114,7 @@ namespace ManagedBass.Cd
                 Bass.Configure(Configuration.CDDBServer, _cddbServer);
             }
         }
-#endregion
+        #endregion
         
 		/// <summary>
 		/// Releases a drive to allow other applications to access it.
@@ -208,7 +208,7 @@ namespace ManagedBass.Cd
             return info;
         }
 
-#region CreateStream
+        #region CreateStream
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreate")]
         public static extern int CreateStream(int Drive, int Track, BassFlags Flags);
 
@@ -245,7 +245,7 @@ namespace ManagedBass.Cd
 
             return h;
         }
-#endregion
+        #endregion
 
         /// <summary>
         /// Retrieves the drive and track number of a CD stream.

@@ -2,7 +2,6 @@
 using Android.Widget;
 using Android.OS;
 using ManagedBass;
-using ManagedBass.Dynamics;
 
 namespace MBassAndroid
 {
@@ -11,45 +10,34 @@ namespace MBassAndroid
     /// </summary>
 	[Activity (Label = "MBass Android", MainLauncher = true)]
 	public class MainActivity : Activity
-	{
-        int pushStream;
-        Recording R;
+    {
+        SineWave _sineWave;
 
-		protected override void OnCreate (Bundle savedInstanceState)
+		protected override void OnCreate (Bundle SavedInstanceState)
 		{
-			base.OnCreate (savedInstanceState);
+			base.OnCreate (SavedInstanceState);
 
 			// Set our view from the "main" layout resource
-			SetContentView (Resource.Layout.Main);
+			SetContentView(Resource.Layout.Main);
 
             var controller = FindViewById<Button>(Resource.Id.controller);
 
             controller.Click += (sender, e) =>
             {
-                    if (R == null)
-                    {
-                        R = new Recording();
+                if (_sineWave == null)
+                {
+                    _sineWave = new SineWave(20, 20, 40, 100);
+                    _sineWave.Start();
 
-                        Bass.Init();
-
-                        pushStream = Bass.CreateStream(44100, 2, BassFlags.Default, StreamProcedureType.Push);
-                        Bass.ChannelPlay(pushStream);
-
-                        R.DataAvailable += (obj) => Bass.StreamPutData(pushStream, obj.Pointer, obj.ByteLength);
-
-                        R.Start();
-
-                        controller.Text = "Stop";
-                    }
-                    else
-                    {
-                        R.Dispose();
-                        R = null;
-
-                        Bass.StreamFree(pushStream);
-
-                        controller.Text = "Start";
-                    }
+                    controller.Text = "Stop";
+                }
+                else
+                {
+                    _sineWave.Dispose();
+                    _sineWave = null;
+                    
+                    controller.Text = "Start SineWave";
+                }
             };
 		}
 	}

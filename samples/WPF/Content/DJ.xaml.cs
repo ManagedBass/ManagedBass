@@ -12,15 +12,15 @@ using System.Windows.Input;
 
 namespace MBassWPF
 {
-    public partial class DJ : UserControl
+    public partial class DJ
     {
-        OpenFileDialog OFD;
+        readonly OpenFileDialog _ofd;
 
         public DJ()
         {
             InitializeComponent();
 
-            OFD = new OpenFileDialog()
+            _ofd = new OpenFileDialog
             {
                 CheckFileExists = true,
                 CheckPathExists = true,
@@ -45,16 +45,20 @@ namespace MBassWPF
 
         void Browse(object sender, RoutedEventArgs e)
         {
-            if (OFD.ShowDialog().Value)
-                foreach (string FileName in OFD.FileNames)
-                    Playlist.Items.Add(new PlaylistLabel(FileName));
+            if (!_ofd.ShowDialog().Value)
+                return;
+
+            foreach (var fileName in _ofd.FileNames)
+                Playlist.Items.Add(new PlaylistLabel(fileName));
         }
 
         void Playlist_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Delete)
-                foreach (var Item in Playlist.SelectedItems.OfType<PlaylistLabel>().ToArray())
-                    Playlist.Items.Remove(Item);
+            if (e.Key != Key.Delete)
+                return;
+
+            foreach (var item in Playlist.SelectedItems.OfType<PlaylistLabel>().ToArray())
+                Playlist.Items.Remove(item);
         }
 
         void CrossfaderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -81,23 +85,23 @@ namespace MBassWPF
         {
             ContextMenu = new ContextMenu();
 
-            var SaveReverseMenuItem = new MenuItem() { Header = "Save Reverse" };
+            var saveReverseMenuItem = new MenuItem { Header = "Save Reverse" };
 
-            SaveReverseMenuItem.Click += (s, e) => SaveReverse(FileName);
+            saveReverseMenuItem.Click += (s, e) => SaveReverse(FileName);
 
-            ContextMenu.Items.Add(SaveReverseMenuItem);
+            ContextMenu.Items.Add(saveReverseMenuItem);
 
             Content = FileName;
 
             PreviewMouseLeftButtonDown += (s, e) => DragDrop.DoDragDrop(this, FileName, DragDropEffects.Copy);
         }
 
-        void SaveReverse(string FilePath)
+        static void SaveReverse(string FilePath)
         {
             try
             {
                 var kind = MainWindow.SelectedWriterKind;
-                string SaveFilePath = Path.Combine(MainWindow.OutFolder, Path.GetFileNameWithoutExtension(FilePath) + ".Reverse." + kind.ToString().ToLower());
+                var saveFilePath = Path.Combine(MainWindow.OutFolder, Path.GetFileNameWithoutExtension(FilePath) + ".Reverse." + kind.ToString().ToLower());
 
                 // Using default Resolution.Short
                 IAudioFileWriter writer;
@@ -105,14 +109,15 @@ namespace MBassWPF
                 switch (kind)
                 {
                     case WriterKind.Mp3:
-                        writer = new ACMEncodedFileWriter(SaveFilePath, WaveFormatTag.Mp3);
+                        writer = new ACMEncodedFileWriter(saveFilePath, WaveFormatTag.Mp3, new PCMFormat());
                         break;
+
                     case WriterKind.Wma:
-                        writer = new WmaFileWriter(SaveFilePath);
+                        writer = new WmaFileWriter(saveFilePath, new PCMFormat());
                         break;
+
                     default:
-                    case WriterKind.Wav:
-                        writer = new WaveFileWriter(SaveFilePath);
+                        writer = new WaveFileWriter(saveFilePath, new PCMFormat());
                         break;
                 }
 
@@ -122,7 +127,7 @@ namespace MBassWPF
 
                 MessageBox.Show("Saved");
             }
-            catch (Exception e) { MessageBox.Show("Failed\n\n" + e.ToString()); }
+            catch (Exception e) { MessageBox.Show("Failed\n\n" + e); }
         }
     }
 }

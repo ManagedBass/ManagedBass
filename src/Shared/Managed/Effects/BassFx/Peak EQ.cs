@@ -13,6 +13,7 @@ namespace ManagedBass.Fx
         public float fQ;
         public float fCenter = 1000f;
         public float fGain;
+
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
         public EffectType FXType => EffectType.PeakEQ;

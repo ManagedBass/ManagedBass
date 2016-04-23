@@ -7,9 +7,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace MBassWPF
@@ -17,21 +17,21 @@ namespace MBassWPF
     /// <summary>
     /// Demonstrates using <see cref="Recording"/> and <see cref="Loopback"/>.
     /// </summary>
-    public partial class Recorder : UserControl, INotifyPropertyChanged
+    public partial class Recorder : INotifyPropertyChanged
     {
-        PitchDSP pitchTracker;
-        public ObservableCollection<IDisposable> AvailableAudioSources { get; private set; }
+        PitchDSP _pitchTracker;
+        public ObservableCollection<IDisposable> AvailableAudioSources { get; }
 
-        IAudioCaptureClient R;
-        IAudioFileWriter Writer;
+        IAudioCaptureClient _r;
+        IAudioFileWriter _writer;
 
-        IDisposable dev;
+        IDisposable _dev;
         public IDisposable SelectedAudioDevice
         {
-            get { return dev; }
+            get { return _dev; }
             set
             {
-                dev = value;
+                _dev = value;
                 OnPropertyChanged();
             }
         }
@@ -53,29 +53,27 @@ namespace MBassWPF
         {
             AvailableAudioSources.Clear();
 
-            foreach (var dev in RecordingDevice.Devices)
-                if (dev.DeviceInfo.IsEnabled)
-                    AvailableAudioSources.Add(dev);
+            foreach (var dev in RecordingDevice.Devices.Where(dev => dev.DeviceInfo.IsEnabled))
+                AvailableAudioSources.Add(dev);
 
-            foreach (var dev in WasapiLoopbackDevice.Devices)
-                if (dev.DeviceInfo.IsEnabled)
-                    AvailableAudioSources.Add(dev);
+            foreach (var dev in WasapiLoopbackDevice.Devices.Where(dev => dev.DeviceInfo.IsEnabled))
+                AvailableAudioSources.Add(dev);
         }
 
         public void Play(object sender = null, RoutedEventArgs e = null)
         {
             if (BPlay.Content.ToString().Contains("Record"))
             {
-                if (R == null)
+                if (_r == null)
                     New();
-                else R.Start();
+                else _r.Start();
 
                 Status.Content = "Recording";
                 BPlay.Content = "/Resources/Pause.png";
             }
             else if (BPlay.Content.ToString().Contains("Pause"))
             {
-                R.Stop();
+                _r.Stop();
 
                 Status.Content = "Paused";
                 BPlay.Content = "/Resources/Record.png";
@@ -84,62 +82,64 @@ namespace MBassWPF
 
         public void Stop(object sender = null, RoutedEventArgs e = null)
         {
-            if (R != null)
-            {
-                Status.Content = "Stopped";
-                BPlay.Content = "/Resources/Record.png";
+            if (_r == null)
+                return;
 
-                pitchTracker.Dispose();
-                R.Dispose();
+            Status.Content = "Stopped";
+            BPlay.Content = "/Resources/Record.png";
 
-                R = null;
+            _pitchTracker.Dispose();
+            _r.Dispose();
 
-                Writer.Dispose();
+            _r = null;
 
-                Writer = null;
-            }
+            _writer.Dispose();
+
+            _writer = null;
         }
 
         void New()
         {
             var writerKind = MainWindow.SelectedWriterKind;
 
-            string filePath = Path.Combine(MainWindow.OutFolder, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + writerKind.ToString().ToLower());
+            var filePath = Path.Combine(MainWindow.OutFolder, DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "." + writerKind.ToString().ToLower());
 
-            bool isLoopback = dev is WasapiLoopbackDevice;
+            var isLoopback = _dev is WasapiLoopbackDevice;
 
-            int chan = 2, freq = 44100;
-
+            var pcmFormat = new PCMFormat(Resolution: Resolution.Float);
+            
             if (isLoopback)
             {
-                var info = (dev as WasapiLoopbackDevice).DeviceInfo;
+                var info = (_dev as WasapiLoopbackDevice).DeviceInfo;
 
-                chan = info.MixChannels;
-                freq = info.MixFrequency;
+                pcmFormat.Channels = info.MixChannels;
+                pcmFormat.Frequency = info.MixFrequency;
             }
-
+            
             switch (writerKind)
             {
                 case WriterKind.Mp3:
-                    Writer = new ACMEncodedFileWriter(filePath, WaveFormatTag.Mp3, chan, freq, Resolution.Float);
+                    _writer = new ACMEncodedFileWriter(filePath, WaveFormatTag.Mp3, pcmFormat);
                     break;
+
                 case WriterKind.Wav:
-                    Writer = new WaveFileWriter(filePath, chan, freq, Resolution.Float);
+                    _writer = new WaveFileWriter(filePath, pcmFormat);
                     break;
+
                 case WriterKind.Wma:
-                    Writer = new WmaFileWriter(filePath, chan, freq, 128000, Resolution.Float);
+                    _writer = new WmaFileWriter(filePath, pcmFormat);
                     break;
             }
 
-            R = isLoopback
-                ? (IAudioCaptureClient)new Loopback(dev as WasapiLoopbackDevice)
-                : new Recording(dev as RecordingDevice, Resolution: Resolution.Float);
+            _r = isLoopback
+                ? (IAudioCaptureClient)new Loopback(_dev as WasapiLoopbackDevice)
+                : new Recording(_dev as RecordingDevice, new PCMFormat(Resolution: Resolution.Float));
 
             if (!isLoopback)
             {
-                pitchTracker = new PitchDSP((R as Recording).Handle);
+                _pitchTracker = new PitchDSP((_r as Recording).Handle);
 
-                pitchTracker.PitchDetected += Record =>
+                _pitchTracker.PitchDetected += Record =>
                 {
                     if (Record != null && Record.Pitch > 1)
                         Dispatcher.Invoke(() =>
@@ -151,27 +151,25 @@ namespace MBassWPF
                 };
             }
 
-            R.DataAvailable += L_DataAvailable;
-            R.Start();
+            _r.DataAvailable += L_DataAvailable;
+            _r.Start();
         }
 
-        float[] Buffer = null;
+        float[] _buffer;
 
         void L_DataAvailable(BufferProvider obj)
         {
-            if (Buffer == null || Buffer.Length < obj.FloatLength)
-                Buffer = new float[obj.FloatLength];
+            if (_buffer == null || _buffer.Length < obj.FloatLength)
+                _buffer = new float[obj.FloatLength];
 
-            obj.Read(Buffer);
+            obj.Read(_buffer);
 
-            if (Writer != null)
-                Writer.Write(Buffer, obj.ByteLength);
+            _writer?.Write(_buffer, obj.ByteLength);
         }
 
         void OnPropertyChanged([CallerMemberName] string e = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(e));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

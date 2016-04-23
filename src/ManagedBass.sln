@@ -7,17 +7,28 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linux", "Linux\Linux.csproj", "{5836FB0C-47B9-4370-B523-6E3B01A63F86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSX", "OSX\OSX.csproj", "{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mac", "Mac\Mac.csproj", "{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows", "Windows\Windows.csproj", "{57C787D9-351E-4C61-9ABB-619F6F6AA03A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "iOS\iOS.csproj", "{B07F0848-A4FB-406E-98D6-620CDAE881D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android", "Android\Android.csproj", "{AD2F2FC0-636D-45B3-A400-94D579CF143F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platforms", "Platforms", "{F73D6DBA-3748-4415-A7DE-A7043A537A83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{726B1E63-E8CE-439B-B202-67B7A6E49068}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSample", "..\samples\WPF\WPFSample.csproj", "{F211E25C-3560-4AF0-BA83-57BCFCA4E791}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidSample", "..\samples\Android\AndroidSample.csproj", "{2838F11C-D335-45D8-8541-308F6E988AF3}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Shared\ManagedBass.Shared.projitems*{3479219e-33a6-40a6-a60f-e1e31b450ca7}*SharedItemsImports = 13
 		Shared\ManagedBass.Shared.projitems*{57c787d9-351e-4c61-9abb-619f6f6aa03a}*SharedItemsImports = 4
 		Shared\ManagedBass.Shared.projitems*{1e6370cd-b475-4fdc-9f6f-8a5ecfc9538c}*SharedItemsImports = 4
+		Shared\ManagedBass.Shared.projitems*{ad2f2fc0-636d-45b3-a400-94d579cf143f}*SharedItemsImports = 4
 		Shared\ManagedBass.Shared.projitems*{5836fb0c-47b9-4370-b523-6e3b01a63f86}*SharedItemsImports = 4
 		Shared\ManagedBass.Shared.projitems*{b07f0848-a4fb-406e-98d6-620cdae881d9}*SharedItemsImports = 4
 	EndGlobalSection
@@ -51,8 +62,38 @@ Global
 		{B07F0848-A4FB-406E-98D6-620CDAE881D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B07F0848-A4FB-406E-98D6-620CDAE881D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B07F0848-A4FB-406E-98D6-620CDAE881D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD2F2FC0-636D-45B3-A400-94D579CF143F}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
+		{AD2F2FC0-636D-45B3-A400-94D579CF143F}.AppStore|Any CPU.Build.0 = Release|Any CPU
+		{AD2F2FC0-636D-45B3-A400-94D579CF143F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD2F2FC0-636D-45B3-A400-94D579CF143F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD2F2FC0-636D-45B3-A400-94D579CF143F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD2F2FC0-636D-45B3-A400-94D579CF143F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F211E25C-3560-4AF0-BA83-57BCFCA4E791}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
+		{F211E25C-3560-4AF0-BA83-57BCFCA4E791}.AppStore|Any CPU.Build.0 = Release|Any CPU
+		{F211E25C-3560-4AF0-BA83-57BCFCA4E791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F211E25C-3560-4AF0-BA83-57BCFCA4E791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F211E25C-3560-4AF0-BA83-57BCFCA4E791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F211E25C-3560-4AF0-BA83-57BCFCA4E791}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2838F11C-D335-45D8-8541-308F6E988AF3}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
+		{2838F11C-D335-45D8-8541-308F6E988AF3}.AppStore|Any CPU.Build.0 = Release|Any CPU
+		{2838F11C-D335-45D8-8541-308F6E988AF3}.AppStore|Any CPU.Deploy.0 = Release|Any CPU
+		{2838F11C-D335-45D8-8541-308F6E988AF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2838F11C-D335-45D8-8541-308F6E988AF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2838F11C-D335-45D8-8541-308F6E988AF3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2838F11C-D335-45D8-8541-308F6E988AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2838F11C-D335-45D8-8541-308F6E988AF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2838F11C-D335-45D8-8541-308F6E988AF3}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5836FB0C-47B9-4370-B523-6E3B01A63F86} = {F73D6DBA-3748-4415-A7DE-A7043A537A83}
+		{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C} = {F73D6DBA-3748-4415-A7DE-A7043A537A83}
+		{57C787D9-351E-4C61-9ABB-619F6F6AA03A} = {F73D6DBA-3748-4415-A7DE-A7043A537A83}
+		{B07F0848-A4FB-406E-98D6-620CDAE881D9} = {F73D6DBA-3748-4415-A7DE-A7043A537A83}
+		{AD2F2FC0-636D-45B3-A400-94D579CF143F} = {F73D6DBA-3748-4415-A7DE-A7043A537A83}
+		{F211E25C-3560-4AF0-BA83-57BCFCA4E791} = {726B1E63-E8CE-439B-B202-67B7A6E49068}
+		{2838F11C-D335-45D8-8541-308F6E988AF3} = {726B1E63-E8CE-439B-B202-67B7A6E49068}
 	EndGlobalSection
 EndGlobal

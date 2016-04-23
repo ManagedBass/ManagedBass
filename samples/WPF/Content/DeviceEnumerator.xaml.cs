@@ -10,17 +10,17 @@ namespace MBassWPF
     /// <summary>
     /// Interaction logic for WasapiDeviceEnumerator.xaml
     /// </summary>
-    public partial class DeviceEnumerator : UserControl, INotifyPropertyChanged
+    public partial class DeviceEnumerator : INotifyPropertyChanged
     {
-        public ObservableCollection<DeviceInfo> AvailableAudioSources { get; private set; }
+        public ObservableCollection<DeviceInfo> AvailableAudioSources { get; }
 
-        DeviceInfo dev;
+        DeviceInfo _dev;
         public DeviceInfo SelectedAudioDevice
         {
-            get { return dev; }
+            get { return _dev; }
             set
             {
-                dev = value;
+                _dev = value;
                 OnPropertyChanged();
             }
         }
@@ -42,30 +42,28 @@ namespace MBassWPF
         {
             AvailableAudioSources.Clear();
 
-            DeviceInfo DevInfo;
+            DeviceInfo devInfo;
 
-            for (int i = 0; Bass.GetDeviceInfo(i, out DevInfo); ++i)
-                AvailableAudioSources.Add(DevInfo);
+            for (var i = 0; Bass.GetDeviceInfo(i, out devInfo); ++i)
+                AvailableAudioSources.Add(devInfo);
 
-            for (int i = 0; Bass.RecordGetDeviceInfo(i, out DevInfo); ++i)
-                AvailableAudioSources.Add(DevInfo);
+            for (var i = 0; Bass.RecordGetDeviceInfo(i, out devInfo); ++i)
+                AvailableAudioSources.Add(devInfo);
         }
 
         void OnPropertyChanged([CallerMemberName] string e = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(e));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListBox b = sender as ListBox;
+            var b = sender as ListBox;
 
-            if (b == null) return;
-
-            if (b.SelectedIndex == -1) b.SelectedIndex = 0;
+            if (b?.SelectedIndex == -1)
+                b.SelectedIndex = 0;
         }
     }
 }

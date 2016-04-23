@@ -13,10 +13,12 @@ namespace ManagedBass
         /// </summary>
         DXChorus = 0,
 
+#if WINDOWS
         /// <summary>
         /// DX8 Compressor
         /// </summary>
         DXCompressor = 1,
+#endif
 
         /// <summary>
         /// DX8 Distortion.
@@ -33,6 +35,7 @@ namespace ManagedBass
         /// </summary>
         DXFlanger = 4,
 
+#if WINDOWS
         /// <summary>
         /// DX8 Gargle.
         /// </summary>
@@ -42,6 +45,7 @@ namespace ManagedBass
         /// DX8 I3DL2 (Interactive 3D Audio Level 2) reverb.
         /// </summary>
         DX_I3DL2Reverb = 6,
+#endif
 
         /// <summary>
         /// DX8 Parametric equalizer.

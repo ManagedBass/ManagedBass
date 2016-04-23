@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace MBassWPF
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         static MainWindow Instance;
 
@@ -20,7 +20,7 @@ namespace MBassWPF
 
         public static string OutFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ManagedBassShowDown\\");
 
-        public static WriterKind SelectedWriterKind { get { return (WriterKind)Instance.WriterKindBox.SelectedItem; } }
+        public static WriterKind SelectedWriterKind => (WriterKind)Instance.WriterKindBox.SelectedItem;
 
         void OpenOutFolder(object sender, RoutedEventArgs e) { Process.Start("explorer.exe", OutFolder); }
     }

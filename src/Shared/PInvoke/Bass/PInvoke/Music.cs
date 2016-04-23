@@ -52,8 +52,8 @@ namespace ManagedBass
         /// </para>
         /// <para><b>Platform-specific</b></para>
 		/// <para>
-        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
-        /// The <see cref="BassFlags.FX"/> flag is also ignored.
+        /// Away from Windows, all mixing is done in software (by BASS), so the BassFlags.SoftwareMixing flag is unnecessary.
+        /// The BassFlags.FX flag is also ignored.
         /// </para>
 		/// <para>
         /// DMO effects are not supported in MOD music on Windows CE, and DirectX 8 (or above) is required on Windows.
@@ -112,8 +112,8 @@ namespace ManagedBass
         /// </para>
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
-        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
-        /// The <see cref="BassFlags.FX"/> flag is also ignored.
+        /// Away from Windows, all mixing is done in software (by BASS), so the BassFlags.SoftwareMixing flag is unnecessary.
+        /// The BassFlags.FX flag is also ignored.
         /// </para>
 		/// <para>
         /// DMO effects are not supported in MOD music on Windows CE, and DirectX 8 (or above) is required on Windows.
@@ -171,8 +171,8 @@ namespace ManagedBass
         /// </para>
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
-        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
-        /// The <see cref="BassFlags.FX"/> flag is also ignored.
+        /// Away from Windows, all mixing is done in software (by BASS), so the BassFlags.SoftwareMixing flag is unnecessary.
+        /// The BassFlags.FX flag is also ignored.
         /// </para>
 		/// <para>
         /// DMO effects are not supported in MOD music on Windows CE, and DirectX 8 (or above) is required on Windows.

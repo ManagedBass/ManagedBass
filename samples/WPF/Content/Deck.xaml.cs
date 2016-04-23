@@ -2,7 +2,6 @@
 using ManagedBass.Fx;
 using System;
 using System.ComponentModel;
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,20 +10,20 @@ using System.Windows.Threading;
 
 namespace MBassWPF
 {
-    public partial class Deck : UserControl, INotifyPropertyChanged
+    public partial class Deck : INotifyPropertyChanged
     {
         #region Fields
-        public MediaPlayerFX Player { get; private set; }
+        public MediaPlayerFX Player { get; }
         public ReverbEffect Reverb { get; private set; }
-        public DistortionEffect Distortion { get; private set; }
-        public EchoEffect Echo { get; private set; }
-        public AutoWahEffect AutoWah { get; private set; }
+        public DistortionEffect Distortion { get; }
+        public EchoEffect Echo { get; }
+        public AutoWahEffect AutoWah { get; }
         public RotateEffect Rotate { get; private set; }
 
         public PeakEQ EQ { get; private set; }
 
-        DispatcherTimer ProgressBarTimer;
-        public PanDSP Pan { get; private set; }
+        readonly DispatcherTimer _progressBarTimer;
+        public PanDSP Pan { get; }
 
         public static readonly DependencyProperty ReadyProperty = DependencyProperty.Register("Ready", typeof(bool), typeof(Deck), new UIPropertyMetadata(false));
         #endregion
@@ -59,7 +58,7 @@ namespace MBassWPF
                 Status.Content = "Stopped";
                 Player.Stop();
                 Position = Player.Reverse ? Player.Duration : 0;
-                ProgressBarTimer.Stop();
+                _progressBarTimer.Stop();
                 BPlay.Content = "/Resources/Play.png";
             };
 
@@ -75,10 +74,10 @@ namespace MBassWPF
 
             DataContext = this;
 
-            ProgressBarTimer = new DispatcherTimer(DispatcherPriority.Send) { Interval = TimeSpan.FromMilliseconds(100) };
-            ProgressBarTimer.Tick += (s, e) =>
+            _progressBarTimer = new DispatcherTimer(DispatcherPriority.Send) { Interval = TimeSpan.FromMilliseconds(100) };
+            _progressBarTimer.Tick += (s, e) =>
             {
-                if (Player.IsPlaying && !IsDragging)
+                if (Player.IsPlaying && !_isDragging)
                     OnPropertyChanged("Position");
             };
         }
@@ -103,9 +102,8 @@ namespace MBassWPF
 
             BPlay.Content = "/Resources/Play.png";
             Status.Content = "Ready";
-
-            if (MusicLoaded != null) 
-                MusicLoaded();
+ 
+            MusicLoaded?.Invoke();
         }
 
         public event Action MusicLoaded;
@@ -121,7 +119,7 @@ namespace MBassWPF
 
                 Status.Content = "Playing";
                 BPlay.Content = "/Resources/Pause.png";
-                ProgressBarTimer.Start();
+                _progressBarTimer.Start();
             }
 
             else if (BPlay.Content.ToString().Contains("Pause"))
@@ -130,37 +128,37 @@ namespace MBassWPF
 
                 Status.Content = "Paused";
                 BPlay.Content = "/Resources/Play.png";
-                ProgressBarTimer.Stop();
+                _progressBarTimer.Stop();
             }
         }
 
         public void Stop(object sender = null, RoutedEventArgs e = null)
         {
-            if (Player.Stop())
-            {
-                Status.Content = "Stopped";
-                BPlay.Content = "/Resources/Play.png";
-                Position = Player.Reverse ? Player.Duration : 0;
-                ProgressBarTimer.Stop();
-            }
+            if (!Player.Stop())
+                return;
+
+            Status.Content = "Stopped";
+            BPlay.Content = "/Resources/Play.png";
+            Position = Player.Reverse ? Player.Duration : 0;
+            _progressBarTimer.Stop();
         }
 
         #region Progress Slider
-        bool IsDragging = false;
+        bool _isDragging;
 
         void Slider_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (IsDragging)
-            {
-                Player.Position = ((Slider)sender).Value;
+            if (!_isDragging)
+                return;
 
-                IsDragging = false;
-            }
+            Player.Position = ((Slider)sender).Value;
+
+            _isDragging = false;
         }
 
-        void Slider_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) { IsDragging = true; }
+        void Slider_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => _isDragging = true;
 
-        void Slider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) { Player.Position = ((Slider)sender).Value; }
+        void Slider_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) => Player.Position = ((Slider)sender).Value;
         #endregion
 
         void UserControl_Drop(object sender, DragEventArgs e)
@@ -170,47 +168,46 @@ namespace MBassWPF
         }
 
         #region Reset
-        void ResetPitch(object sender, MouseButtonEventArgs e) { Player.Pitch = 0; }
+        void ResetPitch(object sender, MouseButtonEventArgs e) => Player.Pitch = 0;
 
-        void ResetFrequency(object sender, MouseButtonEventArgs e) { Player.Frequency = 44100; }
+        void ResetFrequency(object sender, MouseButtonEventArgs e) => Player.Frequency = 44100;
 
-        void ResetBalance(object sender, MouseButtonEventArgs e) { Pan.Pan = 0; }
+        void ResetBalance(object sender, MouseButtonEventArgs e) => Pan.Pan = 0;
 
-        void ResetTempo(object sender, MouseButtonEventArgs e) { Player.Tempo = 0; }
+        void ResetTempo(object sender, MouseButtonEventArgs e) => Player.Tempo = 0;
         #endregion
 
         #region INotifyPropertyChanged
         void OnPropertyChanged([CallerMemberName] string name = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
         #region Effect Presets
-        void SoftDistortion(object sender, RoutedEventArgs e) { Distortion.Soft(); }
+        void SoftDistortion(object sender, RoutedEventArgs e) => Distortion.Soft();
 
-        void MediumDistortion(object sender, RoutedEventArgs e) { Distortion.Medium(); }
+        void MediumDistortion(object sender, RoutedEventArgs e) => Distortion.Medium();
 
-        void HardDistortion(object sender, RoutedEventArgs e) { Distortion.Hard(); }
+        void HardDistortion(object sender, RoutedEventArgs e) => Distortion.Hard();
 
-        void VeryHardDistortion(object sender, RoutedEventArgs e) { Distortion.VeryHard(); }
+        void VeryHardDistortion(object sender, RoutedEventArgs e) => Distortion.VeryHard();
 
-        void ManyEchoes(object sender, RoutedEventArgs e) { Echo.ManyEchoes(); }
+        void ManyEchoes(object sender, RoutedEventArgs e) => Echo.ManyEchoes();
 
-        void ReverseEchoes(object sender, RoutedEventArgs e) { Echo.ReverseEchoes(); }
+        void ReverseEchoes(object sender, RoutedEventArgs e) => Echo.ReverseEchoes();
 
-        void RoboticEchoes(object sender, RoutedEventArgs e) { Echo.RoboticVoice(); }
+        void RoboticEchoes(object sender, RoutedEventArgs e) => Echo.RoboticVoice();
 
-        void SmallEchoes(object sender, RoutedEventArgs e) { Echo.Small(); }
+        void SmallEchoes(object sender, RoutedEventArgs e) => Echo.Small();
 
-        void SlowAutoWah(object sender, RoutedEventArgs e) { AutoWah.Slow(); }
+        void SlowAutoWah(object sender, RoutedEventArgs e) => AutoWah.Slow();
 
-        void FastAutoWah(object sender, RoutedEventArgs e) { AutoWah.Fast(); }
+        void FastAutoWah(object sender, RoutedEventArgs e) => AutoWah.Fast();
 
-        void HiFastAutoWah(object sender, RoutedEventArgs e) { AutoWah.HiFast(); }
+        void HiFastAutoWah(object sender, RoutedEventArgs e) => AutoWah.HiFast();
         #endregion
 
         void EQChange(object sender, RoutedPropertyChangedEventArgs<double> e)

@@ -1,4 +1,4 @@
-﻿#if !__ANDROID__
+﻿#if __IOS__ || WINDOWS || LINUX || __MAC__
 using System;
 
 namespace ManagedBass.Midi

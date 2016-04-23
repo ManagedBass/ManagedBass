@@ -32,7 +32,64 @@
     <DefineConstants>WINDOWS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="BassEnc\ACMEncodedFileWriter.cs" />
+    <Compile Include="BassEnc\ACMEncoder.cs" />
+    <Compile Include="BassEnc\ACMFormatFlags.cs" />
+    <Compile Include="BassEnc\BassEnc.cs" />
+    <Compile Include="BassAsio\AsioDevice.cs" />
+    <Compile Include="Bass.cs" />
+    <Compile Include="BassAsio\Delegates\AsioNotifyProcedure.cs" />
+    <Compile Include="BassAsio\Delegates\AsioProcedure.cs" />
+    <Compile Include="BassAsio\Enumerations\AsioChannelActive.cs" />
+    <Compile Include="BassAsio\Enumerations\AsioChannelResetFlags.cs" />
+    <Compile Include="BassAsio\Enumerations\AsioFuture.cs" />
+    <Compile Include="BassAsio\Enumerations\AsioInitFlags.cs" />
+    <Compile Include="BassAsio\Enumerations\AsioNotify.cs" />
+    <Compile Include="BassAsio\Enumerations\AsioSampleFormat.cs" />
+    <Compile Include="BassAsio\PInvoke\BassAsio.cs" />
+    <Compile Include="BassAsio\PInvoke\Channels.cs" />
+    <Compile Include="BassAsio\Structures\AsioChannelControls.cs" />
+    <Compile Include="BassAsio\Structures\AsioChannelInfo.cs" />
+    <Compile Include="BassAsio\Structures\AsioDeviceInfo.cs" />
+    <Compile Include="BassAsio\Structures\AsioInfo.cs" />
+    <Compile Include="BassAsio\Structures\AsioInputMonitor.cs" />
+    <Compile Include="BassAsio\Structures\AsioIOFormat.cs" />
+    <Compile Include="BassAsio\Structures\AsioTransportParameters.cs" />
+    <Compile Include="BassWasapi\BassWasapi.cs" />
+    <Compile Include="BassWasapi\Delegates\WasapiNotifyProcedure.cs" />
+    <Compile Include="BassWasapi\Delegates\WasapiProcedure.cs" />
+    <Compile Include="BassWasapi\Enumerations\WasapiDeviceInfoFlags.cs" />
+    <Compile Include="BassWasapi\Enumerations\WasapiDeviceType.cs" />
+    <Compile Include="BassWasapi\Enumerations\WasapiFormat.cs" />
+    <Compile Include="BassWasapi\Enumerations\WasapiInitFlags.cs" />
+    <Compile Include="BassWasapi\Enumerations\WasapiNotificationType.cs" />
+    <Compile Include="BassWasapi\Enumerations\WasapiVolumeTypes.cs" />
+    <Compile Include="BassWasapi\Structures\WasapiDeviceInfo.cs" />
+    <Compile Include="BassWasapi\Structures\WasapiInfo.cs" />
+    <Compile Include="BassWinamp\BassWinamp.cs" />
+    <Compile Include="BassWinamp\WinampFindPluginFlags.cs" />
+    <Compile Include="BassWma\BassWma.cs" />
+    <Compile Include="BassWma\Delegates\ClientConnectProcedure.cs" />
+    <Compile Include="BassWma\Delegates\WMEncodeProcedure.cs" />
+    <Compile Include="BassWma\Enumerations\WMAEncodeFlags.cs" />
+    <Compile Include="BassWma\Enumerations\WMEncodeType.cs" />
+    <Compile Include="BassWasapi\Devices\WasapiDevice.cs" />
+    <Compile Include="BassWasapi\Devices\WasapiLoopbackDevice.cs" />
+    <Compile Include="BassWasapi\Devices\WasapiPlaybackDevice.cs" />
+    <Compile Include="BassWasapi\Devices\WasapiRecordingDevice.cs" />
+    <Compile Include="DSInterface.cs" />
+    <Compile Include="EAXEnvironment.cs" />
+    <Compile Include="BassWasapi\Loopback.cs" />
+    <Compile Include="BassWasapi\WasapiToBassFullDuplex.cs" />
+    <Compile Include="BassWma\WmaFileWriter.cs" />
+    <Compile Include="BassEnc\WMAEncoder.cs" />
+    <Compile Include="Effects\DXCompressor.cs" />
+    <Compile Include="Effects\DXGargle.cs" />
+    <Compile Include="Effects\DX_ID3DL2Reverb.cs" />
+    <Compile Include="BassWma\WmaCast.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

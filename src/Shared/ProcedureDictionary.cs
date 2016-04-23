@@ -6,57 +6,57 @@ namespace ManagedBass
 {
     class ReferenceHolder
     {
-        Dictionary<Tuple<int, object>, object> Procedures = new Dictionary<Tuple<int, object>, object>();
-        readonly SyncProcedure freeproc;
+        readonly Dictionary<Tuple<int, object>, object> _procedures = new Dictionary<Tuple<int, object>, object>();
+        readonly SyncProcedure _freeproc;
 
         public ReferenceHolder(bool Free = true)
         {
             if (Free)
-                freeproc = Callback; 
+                _freeproc = Callback; 
         }
 
         public void Add(int Handle, object SpecificHandle, object proc)
         {
             var key = new Tuple<int, object>(Handle, SpecificHandle);
 
-            var contains = Procedures.ContainsKey(key);
+            var contains = _procedures.ContainsKey(key);
 
             if (proc == null)
             {
                 if (contains)
-                    Procedures.Remove(key);
+                    _procedures.Remove(key);
 
                 return;
             }
 
             if (contains)
-                Procedures[key] = proc;
-            else Procedures.Add(key, proc);
+                _procedures[key] = proc;
+            else _procedures.Add(key, proc);
 
-            if (freeproc == null)
+            if (_freeproc == null)
                 return;
 
-            if (Procedures.Any(pair => pair.Key.Item1 == Handle))
+            if (_procedures.Any(pair => pair.Key.Item1 == Handle))
                 return;
             
-            Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, freeproc);
+            Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, _freeproc);
         }
 
         public void Remove<T>(int Handle, object SpecialHandle)
         {
-            foreach (var pair in Procedures.Where(pair => pair.Key.Item1 == Handle
+            foreach (var pair in _procedures.Where(pair => pair.Key.Item1 == Handle
                                                           && pair.Key.Item2 == SpecialHandle
                                                           && pair.Value.GetType() == typeof(T)))
             {
-                Procedures.Remove(pair.Key);
+                _procedures.Remove(pair.Key);
                 break;
             }
         }
 
         void Callback(int Handle, int Channel, int Data, IntPtr User)
         {
-            foreach (var pair in Procedures.Where(pair => pair.Key.Item1 == Handle))
-                Procedures.Remove(pair.Key);
+            foreach (var pair in _procedures.Where(pair => pair.Key.Item1 == Handle))
+                _procedures.Remove(pair.Key);
         }
     }
 }

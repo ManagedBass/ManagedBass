@@ -40,6 +40,7 @@ namespace ManagedBass
         /// </summary>
         Bass3D = 8,
 
+#if WINDOWS
         /// <summary>
         /// Force the stream to not use hardware mixing.
         /// </summary>
@@ -51,7 +52,8 @@ namespace ManagedBass
         /// Requires DirectX 8 or above.
         /// </summary>
         FX = 128,
-
+#endif
+        
         /// <summary>
         /// Use 32-bit floating-point sample data (see Floating-Point Channels for details).
         /// WDM drivers or the <see cref="Decode"/> flag are required to use this flag.
@@ -95,7 +97,7 @@ namespace ManagedBass
         /// <summary>
         /// Decode the sample data, without outputting it.
         /// Use <see cref="Bass.ChannelGetData(int,IntPtr,int)"/> to retrieve decoded sample data.
-        /// <see cref="SoftwareMixing"/>/<see cref="Bass3D"/>/<see cref="FX"/>/<see cref="AutoFree"/> are all ignored when using this flag, as are the Speaker flags.
+        /// Bass.SoftwareMixing/<see cref="Bass3D"/>/BassFlags.FX/<see cref="AutoFree"/> are all ignored when using this flag, as are the Speaker flags.
         /// </summary>
         Decode = 0x200000,
 

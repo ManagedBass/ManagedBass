@@ -22,11 +22,11 @@ namespace ManagedBass
         
 #elif LINUX || __ANDROID__
         const string DllName = "libdl.so";
-#elif OSX
+#elif __MAC__
         const string DllName = "/usr/lib/libSystem.dylib";
 #endif
 
-#if LINUX || __ANDROID__ || OSX
+#if LINUX || __ANDROID__ || __MAC__
         const int RTLD_NOW = 2;
 
         [DllImport(DllName)]

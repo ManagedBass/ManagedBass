@@ -11,17 +11,14 @@ namespace MBassWPF
             if (!(value is double))
                 return null;
 
-            double i = (double)value;
+            var i = (double)value;
 
-            var TS = TimeSpan.FromSeconds(i < 0 ? 0 : i);
+            var ts = TimeSpan.FromSeconds(i < 0 ? 0 : i);
 
-            return TS.Hours == 0 ? string.Format("{0:D2}:{1:D2}", TS.Minutes, TS.Seconds)
-                                 : string.Format("{0:D2}:{1:D2}:{2:D2}", TS.Hours, TS.Minutes, TS.Seconds);
+            return ts.Hours == 0 ? $"{ts.Minutes:D2}:{ts.Seconds:D2}"
+                                 : $"{ts.Hours:D2}:{ts.Minutes:D2}:{ts.Seconds:D2}";
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return null;
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => null;
     }
 }

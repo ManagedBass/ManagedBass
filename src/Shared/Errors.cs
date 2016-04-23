@@ -61,6 +61,11 @@
         Start = 9,
 
         /// <summary>
+        /// SSL/HTTPS support isn't available.
+        /// </summary>
+        SLL = 10,
+
+        /// <summary>
         /// No CD in drive
         /// </summary>
         NoCD = 12,
@@ -210,6 +215,7 @@
         /// </summary>
         Busy = 46,
 
+#if WINDOWS
         #region BassWma
         /// <summary>
         /// BassWma: The file is protected
@@ -241,6 +247,7 @@
         /// BassWASAPI: WASAPI Not available
         /// </summary>
         Wasapi = 5000,
+#endif
 
         /// <summary>
         /// BassAAC: Non-Streamable due to MP4 atom order ("mdat" before "moov")

@@ -10,9 +10,9 @@ namespace ManagedBass
     {
         int _sample;
 
-        public AudioSample(int Length, int Frequency = 44100, int Channels = 2, int MaxPlaybacks = 1, Resolution Resolution = Resolution.Short)
+        public AudioSample(int Length, PCMFormat Format, int MaxPlaybacks = 1)
         {
-            _sample = CreateSample(Length, Frequency, Channels, MaxPlaybacks, Resolution.ToBassFlag());
+            _sample = CreateSample(Length, Format.Frequency, Format.Channels, MaxPlaybacks, Format.Resolution.ToBassFlag());
         }
 
         public AudioSample(string FilePath, long Offset = 0, int Length = 0, int MaxPlaybacks = 1, Resolution Resolution = Resolution.Short)

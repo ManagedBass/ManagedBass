@@ -12,15 +12,8 @@ namespace ManagedBass
     /// </summary>
     public static class Extensions
     {
-        internal static readonly bool IsWindows;
-
         internal static ReferenceHolder ChannelReferences = new ReferenceHolder();
-
-        static Extensions()
-        {
-            IsWindows = Environment.OSVersion.Platform.Is(PlatformID.Win32NT, PlatformID.Win32Windows);
-        }
-
+        
         /// <summary>
         /// Clips a value between a Minimum and a Maximum.
         /// </summary>

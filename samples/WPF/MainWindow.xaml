@@ -48,7 +48,7 @@
             </TabItem>
 
             <TabItem Header="Recording">
-                <DockPanel Grid.Row="1">
+                <DockPanel>
                     <Label Content="Recording and Loopback"
                                DockPanel.Dock="Top"/>
                     <local:Recorder Padding="5,0"/>

@@ -68,7 +68,7 @@ namespace ManagedBass
             return BASS_PluginLoad($"{dir}{fileName}.dll");
 #elif __ANDROID__ || LINUX
             return BASS_PluginLoad($"{dir}lib{fileName}.so");
-#elif __IOS__ || OSX
+#elif __IOS__ || __MAC__
             return BASS_PluginLoad($"{dir}lib{fileName}.dylib");
 #else
             // Try for Windows, Linux/Android and OSX Libraries respectively.
@@ -92,7 +92,7 @@ namespace ManagedBass
         [DllImport(DllName, EntryPoint = "BASS_PluginFree")]
         public static extern bool PluginFree(int Handle);
 
-#if !__IOS__
+#if __ANDROID__ || WINDOWS || LINUX || __MAC__
         /// <summary>
         /// Loads all BASS add-ons (bass*.dll or libbass*.so or libbass*.dylib) contained in the specified directory.
         /// </summary>
@@ -111,7 +111,7 @@ namespace ManagedBass
             Wildcards = new[] { "bass*.dll" };
 #elif __ANDROID__ || LINUX
             Wildcards = new[] { "libbass*.so" };
-#elif OSX
+#elif __MAC__
             Wildcards = new[] { "libbass*.dylib" };
 #else
             Wildcards = new[] { "bass*.dll", "libbass*.so", "libbass*.dylib" };

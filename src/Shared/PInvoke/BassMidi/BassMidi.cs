@@ -21,7 +21,7 @@ namespace ManagedBass.Midi
                          ReverbChannel = -2,
                          UserFXChannel = -3;
 
-#if !__IOS__
+#if __ANDROID__ || WINDOWS || LINUX || __MAC__
         static IntPtr hLib;
         
         /// <summary>
@@ -389,6 +389,7 @@ namespace ManagedBass.Midi
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontLoad")]
         public static extern bool FontLoad(int handle, int preset, int bank);
 
+#if __IOS__ || WINDOWS || LINUX || __MAC__
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern bool BASS_MIDI_FontPack(int handle, string outfile, string encoder, BassFlags flags);
 
@@ -396,18 +397,19 @@ namespace ManagedBass.Midi
         {
             return BASS_MIDI_FontPack(handle, outfile, encoder, flags | BassFlags.Unicode);
         }
-        
-		/// <summary>
-		/// Sets a soundfont's volume level.
-		/// </summary>
-		/// <param name="Handle">The soundfont to set the volume of.</param>
-		/// <param name="Volume">The volume level... 0=silent, 1.0=normal/default.</param>
-		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
-		/// <remarks>
-		/// By default, some soundfonts may be louder than others, which could be a problem when mixing multiple soundfonts. 
-		/// This function can be used to compensate for any differences, by raising the level of the quieter soundfonts or lowering the louder ones.
-		/// <para>Changes take immediate effect in any MIDI streams that are using the soundfont.</para>
-		/// </remarks>
+#endif
+
+        /// <summary>
+        /// Sets a soundfont's volume level.
+        /// </summary>
+        /// <param name="Handle">The soundfont to set the volume of.</param>
+        /// <param name="Volume">The volume level... 0=silent, 1.0=normal/default.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// By default, some soundfonts may be louder than others, which could be a problem when mixing multiple soundfonts. 
+        /// This function can be used to compensate for any differences, by raising the level of the quieter soundfonts or lowering the louder ones.
+        /// <para>Changes take immediate effect in any MIDI streams that are using the soundfont.</para>
+        /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontSetVolume")]
         public static extern bool FontSetVolume(int Handle, float Volume);
@@ -435,10 +437,10 @@ namespace ManagedBass.Midi
         {
             return BASS_MIDI_FontUnpack(handle, outfile, flags | BassFlags.Unicode);
         }
-#endregion
+        #endregion
 
         #region In
-#if !__ANDROID__
+#if __IOS__ || WINDOWS || LINUX || __MAC__
         /// <summary>
         /// Frees a MIDI input device.
         /// </summary>

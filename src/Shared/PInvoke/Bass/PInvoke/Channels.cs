@@ -719,10 +719,7 @@ namespace ManagedBass
 		/// Retrieves the immediate sample data (or an FFT representation of it) of a sample channel, stream, MOD music, or recording channel.
 		/// </summary>
 		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
-		/// <param name="Buffer">Location to write the data as an <see cref="IntPtr"/> (can be <see cref="IntPtr.Zero" /> when handle is a recording channel (HRECORD), to discard the requested amount of data from the recording buffer).
-		/// <para>Use <see cref="Marshal.AllocCoTaskMem"/> to allocate a memory buffer, use <see cref="Marshal.Copy(IntPtr, byte[], int, int)"/> to copy the buffer data from unmanaged BASS to your managed code and use <see cref="Marshal.FreeCoTaskMem"/> to free the memory buffer when not needed anymore.</para>
-		/// <para>Or make use of a <see cref="GCHandle"/> to receive data to a pinned managed object.</para>
-		/// </param>
+		/// <param name="Buffer">Location to write the data as an <see cref="IntPtr"/> (can be <see cref="IntPtr.Zero" /> when handle is a recording channel (HRECORD), to discard the requested amount of data from the recording buffer).</param>
 		/// <param name="Length">Number of bytes wanted, and/or the <see cref="DataFlags" /></param>
 		/// <returns>If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
 		/// <para>When requesting FFT data, the number of bytes read from the channel (to perform the FFT) is returned.</para>

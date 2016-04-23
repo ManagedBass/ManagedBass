@@ -45,6 +45,9 @@
         DevNonStop = 50,
         IOSNoCategory = 51,
         NetVerificationBytes = 52,
+
+        // TODO: Implement config
+        DevicePeriod = 53,
         Float = 54,
         AC3DynamicRangeCompression = 65537,
         WmaNetPreBuffer = 65793,

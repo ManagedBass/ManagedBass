@@ -7,9 +7,9 @@ namespace ManagedBass.Mix
     /// </summary>
     public sealed class MixerStream : Channel
     {
-        public MixerStream(int Frequency = 44100, int NoOfChannels = 2, bool IsDecoder = true, Resolution Resolution = Resolution.Short)
+        public MixerStream(PCMFormat Format, bool IsDecoder = true)
         {
-            Handle = BassMix.CreateMixerStream(Frequency, NoOfChannels, FlagGen(IsDecoder, Resolution));
+            Handle = BassMix.CreateMixerStream(Format.Frequency, Format.Channels, FlagGen(IsDecoder, Format.Resolution));
         }
 
         #region Read

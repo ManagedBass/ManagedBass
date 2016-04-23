@@ -7,24 +7,23 @@ namespace ManagedBass
     /// </summary>
     public sealed class Recording : Channel, IAudioCaptureClient
     {
+        public Recording() : this(RecordingDevice.DefaultDevice, new PCMFormat()) { }
+
+        public Recording(RecordingDevice Device) : this(Device, new PCMFormat()) { }
+        
         /// <summary>
         /// Creates a new instance of <see cref="Recording"/>.
         /// </summary>
         /// <param name="Device">The <see cref="RecordingDevice"/> to use.</param>
-        /// <param name="Channels">No of Channels.</param>
-        /// <param name="SampleRate">Sample Rate.</param>
-        /// <param name="Resolution">Bits per Sample.</param>
-        public Recording(RecordingDevice Device = null, int Channels = 2, int SampleRate = 44100, Resolution Resolution = Resolution.Short)
+        /// <param name="Format">Channels, SampleRate, Resolution.</param>
+        public Recording(RecordingDevice Device, PCMFormat Format)
         {
-            if (Device == null)
-                Device = RecordingDevice.DefaultDevice;
-
             Device.Init();
             var deviceIndex = Device.DeviceIndex;
 
             Bass.CurrentRecordingDevice = deviceIndex;
             
-            Handle = Bass.RecordStart(SampleRate, Channels, BassFlags.RecordPause | Resolution.ToBassFlag(), Processing);
+            Handle = Bass.RecordStart(Format.Frequency, Format.Channels, BassFlags.RecordPause | Format.Resolution.ToBassFlag(), Processing);
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace ManagedBass
         const string DllName = "bass";
 #endif
 
-#if !__IOS__
+#if __ANDROID__ || WINDOWS || LINUX || __MAC__
         static IntPtr hLib;
 
         /// <summary>
@@ -107,32 +107,6 @@ namespace ManagedBass
         /// Retrieves the version of BASS that is loaded
         /// </summary>
         public static Version Version => Extensions.GetVersion(BASS_GetVersion());
-        #endregion
-
-        #region GetDSoundObject
-#if WINDOWS
-        /// <summary>
-        /// Retrieves a pointer to a DirectSound object interface. (Available only on Windows) (Not much useful in .Net)
-        /// </summary>
-        /// <param name="obj">The interface to retrieve.</param>
-        /// <returns>
-        /// If successful, then a pointer to the requested object is returned, otherwise <see cref="IntPtr.Zero"/> is returned.
-        /// Use <see cref="LastError"/> to get the error code.
-        /// </returns>
-        [DllImport(DllName, EntryPoint = "BASS_GetDSoundObject")]
-        public static extern IntPtr GetDSoundObject(DSInterface obj);
-
-        /// <summary>
-        /// Retrieves a pointer to a DirectSound object interface. (Available only on Windows) (Not much useful in .Net)
-        /// </summary>
-        /// <param name="Channel">An HCHANNEL, HMUSIC or HSTREAM handle of which IDirectSoundBuffer is to be retrieved.</param>
-        /// <returns>
-        /// If successful, then a pointer to an IDirectSoundBuffer is returned, otherwise <see cref="IntPtr.Zero"/> is returned.
-        /// Use <see cref="LastError"/> to get the error code.
-        /// </returns>
-        [DllImport(DllName, EntryPoint = "BASS_GetDSoundObject")]
-        public static extern IntPtr GetDSoundObject(int Channel);
-#endif
         #endregion
 
         #region Error Code

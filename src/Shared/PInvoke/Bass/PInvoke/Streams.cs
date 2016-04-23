@@ -79,8 +79,8 @@ namespace ManagedBass
         /// </para>
         /// <para><b>Platform-specific</b></para>
         /// <para>
-        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
-        /// The <see cref="BassFlags.FX"/> flag is also ignored.
+        /// Away from Windows, all mixing is done in software (by BASS), so the BassFlags.SoftwareMixing flag is unnecessary.
+        /// The BassFlags.FX flag is also ignored.
         /// </para>
         /// <para>
         /// On Windows and Windows CE, ACM codecs are supported with compressed WAV files.
@@ -153,8 +153,8 @@ namespace ManagedBass
         /// <para>The Memory buffer must be pinned when using this overload.</para>
         /// <para><b>Platform-specific</b></para>
         /// <para>
-        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
-        /// The <see cref="BassFlags.FX"/> flag is also ignored.
+        /// Away from Windows, all mixing is done in software (by BASS), so the BassFlags.SoftwareMixing flag is unnecessary.
+        /// The BassFlags.FX flag is also ignored.
         /// </para>
         /// <para>
         /// On Windows and Windows CE, ACM codecs are supported with compressed WAV files.
@@ -224,8 +224,8 @@ namespace ManagedBass
         /// </para>
         /// <para><b>Platform-specific</b></para>
         /// <para>
-        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
-        /// The <see cref="BassFlags.FX"/> flag is also ignored.
+        /// Away from Windows, all mixing is done in software (by BASS), so the BassFlags.SoftwareMixing flag is unnecessary.
+        /// The BassFlags.FX flag is also ignored.
         /// </para>
         /// <para>
         /// On Windows and Windows CE, ACM codecs are supported with compressed WAV files.
@@ -291,8 +291,8 @@ namespace ManagedBass
         /// <para>In all cases, BASS will automatically stall playback of the stream when insufficient data is available, and resume it when enough data does become available.</para>
         /// <para><b>Platform-specific</b></para>
         /// <para>
-        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
-        /// The <see cref="BassFlags.FX"/> flag is also ignored.
+        /// Away from Windows, all mixing is done in software (by BASS), so the BassFlags.SoftwareMixing flag is unnecessary.
+        /// The BassFlags.FX flag is also ignored.
         /// </para>
         /// <para>
         /// On Windows and Windows CE, ACM codecs are supported with compressed WAV files.
@@ -373,8 +373,8 @@ namespace ManagedBass
         /// </para>
         /// <para><b>Platform-specific</b></para>
         /// <para>
-        /// Away from Windows, all mixing is done in software (by Bass), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
-        /// The <see cref="BassFlags.FX"/> flag is also ignored.
+        /// Away from Windows, all mixing is done in software (by Bass), so the BassFlags.SoftwareMixing flag is unnecessary.
+        /// The BassFlags.FX flag is also ignored.
         /// </para>
         /// <para>
         /// On Windows and Windows CE, ACM codecs are supported with compressed WAV files.
@@ -436,7 +436,7 @@ namespace ManagedBass
         /// ManagedBass automatically holds a reference and frees it when the Channel is freed.
         /// </para>
         /// <para><b>Platform-specific</b></para>
-        /// <para>Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary. The <see cref="BassFlags.FX"/> flag is also ignored.</para>
+        /// <para>Away from Windows, all mixing is done in software (by BASS), so the BassFlags.SoftwareMixing flag is unnecessary. The BassFlags.FX flag is also ignored.</para>
         /// </remarks>
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">Only decoding channels (<see cref="BassFlags.Decode"/>) are allowed when using the "no sound" device. The <see cref="BassFlags.AutoFree"/> flag is also unavailable to decoding channels.</exception>
@@ -473,7 +473,7 @@ namespace ManagedBass
         /// by setting DSP/FX on the stream and feeding the data through <see cref="ChannelGetData(int,IntPtr,int)" />. 
         /// <para>The dummy stream should have the same sample format as the data being fed through it.</para>
         /// <para><b>Platform-specific</b></para>
-        /// <para>Away from Windows, all mixing is done in software (by Bass), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary. The <see cref="BassFlags.FX"/> flag is also ignored.</para>
+        /// <para>Away from Windows, all mixing is done in software (by Bass), so the BassFlags.SoftwareMixing flag is unnecessary. The BassFlags.FX flag is also ignored.</para>
         /// </remarks>
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.NotAvailable">Only decoding channels (<see cref="BassFlags.Decode"/>) are allowed when using the "no sound" device. The <see cref="BassFlags.AutoFree"/> flag is also unavailable to decoding channels.</exception>

@@ -6,7 +6,7 @@ namespace ManagedBass.Enc
     /// <summary>
     /// Wraps BassEnc: bassenc.dll
     /// </summary>
-    public static class BassEnc
+    public static partial class BassEnc
     {
 #if __IOS__
         const string DllName = "__internal";
@@ -15,7 +15,7 @@ namespace ManagedBass.Enc
 #endif
         static IntPtr _castProxy;
 
-#if !__IOS__
+#if __ANDROID__ || WINDOWS || LINUX || __MAC__
         static IntPtr hLib;
         
         /// <summary>
@@ -83,7 +83,7 @@ namespace ManagedBass.Enc
         /// </summary>
         /// <remarks>
         /// If only the "server:port" part is specified, then that proxy server is used without any authorization credentials.
-        /// This setting affects how the following functions connect to servers: <see cref="CastInit"/>, <see cref="CastGetStats"/>, <see cref="CastSetTitle"/>.
+        /// This setting affects how the following functions connect to servers: <see cref="CastInit"/>, <see cref="CastGetStats"/>, <see cref="CastSetTitle(int, string, string)"/>.
         /// When a proxy server is used, it needs to support the HTTP 'CONNECT' method.
         /// The default setting is <see langword="null"/> (do not use a proxy).
         /// Changes take effect from the next internet stream creation call. 
@@ -109,22 +109,6 @@ namespace ManagedBass.Enc
                 Bass.Configure(Configuration.EncodeCastProxy, _castProxy);
             }
         }
-
-        /// <summary>
-        /// ACM codec name to give priority for the formats it supports (e.g. 'l3codecp.acm').
-        /// </summary>
-        public static string ACMLoad
-        {
-            get { return Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.EncodeACMLoad)); }
-            set
-            {
-                var ptr = Marshal.StringToHGlobalAnsi(value);
-
-                Bass.Configure(Configuration.EncodeACMLoad, ptr);
-
-                Marshal.FreeHGlobal(ptr);
-            }
-        }
         #endregion
 
         #region Encoding
@@ -133,24 +117,7 @@ namespace ManagedBass.Enc
 
         [DllImport(DllName, EntryPoint = "BASS_Encode_AddChunk")]
         public static extern bool EncodeAddChunk(int handle, string id, byte[] buffer, int length);
-
-#if WINDOWS
-        [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_Encode_GetACMFormat(int handle, IntPtr form, int formlen, string title, int flags);
-
-        public static int GetACMFormat(int handle,
-                                       IntPtr form = default(IntPtr),
-                                       int formlen = 0,
-                                       string title = null,
-                                       ACMFormatFlags flags = ACMFormatFlags.Default,
-                                       WaveFormatTag encoding = WaveFormatTag.Unknown)
-        {
-            var ACMflags = BitHelper.MakeLong((short)(flags | ACMFormatFlags.Unicode), (short)encoding);
-
-            return BASS_Encode_GetACMFormat(handle, form, formlen, title, ACMflags);
-        }
-#endif
-
+        
         /// <summary>
         /// Retrieves the channel that an encoder is set on.
         /// </summary>
@@ -161,7 +128,7 @@ namespace ManagedBass.Enc
         public static extern int EncodeGetChannel(int Handle);
 
         [DllImport(DllName, EntryPoint = "BASS_Encode_GetCount")]
-        public static extern long EncodeGetCount(int handle, EncodeCount count);
+        public static extern long EncodeGetCount(int Handle, EncodeCount Count);
 
 		/// <summary>
 		/// Checks if an encoder is running on a channel.
@@ -191,7 +158,7 @@ namespace ManagedBass.Enc
         public static extern bool EncodeSetChannel(int Handle, int Channel);
 
         [DllImport(DllName, EntryPoint = "BASS_Encode_SetNotify")]
-        public static extern bool EncodeSetNotify(int handle, EncodeNotifyProcedure proc, IntPtr user);
+        public static extern bool EncodeSetNotify(int Handle, EncodeNotifyProcedure Procedure, IntPtr User = default(IntPtr));
         
 		/// <summary>
 		/// Pauses or resumes encoding on a channel.
@@ -218,20 +185,7 @@ namespace ManagedBass.Enc
             return BASS_Encode_Start(handle, cmdline, flags | EncodeFlags.Unicode, proc, user);
         }
 
-#if WINDOWS
-        [DllImport(DllName, EntryPoint = "BASS_Encode_StartACM")]
-        public static extern int EncodeStartACM(int handle, IntPtr form, EncodeFlags flags, EncodeProcedure proc, IntPtr user);
-
-        [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_Encode_StartACMFile(int handle, IntPtr form, EncodeFlags flags, string filename);
-
-        public static int EncodeStartACM(int handle, IntPtr form, EncodeFlags flags, string filename)
-        {
-            return BASS_Encode_StartACMFile(handle, form, flags | EncodeFlags.Unicode, filename);
-        }
-#endif
-
-#if OSX || __IOS__
+#if __MAC__ || __IOS__
         [DllImport(DllName, EntryPoint = "BASS_Encode_StartCA")]
         public static extern int EncodeStartCA(int handle, int ftype, int atype, EncodeFlags flags, int bitrate, EncodeProcedureEx proc, IntPtr user);
 
@@ -308,7 +262,7 @@ namespace ManagedBass.Enc
 
         #region Casting
         [DllImport(DllName, EntryPoint = "BASS_Encode_CastGetStats")]
-        public static extern string CastGetStats(int handle, int type, string pass);
+        public static extern string CastGetStats(int handle, EncodeStats type, string pass);
 
         [DllImport(DllName, EntryPoint = "BASS_Encode_CastInit")]
         public static extern bool CastInit(int handle,
@@ -328,6 +282,9 @@ namespace ManagedBass.Enc
 
         [DllImport(DllName, EntryPoint = "BASS_Encode_CastSetTitle")]
         public static extern bool CastSetTitle(int handle, string title, string url);
+
+        [DllImport(DllName, EntryPoint = "BASS_Encode_CastSetTitle")]
+        public static extern bool CastSetTitle(int handle, byte[] title, byte[] url);
         #endregion
 
         #region Server

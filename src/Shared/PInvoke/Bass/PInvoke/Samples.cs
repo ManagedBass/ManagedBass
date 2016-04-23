@@ -80,7 +80,7 @@ namespace ManagedBass
         /// <see cref="SampleSetData(int, IntPtr)" /> should be used to set the sample's data.
         /// </para>
         /// <para>
-        /// Unless the <see cref="BassFlags.SoftwareMixing"/> flag is used, the sample will use hardware mixing if hardware resources are available.
+        /// Unless the BassFlags.SoftwareMixing flag is used, the sample will use hardware mixing if hardware resources are available.
         /// Use <see cref="GetInfo(out BassInfo)" /> to see if there are hardware mixing resources available, and which sample formats are supported by the hardware. 
 		/// The <see cref="BassFlags.VAM"/> flag allows a sample to be played by both hardware and software, with the decision made when the sample is played rather than when it's loaded.
         /// A sample's VAM options are set via <see cref="SampleSetInfo" />.
@@ -90,7 +90,7 @@ namespace ManagedBass
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
         /// The <see cref="BassFlags.VAM"/> flag requires DirectX 7 (or above).
-        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
+        /// Away from Windows, all mixing is done in software (by BASS), so the BassFlags.SoftwareMixing flag is unnecessary.
         /// </para>
 		/// </remarks>
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
@@ -165,7 +165,7 @@ namespace ManagedBass
         /// </para>
 		/// <para>
         /// <see cref="SampleInfo.Length"/>, <see cref="SampleInfo.OriginalResolution"/> and <see cref="SampleInfo.Channels"/> can't be modified - any changes are ignored.
-		/// <see cref="BassFlags.Byte"/>, <see cref="BassFlags.Mono"/>, <see cref="BassFlags.Bass3D"/>, <see cref="BassFlags.MuteMax"/>, <see cref="BassFlags.SoftwareMixing"/> and <see cref="BassFlags.VAM"/> also cannot be changed.
+		/// <see cref="BassFlags.Byte"/>, <see cref="BassFlags.Mono"/>, <see cref="BassFlags.Bass3D"/>, <see cref="BassFlags.MuteMax"/>, BassFlags.SoftwareMixing and <see cref="BassFlags.VAM"/> also cannot be changed.
         /// </para>
 		/// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
@@ -233,7 +233,7 @@ namespace ManagedBass
 		/// <remarks>
 		/// <para>Additional format support is available via the plugin system (see <see cref="PluginLoad" />).</para>
 		/// <para>
-        /// Unless the <see cref="BassFlags.SoftwareMixing"/> flag is used, the sample will use hardware mixing if hardware resources are available.
+        /// Unless the BassFlags.SoftwareMixing flag is used, the sample will use hardware mixing if hardware resources are available.
         /// Use <see cref="GetInfo(out BassInfo)" /> to see if there are hardware mixing resources available, and which sample formats are supported by the hardware. 
 		/// The <see cref="BassFlags.VAM"/> flag allows a sample to be played by both hardware and software, with the decision made when the sample is played rather than when it's loaded.
         /// A sample's VAM options are set via <see cref="SampleSetInfo" />.
@@ -243,7 +243,7 @@ namespace ManagedBass
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
         /// The <see cref="BassFlags.VAM"/> flag requires DirectX 7 (or above).
-        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
+        /// Away from Windows, all mixing is done in software (by BASS), so the BassFlags.SoftwareMixing flag is unnecessary.
         /// </para>
 		/// <para>
         /// On Windows and Windows CE, ACM codecs are supported with compressed WAV files.
@@ -278,7 +278,7 @@ namespace ManagedBass
 		/// <remarks>
 		/// <para>Additional format support is available via the plugin system (see <see cref="PluginLoad" />).</para>
 		/// <para>
-        /// Unless the <see cref="BassFlags.SoftwareMixing"/> flag is used, the sample will use hardware mixing if hardware resources are available.
+        /// Unless the BassFlags.SoftwareMixing flag is used, the sample will use hardware mixing if hardware resources are available.
         /// Use <see cref="GetInfo(out BassInfo)" /> to see if there are hardware mixing resources available, and which sample formats are supported by the hardware. 
 		/// The <see cref="BassFlags.VAM"/> flag allows a sample to be played by both hardware and software, with the decision made when the sample is played rather than when it's loaded.
         /// A sample's VAM options are set via <see cref="SampleSetInfo" />.
@@ -289,7 +289,7 @@ namespace ManagedBass
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
         /// The <see cref="BassFlags.VAM"/> flag requires DirectX 7 (or above).
-        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
+        /// Away from Windows, all mixing is done in software (by BASS), so the BassFlags.SoftwareMixing flag is unnecessary.
         /// </para>
 		/// <para>
         /// On Windows and Windows CE, ACM codecs are supported with compressed WAV files.
@@ -324,7 +324,7 @@ namespace ManagedBass
 		/// <remarks>
 		/// <para>Additional format support is available via the plugin system (see <see cref="PluginLoad" />).</para>
 		/// <para>
-        /// Unless the <see cref="BassFlags.SoftwareMixing"/> flag is used, the sample will use hardware mixing if hardware resources are available.
+        /// Unless the BassFlags.SoftwareMixing flag is used, the sample will use hardware mixing if hardware resources are available.
         /// Use <see cref="GetInfo(out BassInfo)" /> to see if there are hardware mixing resources available, and which sample formats are supported by the hardware. 
 		/// The <see cref="BassFlags.VAM"/> flag allows a sample to be played by both hardware and software, with the decision made when the sample is played rather than when it's loaded.
         /// A sample's VAM options are set via <see cref="SampleSetInfo" />.
@@ -335,7 +335,7 @@ namespace ManagedBass
 		/// <para><b>Platform-specific</b></para>
 		/// <para>
         /// The <see cref="BassFlags.VAM"/> flag requires DirectX 7 (or above).
-        /// Away from Windows, all mixing is done in software (by BASS), so the <see cref="BassFlags.SoftwareMixing"/> flag is unnecessary.
+        /// Away from Windows, all mixing is done in software (by BASS), so the BassFlags.SoftwareMixing flag is unnecessary.
         /// </para>
 		/// <para>
         /// On Windows and Windows CE, ACM codecs are supported with compressed WAV files.

@@ -13,6 +13,7 @@ namespace ManagedBass.Fx
         public float fRate;
         public float fGain;
         public float fDelay;
+
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
         public EffectType FXType => EffectType.Damp;
@@ -96,6 +97,20 @@ namespace ManagedBass.Fx
 
                 OnPropertyChanged();
                 Update();
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="FXChannelFlags" /> flag to define on which channels to apply the effect. Default: <see cref="FXChannelFlags.All"/>
+        /// </summary>
+        public FXChannelFlags Channels
+        {
+            get { return Parameters.lChannel; }
+            set
+            {
+                Parameters.lChannel = value;
+
+                OnPropertyChanged();
             }
         }
     }

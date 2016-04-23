@@ -19,7 +19,7 @@ namespace ManagedBass
         /// Initializes an output device.
         /// </summary>
         /// <param name="Device">The device to use... -1 = default device, 0 = no sound, 1 = first real output device.
-        /// <see cref="GetDeviceInfo(int,out DeviceInfo,bool)" /> or <see cref="DeviceCount" /> can be used to get the total number of devices.
+        /// <see cref="GetDeviceInfo(int,out DeviceInfo)" /> or <see cref="DeviceCount" /> can be used to get the total number of devices.
         /// </param>
         /// <param name="Frequency">Output sample rate.</param>
         /// <param name="Flags">Any combination of <see cref="DeviceInitFlags"/>.</param>
@@ -75,7 +75,7 @@ namespace ManagedBass
         /// </remarks>
         /// <seealso cref="Free()"/>
         /// <seealso cref="CPUUsage"/>
-        /// <seealso cref="GetDeviceInfo(int, out DeviceInfo,bool)"/>
+        /// <seealso cref="GetDeviceInfo(int, out DeviceInfo)"/>
         /// <seealso cref="GetInfo(out BassInfo)"/>
         /// <seealso cref="MusicLoad(string, long, int, BassFlags, int)"/>
         /// <seealso cref="CreateSample"/>
@@ -183,7 +183,7 @@ namespace ManagedBass
                 int i;
                 DeviceInfo info;
 
-                for (i = 0; BASS_GetDeviceInfo(i, out info); i++) { }
+                for (i = 0; GetDeviceInfo(i, out info); i++) { }
 
                 return i;
             }
@@ -264,45 +264,32 @@ namespace ManagedBass
         #endregion
 
         #region Get Device Info
-        [DllImport(DllName)]
-        static extern bool BASS_GetDeviceInfo(int Device, out DeviceInfo Info);
-
         /// <summary>
-		/// Retrieves information on an output device.
-		/// </summary>
-		/// <param name="Device">The device to get the information of... 0 = first.</param>
-		/// <param name="Info">A <see cref="DeviceInfo" /> object to retrieve the information into.</param>
-        /// <param name="Airplay">Set to true on OSX to enumerate Airplay receivers instead of soundcards. 
-		/// A shared buffer is used for the Airplay receiver name information, which gets overwritten each time Airplay receiver information is requested, so it should be copied if needed. 
-		/// EnableAirplayReceivers" can be used to change which of the receiver(s) are used.
-        /// </param>
-		/// <returns>
+        /// Retrieves information on an output device.
+        /// </summary>
+        /// <param name="Device">The device to get the information of... 0 = first.</param>
+        /// <param name="Info">A <see cref="DeviceInfo" /> object to retrieve the information into.</param>
+        /// <returns>
         /// If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned.
         /// Use <see cref="LastError" /> to get the error code.
         /// </returns>
-		/// <remarks>
-		/// This function can be used to enumerate the available devices for a setup dialog. 
-		/// Device 0 is always the "no sound" device, so if you should start at device 1 if you only want to list real devices.
+        /// <remarks>
+        /// This function can be used to enumerate the available devices for a setup dialog. 
+        /// Device 0 is always the "no sound" device, so if you should start at device 1 if you only want to list real devices.
         /// <para><b>Platform-specific</b></para>
-		/// <para>
+        /// <para>
         /// On Linux, a "Default" device is hardcoded to device number 1, which uses the default output set in the ALSA config, and the real devices start at number 2.
-		/// That is also the case on Windows when the IncludeDefaultDevice option is enabled.
+        /// That is also the case on Windows when the IncludeDefaultDevice option is enabled.
         /// </para>
-		/// </remarks>
+        /// </remarks>
         /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
-        public static bool GetDeviceInfo(int Device, out DeviceInfo Info, bool Airplay = false)
-        {
-            return BASS_GetDeviceInfo(Airplay ? Device | 0x1000000 : Device, out Info);
-        }
-
+        [DllImport(DllName, EntryPoint = "BASS_GetDeviceInfo")]
+        public static extern bool GetDeviceInfo(int Device, out DeviceInfo Info);
+        
         /// <summary>
 		/// Retrieves information on an output device.
 		/// </summary>
 		/// <param name="Device">The device to get the information of... 0 = first.</param>
-		/// <param name="Airplay">Set to true on OSX to enumerate Airplay receivers instead of soundcards. 
-		/// A shared buffer is used for the Airplay receiver name information, which gets overwritten each time Airplay receiver information is requested, so it should be copied if needed. 
-		/// EnableAirplayReceivers can be used to change which of the receiver(s) are used.
-        /// </param>
         /// <returns>An instance of the <see cref="DeviceInfo" /> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
 		/// <remarks>
 		/// This function can be used to enumerate the available devices for a setup dialog. 
@@ -314,7 +301,7 @@ namespace ManagedBass
         /// </para>
 		/// </remarks>
         /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
-        public static DeviceInfo GetDeviceInfo(int Device, bool Airplay = false)
+        public static DeviceInfo GetDeviceInfo(int Device)
         {
             DeviceInfo info;
             if (!GetDeviceInfo(Device, out info))

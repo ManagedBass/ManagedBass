@@ -14,6 +14,7 @@ namespace ManagedBass.Fx
         public float fRate = 1;
         public float fRange = 4.3f;
         public float fFreq = 50;
+
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
         public EffectType FXType => EffectType.Phaser;
@@ -242,6 +243,20 @@ namespace ManagedBass.Fx
 
                 OnPropertyChanged();
                 Update();
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="FXChannelFlags" /> flag to define on which channels to apply the effect. Default: <see cref="FXChannelFlags.All"/>
+        /// </summary>
+        public FXChannelFlags Channels
+        {
+            get { return Parameters.lChannel; }
+            set
+            {
+                Parameters.lChannel = value;
+
+                OnPropertyChanged();
             }
         }
     }

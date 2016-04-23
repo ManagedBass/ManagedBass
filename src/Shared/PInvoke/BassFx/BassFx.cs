@@ -14,7 +14,7 @@ namespace ManagedBass.Fx
         const string DllName = "bass_fx";
 #endif
 
-#if !__IOS__
+#if __ANDROID__ || WINDOWS || LINUX || __MAC__
         static IntPtr hLib;
 
         /// <summary>

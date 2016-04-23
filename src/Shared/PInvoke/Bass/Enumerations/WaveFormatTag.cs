@@ -474,22 +474,22 @@
         /// <summary>
         /// Windows Media Audio, WAVE_FORMAT_WMAUDIO2, Microsoft Corporation
         /// </summary>
-        WindowsMediaAudio = 0x0161,
+        WMA = 0x0161,
 
         /// <summary>
         /// Windows Media Audio Professional WAVE_FORMAT_WMAUDIO3, Microsoft Corporation
         /// </summary>
-        WindowsMediaAudioProfessional = 0x0162,
+        WMAProfessional = 0x0162,
 
         /// <summary>
         /// Windows Media Audio Lossless, WAVE_FORMAT_WMAUDIO_LOSSLESS
         /// </summary>
-        WindowsMediaAudioLosseless = 0x0163,
+        WMALosseless = 0x0163,
 
         /// <summary>
         /// Windows Media Audio Professional over SPDIF WAVE_FORMAT_WMASPDIF (0x0164)
         /// </summary>
-        WindowsMediaAudioSpdif = 0x0164,
+        WMA_SPDIF = 0x0164,
 
         /// <summary></summary>
         UNISYS_NAP_ADPCM = 0x0170, // Unisys Corp. 

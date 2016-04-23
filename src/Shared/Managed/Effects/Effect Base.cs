@@ -64,21 +64,7 @@ namespace ManagedBass
                     _priority = value;
             }
         }
-
-        /// <summary>
-        /// A <see cref="FXChannelFlags" /> flag to define on which channels to apply the effect. Default: <see cref="FXChannelFlags.All"/>
-        /// </summary>
-        public FXChannelFlags Channels
-        {
-            get { return (FXChannelFlags)typeof(T).GetField("lChannel").GetValue(Parameters); }
-            set 
-            {
-                typeof(T).GetField("lChannel").SetValue(Parameters, value);
-                
-                OnPropertyChanged();
-            }
-        }
-
+        
         /// <summary>
         /// Removes the effect from the Channel and frees allocated memory.
         /// </summary>

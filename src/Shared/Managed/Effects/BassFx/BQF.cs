@@ -14,6 +14,7 @@ namespace ManagedBass.Fx
         public float fBandwidth = 1f;
         public float fQ;
         public float fS;
+
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
         public EffectType FXType => EffectType.BQF;
@@ -120,6 +121,20 @@ namespace ManagedBass.Fx
 
                 OnPropertyChanged();
                 Update();
+            }
+        }
+
+        /// <summary>
+        /// A <see cref="FXChannelFlags" /> flag to define on which channels to apply the effect. Default: <see cref="FXChannelFlags.All"/>
+        /// </summary>
+        public FXChannelFlags Channels
+        {
+            get { return Parameters.lChannel; }
+            set
+            {
+                Parameters.lChannel = value;
+
+                OnPropertyChanged();
             }
         }
     }

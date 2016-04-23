@@ -10,17 +10,17 @@ namespace MBassWPF
     /// <summary>
     /// Interaction logic for WasapiDeviceEnumerator.xaml
     /// </summary>
-    public partial class WasapiDeviceEnumerator : UserControl, INotifyPropertyChanged
+    public partial class WasapiDeviceEnumerator : INotifyPropertyChanged
     {
-        public ObservableCollection<WasapiDeviceInfo> AvailableAudioSources { get; private set; }
+        public ObservableCollection<WasapiDeviceInfo> AvailableAudioSources { get; }
 
-        WasapiDeviceInfo dev;
+        WasapiDeviceInfo _dev;
         public WasapiDeviceInfo SelectedAudioDevice
         {
-            get { return dev; }
+            get { return _dev; }
             set
             {
-                dev = value;
+                _dev = value;
                 OnPropertyChanged();
             }
         }
@@ -42,27 +42,28 @@ namespace MBassWPF
         {
             AvailableAudioSources.Clear();
 
-            WasapiDeviceInfo DevInfo;
+            WasapiDeviceInfo devInfo;
 
-            for (int i = 0; BassWasapi.GetDeviceInfo(i, out DevInfo); ++i)
-                AvailableAudioSources.Add(DevInfo);
+            for (var i = 0; BassWasapi.GetDeviceInfo(i, out devInfo); ++i)
+                AvailableAudioSources.Add(devInfo);
         }
 
         void OnPropertyChanged([CallerMemberName] string e = "")
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(e));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListBox b = sender as ListBox;
+            var b = sender as ListBox;
 
-            if (b == null) return;
+            if (b == null)
+                return;
 
-            if (b.SelectedItem == null) b.SelectedIndex = 0;
+            if (b.SelectedItem == null)
+                b.SelectedIndex = 0;
         }
     }
 }

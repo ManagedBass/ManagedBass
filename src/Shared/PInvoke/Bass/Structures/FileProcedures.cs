@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
-    // TODO: Update doc about ReferenceHolding
     /// <summary>
     /// Table of callback functions used with <see cref="Bass.CreateStream(StreamSystem,BassFlags,FileProcedures,IntPtr)" />.
     /// </summary>

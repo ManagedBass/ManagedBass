@@ -1,15 +1,17 @@
 # ManagedBass
 
-[![Join the chat at https://gitter.im/MathewSachin/ManagedBass](https://img.shields.io/gitter/room/MathewSachin/ManagedBass.svg?style=flat-square)](https://gitter.im/MathewSachin/ManagedBass?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Chat on Gitter](https://img.shields.io/gitter/room/MathewSachin/ManagedBass.svg?style=flat-square)](https://gitter.im/MathewSachin/ManagedBass)
 [![Build Status](https://img.shields.io/appveyor/ci/MathewSachin/ManagedBass/master.svg?style=flat-square)](https://ci.appveyor.com/project/MathewSachin/ManagedBass)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/ManagedBass.svg?style=flat-square)](https://www.nuget.org/Packages/ManagedBass)
 
-(c) 2016 Mathew Sachin. All Rights Reserved.  
+[(c) 2016 Mathew Sachin](LICENSE.md). All Rights Reserved.  
 Free Open-Source Cross-Platform .Net Wrapper for Un4seen Bass and its AddOns.
 
 Bass and its Add-Ons can be downloaded at http://un4seen.com/  
 ManagedBass is targeted for **Any CPU**, but bass Libraries(dll/so/dylib) are separate for x86, x64, ARM, etc.  
 Download the versions you need.
+
+> For latest info: Follow [ManagedBass Blog](https://managedbass.wordpress.com)
 
 Features
 -----------------------------------------
@@ -27,6 +29,6 @@ Features
 * ManagedBass provides completely managed types for your use along with the Native wrapper types.  
   Namespaces are grouped by AddOns or Features.
 
-* Now, available in different flavors for Windows, OSX, Linux, Android and iOS.
+* Now, available in different flavors for Windows, Mac, Linux, Xamarin.Android and Xamarin.iOS.
 
 Bass and other Add-Ons are trademarks of their respective owners: **Un4Seen Bass - (c) Ian Luck**

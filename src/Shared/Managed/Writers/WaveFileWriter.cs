@@ -10,10 +10,10 @@ namespace ManagedBass
     public class WaveFileWriter : IAudioFileWriter
     {
         #region Fields
-        Stream ofstream;
-        BinaryWriter Writer;
-        readonly long dataSizePos, factSampleCountPos;
-        readonly object locker = new object();
+        Stream _ofstream;
+        BinaryWriter _writer;
+        readonly long _dataSizePos, _factSampleCountPos;
+        readonly object _locker = new object();
 
         public Resolution Resolution { get; }
 
@@ -22,61 +22,48 @@ namespace ManagedBass
         /// </summary>
         public long Length { get; set; }
 
-        WaveFormat WaveFormat;
+        readonly WaveFormat WaveFormat;
         #endregion
 
         #region Factory
         WaveFileWriter(Stream outStream, WaveFormat format)
         {
-            ofstream = outStream;
-            Writer = new BinaryWriter(outStream, Encoding.ASCII);
+            _ofstream = outStream;
+            _writer = new BinaryWriter(outStream, Encoding.ASCII);
 
-            Writer.Write(Encoding.ASCII.GetBytes("RIFF"));
-            Writer.Write(0); // placeholder
-            Writer.Write(Encoding.ASCII.GetBytes("WAVEfmt "));
+            _writer.Write(Encoding.ASCII.GetBytes("RIFF"));
+            _writer.Write(0); // placeholder
+            _writer.Write(Encoding.ASCII.GetBytes("WAVEfmt "));
             WaveFormat = format;
 
-            Writer.Write(18 + format.ExtraSize); // wave format Length
-            format.Serialize(Writer);
+            _writer.Write(18 + format.ExtraSize); // wave format Length
+            format.Serialize(_writer);
 
             // CreateFactChunk
             if (format.Encoding != WaveFormatTag.Pcm)
             {
-                Writer.Write(Encoding.ASCII.GetBytes("fact"));
-                Writer.Write(4);
-                factSampleCountPos = outStream.Position;
-                Writer.Write(0); // number of samples
+                _writer.Write(Encoding.ASCII.GetBytes("fact"));
+                _writer.Write(4);
+                _factSampleCountPos = outStream.Position;
+                _writer.Write(0); // number of samples
             }
 
             // WriteDataChunkHeader
-            Writer.Write(Encoding.ASCII.GetBytes("data"));
-            dataSizePos = outStream.Position;
-            Writer.Write(0); // placeholder
+            _writer.Write(Encoding.ASCII.GetBytes("data"));
+            _dataSizePos = outStream.Position;
+            _writer.Write(0); // placeholder
 
             Length = 0;
         }
-
-        static WaveFormat MakeWF(int NoOfChannels, int SampleRate, Resolution Resolution)
+        
+        public WaveFileWriter(Stream outStream, PCMFormat Format)
+            : this(outStream, Format.ToWaveFormat())
         {
-            switch (Resolution)
-            {
-                case Resolution.Float:
-                    return WaveFormat.CreateIeeeFloat(SampleRate, NoOfChannels);
-                case Resolution.Byte:
-                    return new WaveFormat(SampleRate, 8, NoOfChannels);
-                default:
-                    return new WaveFormat(SampleRate, 16, NoOfChannels);
-            }
+            Resolution = Format.Resolution;
         }
 
-        public WaveFileWriter(Stream outStream, int NoOfChannels = 2, int SampleRate = 44100, Resolution Resolution = Resolution.Short)
-            : this(outStream, MakeWF(NoOfChannels, SampleRate, Resolution))
-        {
-            this.Resolution = Resolution;
-        }
-
-        public WaveFileWriter(string FilePath, int NoOfChannels = 2, int SampleRate = 44100, Resolution Resolution = Resolution.Short)
-            : this(new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read), NoOfChannels, SampleRate, Resolution) { }
+        public WaveFileWriter(string FilePath, PCMFormat Format)
+            : this(new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read), Format) { }
         #endregion
 
         #region Write
@@ -85,16 +72,18 @@ namespace ManagedBass
         /// </summary>
         /// <param name="data">the Buffer containing the wave data</param>
         /// <param name="count">the number of bytes to write</param>
-        public void Write(byte[] data, int count)
+        public bool Write(byte[] data, int count)
         {
             try
             {
-                lock (locker)
-                    Writer.Write(data, 0, count);
+                lock (_locker)
+                    _writer.Write(data, 0, count);
 
                 Length += count;
+
+                return true;
             }
-            catch { }
+            catch { return false; }
         }
 
         /// <summary>
@@ -102,19 +91,21 @@ namespace ManagedBass
         /// </summary>
         /// <param name="data">The Buffer containing the wave data</param>
         /// <param name="count">The number of bytes to write</param>
-        public void Write(short[] data, int count)
+        public bool Write(short[] data, int count)
         {
             try
             {
                 var n = count / 2;
 
-                lock (locker)
+                lock (_locker)
                     for (var i = 0; i < n; i++)
-                        Writer.Write(data[i]);
+                        _writer.Write(data[i]);
 
                 Length += count;
+
+                return true;
             }
-            catch { }
+            catch { return false; }
         }
 
         /// <summary>
@@ -122,19 +113,21 @@ namespace ManagedBass
         /// </summary>
         /// <param name="data">The Buffer containing the wave data</param>
         /// <param name="count">The number of bytes to write</param>
-        public void Write(float[] data, int count)
+        public bool Write(float[] data, int count)
         {
             try
             {
                 var n = count / 4;
 
-                lock (locker)
+                lock (_locker)
                     for (var i = 0; i < n; i++)
-                        Writer.Write(data[i]);
+                        _writer.Write(data[i]);
 
                 Length += count;
+
+                return true;
             }
-            catch { }
+            catch { return false; }
         }
         #endregion
 
@@ -143,8 +136,8 @@ namespace ManagedBass
         /// </summary>
         public void Flush()
         {
-            lock (locker)
-                Writer.Flush();
+            lock (_locker)
+                _writer.Flush();
         }
 
         #region IDisposable Members
@@ -163,37 +156,37 @@ namespace ManagedBass
         /// <param name="disposing">True if called from <see>Dispose</see></param>
         void Dispose(bool disposing)
         {
-            if (!disposing || Writer == null)
+            if (!disposing || _writer == null)
                 return;
             try
             {
-                lock (locker)
+                lock (_locker)
                 {
-                    Writer.Flush();
+                    _writer.Flush();
 
-                    Writer.Seek(4, SeekOrigin.Begin);
-                    Writer.Write((int) (ofstream.Length - 8));
+                    _writer.Seek(4, SeekOrigin.Begin);
+                    _writer.Write((int) (_ofstream.Length - 8));
 
                     if (WaveFormat.Encoding != WaveFormatTag.Pcm)
                     {
-                        Writer.Seek((int) factSampleCountPos, SeekOrigin.Begin);
-                        Writer.Write((int) (Length*8/WaveFormat.BitsPerSample));
+                        _writer.Seek((int) _factSampleCountPos, SeekOrigin.Begin);
+                        _writer.Write((int) (Length*8/WaveFormat.BitsPerSample));
                     }
 
-                    Writer.Seek((int) dataSizePos, SeekOrigin.Begin);
-                    Writer.Write((int) Length);
+                    _writer.Seek((int) _dataSizePos, SeekOrigin.Begin);
+                    _writer.Write((int) Length);
                 }
             }
             finally
             {
-                lock (locker)
+                lock (_locker)
                 {
-                    Writer.Close();
-                    Writer = null;
+                    _writer.Dispose();
+                    _writer = null;
                 }
 
-                ofstream.Close(); // will close the underlying base stream
-                ofstream = null;
+                _ofstream.Dispose(); // will close the underlying base stream
+                _ofstream = null;
             }
         }
 
