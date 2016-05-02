@@ -94,6 +94,7 @@
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
-  <Import Project="..\Shared\ManagedBass.Shared.projitems" Label="Shared" />
+  <Import Project="..\Managed\Managed.projitems" Label="Shared" />
+  <Import Project="..\PInvoke\PInvoke.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

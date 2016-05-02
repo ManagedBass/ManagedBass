@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{3479219E-33A6-40A6-A60F-E1E31B450CA7}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Managed", "Managed\Managed.shproj", "{3479219E-33A6-40A6-A60F-E1E31B450CA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linux", "Linux\Linux.csproj", "{5836FB0C-47B9-4370-B523-6E3B01A63F86}"
 EndProject
@@ -23,14 +23,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSample", "..\samples\WPF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidSample", "..\samples\Android\AndroidSample.csproj", "{2838F11C-D335-45D8-8541-308F6E988AF3}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PInvoke", "PInvoke\PInvoke.shproj", "{EC57D38F-2B7C-4547-9012-3F1AAD7E8BAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hybrid", "Hybrid\Hybrid.csproj", "{1AAB26ED-862E-42DD-A5B2-A6BFA67B8FB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{3A96C047-EF86-4BAD-BB28-3F408C488D67}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Shared\ManagedBass.Shared.projitems*{3479219e-33a6-40a6-a60f-e1e31b450ca7}*SharedItemsImports = 13
-		Shared\ManagedBass.Shared.projitems*{57c787d9-351e-4c61-9abb-619f6f6aa03a}*SharedItemsImports = 4
-		Shared\ManagedBass.Shared.projitems*{1e6370cd-b475-4fdc-9f6f-8a5ecfc9538c}*SharedItemsImports = 4
-		Shared\ManagedBass.Shared.projitems*{ad2f2fc0-636d-45b3-a400-94d579cf143f}*SharedItemsImports = 4
-		Shared\ManagedBass.Shared.projitems*{5836fb0c-47b9-4370-b523-6e3b01a63f86}*SharedItemsImports = 4
-		Shared\ManagedBass.Shared.projitems*{b07f0848-a4fb-406e-98d6-620cdae881d9}*SharedItemsImports = 4
+		Managed\Managed.projitems*{3479219e-33a6-40a6-a60f-e1e31b450ca7}*SharedItemsImports = 13
+		PInvoke\PInvoke.projitems*{ec57d38f-2b7c-4547-9012-3f1aad7e8bab}*SharedItemsImports = 13
+		Managed\Managed.projitems*{57c787d9-351e-4c61-9abb-619f6f6aa03a}*SharedItemsImports = 4
+		PInvoke\PInvoke.projitems*{57c787d9-351e-4c61-9abb-619f6f6aa03a}*SharedItemsImports = 4
+		Managed\Managed.projitems*{1e6370cd-b475-4fdc-9f6f-8a5ecfc9538c}*SharedItemsImports = 4
+		PInvoke\PInvoke.projitems*{1e6370cd-b475-4fdc-9f6f-8a5ecfc9538c}*SharedItemsImports = 4
+		PInvoke\PInvoke.projitems*{1aab26ed-862e-42dd-a5b2-a6bfa67b8fb2}*SharedItemsImports = 4
+		Managed\Managed.projitems*{ad2f2fc0-636d-45b3-a400-94d579cf143f}*SharedItemsImports = 4
+		PInvoke\PInvoke.projitems*{ad2f2fc0-636d-45b3-a400-94d579cf143f}*SharedItemsImports = 4
+		Managed\Managed.projitems*{5836fb0c-47b9-4370-b523-6e3b01a63f86}*SharedItemsImports = 4
+		PInvoke\PInvoke.projitems*{5836fb0c-47b9-4370-b523-6e3b01a63f86}*SharedItemsImports = 4
+		Managed\Managed.projitems*{b07f0848-a4fb-406e-98d6-620cdae881d9}*SharedItemsImports = 4
+		PInvoke\PInvoke.projitems*{b07f0848-a4fb-406e-98d6-620cdae881d9}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AppStore|Any CPU = AppStore|Any CPU
@@ -83,11 +96,18 @@ Global
 		{2838F11C-D335-45D8-8541-308F6E988AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2838F11C-D335-45D8-8541-308F6E988AF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2838F11C-D335-45D8-8541-308F6E988AF3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1AAB26ED-862E-42DD-A5B2-A6BFA67B8FB2}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
+		{1AAB26ED-862E-42DD-A5B2-A6BFA67B8FB2}.AppStore|Any CPU.Build.0 = Release|Any CPU
+		{1AAB26ED-862E-42DD-A5B2-A6BFA67B8FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AAB26ED-862E-42DD-A5B2-A6BFA67B8FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AAB26ED-862E-42DD-A5B2-A6BFA67B8FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AAB26ED-862E-42DD-A5B2-A6BFA67B8FB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{3479219E-33A6-40A6-A60F-E1E31B450CA7} = {3A96C047-EF86-4BAD-BB28-3F408C488D67}
 		{5836FB0C-47B9-4370-B523-6E3B01A63F86} = {F73D6DBA-3748-4415-A7DE-A7043A537A83}
 		{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C} = {F73D6DBA-3748-4415-A7DE-A7043A537A83}
 		{57C787D9-351E-4C61-9ABB-619F6F6AA03A} = {F73D6DBA-3748-4415-A7DE-A7043A537A83}
@@ -95,5 +115,6 @@ Global
 		{AD2F2FC0-636D-45B3-A400-94D579CF143F} = {F73D6DBA-3748-4415-A7DE-A7043A537A83}
 		{F211E25C-3560-4AF0-BA83-57BCFCA4E791} = {726B1E63-E8CE-439B-B202-67B7A6E49068}
 		{2838F11C-D335-45D8-8541-308F6E988AF3} = {726B1E63-E8CE-439B-B202-67B7A6E49068}
+		{EC57D38F-2B7C-4547-9012-3F1AAD7E8BAB} = {3A96C047-EF86-4BAD-BB28-3F408C488D67}
 	EndGlobalSection
 EndGlobal
