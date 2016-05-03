@@ -8,15 +8,13 @@
     <RootNamespace>ManagedBass</RootNamespace>
     <AssemblyName>ManagedBass.Windows</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectGuid>{57C787D9-351E-4C61-9ABB-619F6F6AA03A}</ProjectGuid>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>bin\$(Configuration)\</OutputPath>
-    <DocumentationFile>bin\$(Configuration)\ManagedBass.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(AssemblyName).xml</DocumentationFile>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -35,7 +33,6 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="BassEnc\ACMEncodedFileWriter.cs" />
     <Compile Include="BassEnc\ACMEncoder.cs" />
     <Compile Include="BassEnc\ACMFormatFlags.cs" />
     <Compile Include="BassEnc\BassEnc.cs" />
@@ -84,8 +81,7 @@
     <Compile Include="EAXEnvironment.cs" />
     <Compile Include="BassWasapi\Loopback.cs" />
     <Compile Include="BassWasapi\WasapiToBassFullDuplex.cs" />
-    <Compile Include="BassWma\WmaFileWriter.cs" />
-    <Compile Include="BassEnc\WMAEncoder.cs" />
+    <Compile Include="BassWma\WmaEncoder.cs" />
     <Compile Include="Effects\DXCompressor.cs" />
     <Compile Include="Effects\DXGargle.cs" />
     <Compile Include="Effects\DX_ID3DL2Reverb.cs" />

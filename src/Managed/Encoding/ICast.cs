@@ -8,5 +8,11 @@ namespace ManagedBass.Enc
         void Disconnect();
 
         long DataSent { get; }
+        
+        string Url { get; set; }
+        
+        string UserName { get; set; }
+        
+        string PassWord { get; set; }
     }
 }

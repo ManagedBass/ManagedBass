@@ -7,7 +7,7 @@ namespace ManagedBass
     /// <summary>
     /// Writes Wave data to a .wav file
     /// </summary>
-    public class WaveFileWriter : IAudioFileWriter
+    public class WaveFileWriter : IAudioWriter
     {
         #region Fields
         Stream _ofstream;
@@ -15,7 +15,7 @@ namespace ManagedBass
         readonly long _dataSizePos, _factSampleCountPos;
         readonly object _locker = new object();
 
-        public Resolution Resolution { get; }
+        public PCMFormat InputFormat { get; }
 
         /// <summary>
         /// Number of bytes of audio
@@ -56,14 +56,14 @@ namespace ManagedBass
             Length = 0;
         }
         
-        public WaveFileWriter(Stream outStream, PCMFormat Format)
-            : this(outStream, Format.ToWaveFormat())
+        public WaveFileWriter(Stream outStream, PCMFormat InputFormat)
+            : this(outStream, InputFormat.ToWaveFormat())
         {
-            Resolution = Format.Resolution;
+            this.InputFormat = InputFormat;
         }
 
-        public WaveFileWriter(string FilePath, PCMFormat Format)
-            : this(new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read), Format) { }
+        public WaveFileWriter(string FilePath, PCMFormat InputFormat)
+            : this(new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read), InputFormat) { }
         #endregion
 
         #region Write

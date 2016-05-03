@@ -5,7 +5,7 @@ namespace ManagedBass
     /// <summary>
     /// Implemented by an Audio Capturer.
     /// </summary>
-    public interface IAudioCaptureClient : IDisposable
+    public interface IAudioRecorder : IDisposable
     {
         /// <summary>
         /// Start Audio Capture.
@@ -28,6 +28,8 @@ namespace ManagedBass
         /// Gets if Capturing is in Progress.
         /// </summary>
         bool IsActive { get; }
+
+        PCMFormat Format { get; }
 
         /// <summary>
         /// Provides the captured data.

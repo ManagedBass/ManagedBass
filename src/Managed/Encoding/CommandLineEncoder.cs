@@ -8,6 +8,9 @@ namespace ManagedBass.Enc
         protected CommandLineEncoder(int Channel)
         {
             _channel = Channel;
+
+            var info = Bass.ChannelGetInfo(_channel);
+            InputFormat = new PCMFormat(info.Frequency, info.Channels, info.Resolution);
         }
 
         protected abstract string CommandLineArgs { get; }
@@ -15,6 +18,8 @@ namespace ManagedBass.Enc
         protected abstract EncodeFlags EncodeFlags { get; }
 
         public override int OnStart() => BassEnc.EncodeStart(_channel, CommandLineArgs, EncodeFlags, default(EncodeProcedure));
+
+        public override PCMFormat InputFormat { get; }
     }
 }
 #endif

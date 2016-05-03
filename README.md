@@ -13,22 +13,22 @@ Download the versions you need.
 
 > For latest info: Follow [ManagedBass Blog](https://managedbass.wordpress.com)
 
+See the Sample Repositories for examples.
+
 Features
 -----------------------------------------
-* **FREE**: You get freedom from the licensing of Bass.Net.  
-  BASS and other ADDONS STILL NEED TO BE LICENSED.  
-  You don't have to suppress Popups by providing a Registration Key.
+* Free, Open-Source, No-Registration required.
 
-* **Method Names** have been **simplified** using `EntryPoint` Parameter of `DllImport`.  
+* Simplified Member Names.  
   e.g. Instead of `BassWma.BASS_WMA_EncodeOpenFile()` you could use `BassWma.EncodeOpenFile();`
 
-* **Plugin Add-Ons** are wrapped in a light-weight way as instances of the Plugin class.  
-  Most Plugins are supported.  
-  Their Specific functions are not wrapped due to lack of productivity.
+* **Plugins** are wrapped in a light-weight way as instances of the Plugin class.  
+  Their Specific functions are **not** wrapped due to lack of productivity.
 
-* ManagedBass provides completely managed types for your use along with the Native wrapper types.  
+* ManagedBass also provides completely managed types for your use along with the wrapper types.  
   Namespaces are grouped by AddOns or Features.
 
-* Now, available in different flavors for Windows, Mac, Linux, Xamarin.Android and Xamarin.iOS.
+* Now, available in different flavors for Windows, Mac, Linux, Xamarin.Android and Xamarin.iOS.  
+  A Hybrid (Beta) Portable Class Library (containing just the PInvoke part) is also included.
 
 Bass and other Add-Ons are trademarks of their respective owners: **Un4Seen Bass - (c) Ian Luck**

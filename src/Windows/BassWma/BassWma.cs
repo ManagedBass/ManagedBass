@@ -121,10 +121,15 @@ namespace ManagedBass.Wma
         #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpen")]
-        public static extern int EncodeOpen(int freq, int chans, WMAEncodeFlags flags, int bitrate, WMEncodeProcedure proc, IntPtr user);
+        public static extern int EncodeOpen(int Frequency, int Channels, WMAEncodeFlags Flags, int Bitrate, WMEncodeProcedure Procedure, IntPtr User = default(IntPtr));
 
-        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpenFile")]
-        public static extern int EncodeOpenFile(int freq, int chans, WMAEncodeFlags flags, int bitate, string file);
+        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        static extern int BASS_WMA_EncodeOpenFile(int freq, int chans, WMAEncodeFlags flags, int bitrate, string file);
+
+        public static int EncodeOpenFile(int freq, int chans, WMAEncodeFlags flags, int bitrate, string file)
+        {
+            return BASS_WMA_EncodeOpenFile(freq, chans, flags | WMAEncodeFlags.Unicode, bitrate, file);
+        }
 
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpenNetwork")]
         public static extern int EncodeOpenNetwork(int freq, int chans, WMAEncodeFlags flags, int bitrate, int port, int clients);
@@ -132,11 +137,21 @@ namespace ManagedBass.Wma
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpenNetworkMulti")]
         public static extern int EncodeOpenNetwork(int freq, int chans, WMAEncodeFlags flags, int[] bitrate, int port, int clients);
 
-        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpenPublish")]
-        public static extern int EncodeOpenPublish(int freq, int chans, WMAEncodeFlags flags, int bitrate, string url, string user, string pass);
+        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        static extern int BASS_WMA_EncodeOpenPublish(int freq, int chans, WMAEncodeFlags flags, int bitrate, string url, string user, string pass);
 
-        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeOpenPublishMulti")]
-        public static extern int EncodeOpenPublish(int freq, int chans, WMAEncodeFlags flags, int[] bitrate, string url, string user, string pass);
+        public static int EncodeOpenPublish(int freq, int chans, WMAEncodeFlags flags, int bitrate, string url, string user, string pass)
+        {
+            return BASS_WMA_EncodeOpenPublish(freq, chans, flags | WMAEncodeFlags.Unicode, bitrate, url, user, pass);
+        }
+
+        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        static extern int BASS_WMA_EncodeOpenPublishMulti(int freq, int chans, WMAEncodeFlags flags, int[] bitrate, string url, string user, string pass);
+
+        public static int EncodeOpenPublish(int freq, int chans, WMAEncodeFlags flags, int[] bitrate, string url, string user, string pass)
+        {
+            return BASS_WMA_EncodeOpenPublishMulti(freq, chans, flags | WMAEncodeFlags.Unicode, bitrate, url, user, pass);
+        }
         
 		/// <summary>
 		/// Sets a client connection notification callback on a network encoder.

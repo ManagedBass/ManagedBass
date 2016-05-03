@@ -27,5 +27,12 @@
                     return new WaveFormat(Frequency, 16, Channels);
             }
         }
+
+        public static PCMFormat FromChannel(int Channel)
+        {
+            var info = Bass.ChannelGetInfo(Channel);
+
+            return new PCMFormat(info.Frequency, info.Channels, info.Resolution);
+        }
     }
 }

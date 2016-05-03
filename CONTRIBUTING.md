@@ -3,12 +3,11 @@ Thank you for your interest to Contribute.
 Here are some guidelines which would help us build better software together.
 
 ## Reporting a Bug
-If you want more Samples, Comment on [Issue: Tasks & Samples](https://github.com/MathewSachin/ManagedBass/issues/13).
+Need Help/Support?: [Chat on Gitter](https://gitter.im/MathewSachin/ManagedBass)
 
-Have a personal Question?: [Chat on Gitter](https://gitter.im/MathewSachin/ManagedBass)
-
-* Check if the issue is resolved in the latest NuGet release.
+* Check if the issue is resolved in the latest NuGet release or in this repository.
 * Report the **OS** and **.Net/Mono** version on which you are running ManagedBass.
+* Also, Report your IDE.
 * Include details of included bass Libraries(dll/so/dylib) and whether they are **32-bit**, **64-bit**, **ARM**, etc.
 * If possible, Include **steps** to replicate the problem.
 
@@ -19,3 +18,6 @@ Have a personal Question?: [Chat on Gitter](https://gitter.im/MathewSachin/Manag
     * Make use of ReSharper.
 * Thoroughly **test** your work.
 * If you intend to bring a major change, you would have to be around helping to resolve issues which arise with other users of your work.
+
+## Contributing a Sample
+Set up a repository and transfer it to ManagedBass organisation.

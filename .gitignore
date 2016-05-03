@@ -20,6 +20,7 @@ packages/
 .vs/
 *.suo
 *.user
+*.DotSettings
 
 # User-Specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

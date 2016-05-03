@@ -6,7 +6,7 @@ namespace ManagedBass.Wasapi
     /// <summary>
     /// Capture SoundCard output using Wasapi Loopback. Requires basswasapi.dll.
     /// </summary>
-    public class Loopback : IAudioCaptureClient
+    public class Loopback : IAudioRecorder
     {
         readonly Silence _silencePlayer;
         readonly WasapiLoopbackDevice _device;
@@ -29,7 +29,13 @@ namespace ManagedBass.Wasapi
 
             Device.Init();
             Device.Callback += B => DataAvailable?.Invoke(B);
+
+            var info = Device.DeviceInfo;
+
+            Format = new PCMFormat(info.MixFrequency, info.MixChannels, Resolution.Float);
         }
+
+        public PCMFormat Format { get; }
 
         /// <summary>
         /// Returns the soundcard output level.

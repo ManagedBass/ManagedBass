@@ -8,6 +8,9 @@ namespace ManagedBass
 {
     public static partial class Bass
     {
+        [DllImport(DllName)]
+        static extern IntPtr BASS_PluginGetInfo(int Handle);
+
         /// <summary>
         /// Retrieves information on a plugin.
         /// </summary>
@@ -17,8 +20,7 @@ namespace ManagedBass
         /// <para>Note: There is no guarantee that the check is complete or might contain formats not being supported on your particular OS/machine (due to additional or missing audio codecs).</para>
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
-        [DllImport(DllName, EntryPoint = "BASS_PluginGetInfo")]
-        public static extern PluginInfo PluginGetInfo(int Handle);
+        public static PluginInfo PluginGetInfo(int Handle) => (PluginInfo)Marshal.PtrToStructure(BASS_PluginGetInfo(Handle), typeof (PluginInfo));
 
         #region PluginLoad
         [DllImport(DllName, CharSet = CharSet.Unicode)]

@@ -10,6 +10,8 @@
         {
             this.FileName = FileName;
             _channel = Channel;
+
+            InputFormat = PCMFormat.FromChannel(Channel);
         }
 
         public PCMEncoder(string FileName, PCMFormat Format)
@@ -19,5 +21,7 @@
         public override ChannelType OutputType => ChannelType.Wave;
 
         public override int OnStart() => BassEnc.EncodeStart(_channel, FileName, EncodeFlags.PCM, default(EncodeProcedure));
+
+        public override PCMFormat InputFormat { get; }
     }
 }

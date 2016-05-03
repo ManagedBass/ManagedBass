@@ -7,7 +7,7 @@
   </PropertyGroup>
   <PropertyGroup Label="Configuration" />
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AudioCapture\IAudioCaptureClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AudioCapture\IAudioRecorder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AudioCapture\Recording.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BufferProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\AudioSample.cs" />
@@ -64,6 +64,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Effects\PitchTracker\PitchTracker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\BassEncCast.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\BassEncEncoder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Encoding\CAEncoder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\CastError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\CommandLineEncoder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\ICast.cs" />
@@ -78,7 +79,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v2\PictureTag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v2\PictureTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\TagReader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Writers\IAudioFileWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Writers\IAudioWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Writers\WaveFileWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Writers\WaveFormat.cs" />
   </ItemGroup>

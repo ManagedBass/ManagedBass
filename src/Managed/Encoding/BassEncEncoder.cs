@@ -9,7 +9,7 @@ namespace ManagedBass.Enc
     {
         protected static int GetDummyChannel(PCMFormat Format)
         {
-            return Bass.CreateStream(Format.Frequency, Format.Channels, BassFlags.Decode | Format.Resolution.ToBassFlag(), StreamProcedureType.Dummy);
+            return Bass.CreateStream(Format.Frequency, Format.Channels, BassFlags.Decode | Format.Resolution.ToBassFlag(), StreamProcedureType.Push);
         }
 
         readonly EncodeNotifyProcedure _notifyProcedure;
@@ -38,15 +38,7 @@ namespace ManagedBass.Enc
             _stream.Write(_buffer, 0, Length);
         }
 
-        public int Channel
-        {
-            get { return BassEnc.EncodeGetChannel(Handle); }
-            set
-            {
-                if (!BassEnc.EncodeSetChannel(Handle, value))
-                    throw new BassException();
-            }
-        }
+        public int Channel => BassEnc.EncodeGetChannel(Handle);
 
         int _handle;
         public int Handle
@@ -54,12 +46,12 @@ namespace ManagedBass.Enc
             get { return _handle; }
             private set
             {
-                if (value == 0)
-                    throw new ArgumentException(nameof(value));
-
                 BassEnc.EncodeSetNotify(_handle, null);
 
                 _handle = value;
+
+                if (value == 0)
+                    return;
 
                 BassEnc.EncodeSetNotify(_handle, _notifyProcedure);
             }
@@ -133,17 +125,45 @@ namespace ManagedBass.Enc
             return result;
         }
 
-        public bool Write(int[] Buffer, int Length) => BassEnc.EncodeWrite(Handle, Buffer, Length);
+        public bool Write(byte[] Buffer, int Length)
+        {
+            Bass.StreamPutData(Channel, Buffer, Length);
 
-        public bool Write(float[] Buffer, int Length) => BassEnc.EncodeWrite(Handle, Buffer, Length);
+            Bass.ChannelGetData(Channel, Buffer, Length);
 
-        public bool Write(short[] Buffer, int Length) => BassEnc.EncodeWrite(Handle, Buffer, Length);
+            return true;
+        }
 
-        public bool Write(byte[] Buffer, int Length) => BassEnc.EncodeWrite(Handle, Buffer, Length);
+        public bool Write(short[] Buffer, int Length)
+        {
+            Bass.StreamPutData(Channel, Buffer, Length);
 
-        public bool Write(IntPtr Buffer, int Length) => BassEnc.EncodeWrite(Handle, Buffer, Length);
+            Bass.ChannelGetData(Channel, Buffer, Length);
+
+            return true;
+        }
+
+        public bool Write(float[] Buffer, int Length)
+        {
+            Bass.StreamPutData(Channel, Buffer, Length);
+
+            Bass.ChannelGetData(Channel, Buffer, Length);
+
+            return true;
+        }
+        
+        public bool Write(IntPtr Buffer, int Length)
+        {
+            Bass.StreamPutData(Channel, Buffer, Length);
+
+            Bass.ChannelGetData(Channel, Buffer, Length);
+
+            return true;
+        }
 
         public virtual int OutputBitRate => -1;
+
+        public abstract PCMFormat InputFormat { get; }
         #endregion
     }
 }

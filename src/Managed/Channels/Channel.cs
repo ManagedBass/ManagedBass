@@ -178,7 +178,7 @@ namespace ManagedBass
         /// </summary>
         /// <param name="Writer">Audio File Writer to write to</param>
         /// <param name="Offset">+ve for forward, -ve for backward</param>
-        public void DecodeToFile(IAudioFileWriter Writer, int Offset = 0)
+        public void DecodeToFile(IAudioWriter Writer, int Offset = 0)
         {
             if (!IsDecodingChannel)
                 throw new InvalidOperationException("Not a Decoding Channel!");

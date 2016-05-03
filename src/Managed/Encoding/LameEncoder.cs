@@ -1,41 +1,12 @@
 ﻿#if WINDOWS
 namespace ManagedBass.Enc
 {
-    /// <summary>
-    /// The general Lame encoding mode (stereo, joint stereo, mono etc.).
-    /// </summary>
-    public enum LameMode
-    {
-        Default,
-        Stereo,
-        JointStereo,
-        ForcedJointStereo,
-        Mono,
-        DualMono
-    }
-
-    /// <summary>
-    /// Encoding quality (default is Quality).
-    /// </summary>
-    public enum LameQuality
-    {
-        Quality0,
-        Quality1,
-        Quality2,
-        Quality3,
-        Quality4,
-        Quality5,
-        Quality6,
-        Quality7,
-        Quality8,
-        Quality9,
-        None,
-        Speed,
-        Quality
-    }
-
     public class LameMp3Encoder : CommandLineEncoder
     {
+        string _inputFile;
+
+        public string OutputFile { get; set; }
+
         public LameMp3Encoder(int Channel) : base(Channel) { }
 
         public LameMp3Encoder(PCMFormat Format)
@@ -43,8 +14,12 @@ namespace ManagedBass.Enc
         
         public override string OutputFileExtension => "mp3";
         public override ChannelType OutputType => ChannelType.MP3;
-        protected override string CommandLineArgs { get; }
-        protected override EncodeFlags EncodeFlags { get; }
+
+        protected override string CommandLineArgs => "lame " + 
+                                                     $"{(_inputFile == null ? "-" : $"\"{_inputFile}\"")}" +
+                                                     $"{(OutputFile == null ? "-" : $"\"{OutputFile}\"")}";
+
+        protected override EncodeFlags EncodeFlags => EncodeFlags.NoHeader | EncodeFlags.ConvertFloatTo32Bit;
     }
 }
 #endif

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>ManagedBass</id>
+        <version>0.21.0</version>
+        <title>ManagedBass</title>
+        <authors>MathewSachin</authors>
+        <licenseUrl>https://raw.githubusercontent.com/ManagedBass/ManagedBass/master/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/ManagedBass/ManagedBass/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>
+Free OpenSource .Net Wrapper around un4seen Bass audio library and most of its addons.
+This project is currently in development.
+You can contribute to it on GitHub.
+
+Samples available on GitHub.
+
+The Library is compiled for AnyCPU.
+But the Bass dlls need to be checked for x64 or x86.
+Put the Bass dlls in the same folder as ManagedBass.dll.
+
+ManagedBass does not need to be licensed for Commercial use, but bass and many of the addons have to be.
+Check the below website for more details
+Bass dlls are available at http://www.un4seen.com/bass
+
+Bass and its Addons are trademarks of their respective owners.
+        </description>
+        <summary>Free OpenSource .Net Wrapper for Un4seen Bass.</summary>
+        <releaseNotes>
+        </releaseNotes>
+        <copyright>(c) 2016 Mathew Sachin</copyright>
+        <language>en-GB</language>
+        <tags>C# Bass Wasapi Asio Recording Audio Music</tags>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System" targetFramework="" />
+        </frameworkAssemblies>
+    </metadata>
+    <files>
+        <file src="Windows\bin\Release\ManagedBass.Windows.dll" target="lib\net45\ManagedBass.dll"/>
+        <file src="Windows\bin\Release\ManagedBass.Windows.xml" target="lib\net45\ManagedBass.xml"/>
+
+        <file src="Android\bin\Release\ManagedBass.Android.dll" target="lib\MonoAndroid\ManagedBass.dll"/>
+        <file src="Android\bin\Release\ManagedBass.Android.xml" target="lib\MonoAndroid\ManagedBass.xml"/>
+
+        <file src="Mac\bin\Release\ManagedBass.Mac.dll" target="lib\Xamarin.Mac\ManagedBass.dll"/>
+        <file src="Mac\bin\Release\ManagedBass.Mac.xml" target="lib\Xamarin.Mac\ManagedBass.xml"/>
+
+        <file src="iOS\bin\Release\ManagedBass.iOS.dll" target="lib\Xamarin.iOS\ManagedBass.dll"/>
+        <file src="iOS\bin\Release\ManagedBass.iOS.xml" target="lib\Xamarin.iOS\ManagedBass.xml"/>
+
+        <file src="Hybrid\bin\Release\ManagedBass.Hybrid.dll" target="lib\portable-net45+netcore45+wpa81+MonoAndroid+Xamarin.Mac+Xamarin.iOS+MonoTouch\ManagedBass.dll"/>
+        <file src="Hybrid\bin\Release\ManagedBass.Hybrid.xml" target="lib\portable-net45+netcore45+wpa81+MonoAndroid+Xamarin.Mac+Xamarin.iOS+MonoTouch\ManagedBass.xml"/>
+    </files>
+</package>
