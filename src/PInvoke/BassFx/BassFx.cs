@@ -54,8 +54,8 @@ namespace ManagedBass.Fx
 		/// <param name="Channel">Tempo stream (or source channel) handle.</param>
 		/// <returns>If successful, the resampling ratio is returned, else 0 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Channel" /> is not valid.</exception>
-        [DllImport(DllName, EntryPoint = "BASS_FX_TempoGetRatio")]
-        public static extern float TempoGetRatio(int Channel);
+        [DllImport(DllName, EntryPoint = "BASS_FX_TempoGetRateRatio")]
+        public static extern float TempoGetRateRatio(int Channel);
 
         [DllImport(DllName, EntryPoint = "BASS_FX_ReverseCreate")]
         public static extern int ReverseCreate(int Channel, float DecodingBlockLength, BassFlags Flags);
@@ -71,10 +71,10 @@ namespace ManagedBass.Fx
 
         #region BPM
         [DllImport(DllName, EntryPoint = "BASS_FX_BPM_DecodeGet")]
-        public static extern float BPMDecodeGet(int Channel, double StartSec, double EndSec, int MinMaxBPM, BassFlags Flags, BPMProgressProcedure Procedure, IntPtr User);
+        public static extern float BPMDecodeGet(int Channel, double StartSec, double EndSec, int MinMaxBPM, BassFlags Flags, BPMProgressProcedure Procedure, IntPtr User = default(IntPtr));
 
         [DllImport(DllName, EntryPoint = "BASS_FX_BPM_CallbackSet")]
-        public static extern bool BPMCallbackSet(int Handle, BPMProcedure Procedure, double Period, int MinMaxBPM, BassFlags Flags, IntPtr User);
+        public static extern bool BPMCallbackSet(int Handle, BPMProcedure Procedure, double Period, int MinMaxBPM, BassFlags Flags, IntPtr User = default(IntPtr));
 
         [DllImport(DllName, EntryPoint = "BASS_FX_BPM_CallbackReset")]
         public static extern bool BPMCallbackReset(int Handle);
@@ -94,10 +94,10 @@ namespace ManagedBass.Fx
         public static extern bool BPMFree(int Handle);
 
         [DllImport(DllName, EntryPoint="BASS_FX_BPM_BeatDecodeGet")]
-        public static extern bool BPMBeatDecodeGet(int Channel, double StartSec, double EndSec, BassFlags Flags, BPMBeatProcedure Procedure, IntPtr User);
+        public static extern bool BPMBeatDecodeGet(int Channel, double StartSec, double EndSec, BassFlags Flags, BPMBeatProcedure Procedure, IntPtr User = default(IntPtr));
 
         [DllImport(DllName, EntryPoint="BASS_FX_BPM_BeatCallbackSet")]
-        public static extern bool BPMBeatCallbackSet(int Handle, BPMBeatProcedure Procedure, IntPtr User);
+        public static extern bool BPMBeatCallbackSet(int Handle, BPMBeatProcedure Procedure, IntPtr User = default(IntPtr));
         
 		/// <summary>
 		/// Reset the BPM buffers.
