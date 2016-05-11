@@ -503,7 +503,7 @@ namespace ManagedBass
         /// In a chained OGG file containing multiple bitstreams, each bitstream will have its own tags.
         /// To get the tags from a particular one, <see cref="ChannelSetPosition(int, long, PositionFlags)" /> can be first used to seek to it.
         /// </para>
-		/// <para>When a Media Foundation codec is in use, the <see cref="TagType.WaveFormat"/> tag can be used to find out what the source format is, eg. via the <see cref="WaveFormat.Encoding"/> member.</para>
+		/// <para>When a Media Foundation codec is in use, the <see cref="TagType.WaveFormat"/> tag can be used to find out what the source format is.</para>
 		/// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         /// <exception cref="Errors.NotAvailable">The requested tags are not available.</exception>

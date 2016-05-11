@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="PeakEQ"/>.
+    /// Parameters for PeakEQ Effect.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class PeakEQParameters : IEffectParameter

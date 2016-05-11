@@ -98,30 +98,25 @@ namespace ManagedBass.Midi
         #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamEvent")]
-        public static extern bool StreamEvent(int handle, int chan, MidiEventType Event, int param);
+        public static extern bool StreamEvent(int Handle, int chan, MidiEventType Event, int param);
 
         [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamEvents(int handle, MidiEventsMode mode, MidiEvent[] Event, int length);
+        static extern int BASS_MIDI_StreamEvents(int Handle, int Mode, MidiEvent[] Event, int Length);
 
         [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamEvents(int handle, MidiEventsMode mode, byte[] Event, int length);
+        static extern int BASS_MIDI_StreamEvents(int Handle, int Mode, byte[] Event, int Length);
 
-        public static int StreamEvents(int handle, MidiEvent[] events, bool NoRunningStatus = false, bool Sync = false)
+        const int MIDI_EVENT_MODE_STRUCT = 0,
+            MIDI_EVENT_MODE_RAW = 0x10000;
+
+        public static int StreamEvents(int Handle, MidiEventsMode Mode, MidiEvent[] Events, int Length = 0)
         {
-            var flags = MidiEventsMode.Struct;
-            if (NoRunningStatus) flags |= MidiEventsMode.NoRunningStatus;
-            if (Sync) flags |= MidiEventsMode.Sync;
-
-            return BASS_MIDI_StreamEvents(handle, flags, events, events.Length);
+            return BASS_MIDI_StreamEvents(Handle, MIDI_EVENT_MODE_STRUCT | (int)Mode, Events, Length == 0 ? Events.Length : Length);
         }
 
-        public static int StreamEvents(int handle, byte[] raw, int length = 0, bool NoRunningStatus = false, bool Sync = false)
+        public static int StreamEvents(int Handle, MidiEventsMode Mode, byte[] Raw, int Length = 0)
         {
-            var flags = MidiEventsMode.Raw;
-            if (NoRunningStatus) flags |= MidiEventsMode.NoRunningStatus;
-            if (Sync) flags |= MidiEventsMode.Sync;
-
-            return BASS_MIDI_StreamEvents(handle, flags, raw, length == 0 ? raw.Length : length);
+            return BASS_MIDI_StreamEvents(Handle, MIDI_EVENT_MODE_RAW | (int)Mode, Raw, Length == 0 ? Raw.Length : Length);
         }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetChannel")]
@@ -130,67 +125,52 @@ namespace ManagedBass.Midi
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetEvent")]
         public static extern int StreamGetEvent(int handle, int chan, MidiEventType Event);
 
-        [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamGetEvents(int handle, int track, int filter, [In, Out] MidiEvent[] events);
+        [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetEvents")]
+        public static extern int StreamGetEvents(int handle, int track, int filter, [In, Out] MidiEvent[] events);
 
         public static MidiEvent[] StreamGetEvents(int handle, int track, int filter)
         {
-            var count = BASS_MIDI_StreamGetEvents(handle, track, filter, null);
+            var count = StreamGetEvents(handle, track, filter, null);
 
             if (count <= 0)
                 return null;
 
             var events = new MidiEvent[count];
 
-            BASS_MIDI_StreamGetEvents(handle, track, filter, events);
+            StreamGetEvents(handle, track, filter, events);
 
             return events;
         }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetFonts")]
         public static extern int StreamGetFonts(int handle, IntPtr fonts, int count);
+        
+        [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetFonts")]
+        public static extern int StreamGetFonts(int handle, [In][Out] MidiFont[] fonts, int count);
 
-        public static MidiFont[] StreamGetFonts(int handle, int count)
+        [DllImport(DllName)]
+        static extern int BASS_MIDI_StreamGetFonts(int handle, [In][Out] MidiFontEx[] fonts, int count);
+        
+        public static int StreamGetFonts(int handle, MidiFontEx[] fonts, int count)
         {
-            var arr = new MidiFont[count];
-
-            var gch = GCHandle.Alloc(arr, GCHandleType.Pinned);
-
-            StreamGetFonts(handle, gch.AddrOfPinnedObject(), count);
-
-            gch.Free();
-
-            return arr;
-        }
-
-        public static MidiFontEx[] StreamGetFontsEx(int handle, int count)
-        {
-            var arr = new MidiFontEx[count];
-
-            var gch = GCHandle.Alloc(arr, GCHandleType.Pinned);
-
-            StreamGetFonts(handle, gch.AddrOfPinnedObject(), count | BASS_MIDI_FONT_EX);
-
-            gch.Free();
-
-            return arr;
+            return BASS_MIDI_StreamGetFonts(handle, fonts, count | BASS_MIDI_FONT_EX);
         }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetMark")]
-        public static extern bool StreamGetMarker(int handle, MidiMarkerType type, int index, out MidiMarker mark);
+        public static extern bool StreamGetMark(int handle, MidiMarkerType type, int index, out MidiMarker mark);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetMarks")]
-        public static extern int StreamGetMarkers(int handle, int track, MidiMarkerType type, [In, Out] MidiMarker[] marks);
+        public static extern int StreamGetMarks(int handle, int track, MidiMarkerType type, [In, Out] MidiMarker[] marks);
 
-        public static MidiMarker[] StreamGetAllMarkers(int handle)
+        public static MidiMarker[] StreamGetMarks(int handle)
         {
-            var markc = StreamGetMarkers(handle, -1, MidiMarkerType.Marker, null);
+            var markCount = StreamGetMarks(handle, -1, MidiMarkerType.Marker, null);
 
-            if (markc <= 0)
+            if (markCount <= 0)
                 return null;
 
-            var marks = new MidiMarker[markc];
-            StreamGetMarkers(handle, -1, MidiMarkerType.Marker, marks);
+            var marks = new MidiMarker[markCount];
+            StreamGetMarks(handle, -1, MidiMarkerType.Marker, marks);
 
             return marks;
         }
@@ -214,12 +194,12 @@ namespace ManagedBass.Midi
         public static extern bool StreamLoadSamples(int Handle);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamSetFonts")]
-        public static extern int StreamSetFonts(int handle, MidiFont fonts, int count);
+        public static extern int StreamSetFonts(int handle, MidiFont[] fonts, int count);
 
         [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamSetFonts(int handle, MidiFontEx fonts, int count);
+        static extern int BASS_MIDI_StreamSetFonts(int handle, MidiFontEx[] fonts, int count);
 
-        public static int StreamSetFonts(int handle, MidiFontEx fonts, int count)
+        public static int StreamSetFonts(int handle, MidiFontEx[] fonts, int count)
         {
             return BASS_MIDI_StreamSetFonts(handle, fonts, count | BASS_MIDI_FONT_EX);
         }
@@ -227,8 +207,8 @@ namespace ManagedBass.Midi
         #region Configure
         /// <summary>
         /// Automatically compact all soundfonts following a configuration change?
-        /// compact (bool): If true, all soundfonts are compacted following a MIDI stream being freed, or a <see cref="StreamSetFonts(int,MidiFont,int)"/> call.
-        /// The compacting isn't performed immediately upon a MIDI stream being freed or <see cref="StreamSetFonts(int,MidiFont,int)"/> being called.
+        /// compact (bool): If true, all soundfonts are compacted following a MIDI stream being freed, or a <see cref="StreamSetFonts(int,MidiFont[],int)"/> call.
+        /// The compacting isn't performed immediately upon a MIDI stream being freed or <see cref="StreamSetFonts(int,MidiFont[],int)"/> being called.
         /// It's actually done 2 seconds later (in another thread), 
         /// so that if another MIDI stream starts using the soundfonts in the meantime, they aren't needlessly closed and reopened.
         /// Samples that have been preloaded by <see cref="FontLoad"/> are not affected by automatic compacting.

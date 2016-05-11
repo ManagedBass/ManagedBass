@@ -142,21 +142,21 @@ namespace ManagedBass
         /// <summary>
         /// MIDI add-on: Sync when a marker is encountered.
         /// param : not used
-        /// data : the marker index, which can be used in a <see cref="BassMidi.StreamGetMarker"/> call.
+        /// data : the marker index, which can be used in a <see cref="BassMidi.StreamGetMark"/> call.
         /// </summary>
         MidiMarker = 65536,
 
         /// <summary>
         /// MIDI add-on: Sync when a cue is encountered.
         /// param : not used
-        /// data : the marker index, which can be used in a <see cref="BassMidi.StreamGetMarker"/> call.
+        /// data : the marker index, which can be used in a <see cref="BassMidi.StreamGetMark"/> call.
         /// </summary>
         MidiCue = 65537,
 
         /// <summary>
         /// MIDI add-on: Sync when a lyric event is encountered.
         /// param : not used
-        /// data : the marker index, which can be used in a <see cref="BassMidi.StreamGetMarker"/> call.
+        /// data : the marker index, which can be used in a <see cref="BassMidi.StreamGetMark"/> call.
         /// If the text begins with a '/' (slash) character, a new line should be started.
         /// If it begins with a '\' (backslash) character, the display should be cleared.
         /// </summary>
@@ -165,7 +165,7 @@ namespace ManagedBass
         /// <summary>
         /// MIDI add-on: Sync when a text event is encountered.
         /// param : not used
-        /// data : the marker index, which can be used in a <see cref="BassMidi.StreamGetMarker"/> call.
+        /// data : the marker index, which can be used in a <see cref="BassMidi.StreamGetMark"/> call.
         /// Lyrics can sometimes be found in <see cref="MidiMarkerType.Text"/> instead of <see cref="MidiMarkerType.Lyric"/> markers.
         /// </summary>
         MidiText = 65539,
@@ -188,7 +188,7 @@ namespace ManagedBass
         /// <summary>
         /// MIDI add-on: Sync when a time signature event is processed.
         /// param : event Type.
-        /// data : The time signature events are given (by <see cref="BassMidi.StreamGetMarker"/>)
+        /// data : The time signature events are given (by <see cref="BassMidi.StreamGetMark"/>)
         /// in the form of "numerator/denominator metronome-pulse 32nd-notes-per-MIDI-quarter-note", eg. "4/4 24 8".
         /// </summary>
         MidiTimeSignature = 65542,
@@ -196,7 +196,7 @@ namespace ManagedBass
         /// <summary>
         /// MIDI add-on: Sync when a key signature event is processed.
         /// param : event Type.
-        /// data : The key signature events are given (by <see cref="BassMidi.StreamGetMarker"/>) in the form of "a b",
+        /// data : The key signature events are given (by <see cref="BassMidi.StreamGetMark"/>) in the form of "a b",
         /// where a is the number of sharps (if positive) or flats (if negative),
         /// and b signifies major (if 0) or minor (if 1).
         /// </summary>

@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="BQFEffect"/>.
+    /// Parameters for BQF Effect.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class BQFParameters : IEffectParameter

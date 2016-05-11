@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="DampEffect"/>
+    /// Parameters for Damp Effect.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class DampParameters : IEffectParameter

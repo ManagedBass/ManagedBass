@@ -5,8 +5,8 @@ namespace ManagedBass.Midi
     [StructLayout(LayoutKind.Sequential)]
     public struct MidiFont
     {
-        public int font;
-        public int present;
-        public int bank;
+        public int Handle;
+        public int Preset;
+        public int Bank;
     }
 }

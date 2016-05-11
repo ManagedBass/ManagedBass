@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="AutoWahEffect"/>.
+    /// Parameters for AutoWah Effect.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class AutoWahParameters : IEffectParameter

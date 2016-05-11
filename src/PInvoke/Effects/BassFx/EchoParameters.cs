@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="EchoEffect"/>.
+    /// Parameters for Echo Effect.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class EchoParameters : IEffectParameter

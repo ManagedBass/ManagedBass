@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="RotateEffect"/>.
+    /// Parameters for Rotate Effect.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class RotateParameters : IEffectParameter

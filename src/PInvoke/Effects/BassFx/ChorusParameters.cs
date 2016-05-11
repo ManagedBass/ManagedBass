@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="ChorusEffect"/>.
+    /// Parameters for Chorus Effect.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class ChorusParameters : IEffectParameter

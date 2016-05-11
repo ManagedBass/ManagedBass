@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="DistortionEffect"/>.
+    /// Parameters for Distortion Effect.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class DistortionParameters : IEffectParameter

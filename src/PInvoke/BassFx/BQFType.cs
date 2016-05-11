@@ -1,7 +1,7 @@
 ﻿namespace ManagedBass.Fx
 {
     /// <summary>
-    /// BassFx BiQuad filter type. Defines within the <see cref="BQFEffect" /> structure which BiQuad filter should be used.
+    /// BassFx BiQuad filter type. Defines within the <see cref="BQFParameters" /> structure which BiQuad filter should be used.
     /// </summary>
     public enum BQFType
     {

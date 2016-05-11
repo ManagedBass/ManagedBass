@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="PhaserEffect"/>.
+    /// Parameters for Phaser Effect.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class PhaserParameters : IEffectParameter

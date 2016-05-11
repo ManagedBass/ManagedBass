@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="CompressorEffect"/>.
+    /// Parameters for Compressor Effect.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class CompressorParameters : IEffectParameter

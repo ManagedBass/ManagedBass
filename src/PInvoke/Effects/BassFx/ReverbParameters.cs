@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="ReverbEffect"/>.
+    /// Parameters for Reverb Effect.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class ReverbParameters : IEffectParameter

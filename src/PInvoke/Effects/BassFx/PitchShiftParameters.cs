@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     /// <summary>
-    /// Used with <see cref="PitchShiftEffect"/>.
+    /// Parameters for PitchShift Effect.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class PitchShiftParameters : IEffectParameter
