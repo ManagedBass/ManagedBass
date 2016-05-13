@@ -100,23 +100,23 @@ namespace ManagedBass.Midi
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamEvent")]
         public static extern bool StreamEvent(int Handle, int chan, MidiEventType Event, int param);
 
-        [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamEvents(int Handle, int Mode, MidiEvent[] Event, int Length);
+        [DllImport(DllName, EntryPoint= "BASS_MIDI_StreamEvents")]
+        public static extern int StreamEvents(int Handle, MidiEventsMode Mode, IntPtr Events, int Length);
 
         [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamEvents(int Handle, int Mode, byte[] Event, int Length);
+        static extern int BASS_MIDI_StreamEvents(int Handle, MidiEventsMode Mode, MidiEvent[] Events, int Length);
 
-        const int MIDI_EVENT_MODE_STRUCT = 0,
-            MIDI_EVENT_MODE_RAW = 0x10000;
+        [DllImport(DllName)]
+        static extern int BASS_MIDI_StreamEvents(int Handle, MidiEventsMode Mode, byte[] Events, int Length);
 
         public static int StreamEvents(int Handle, MidiEventsMode Mode, MidiEvent[] Events, int Length = 0)
         {
-            return BASS_MIDI_StreamEvents(Handle, MIDI_EVENT_MODE_STRUCT | (int)Mode, Events, Length == 0 ? Events.Length : Length);
+            return BASS_MIDI_StreamEvents(Handle, Mode & ~MidiEventsMode.Raw, Events, Length == 0 ? Events.Length : Length);
         }
 
         public static int StreamEvents(int Handle, MidiEventsMode Mode, byte[] Raw, int Length = 0)
         {
-            return BASS_MIDI_StreamEvents(Handle, MIDI_EVENT_MODE_RAW | (int)Mode, Raw, Length == 0 ? Raw.Length : Length);
+            return BASS_MIDI_StreamEvents(Handle, MidiEventsMode.Raw | Mode, Raw, Length == 0 ? Raw.Length : Length);
         }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetChannel")]
@@ -302,7 +302,7 @@ namespace ManagedBass.Midi
         /// The amount of sample data currently loaded can be retrieved using <see cref="FontGetInfo(int, out MidiFontInfo)" />.
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
-        [DllImport(DllName, EntryPoint = "BASS_MIDI_FontComapct")]
+        [DllImport(DllName, EntryPoint = "BASS_MIDI_FontCompact")]
         public static extern bool FontCompact(int Handle);
         
 		/// <summary>
@@ -318,6 +318,7 @@ namespace ManagedBass.Midi
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetInfo")]
         public static extern bool FontGetInfo(int handle, out MidiFontInfo info);
 
+        // TODO: Partial doc
         /// <summary>
         /// 
         /// </summary>
@@ -331,8 +332,13 @@ namespace ManagedBass.Midi
             return info;
         }
 
-        [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetPreset")]
-        public static extern string FontGetPreset(int handle, int preset, int bank);
+        [DllImport(DllName)]
+        static extern IntPtr BASS_MIDI_FontGetPreset(int handle, int preset, int bank);
+
+        public static string FontGetPreset(int handle, int preset, int bank)
+        {
+            return Marshal.PtrToStringAnsi(BASS_MIDI_FontGetPreset(handle, preset, bank));
+        }
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetPresets")]
         public static extern bool FontGetPresets(int handle, [In, Out] int[] presets);

@@ -684,6 +684,9 @@ namespace ManagedBass.Tags
 
         public bool ReadID3v2(int Channel)
         {
+#if __HYBRID__
+            return false;
+#else
             var ptr = ChannelGetTags(Channel, TagType.ID3v2);
 
             if (ptr == IntPtr.Zero)
@@ -810,6 +813,7 @@ namespace ManagedBass.Tags
             Pictures.AddRange(id3v2.PictureFrames);
 
             return true;
+#endif
         }
 
         public bool ReadBWF(int Channel)

@@ -1,5 +1,6 @@
 // Adopted from the great article: http://www.codeproject.com/Articles/17890/Do-Anything-With-ID
 
+#if !__HYBRID__
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -319,3 +320,4 @@ namespace ManagedBass.Tags
         #endregion
     }
 }
+#endif

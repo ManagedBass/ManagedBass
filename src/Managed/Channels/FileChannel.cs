@@ -15,8 +15,10 @@ namespace ManagedBass
         
         public FileChannel(string FilePath, bool IsDecoder = false, Resolution Resolution = Resolution.Short, long Offset = 0, long Length = 0)
         {
+#if !__HYBRID__
             if (!File.Exists(FilePath)) 
                 throw new FileNotFoundException();
+#endif
 
             this.FilePath = FilePath;
             

@@ -9,7 +9,7 @@ namespace ManagedBass.Midi
         IntPtr name;
         IntPtr copyright;
         IntPtr comment;
-        public int presents;
+        public int presets;
         public int samsize;
         public int samload;
         public int samtype;

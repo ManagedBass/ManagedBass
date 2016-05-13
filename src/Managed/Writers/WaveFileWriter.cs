@@ -1,3 +1,4 @@
+#if !__HYBRID__
 using System;
 using System.IO;
 using System.Text;
@@ -197,3 +198,4 @@ namespace ManagedBass
         #endregion
     }
 }
+#endif
