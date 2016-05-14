@@ -60,8 +60,28 @@ namespace ManagedBass.Mix
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamReset")]
         public static extern bool SplitStreamReset(int Handle);
 
+        /// <summary>
+        /// Resets a splitter stream and sets its position in the source buffer.
+        /// </summary>
+        /// <param name="Handle">The splitter (as obtained by <see cref="CreateSplitStream" />) or the source channel handle.</param>
+        /// <param name="Offset">
+        /// How far back (in bytes) to position the splitter in the source buffer.
+        /// This is based on the source's sample format, which may have a different channel count to the splitter.
+        /// </param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// This function is the same as <see cref="SplitStreamReset(int)" /> except that it also provides the ability to position the splitter stream within the buffer that is shared by all of the splitter streams of the same source.
+        /// A splitter stream's buffer position determines what data it will next receive.
+        /// For example, if its position is half a second back, it will receive half a second of buffered data before receiving new data from the source.
+        /// Calling this function with <paramref name="Offset"/> = 0 will result in the next data that the splitter stream receives being new data from the source, and is identical to using <see cref="SplitStreamReset(int)" />.
+        /// <para>
+        /// <paramref name="Offset" /> is automatically limited to the amount of data that the source buffer contains, which is in turn limited to the buffer size, determined by the <see cref="SplitBufferLength" /> config option.
+        /// The amount of source data buffered, as well as a splitter stream's position within it, is available from <see cref="SplitStreamGetAvailable" />.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle">The <paramref name="Handle" /> is neither a splitter stream or source.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamResetEx")]
-        public static extern bool SplitStreamReset(int handle, int offset);
+        public static extern bool SplitStreamReset(int Handle, int Offset);
         
 		/// <summary>
 		/// Retrieves the source of a splitter stream.

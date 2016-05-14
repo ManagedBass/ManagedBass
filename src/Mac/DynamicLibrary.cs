@@ -1,5 +1,4 @@
-﻿#if LINUX || __ANDROID__
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.IO;
 
@@ -7,8 +6,8 @@ namespace ManagedBass
 {
     static class DynamicLibrary
     {
-        const string DllName = "libdl.so";
-
+        const string DllName = "/usr/lib/libSystem.dylib";
+        
         const int RtldNow = 2;
 
         [DllImport(DllName)]
@@ -19,10 +18,9 @@ namespace ManagedBass
 
         public static IntPtr Load(string DllName, string Folder)
         {
-            var extName = $"lib{DllName}.so";
+            var extName = $"lib{DllName}.dylib";
 
             return dlopen(!string.IsNullOrWhiteSpace(Folder) ? Path.Combine(Folder, extName) : extName);
         }
     }
 }
-#endif

@@ -112,11 +112,51 @@ namespace ManagedBass.Enc
         #endregion
 
         #region Encoding
+        /// <summary>
+        /// Sends a RIFF chunk to an encoder.
+        /// </summary>
+        /// <param name="Handle">The encoder handle... a HENCODE.</param>
+        /// <param name="ID">The 4 character chunk id (e.g. 'bext').</param>
+        /// <param name="Buffer">The buffer containing the chunk data (without the id).</param>
+        /// <param name="Length">The number of bytes in the buffer.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// BassEnc writes the minimum chunks required of a WAV file: "fmt" and "data", and "ds64" and "fact" when appropriate.
+        /// This function can be used to add other chunks. 
+        /// For example, a BWF "bext" chunk or "INFO" tags.
+        /// <para>
+        /// Chunks can only be added prior to sample data being sent to the encoder.
+        /// The <see cref="EncodeFlags.Pause"/> flag can be used when starting the encoder to ensure that no sample data is sent before additional chunks have been set.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">No RIFF headers/chunks are being sent to the encoder (due to the <see cref="EncodeFlags.NoHeader"/> flag being in effect), or sample data encoding has started.</exception>
+        /// <exception cref="Errors.Ended">The encoder has died.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_AddChunk")]
-        public static extern bool EncodeAddChunk(int handle, string id, IntPtr buffer, int length);
+        public static extern bool EncodeAddChunk(int Handle, string ID, IntPtr Buffer, int Length);
 
+        /// <summary>
+        /// Sends a RIFF chunk to an encoder.
+        /// </summary>
+        /// <param name="Handle">The encoder handle... a HENCODE.</param>
+        /// <param name="ID">The 4 character chunk id (e.g. 'bext').</param>
+        /// <param name="Buffer">The buffer containing the chunk data (without the id).</param>
+        /// <param name="Length">The number of bytes in the buffer.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// BassEnc writes the minimum chunks required of a WAV file: "fmt" and "data", and "ds64" and "fact" when appropriate.
+        /// This function can be used to add other chunks. 
+        /// For example, a BWF "bext" chunk or "INFO" tags.
+        /// <para>
+        /// Chunks can only be added prior to sample data being sent to the encoder.
+        /// The <see cref="EncodeFlags.Pause"/> flag can be used when starting the encoder to ensure that no sample data is sent before additional chunks have been set.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">No RIFF headers/chunks are being sent to the encoder (due to the <see cref="EncodeFlags.NoHeader"/> flag being in effect), or sample data encoding has started.</exception>
+        /// <exception cref="Errors.Ended">The encoder has died.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_AddChunk")]
-        public static extern bool EncodeAddChunk(int handle, string id, byte[] buffer, int length);
+        public static extern bool EncodeAddChunk(int Handle, string ID, byte[] Buffer, int Length);
         
         /// <summary>
         /// Retrieves the channel that an encoder is set on.
@@ -127,6 +167,26 @@ namespace ManagedBass.Enc
         [DllImport(DllName, EntryPoint = "BASS_Encode_GetChannel")]
         public static extern int EncodeGetChannel(int Handle);
 
+        /// <summary>
+        /// Retrieves the amount of data queued, sent to or received from an encoder, or sent to a cast server.
+        /// </summary>
+        /// <param name="Handle">The encoder handle.</param>
+        /// <param name="Count">The count to retrieve (see <see cref="EncodeCount"/>).</param>
+        /// <returns>If successful, the requested count (in bytes) is returned, else -1 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// The queue counts are based on the channel's sample format (floating-point if the <see cref="Bass.FloatingPointDSP"/> option is enabled),
+        /// while the <see cref="EncodeCount.In"/> count is based on the sample format used by the encoder,
+        /// which could be different if one of the Floating-point conversion flags is active or the encoder is using an ACM codec (which take 16-bit data).
+        /// </para>
+        /// <para>
+        /// When the encoder output is being sent to a cast server, the <see cref="EncodeCount.Cast"/> count will match the <see cref="EncodeCount.Out"/> count,
+        /// unless there have been problems (eg. network timeout) that have caused data to be dropped.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The encoder does not have a queue.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Count" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_GetCount")]
         public static extern long EncodeGetCount(int Handle, EncodeCount Count);
 

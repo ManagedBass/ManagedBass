@@ -318,7 +318,7 @@ namespace ManagedBass.Midi
         /// <summary>
         /// Retrieves information on a soundfont.
         /// </summary>
-        /// <param name="Handle">The soundfont to get info on (e.g. as returned by <see cref="FontInit" />).</param>
+        /// <param name="Handle">The soundfont to get info on (e.g. as returned by <see cref="FontInit(string, BassFlags)" />).</param>
         /// <param name="Info">An instance of <see cref="MidiFontInfo"/> structure to store the information into.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
@@ -328,7 +328,7 @@ namespace ManagedBass.Midi
         /// <summary>
         /// Retrieves information on a soundfont.
         /// </summary>
-        /// <param name="Handle">The soundfont to get info on (e.g. as returned by <see cref="FontInit" />).</param>
+        /// <param name="Handle">The soundfont to get info on (e.g. as returned by <see cref="FontInit(string, BassFlags)" />).</param>
         /// <returns>An instance of <see cref="MidiFontInfo"/> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         public static MidiFontInfo FontGetInfo(int Handle)

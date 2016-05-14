@@ -78,6 +78,7 @@
     <Compile Include="BassWasapi\Devices\WasapiPlaybackDevice.cs" />
     <Compile Include="BassWasapi\Devices\WasapiRecordingDevice.cs" />
     <Compile Include="DSInterface.cs" />
+    <Compile Include="DynamicLibrary.cs" />
     <Compile Include="EAXEnvironment.cs" />
     <Compile Include="BassWasapi\Loopback.cs" />
     <Compile Include="BassWasapi\WasapiToBassFullDuplex.cs" />
