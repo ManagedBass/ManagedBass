@@ -42,12 +42,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)BassFx\Delegates\BPMBeatProcedure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassFx\Delegates\BPMProcedure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassFx\Delegates\BPMProgressProcedure.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BassMidi\BassMidi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassMidi\Enumerations\MidiEventsMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassMidi\Enumerations\MidiEventType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassMidi\Enumerations\MidiMarkerType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassMidi\Enumerations\MidiSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassMidi\MidiInProcedure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BassMidi\PInvoke\Configure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BassMidi\PInvoke\SoundFonts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BassMidi\PInvoke\MidiIn.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BassMidi\PInvoke\BassMidi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassMidi\Structures\MidiDeviceInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassMidi\Structures\MidiEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassMidi\Structures\MidiFont.cs" />
