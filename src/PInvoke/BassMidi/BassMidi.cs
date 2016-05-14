@@ -37,10 +37,10 @@ namespace ManagedBass.Midi
 
         #region Create Stream
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreate")]
-        public static extern int CreateStream(int Channels, BassFlags Flags = BassFlags.Default, int Frequency = 44100);
+        public static extern int CreateStream(int Channels, BassFlags Flags = BassFlags.Default, int Frequency = 0);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreateEvents")]
-        public static extern int CreateStream(MidiEvent[] events, int ppqn, BassFlags flags = BassFlags.Default, int freq = 44100);
+        public static extern int CreateStream(MidiEvent[] events, int ppqn, BassFlags flags = BassFlags.Default, int freq = 0);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_MIDI_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags, int freq);
@@ -48,17 +48,17 @@ namespace ManagedBass.Midi
         [DllImport(DllName)]
         static extern int BASS_MIDI_StreamCreateFile(bool mem, IntPtr file, long offset, long length, BassFlags flags, int freq);
 
-        public static int CreateStream(string File, long Offset = 0, long Length = 0, BassFlags Flags = BassFlags.Default, int Frequency = 44100)
+        public static int CreateStream(string File, long Offset = 0, long Length = 0, BassFlags Flags = BassFlags.Default, int Frequency = 0)
         {
             return BASS_MIDI_StreamCreateFile(false, File, Offset, Length, Flags | BassFlags.Unicode, Frequency);
         }
 
-        public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default, int Frequency = 44100)
+        public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default, int Frequency = 0)
         {
             return BASS_MIDI_StreamCreateFile(true, new IntPtr(Memory.ToInt64() + Offset), 0, Length, Flags, Frequency);
         }
 
-        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags, int Frequency = 44100)
+        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags, int Frequency = 0)
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
@@ -73,7 +73,7 @@ namespace ManagedBass.Midi
         [DllImport(DllName)]
         static extern int BASS_MIDI_StreamCreateFileUser(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user, int freq);
 
-        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr), int freq = 44100)
+        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr), int freq = 0)
         {
             var h = BASS_MIDI_StreamCreateFileUser(system, flags, procs, user, freq);
 
@@ -84,9 +84,9 @@ namespace ManagedBass.Midi
         }
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_MIDI_StreamCreateURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 44100);
+        static extern int BASS_MIDI_StreamCreateURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 0);
 
-        public static int CreateStream(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 44100)
+        public static int CreateStream(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 0)
         {
             var h = BASS_MIDI_StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User, Frequency);
 
@@ -315,19 +315,26 @@ namespace ManagedBass.Midi
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontFree")]
         public static extern bool FontFree(int Handle);
 
-        [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetInfo")]
-        public static extern bool FontGetInfo(int handle, out MidiFontInfo info);
-
-        // TODO: Partial doc
         /// <summary>
-        /// 
+        /// Retrieves information on a soundfont.
         /// </summary>
-        /// <param name="handle"></param>
+        /// <param name="Handle">The soundfont to get info on (e.g. as returned by <see cref="FontInit" />).</param>
+        /// <param name="Info">An instance of <see cref="MidiFontInfo"/> structure to store the information into.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetInfo")]
+        public static extern bool FontGetInfo(int Handle, out MidiFontInfo Info);
+
+        /// <summary>
+        /// Retrieves information on a soundfont.
+        /// </summary>
+        /// <param name="Handle">The soundfont to get info on (e.g. as returned by <see cref="FontInit" />).</param>
         /// <returns>An instance of <see cref="MidiFontInfo"/> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
-        public static MidiFontInfo FontGetInfo(int handle)
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        public static MidiFontInfo FontGetInfo(int Handle)
         {
             MidiFontInfo info;
-            if (!FontGetInfo(handle, out info))
+            if (!FontGetInfo(Handle, out info))
                 throw new BassException();
             return info;
         }
@@ -335,13 +342,52 @@ namespace ManagedBass.Midi
         [DllImport(DllName)]
         static extern IntPtr BASS_MIDI_FontGetPreset(int handle, int preset, int bank);
 
-        public static string FontGetPreset(int handle, int preset, int bank)
+		/// <summary>
+        /// Retrieves the name of a preset in a soundfont.
+		/// </summary>
+		/// <param name="Handle">The soundfont handle to get the preset name from.</param>
+		/// <param name="Preset">Preset number to load... -1 = all presets (the first encountered).</param>
+		/// <param name="Bank">Bank number to load... -1 = all banks (the first encountered).</param>
+		/// <returns>If successful, the requested preset name is returned, else <see langword="null" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The soundfont does not contain the requested preset.</exception>
+        public static string FontGetPreset(int Handle, int Preset, int Bank)
         {
-            return Marshal.PtrToStringAnsi(BASS_MIDI_FontGetPreset(handle, preset, bank));
+            return Marshal.PtrToStringAnsi(BASS_MIDI_FontGetPreset(Handle, Preset, Bank));
         }
-
+        
+		/// <summary>
+		/// Retrieves the presets in a soundfont.
+		/// </summary>
+		/// <param name="Handle">The soundfont handle to get the preset name from.</param>
+        /// <param name="Presets">The array to receive the presets.</param>
+		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>The presets are delivered with the preset number in the LOWORD and the bank number in the HIWORD, and in numerically ascending order.</remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetPresets")]
-        public static extern bool FontGetPresets(int handle, [In, Out] int[] presets);
+        public static extern bool FontGetPresets(int Handle, [In, Out] int[] Presets);
+                
+		/// <summary>
+		/// Retrieves the presets in a soundfont.
+		/// </summary>
+		/// <param name="Handle">The soundfont handle to get the preset name from.</param>
+		/// <returns>If successful, an array of presets is returned, else <see langword="null" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>The presets are delivered with the preset number in the LOWORD and the bank number in the HIWORD, and in numerically ascending order.</remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        public static int[] FontGetPresets(int Handle)
+        {
+            MidiFontInfo info;
+            
+            if (!FontGetInfo(Handle, out info))
+                return null;
+
+            var ret = new int[info.presets];
+            
+            if (FontGetPresets(Handle, ret))
+                return ret;
+
+            return null;
+        }
         
 		/// <summary>
 		/// Retrieves a soundfont's volume level.
@@ -512,6 +558,6 @@ namespace ManagedBass.Midi
         [DllImport(DllName, EntryPoint = "BASS_MIDI_InStop")]
         public static extern bool InStop(int Device);
 #endif
-#endregion
+        #endregion
     }
 }

@@ -30,7 +30,6 @@ Bass and its Addons are trademarks of their respective owners.
         <releaseNotes>
         </releaseNotes>
         <copyright>(c) 2016 Mathew Sachin</copyright>
-        <language>en-GB</language>
         <tags>C# Bass Wasapi Asio Recording Audio Music</tags>
         <frameworkAssemblies>
             <frameworkAssembly assemblyName="System" targetFramework="" />
