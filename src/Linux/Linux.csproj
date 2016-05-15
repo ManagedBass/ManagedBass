@@ -6,7 +6,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ManagedBass</RootNamespace>
-    <AssemblyName>ManagedBass.Linux</AssemblyName>
+    <AssemblyName>ManagedBass</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectGuid>{5836FB0C-47B9-4370-B523-6E3B01A63F86}</ProjectGuid>

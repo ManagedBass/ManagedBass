@@ -1,0 +1,18 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+
+<#
+var Condition = "";
+var Namespace = "";
+var DocSummary = "Wraps BassWv";
+var DocRemarks = "Supports .wv";
+var LibraryName = "BassWv";
+var DllName = "basswv";
+
+var Embed = "";
+
+var ID = "WV_";
+var IsPartial = false;
+#>
+
+<#@ include file="PluginInclude.ttinclude" #>

@@ -1,0 +1,30 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+
+<#
+var Condition = "WINDOWS || LINUX || __ANDROID__";
+var Namespace = "";
+var DocSummary = "Wraps BassAac";
+var DocRemarks = "Supports .aac, .adts, .mp4, .m4a, .m4b";
+var LibraryName = "BassAac";
+var DllName = "bass_aac";
+
+var Embed = @"
+        public static bool PlayAudioFromMp4
+        {
+            get { return Bass.GetConfigBool(Configuration.PlayAudioFromMp4); }
+            set { Bass.Configure(Configuration.PlayAudioFromMp4, value); }
+        }
+
+        public static bool SupportMp4
+        {
+            get { return Bass.GetConfigBool(Configuration.AacSupportMp4); }
+            set { Bass.Configure(Configuration.AacSupportMp4, value); }
+        }
+";
+
+var ID = "AAC_";
+var IsPartial = false;
+#>
+
+<#@ include file="PluginInclude.ttinclude" #>

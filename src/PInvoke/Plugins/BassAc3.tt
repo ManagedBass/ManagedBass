@@ -1,0 +1,27 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+
+<#
+var Condition = "";
+var Namespace = "";
+var DocSummary = "Wraps BassAc3";
+var DocRemarks = "Supports .ac3";
+var LibraryName = "BassAc3";
+var DllName = "bass_ac3";
+
+var Embed = @"
+        /// <summary>
+        /// Enable Dynamic Range Compression (default is false).
+        /// </summary>
+        public static bool DRC
+        {
+            get { return Bass.GetConfigBool(Configuration.AC3DynamicRangeCompression); }
+            set { Bass.Configure(Configuration.AC3DynamicRangeCompression, value); }
+        }
+";
+
+var ID = "AC3_";
+var IsPartial = false;
+#>
+
+<#@ include file="PluginInclude.ttinclude" #>

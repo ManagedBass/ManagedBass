@@ -6,7 +6,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ManagedBass</RootNamespace>
-    <AssemblyName>ManagedBass.Windows</AssemblyName>
+    <AssemblyName>ManagedBass</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectGuid>{57C787D9-351E-4C61-9ABB-619F6F6AA03A}</ProjectGuid>

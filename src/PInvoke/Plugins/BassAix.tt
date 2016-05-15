@@ -1,0 +1,18 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+
+<#
+var Condition = "WINDOWS";
+var Namespace = "";
+var DocSummary = "Wraps BassAix";
+var DocRemarks = "";
+var LibraryName = "BassAix";
+var DllName = "bass_aix";
+
+var Embed = "";
+
+var ID = "AIX_";
+var IsPartial = false;
+#>
+
+<#@ include file="PluginInclude.ttinclude" #>

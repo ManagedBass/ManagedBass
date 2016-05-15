@@ -1,0 +1,18 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+
+<#
+var Condition = "WINDOWS";
+var Namespace = "";
+var DocSummary = "Wraps BassOfr";
+var DocRemarks = "Supports .ofr, .ofs";
+var LibraryName = "BassOfr";
+var DllName = "bass_ofr";
+
+var Embed = "";
+
+var ID = "OFR_";
+var IsPartial = false;
+#>
+
+<#@ include file="PluginInclude.ttinclude" #>

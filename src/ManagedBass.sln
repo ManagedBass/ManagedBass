@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hybrid", "Hybrid\Hybrid.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{3A96C047-EF86-4BAD-BB28-3F408C488D67}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins", "PInvoke\Plugins\Plugins.csproj", "{4D392CD1-E5ED-4973-B08E-D2337B2253D8}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Managed\Managed.projitems*{3479219e-33a6-40a6-a60f-e1e31b450ca7}*SharedItemsImports = 13
@@ -82,6 +84,11 @@ Global
 		{1AAB26ED-862E-42DD-A5B2-A6BFA67B8FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AAB26ED-862E-42DD-A5B2-A6BFA67B8FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AAB26ED-862E-42DD-A5B2-A6BFA67B8FB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D392CD1-E5ED-4973-B08E-D2337B2253D8}.AppStore|Any CPU.ActiveCfg = Debug|x86
+		{4D392CD1-E5ED-4973-B08E-D2337B2253D8}.AppStore|Any CPU.Build.0 = Debug|x86
+		{4D392CD1-E5ED-4973-B08E-D2337B2253D8}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{4D392CD1-E5ED-4973-B08E-D2337B2253D8}.Release|Any CPU.ActiveCfg = Debug|x86
+		{4D392CD1-E5ED-4973-B08E-D2337B2253D8}.Release|Any CPU.Build.0 = Debug|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

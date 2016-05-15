@@ -142,7 +142,20 @@
     <Compile Include="$(MSBuildThisFileDirectory)Errors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEffectParameter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAac.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAdx.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAix.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAlac.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassApe.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassFlac.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassHls.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassMpc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassOfr.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassOpus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassSpx.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassTta.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassWv.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\Plugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcedureDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Resolution.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ADXLoopTag.cs" />
@@ -156,5 +169,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tags\Flac\FlacCueTrackIndex.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\Flac\FlacPictureTag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v1Tag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAc3.cs" />
   </ItemGroup>
 </Project>
