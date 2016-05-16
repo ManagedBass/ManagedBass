@@ -206,6 +206,32 @@
       <DesignTime>True</DesignTime>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="BassDsd.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BassDsd.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BassDsd.cs">
+      <DependentUpon>BassDsd.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BassMidi.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BassMidi.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BassMidi.cs">
+      <DependentUpon>BassMidi.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </None>
+  </ItemGroup>
   <Target Name="Build">
   </Target>
   <Target Name="Clean">

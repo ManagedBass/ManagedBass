@@ -38,7 +38,6 @@ namespace ManagedBass
 
         /// <summary>
         /// Creates a sample stream from an MP3, MP2, MP1, OGG, WAV, AIFF or plugin supported file.
-        /// <para>This overload implements streaming from file.</para>
         /// </summary>
         /// <param name="File">Filename for which a stream should be created.</param>
         /// <param name="Offset">File Offset to begin streaming from.</param>
@@ -107,7 +106,6 @@ namespace ManagedBass
 
         /// <summary>
         /// Creates a sample stream from an MP3, MP2, MP1, OGG, WAV, AIFF or plugin supported memory IntPtr.
-        /// <para>This overload implements streaming from memory.</para>
         /// </summary>
         /// <param name="Memory">An unmanaged pointer to the memory location as an IntPtr.</param>
         /// <param name="Offset">Offset to begin streaming from.</param>
@@ -179,8 +177,7 @@ namespace ManagedBass
         }
 
         /// <summary>
-        /// Creates a sample stream from an MP3, MP2, MP1, OGG, WAV, AIFF or plugin supported file.
-        /// <para>This overload implements streaming from a byte[].</para>
+        /// Creates a sample stream from an MP3, MP2, MP1, OGG, WAV, AIFF or plugin supported file in memory (byte[]).
         /// </summary>
         /// <param name="Memory">A byte[] containing file data.</param>
         /// <param name="Offset">Offset to begin streaming from.</param>

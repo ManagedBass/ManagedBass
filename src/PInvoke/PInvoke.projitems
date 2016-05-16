@@ -147,8 +147,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAix.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAlac.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassApe.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassDsd.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassFlac.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassHls.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassMidi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassMpc.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassOfr.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassOpus.cs" />

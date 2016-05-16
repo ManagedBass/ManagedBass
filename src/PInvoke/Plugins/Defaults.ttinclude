@@ -35,4 +35,7 @@ var UrlDoc = "/// <summary>Create a stream from Url.</summary>";
 
 // Whether to put the partial modifier on the generated class.
 var IsPartial = false;
+
+// Whether to Define the Frequency parameter.
+var DefineFrequency = false;
 #>

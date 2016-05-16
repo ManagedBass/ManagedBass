@@ -11,6 +11,9 @@ if (!string.IsNullOrEmpty(ID))
 var HasCondition = !string.IsNullOrEmpty(Condition);
 
 if (HasCondition) WriteLine("#if " + Condition);
+
+var EndDef = DefineFrequency ? ", int Frequency = 0" : "";
+var EndInvoke = DefineFrequency ? ", Frequency" : "";
 #>
 
 using System;
@@ -51,29 +54,29 @@ namespace ManagedBass<# if (!string.IsNullOrEmpty(Namespace)) WriteLine("." + Na
         <#= Embed #>
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_<#= ID #>StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
+        static extern int BASS_<#= ID #>StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags<#= EndDef #>);
 
         [DllImport(DllName)]
-        static extern int BASS_<#= ID #>StreamCreateFile(bool mem, IntPtr file, long offset, long length, BassFlags flags);
+        static extern int BASS_<#= ID #>StreamCreateFile(bool mem, IntPtr file, long offset, long length, BassFlags flags<#= EndDef #>);
 
 		<#= FileDoc #>
-        public static int CreateStream(string File, long Offset = 0, long Length = 0, BassFlags Flags = BassFlags.Default)
+        public static int CreateStream(string File, long Offset = 0, long Length = 0, BassFlags Flags = BassFlags.Default<#= EndDef #>)
         {
-            return BASS_<#= ID #>StreamCreateFile(false, File, Offset, Length, Flags | BassFlags.Unicode);
+            return BASS_<#= ID #>StreamCreateFile(false, File, Offset, Length, Flags | BassFlags.Unicode<#= EndInvoke #>);
         }
 
 		<#= MemDoc #>
-        public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default)
+        public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default<#= EndDef #>)
         {
-            return BASS_<#= ID #>StreamCreateFile(true, new IntPtr(Memory.ToInt64() + Offset), 0, Length, Flags);
+            return BASS_<#= ID #>StreamCreateFile(true, new IntPtr(Memory.ToInt64() + Offset), 0, Length, Flags<#= EndInvoke #>);
         }
 
 		<#= ByteDoc #>
-        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
+        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags<#= EndDef #>)
         {
             var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
 
-            var Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
+            var Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags<#= EndInvoke #>);
 
             if (Handle == 0) GCPin.Free();
             else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
@@ -82,12 +85,12 @@ namespace ManagedBass<# if (!string.IsNullOrEmpty(Namespace)) WriteLine("." + Na
         }
         
         [DllImport(DllName)]
-        static extern int BASS_<#= ID #>StreamCreateFileUser(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user);
+        static extern int BASS_<#= ID #>StreamCreateFileUser(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user<#= EndDef #>);
 
 		<#= UserDoc #>
-        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr))
+        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr)<#= EndDef #>)
         {
-            var h = BASS_<#= ID #>StreamCreateFileUser(system, flags, procs, user);
+            var h = BASS_<#= ID #>StreamCreateFileUser(system, flags, procs, user<#= EndInvoke #>);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(h, 0, procs);
@@ -96,12 +99,12 @@ namespace ManagedBass<# if (!string.IsNullOrEmpty(Namespace)) WriteLine("." + Na
         }
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_<#= ID #>StreamCreateURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User);
+        static extern int BASS_<#= ID #>StreamCreateURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User<#= EndDef #>);
 
 		<#= UrlDoc #>
-        public static int CreateStream(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr))
+        public static int CreateStream(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr)<#= EndDef #>)
         {
-            var h = BASS_<#= ID #>StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User);
+            var h = BASS_<#= ID #>StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User<#= EndInvoke #>);
 
             if (h != 0)
                 Extensions.ChannelReferences.Add(h, 0, Procedure);

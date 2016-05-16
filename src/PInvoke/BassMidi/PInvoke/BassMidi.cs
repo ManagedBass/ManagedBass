@@ -11,92 +11,17 @@ namespace ManagedBass.Midi
     public static partial class BassMidi
     {
         const int BASS_MIDI_FONT_EX = 0x1000000;
-#if __IOS__
-        const string DllName = "__internal";
-#else
-        const string DllName = "bassmidi";
-#endif
-        
+
         public const int ChorusChannel = -1,
                          ReverbChannel = -2,
                          UserFXChannel = -3;
-
-#if __ANDROID__ || WINDOWS || LINUX || __MAC__
-        static IntPtr hLib;
         
-        /// <summary>
-        /// Load from a folder other than the Current Directory.
-        /// <param name="Folder">If null (default), Load from Current Directory</param>
-        /// </summary>
-        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
-
-        public static void Unload() => DynamicLibrary.Unload(hLib);
-#endif
-
-        public static readonly Plugin Plugin = new Plugin(DllName);
-
-        #region Create Stream
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreate")]
         public static extern int CreateStream(int Channels, BassFlags Flags = BassFlags.Default, int Frequency = 0);
 
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamCreateEvents")]
         public static extern int CreateStream(MidiEvent[] events, int ppqn, BassFlags flags = BassFlags.Default, int freq = 0);
-
-        [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_MIDI_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags, int freq);
-
-        [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamCreateFile(bool mem, IntPtr file, long offset, long length, BassFlags flags, int freq);
-
-        public static int CreateStream(string File, long Offset = 0, long Length = 0, BassFlags Flags = BassFlags.Default, int Frequency = 0)
-        {
-            return BASS_MIDI_StreamCreateFile(false, File, Offset, Length, Flags | BassFlags.Unicode, Frequency);
-        }
-
-        public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default, int Frequency = 0)
-        {
-            return BASS_MIDI_StreamCreateFile(true, new IntPtr(Memory.ToInt64() + Offset), 0, Length, Flags, Frequency);
-        }
-
-        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags, int Frequency = 0)
-        {
-            var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
-
-            var Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags, Frequency);
-
-            if (Handle == 0) GCPin.Free();
-            else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
-
-            return Handle;
-        }
-
-        [DllImport(DllName)]
-        static extern int BASS_MIDI_StreamCreateFileUser(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user, int freq);
-
-        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr), int freq = 0)
-        {
-            var h = BASS_MIDI_StreamCreateFileUser(system, flags, procs, user, freq);
-
-            if (h != 0)
-                Extensions.ChannelReferences.Add(h, 0, procs);
-
-            return h;
-        }
-
-        [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_MIDI_StreamCreateURL(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 0);
-
-        public static int CreateStream(string Url, int Offset, BassFlags Flags, DownloadProcedure Procedure, IntPtr User = default(IntPtr), int Frequency = 0)
-        {
-            var h = BASS_MIDI_StreamCreateURL(Url, Offset, Flags | BassFlags.Unicode, Procedure, User, Frequency);
-
-            if (h != 0)
-                Extensions.ChannelReferences.Add(h, 0, Procedure);
-
-            return h;
-        }
-        #endregion
-
+        
         [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamEvent")]
         public static extern bool StreamEvent(int Handle, int chan, MidiEventType Event, int param);
 

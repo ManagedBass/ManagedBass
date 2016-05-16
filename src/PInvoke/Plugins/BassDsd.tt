@@ -1,0 +1,14 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+
+<#@ include file="Defaults.ttinclude" #>
+
+<#
+DocSummary = "Wraps BassDsd";
+DocRemarks = "Supports .dsf, .dff, .dsd";
+ID = "DSD";
+IsPartial = true;
+DefineFrequency = true;
+#>
+
+<#@ include file="PluginInclude.ttinclude" #>
