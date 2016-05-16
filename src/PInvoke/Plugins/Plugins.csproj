@@ -190,6 +190,22 @@
       <DesignTime>True</DesignTime>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BassWma.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BassWma.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BassWma.cs">
+      <DependentUpon>BassWma.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </None>
+  </ItemGroup>
   <Target Name="Build">
   </Target>
   <Target Name="Clean">

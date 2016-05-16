@@ -11,66 +11,10 @@ namespace ManagedBass.Wma
     /// Supports: .wma, .wmv
     /// <para>Not available for Linux and OSX</para>
     /// </remarks>
-    public static class BassWma
+    public static partial class BassWma
     {
-        const string DllName = "basswma";
-        static IntPtr hLib;
-
-        /// <summary>
-        /// Load from a folder other than the Current Directory.
-        /// <param name="Folder">If null (default), Load from Current Directory</param>
-        /// </summary>
-        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
-
-        public static void Unload() => DynamicLibrary.Unload(hLib);
-
-        public static readonly Plugin Plugin = new Plugin(DllName);
-
         [DllImport(DllName, EntryPoint = "BASS_WMA_GetWMObject")]
         public static extern IntPtr GetWMObject(int handle);
-
-        #region CreateStream
-        [DllImport(DllName)]
-        static extern int BASS_WMA_StreamCreateFileUser(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user);
-        
-        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr))
-        {
-            var h = BASS_WMA_StreamCreateFileUser(system, flags, procs, user);
-
-            if (h != 0)
-                Extensions.ChannelReferences.Add(h, 0, procs);
-
-            return h;
-        }
-        
-        [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_WMA_StreamCreateFile(bool Memory, string File, long Offset, long Length, BassFlags Flags);
-
-        [DllImport(DllName)]
-        static extern int BASS_WMA_StreamCreateFile(bool Memory, IntPtr File, long Offset, long Length, BassFlags Flags);
-
-        public static int CreateStream(string File, long Offset = 0, long Length = 0, BassFlags Flags = BassFlags.Default)
-        {
-            return BASS_WMA_StreamCreateFile(false, File, Offset, Length, Flags | BassFlags.Unicode);
-        }
-
-        public static int CreateStream(IntPtr Memory, long Offset, long Length, BassFlags Flags = BassFlags.Default)
-        {
-            return BASS_WMA_StreamCreateFile(true, new IntPtr(Memory.ToInt64() + Offset), 0, Length, Flags);
-        }
-
-        public static int CreateStream(byte[] Memory, long Offset, long Length, BassFlags Flags)
-        {
-            var GCPin = GCHandle.Alloc(Memory, GCHandleType.Pinned);
-
-            var Handle = CreateStream(GCPin.AddrOfPinnedObject(), Offset, Length, Flags);
-
-            if (Handle == 0) GCPin.Free();
-            else Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, (a, b, c, d) => GCPin.Free());
-
-            return Handle;
-        }
-        #endregion
 
         #region CreateStream Auth
         [DllImport(DllName, CharSet = CharSet.Unicode)]

@@ -7,13 +7,13 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass{
-    /// <summary>
+    	/// <summary>
     /// Wraps BassOfr
     /// </summary> 
     /// <remarks>
     /// Supports .ofr, .ofs
     /// </remarks>
-    public static  class BassOfr
+	    public static  class BassOfr
     {
 #if __IOS__
         const string DllName = "__internal";
@@ -33,8 +33,7 @@ namespace ManagedBass{
         public static void Unload() => DynamicLibrary.Unload(hLib);
 #endif
 
-        public static readonly Plugin Plugin = new Plugin(DllName);
-		
+        public static readonly Plugin Plugin = new Plugin(DllName);		
         
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]

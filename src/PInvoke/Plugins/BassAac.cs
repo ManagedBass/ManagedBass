@@ -7,13 +7,13 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass{
-    /// <summary>
+    	/// <summary>
     /// Wraps BassAac
     /// </summary> 
     /// <remarks>
     /// Supports .aac, .adts, .mp4, .m4a, .m4b
     /// </remarks>
-    public static  class BassAac
+	    public static  class BassAac
     {
 #if __IOS__
         const string DllName = "__internal";
@@ -33,8 +33,7 @@ namespace ManagedBass{
         public static void Unload() => DynamicLibrary.Unload(hLib);
 #endif
 
-        public static readonly Plugin Plugin = new Plugin(DllName);
-		
+        public static readonly Plugin Plugin = new Plugin(DllName);		
         
         public static bool PlayAudioFromMp4
         {

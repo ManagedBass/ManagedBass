@@ -6,13 +6,13 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass{
-    /// <summary>
+    	/// <summary>
     /// Wraps BassApe
     /// </summary> 
     /// <remarks>
     /// Supports .ape, .ap1
     /// </remarks>
-    public static  class BassApe
+	    public static  class BassApe
     {
 #if __IOS__
         const string DllName = "__internal";
@@ -32,8 +32,7 @@ namespace ManagedBass{
         public static void Unload() => DynamicLibrary.Unload(hLib);
 #endif
 
-        public static readonly Plugin Plugin = new Plugin(DllName);
-		
+        public static readonly Plugin Plugin = new Plugin(DllName);		
         
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]

@@ -6,13 +6,13 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass{
-    /// <summary>
+    	/// <summary>
     /// Wraps BassAc3
     /// </summary> 
     /// <remarks>
     /// Supports .ac3
     /// </remarks>
-    public static  class BassAc3
+	    public static  class BassAc3
     {
 #if __IOS__
         const string DllName = "__internal";
@@ -32,8 +32,7 @@ namespace ManagedBass{
         public static void Unload() => DynamicLibrary.Unload(hLib);
 #endif
 
-        public static readonly Plugin Plugin = new Plugin(DllName);
-		
+        public static readonly Plugin Plugin = new Plugin(DllName);		
         
         /// <summary>
         /// Enable Dynamic Range Compression (default is false).

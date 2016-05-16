@@ -154,6 +154,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassOpus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassSpx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassTta.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassWma.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassWv.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\Plugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcedureDictionary.cs" />
