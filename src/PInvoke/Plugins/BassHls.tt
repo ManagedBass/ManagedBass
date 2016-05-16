@@ -1,18 +1,12 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System.Core" #>
 
+<#@ include file="Defaults.ttinclude" #>
+
 <#
-var Condition = "";
-var Namespace = "";
-var DocSummary = "Wraps BassHls";
-var DocRemarks = "HTTP Live Streaming Add-On";
-var LibraryName = "BassHls";
-var DllName = "basshls";
-
-var Embed = "";
-
-var ID = "HLS_";
-var IsPartial = false;
+DocSummary = "Wraps BassHls";
+DocRemarks = "HTTP Live Streaming Add-On";
+ID = "HLS";
 #>
 
 <#@ include file="PluginInclude.ttinclude" #>

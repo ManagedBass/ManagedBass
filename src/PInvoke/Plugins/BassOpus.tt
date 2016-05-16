@@ -1,18 +1,13 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System.Core" #>
 
+<#@ include file="Defaults.ttinclude" #>
+
 <#
-var Condition = "";
-var Namespace = "";
-var DocSummary = "Wraps BassOpus";
-var DocRemarks = "Supports .opus";
-var LibraryName = "BassOpus";
-var DllName = "bassopus";
+DocSummary = "Wraps BassOpus";
+DocRemarks = "Supports .opus";
 
-var Embed = "";
-
-var ID = "OPUS_";
-var IsPartial = false;
+ID = "OPUS";
 #>
 
 <#@ include file="PluginInclude.ttinclude" #>

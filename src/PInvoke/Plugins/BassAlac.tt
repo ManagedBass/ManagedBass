@@ -1,18 +1,13 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System.Core" #>
 
+<#@ include file="Defaults.ttinclude" #>
+
 <#
-var Condition = "WINDOWS || LINUX || __ANDROID__";
-var Namespace = "";
-var DocSummary = "Wraps BassAlac";
-var DocRemarks = "Supports .m4a, .aac, .mp4, .mov";
-var LibraryName = "BassAlac";
-var DllName = "bassalac";
-
-var Embed = "";
-
-var ID = "ALAC_";
-var IsPartial = false;
+Condition = "WINDOWS || LINUX || __ANDROID__";
+DocSummary = "Wraps BassAlac";
+DocRemarks = "Supports .m4a, .aac, .mp4, .mov";
+ID = "ALAC";
 #>
 
 <#@ include file="PluginInclude.ttinclude" #>

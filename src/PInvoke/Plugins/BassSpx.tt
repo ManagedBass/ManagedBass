@@ -1,18 +1,13 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System.Core" #>
 
+<#@ include file="Defaults.ttinclude" #>
+
 <#
-var Condition = "";
-var Namespace = "";
-var DocSummary = "Wraps BassSpx";
-var DocRemarks = "Supports .spx";
-var LibraryName = "BassSpx";
-var DllName = "bass_spx";
-
-var Embed = "";
-
-var ID = "SPX_";
-var IsPartial = false;
+DocSummary = "Wraps BassSpx";
+DocRemarks = "Supports .spx";
+DllName = "bass_spx";
+ID = "SPX";
 #>
 
 <#@ include file="PluginInclude.ttinclude" #>

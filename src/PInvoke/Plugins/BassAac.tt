@@ -1,15 +1,15 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System.Core" #>
 
-<#
-var Condition = "WINDOWS || LINUX || __ANDROID__";
-var Namespace = "";
-var DocSummary = "Wraps BassAac";
-var DocRemarks = "Supports .aac, .adts, .mp4, .m4a, .m4b";
-var LibraryName = "BassAac";
-var DllName = "bass_aac";
+<#@ include file="Defaults.ttinclude" #>
 
-var Embed = @"
+<#
+Condition = "WINDOWS || LINUX || __ANDROID__";
+DocSummary = "Wraps BassAac";
+DocRemarks = "Supports .aac, .adts, .mp4, .m4a, .m4b";
+DllName = "bass_aac";
+
+Embed = @"
         public static bool PlayAudioFromMp4
         {
             get { return Bass.GetConfigBool(Configuration.PlayAudioFromMp4); }
@@ -23,8 +23,7 @@ var Embed = @"
         }
 ";
 
-var ID = "AAC_";
-var IsPartial = false;
+ID = "AAC";
 #>
 
 <#@ include file="PluginInclude.ttinclude" #>

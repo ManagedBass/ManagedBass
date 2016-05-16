@@ -1,15 +1,14 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System.Core" #>
 
-<#
-var Condition = "";
-var Namespace = "";
-var DocSummary = "Wraps BassAc3";
-var DocRemarks = "Supports .ac3";
-var LibraryName = "BassAc3";
-var DllName = "bass_ac3";
+<#@ include file="Defaults.ttinclude" #>
 
-var Embed = @"
+<#
+DocSummary = "Wraps BassAc3";
+DocRemarks = "Supports .ac3";
+DllName = "bass_ac3";
+
+Embed = @"
         /// <summary>
         /// Enable Dynamic Range Compression (default is false).
         /// </summary>
@@ -20,8 +19,7 @@ var Embed = @"
         }
 ";
 
-var ID = "AC3_";
-var IsPartial = false;
+ID = "AC3";
 #>
 
 <#@ include file="PluginInclude.ttinclude" #>

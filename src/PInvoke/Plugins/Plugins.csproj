@@ -15,6 +15,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BassAc3.cs</LastGenOutput>
     </None>
+    <None Include="Defaults.ttinclude" />
     <None Include="PluginInclude.ttinclude" />
   </ItemGroup>
   <ItemGroup>
