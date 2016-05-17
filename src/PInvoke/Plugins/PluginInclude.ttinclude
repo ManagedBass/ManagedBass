@@ -1,25 +1,4 @@
-﻿<#
-if (string.IsNullOrEmpty(DllName))
-	DllName = "bass" + ID.ToLower();
-
-if (string.IsNullOrEmpty(LibraryName))
-	LibraryName = string.IsNullOrEmpty(ID) ? "Bass" : "Bass" + Char.ToUpper(ID[0]) + ID.Substring(1).ToLower();
-
-if (!string.IsNullOrEmpty(ID))
-    ID += "_";
-
-var HasCondition = !string.IsNullOrEmpty(Condition);
-
-if (HasCondition) WriteLine("#if " + Condition);
-
-var EndDef = DefineFrequency ? ", int Frequency = 0" : "";
-var EndInvoke = DefineFrequency ? ", Frequency" : "";
-#>
-
-using System;
-using System.Runtime.InteropServices;
-
-namespace ManagedBass<# if (!string.IsNullOrEmpty(Namespace)) WriteLine("." + Namespace); #>
+﻿namespace ManagedBass<# if (!string.IsNullOrEmpty(Namespace)) WriteLine("." + Namespace); #>
 {
     <# if (!string.IsNullOrEmpty(DocSummary)) { #>
 	/// <summary>
@@ -51,8 +30,6 @@ namespace ManagedBass<# if (!string.IsNullOrEmpty(Namespace)) WriteLine("." + Na
 
         <# if (!string.IsNullOrEmpty(ID)) { #>public static readonly Plugin Plugin = new Plugin(DllName);<# } #>
 		
-        <#= Embed #>
-
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_<#= ID #>StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags<#= EndDef #>);
 

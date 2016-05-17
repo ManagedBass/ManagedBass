@@ -5,9 +5,6 @@
     <HasSharedItems>true</HasSharedItems>
     <SharedGUID>ec57d38f-2b7c-4547-9012-3f1aad7e8bab</SharedGUID>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>PInvoke</Import_RootNamespace>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BassCd\BassCd.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassCd\CDDataProcedure.cs" />
@@ -143,22 +140,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEffectParameter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAac.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAdx.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAix.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAlac.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassApe.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassDsd.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassFlac.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassHls.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassMidi.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassMpc.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassOfr.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassOpus.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassSpx.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassTta.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassWma.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassWv.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAc3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\Plugin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plugins\Plugins.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcedureDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Resolution.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ADXLoopTag.cs" />
@@ -172,6 +156,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tags\Flac\FlacCueTrackIndex.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\Flac\FlacPictureTag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v1Tag.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugins\BassAc3.cs" />
   </ItemGroup>
 </Project>

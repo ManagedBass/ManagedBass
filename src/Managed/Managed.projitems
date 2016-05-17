@@ -5,7 +5,6 @@
     <HasSharedItems>true</HasSharedItems>
     <SharedGUID>3479219e-33a6-40a6-a60f-e1e31b450ca7</SharedGUID>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration" />
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AudioCapture\IAudioRecorder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AudioCapture\Recording.cs" />

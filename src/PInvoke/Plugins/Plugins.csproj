@@ -4,232 +4,28 @@
     <ProjectGuid>{4D392CD1-E5ED-4973-B08E-D2337B2253D8}</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="BassAc3.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BassAc3.tt</DependentUpon>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassAc3.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassAc3.cs</LastGenOutput>
-    </None>
-    <None Include="Defaults.ttinclude" />
     <None Include="PluginInclude.ttinclude" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BassApe.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassApe.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassApe.cs">
-      <DependentUpon>BassApe.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassFlac.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassFlac.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassFlac.cs">
-      <DependentUpon>BassFlac.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassHls.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassHls.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassHls.cs">
-      <DependentUpon>BassHls.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassMpc.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassMpc.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassMpc.cs">
-      <DependentUpon>BassMpc.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassOpus.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassOpus.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassOpus.cs">
-      <DependentUpon>BassOpus.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassSpx.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassSpx.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassSpx.cs">
-      <DependentUpon>BassSpx.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassTta.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassTta.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassTta.cs">
-      <DependentUpon>BassTta.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassWv.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassWv.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassWv.cs">
-      <DependentUpon>BassWv.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassOfr.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassOfr.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassOfr.cs">
-      <DependentUpon>BassOfr.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassAdx.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassAdx.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassAdx.cs">
-      <DependentUpon>BassAdx.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassAix.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassAix.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassAix.cs">
-      <DependentUpon>BassAix.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassAlac.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassAlac.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassAlac.cs">
-      <DependentUpon>BassAlac.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassAac.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassAac.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassAac.cs">
-      <DependentUpon>BassAac.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BassWma.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassWma.cs</LastGenOutput>
-    </None>
+    <None Include="Plugins.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BassWma.cs">
-      <DependentUpon>BassWma.tt</DependentUpon>
+    <Content Include="Plugins.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Plugins.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Plugins.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassDsd.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassDsd.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassDsd.cs">
-      <DependentUpon>BassDsd.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassMidi.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BassMidi.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BassMidi.cs">
-      <DependentUpon>BassMidi.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+      <DependentUpon>Plugins.tt</DependentUpon>
     </None>
   </ItemGroup>
   <Target Name="Build">

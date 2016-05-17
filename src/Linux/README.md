@@ -1,5 +1,5 @@
 # ManagedBass.Linux
 
-This project builds the Linux version of ManagedBass.
+This project builds on .Net 4.5 while including Linux specific features.
 
-This library is built on .Net 4.5 and would **not** be included in the NuGet releases.
+**Not** included in the NuGet releases, since I can't find any support for Linux on NuGet.

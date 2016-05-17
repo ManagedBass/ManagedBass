@@ -1,0 +1,73 @@
+﻿<#@ template hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ import namespace="System.Xml" #>
+<#@ output extension=".cs" #>
+
+using System;
+using System.Runtime.InteropServices;
+
+<#
+var FileDoc = "/// <summary>Create a stream from file.</summary>";
+
+var MemDoc = "/// <summary>Create a stream from Memory (IntPtr).</summary>";
+
+var ByteDoc = "/// <summary>Create a stream from Memory (byte[]).</summary>";
+
+var UserDoc = "/// <summary>Create a stream using User File Procedures.</summary>";
+
+var UrlDoc = "/// <summary>Create a stream from Url.</summary>";
+
+var doc = new XmlDocument();
+
+var path = Host.ResolvePath("Plugins.xml");
+
+doc.Load(path);
+#>
+
+<#
+foreach (XmlNode node in doc.SelectNodes("/Plugins/Plugin"))
+{
+    var _iD = node.Attributes["ID"];
+	var ID = _iD != null ? _iD.InnerText : "";
+
+    var _dllName = node.Attributes["DllName"];
+    var DllName = _dllName != null ? _dllName.InnerText : "bass" + ID.ToLower();
+
+	var _library = node.Attributes["Library"];
+    var LibraryName = _library != null ? _library.InnerText : (string.IsNullOrEmpty(ID) ? "Bass" : "Bass" + Char.ToUpper(ID[0]) + ID.Substring(1).ToLower());
+
+	var _ns = node.Attributes["Namespace"];
+    var Namespace = _ns != null ? _ns.InnerText : "";
+
+    var _condition = node.Attributes["Condition"];
+    var Condition = _condition != null ? _condition.InnerText : "";
+	
+    var _docSummary = node.Attributes["DocSummary"];
+    var DocSummary = _docSummary != null ? _docSummary.InnerText : "";
+		
+    var _docRemarks = node.Attributes["DocRemarks"];
+    var DocRemarks = _docRemarks != null ? _docRemarks.InnerText : "";
+	
+	var _isPartial = node.Attributes["IsPartial"];
+	var IsPartial = _isPartial != null ? _isPartial.InnerText == "true" : false;
+
+    var _isFreq = node.Attributes["DefineFrequency"];
+	var DefineFrequency = _isFreq != null ? _isFreq.InnerText == "true" : false;
+
+	if (!string.IsNullOrEmpty(ID))
+		ID += "_";
+
+	var HasCondition = !string.IsNullOrEmpty(Condition);
+
+	if (HasCondition) WriteLine("#if " + Condition);
+
+	var EndDef = DefineFrequency ? ", int Frequency = 0" : "";
+	var EndInvoke = DefineFrequency ? ", Frequency" : "";
+#>
+
+<#@ include file="PluginInclude.ttinclude" #>
+
+<#
+}
+#>

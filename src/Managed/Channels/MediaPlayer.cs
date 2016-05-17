@@ -219,6 +219,9 @@ namespace ManagedBass
         /// </summary>
         public event Action<int> MediaLoaded;
 
+        /// <summary>
+        /// Initializes Properties on every call to <see cref="Load"/>.
+        /// </summary>
         protected virtual void InitProperties()
         {
             Frequency = _freq;
@@ -232,6 +235,9 @@ namespace ManagedBass
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
 
+        /// <summary>
+        /// Fired when a property value changes.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }

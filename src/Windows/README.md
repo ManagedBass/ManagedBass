@@ -1,5 +1,5 @@
 # ManagedBass.Windows
 
-This project builds the Windows version of ManagedBass.
+This project builds the Windows .Net 4.5 version of ManagedBass.
 
-In terms of features, this is the biggest project.
+This is the biggest project in terms of features.

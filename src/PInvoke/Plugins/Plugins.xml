@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Plugins>
+  <Plugin ID="APE"
+          DocSummary="Wraps BassApe"
+          DocRemarks="Supports .ape, .ap1"
+          DllName="bass_ape"/>  
+  <Plugin ID="FLAC"
+          DocSummary="Wraps BassFlac"
+          DocRemarks="Supports .flac"/>
+  <Plugin ID="OPUS"
+          DocSummary="Wraps BassOpus"
+          DocRemarks="Supports .opus"/>
+  <Plugin ID="SPX"
+          DocSummary="Wraps BassSpx"
+          DocRemarks="Supports .spx"
+          DllName="bass_spx"/>
+  <Plugin ID="TTA"
+          DocSummary="Wraps BassTta"
+          DocRemarks="Supports .tta"
+          DllName="bass_tta"/>
+  <Plugin ID="WV"
+          DocSummary="Wraps BassWv"
+          DocRemarks="Supports .wv"/>
+  <Plugin ID="MPC"
+          DocSummary="Wraps BassMpc"
+          DocRemarks="Supports .mpc, .mpp, .mp+"
+          DllName="bass_mpc"/>
+  
+  <Plugin ID="AC3"
+          DocSummary="Wraps BassAc3"
+          DocRemarks="Supports .ac3"
+          DllName="bass_ac3"
+          IsPartial="true"/>
+  
+  <Plugin ID="HLS"
+          DocSummary="Wraps BassHls"
+          DocRemarks="HTTP Live Streaming Add-On"/>
+  
+  <Plugin ID="DSD"
+          DocSummary="Wraps BassDsd"
+          DocRemarks="Supports .dsf, .dff, .dsd"
+          IsPartial="true"
+          DefineFrequency="true"
+          Namespace="Dsd"/>
+  <Plugin ID="MIDI"
+          Namespace="Midi"
+          IsPartial="true"
+          DefineFrequency="true"/>  
+  <Plugin ID="WMA"
+          Namespace="Wma"
+          Condition="WINDOWS"
+          IsPartial="true"/>
+  
+  <Plugin ID="ADX"
+          DocSummary="Wraps BassAdx"
+          DocRemarks="Supports .adx"
+          DllName="bass_adx"
+          Condition="WINDOWS"/>
+  <Plugin ID="AIX"
+          DocSummary="Wraps BassAix"
+          DllName="bass_aix"
+          Condition="WINDOWS"/>
+  <Plugin ID="OFR"
+          DocSummary="Wraps BassOfr"
+          DocRemarks="Supports .ofr, .ofs"
+          DllName="bass_ofr"
+          Condition="WINDOWS"/>
+  
+  <Plugin ID="ALAC"
+          DocSummary="Wraps BassAlac"
+          DocRemarks="Supports .m4a, .aac, .mp4, .mov"
+          Condition="WINDOWS || LINUX || __ANDROID__"/>
+  <Plugin ID="AAC"
+          DocSummary="Wraps BassAac"
+          DocRemarks="Supports .aac, .adts, .mp4, .m4a, .m4b"
+          DllName="bass_aac"
+          IsPartial="true"
+          Condition="WINDOWS || LINUX || __ANDROID__"/>
+</Plugins>

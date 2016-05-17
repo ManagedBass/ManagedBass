@@ -84,6 +84,9 @@
             return BassFx.ReverseCreate(h, 2, BassFlags.FxFreeSource);
         }
 
+        /// <summary>
+        /// Initializes Properties on every call to <see cref="MediaPlayer.Load"/>.
+        /// </summary>
         protected override void InitProperties()
         {
             Reverse = rev;

@@ -25,8 +25,14 @@ namespace ManagedBass
             _sample = SampleLoad(Memory, Offset, Length, MaxPlaybacks, Resolution.ToBassFlag());
         }
         
+        /// <summary>
+        /// Gets the Length of the Sample Data.
+        /// </summary>
         public long Length => SampleGetInfo(_sample).Length;
 
+        /// <summary>
+        /// Gets a Channel for this Sample (to use for Playing/DSP etc.).
+        /// </summary>
         public Channel CreateChannel(bool OnlyNew = false) => new Channel(SampleGetChannel(_sample, OnlyNew));
 
         #region Read Sample Data
@@ -52,7 +58,10 @@ namespace ManagedBass
 
         public bool WriteSampleData(int[] Buffer) => SampleSetData(_sample, Buffer);
         #endregion
-
+        
+        /// <summary>
+        /// Frees all Resources used by this instance.
+        /// </summary>
         public void Dispose() 
         {
             try 

@@ -6,9 +6,16 @@ namespace ManagedBass
     /// Capture audio from Microphone. This class inherits from <see cref="Channel"/> and can have Effects/DSP applied on it.
     /// </summary>
     public sealed class Recording : Channel, IAudioRecorder
-    {
+    {        
+        /// <summary>
+        /// Creates a new instance of <see cref="Recording"/> with the Default Format and Device.
+        /// </summary>
         public Recording() : this(RecordingDevice.DefaultDevice, new PCMFormat()) { }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="Recording"/> with the Default Format.
+        /// </summary>
+        /// <param name="Device">The <see cref="RecordingDevice"/> to use.</param>
         public Recording(RecordingDevice Device) : this(Device, new PCMFormat()) { }
         
         /// <summary>
@@ -39,6 +46,9 @@ namespace ManagedBass
         /// <returns><see langword="true"/> on success, else <see langword="false"/>.</returns>
         public override bool Stop() => Bass.ChannelPause(Handle);
 
+        /// <summary>
+        /// The Format of Recorded Data.
+        /// </summary>
         public PCMFormat Format { get; }
 
         #region Callback

@@ -16,6 +16,10 @@ namespace ManagedBass
         bool _restartOnNextPlayback;
 
         int _hchannel;
+        
+        /// <summary>
+        /// Gets the Channel Handle.
+        /// </summary>
         public virtual int Handle
         {
             get { return _hchannel; }
@@ -63,6 +67,9 @@ namespace ManagedBass
             catch { }
         }
 
+        /// <summary>
+        /// Fired when this Channel is Disposed.
+        /// </summary>
         public event EventHandler Disposed;
 
         void OnMediaEnded(int handle, int channel, int data, IntPtr User)
@@ -208,6 +215,9 @@ namespace ManagedBass
         #endregion
 
         #region Playable
+        /// <summary>
+        /// Starts the Channel Playback.
+        /// </summary>
         public virtual bool Start()
         {
             var Result = ChannelPlay(Handle, _restartOnNextPlayback);
@@ -215,10 +225,19 @@ namespace ManagedBass
             return Result;
         }
 
+        /// <summary>
+        /// Gets if the Channels is Playing.
+        /// </summary>
         public bool IsPlaying => ChannelIsActive(Handle) == PlaybackState.Playing;
 
+        /// <summary>
+        /// Pauses the Channel Playback.
+        /// </summary>
         public virtual bool Pause() => ChannelPause(Handle);
 
+        /// <summary>
+        /// Stops the Channel Playback.
+        /// </summary>
         public virtual bool Stop()
         {
             _restartOnNextPlayback = true;
