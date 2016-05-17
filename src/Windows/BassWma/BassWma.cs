@@ -110,19 +110,40 @@ namespace ManagedBass.Wma
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeSetNotify")]
         public static extern bool EncodeSetNotify(int Handle, ClientConnectProcedure Procedure, IntPtr User);
 
-        [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern bool BASS_WMA_EncodeSetTag(int handle, string tag, string value, int form);
+        #region EncodeSetTag
+        [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeSetTag")]
+        public static extern bool EncodeSetTag(int Handle, IntPtr Tag, IntPtr Value, WMATagFormat Format);
 
-        public static bool EncodeSetTag(int handle, string tag, string value)
+        [DllImport(DllName)]
+        static extern bool BASS_WMA_EncodeSetTag(int Handle, string Tag, IntPtr Value, WMATagFormat Format);
+
+        [DllImport(DllName)]
+        static extern bool BASS_WMA_EncodeSetTag(int Handle, string Tag, [In, Out] byte[] Value, WMATagFormat Format);
+
+        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        static extern bool BASS_WMA_EncodeSetTag(int Handle, string Tag, string Value, WMATagFormat Format = WMATagFormat.Unicode);
+
+        public static bool EncodeSetTag(int Handle, string Tag, string Value)
         {
-            return BASS_WMA_EncodeSetTag(handle, tag, value, 1); // form = 1 (Unicode)
+            return BASS_WMA_EncodeSetTag(Handle, Tag, Value);
         }
-        
-		/// <summary>
-		/// Retrieves the number of clients currently connected to the encoder.
-		/// </summary>
-		/// <param name="Handle">The encoder handle.</param>
-		/// <returns>If succesful, the number of clients is returned, else -1 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+
+        public static bool EncodeSetTag(int Handle, string Tag, IntPtr Value, int Length)
+        {
+            return BASS_WMA_EncodeSetTag(Handle, Tag, Value, (WMATagFormat)BitHelper.MakeLong((short)WMATagFormat.Binary, (short)Length));
+        }
+
+        public static bool EncodeSetTag(int Handle, string Tag, byte[] Value, int Length)
+        {
+            return BASS_WMA_EncodeSetTag(Handle, Tag, Value, (WMATagFormat)BitHelper.MakeLong((short)WMATagFormat.Binary, (short)Length));
+        }
+        #endregion
+
+        /// <summary>
+        /// Retrieves the number of clients currently connected to the encoder.
+        /// </summary>
+        /// <param name="Handle">The encoder handle.</param>
+        /// <returns>If succesful, the number of clients is returned, else -1 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         /// <exception cref="Errors.NotAvailable">The encoder was not created with <see cref="EncodeOpenNetwork(int, int, WMAEncodeFlags, int, int, int)" />.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>

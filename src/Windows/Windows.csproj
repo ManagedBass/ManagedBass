@@ -71,6 +71,7 @@
     <Compile Include="BassWma\BassWma.cs" />
     <Compile Include="BassWma\Delegates\ClientConnectProcedure.cs" />
     <Compile Include="BassWma\Delegates\WMEncodeProcedure.cs" />
+    <Compile Include="BassWma\Enumerations\WMATagFormat.cs" />
     <Compile Include="BassWma\Enumerations\WMAEncodeFlags.cs" />
     <Compile Include="BassWma\Enumerations\WMEncodeType.cs" />
     <Compile Include="BassWasapi\Devices\WasapiDevice.cs" />
