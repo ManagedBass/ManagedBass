@@ -8,16 +8,6 @@ using System;
 using System.Runtime.InteropServices;
 
 <#
-var FileDoc = "/// <summary>Create a stream from file.</summary>";
-
-var MemDoc = "/// <summary>Create a stream from Memory (IntPtr).</summary>";
-
-var ByteDoc = "/// <summary>Create a stream from Memory (byte[]).</summary>";
-
-var UserDoc = "/// <summary>Create a stream using User File Procedures.</summary>";
-
-var UrlDoc = "/// <summary>Create a stream from Url.</summary>";
-
 var doc = new XmlDocument();
 
 var path = Host.ResolvePath("Plugins.xml");
@@ -36,7 +26,7 @@ foreach (XmlNode node in doc.SelectNodes("/Plugins/Plugin"))
 
 	var _library = node.Attributes["Library"];
     var LibraryName = _library != null ? _library.InnerText : (string.IsNullOrEmpty(ID) ? "Bass" : "Bass" + Char.ToUpper(ID[0]) + ID.Substring(1).ToLower());
-
+	
 	var _ns = node.Attributes["Namespace"];
     var Namespace = _ns != null ? _ns.InnerText : "";
 
@@ -54,6 +44,39 @@ foreach (XmlNode node in doc.SelectNodes("/Plugins/Plugin"))
 
     var _isFreq = node.Attributes["DefineFrequency"];
 	var DefineFrequency = _isFreq != null ? _isFreq.InnerText == "true" : false;
+	
+	var FileDoc = "/// <summary>Create a stream from file.</summary>";
+
+	var MemDoc = "/// <summary>Create a stream from Memory (IntPtr).</summary>";
+
+	var ByteDoc = "/// <summary>Create a stream from Memory (byte[]).</summary>";
+
+	var UserDoc = "/// <summary>Create a stream using User File Procedures.</summary>";
+
+	var UrlDoc = "/// <summary>Create a stream from Url.</summary>";
+
+	if (node.HasChildNodes)
+	{
+	   var _fileDoc = node["FileDoc"];
+	   if (_fileDoc != null)
+	       FileDoc = _fileDoc.InnerText;
+
+	   var _memDoc = node["MemDoc"];
+	   if (_memDoc != null)
+	       MemDoc = _memDoc.InnerText;
+
+	   var _byteDoc = node["ByteDoc"];
+	   if (_byteDoc != null)
+	       ByteDoc = _byteDoc.InnerText;
+
+	   var _userDoc = node["UserDoc"];
+	   if (_userDoc != null)
+	       UserDoc = _userDoc.InnerText;
+
+	   var _urlDoc = node["UrlDoc"];
+	   if (_urlDoc != null)
+	       UrlDoc = _urlDoc.InnerText;
+	}
 
 	if (!string.IsNullOrEmpty(ID))
 		ID += "_";

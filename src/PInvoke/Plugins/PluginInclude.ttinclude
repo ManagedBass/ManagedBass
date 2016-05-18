@@ -65,12 +65,12 @@
         static extern int BASS_<#= ID #>StreamCreateFileUser(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user<#= EndDef #>);
 
 		<#= UserDoc #>
-        public static int CreateStream(StreamSystem system, BassFlags flags, FileProcedures procs, IntPtr user = default(IntPtr)<#= EndDef #>)
+        public static int CreateStream(StreamSystem System, BassFlags Flags, FileProcedures Procedures, IntPtr User = default(IntPtr)<#= EndDef #>)
         {
-            var h = BASS_<#= ID #>StreamCreateFileUser(system, flags, procs, user<#= EndInvoke #>);
+            var h = BASS_<#= ID #>StreamCreateFileUser(System, Flags, Procedures, User<#= EndInvoke #>);
 
             if (h != 0)
-                Extensions.ChannelReferences.Add(h, 0, procs);
+                Extensions.ChannelReferences.Add(h, 0, Procedures);
 
             return h;
         }

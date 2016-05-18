@@ -21,27 +21,6 @@ namespace ManagedBass
     /// </remarks>
     public static partial class Bass
     {
-#if __IOS__
-        const string DllName = "__internal";
-#else
-        const string DllName = "bass";
-#endif
-
-#if __ANDROID__ || WINDOWS || LINUX || __MAC__
-        static IntPtr hLib;
-
-        /// <summary>
-        /// Load from a folder other than the Current Directory.
-        /// <param name="Folder">If null (default), Load from Current Directory</param>
-        /// </summary>
-        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
-
-        /// <summary>
-        /// Unloads the library from memory.
-        /// </summary>
-        public static void Unload() => DynamicLibrary.Unload(hLib);
-#endif
-
         /// <summary>
         /// Gets the Formats supported by Bass.
         /// </summary>
