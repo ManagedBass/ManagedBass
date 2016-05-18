@@ -17,7 +17,6 @@ namespace ManagedBass.Fx
                 Parameters.fDamp = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
         
@@ -32,7 +31,6 @@ namespace ManagedBass.Fx
                 Parameters.fDryMix = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
         
@@ -47,7 +45,6 @@ namespace ManagedBass.Fx
                 Parameters.fRoomSize = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
         
@@ -62,7 +59,6 @@ namespace ManagedBass.Fx
                 Parameters.fWetMix = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
         
@@ -78,7 +74,20 @@ namespace ManagedBass.Fx
                 Parameters.fWidth = (float)value;
 
                 OnPropertyChanged();
-                Update();
+            }
+        }
+
+        /// <summary>
+        /// Mode: 0 = no freeze or 1 = freeze, def. 0 (no freeze).
+        /// </summary>
+        public int Mode
+        {
+            get { return Parameters.lMode; }
+            set
+            {
+                Parameters.lMode = value;
+                
+                OnPropertyChanged();
             }
         }
 

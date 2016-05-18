@@ -14,7 +14,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fInGain = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -26,7 +25,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fReverbMix = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -38,7 +36,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fReverbTime = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -50,7 +47,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fHighFreqRTRatio = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
     }

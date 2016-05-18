@@ -23,7 +23,6 @@ namespace ManagedBass.Fx
                 Parameters.fGain = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -38,7 +37,6 @@ namespace ManagedBass.Fx
                 Parameters.lFilter = value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -54,7 +52,6 @@ namespace ManagedBass.Fx
                 Parameters.fBandwidth = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -69,7 +66,6 @@ namespace ManagedBass.Fx
                 Parameters.fCenter = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -84,7 +80,6 @@ namespace ManagedBass.Fx
                 Parameters.fQ = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -100,7 +95,6 @@ namespace ManagedBass.Fx
                 Parameters.fS = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 

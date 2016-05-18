@@ -1,5 +1,4 @@
-﻿#if WINDOWS
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ManagedBass.DirectX8
 {
@@ -30,7 +29,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fGain = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -42,7 +40,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fAttack = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -54,7 +51,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fRelease = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -66,7 +62,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fThreshold = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -78,7 +73,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fRatio = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -90,9 +84,7 @@ namespace ManagedBass.DirectX8
                 Parameters.fPredelay = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
     }
 }
-#endif

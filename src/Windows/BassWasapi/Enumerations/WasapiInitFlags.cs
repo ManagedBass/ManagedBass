@@ -2,7 +2,10 @@
 
 namespace ManagedBass.Wasapi
 {
-    [Flags]
+    /// <summary>
+	/// BassWasapi initialization flags to be used with <see cref="BassWasapi.Init" />.
+	/// </summary>
+	[Flags]
     public enum WasapiInitFlags
     {
         /// <summary>

@@ -44,9 +44,9 @@ namespace ManagedBass
 
         public void Remove<T>(int Handle, object SpecialHandle)
         {
-            foreach (var pair in _procedures.Where(pair => pair.Key.Item1 == Handle
-                                                          && pair.Key.Item2 == SpecialHandle
-                                                          && pair.Value.GetType() == typeof(T)))
+            foreach (var pair in _procedures.Where(Pair => Pair.Key.Item1 == Handle
+                                                          && Pair.Key.Item2 == SpecialHandle
+                                                          && Pair.Value.GetType() == typeof(T)))
             {
                 _procedures.Remove(pair.Key);
                 break;
@@ -55,7 +55,7 @@ namespace ManagedBass
 
         void Callback(int Handle, int Channel, int Data, IntPtr User)
         {
-            foreach (var pair in _procedures.Where(pair => pair.Key.Item1 == Handle))
+            foreach (var pair in _procedures.Where(Pair => Pair.Key.Item1 == Handle))
                 _procedures.Remove(pair.Key);
         }
     }

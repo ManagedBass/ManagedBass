@@ -4,7 +4,11 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Cd
 {
-    [StructLayout(LayoutKind.Sequential)]
+    /// <summary>
+	/// Used with <see cref="BassCd.GetInfo(int, out CDInfo)" /> to retrieve information on a drive.
+	/// </summary>
+	/// <remarks>The <see cref="ReadWriteFlags"/>, <see cref="MaxSpeed"/> and <see cref="Cache"/> members are unavailable when the WIO interface is used.</remarks>
+	[StructLayout(LayoutKind.Sequential)]
     public struct CDInfo
     {
         IntPtr vendor;

@@ -6,26 +6,8 @@ namespace ManagedBass.Mix
     /// <summary>
     /// Wraps BassMix: bassmix.dll
     /// </summary>
-    public static class BassMix
+    public static partial class BassMix
     {
-#if __IOS__
-        const string DllName = "__internal";
-#else
-        const string DllName = "bassmix";
-#endif
-
-#if __ANDROID__ || WINDOWS || LINUX || __MAC__
-        static IntPtr hLib;
-
-        /// <summary>
-        /// Load from a folder other than the Current Directory.
-        /// <param name="Folder">If null (default), Load from Current Directory</param>
-        /// </summary>
-        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
-
-        public static void Unload() => DynamicLibrary.Unload(hLib);
-#endif
-
         #region Split
         [DllImport(DllName, EntryPoint = "BASS_Split_StreamCreate")]
         public static extern int CreateSplitStream(int channel, BassFlags Flags, int[] chanmap);
@@ -112,7 +94,7 @@ namespace ManagedBass.Mix
 
             return num <= 0 ? null : numArray;
         }
-#endregion
+        #endregion
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_StreamCreate")]
         public static extern int CreateMixerStream(int Frequency, int Channels, BassFlags Flags);
@@ -197,10 +179,10 @@ namespace ManagedBass.Mix
             get { return Bass.GetConfig(Configuration.MixerPositionEx); }
             set { Bass.Configure(Configuration.MixerPositionEx, value); }
         }
-#endregion
+        #endregion
 
         #region Mixer Source Channels
-#region Channel Flags
+        #region Channel Flags
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelFlags")]
         public static extern BassFlags ChannelFlags(int Handle, BassFlags Flags, BassFlags Mask);
 
@@ -209,9 +191,9 @@ namespace ManagedBass.Mix
         public static bool ChannelAddFlag(int handle, BassFlags flag) => ChannelFlags(handle, flag, flag).HasFlag(flag);
 
         public static bool ChannelRemoveFlag(int handle, BassFlags flag) => !ChannelFlags(handle, 0, flag).HasFlag(flag);
-#endregion
+        #endregion
 
-#region Channel Get Data
+        #region Channel Get Data
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetData")]
         public static extern int ChannelGetData(int Handle, IntPtr Buffer, int Length);
 
@@ -226,7 +208,7 @@ namespace ManagedBass.Mix
 
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelGetData")]
         public static extern int ChannelGetData(int Handle, [In, Out] float[] Buffer, int Length);
-#endregion
+        #endregion
         
 		/// <summary>
 		/// Retrieves the level (peak amplitude) of a mixer source channel.
@@ -373,6 +355,6 @@ namespace ManagedBass.Mix
         {
             return ChannelSetEnvelope(Handle, Type, Nodes, Nodes?.Length ?? 0);
         }
-#endregion
+        #endregion
     }
 }

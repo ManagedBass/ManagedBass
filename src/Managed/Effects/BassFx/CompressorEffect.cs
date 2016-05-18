@@ -17,7 +17,6 @@ namespace ManagedBass.Fx
                 Parameters.fAttack = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -32,7 +31,6 @@ namespace ManagedBass.Fx
                 Parameters.fRelease = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -47,7 +45,6 @@ namespace ManagedBass.Fx
                 Parameters.fThreshold = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -62,7 +59,6 @@ namespace ManagedBass.Fx
                 Parameters.fGain = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -77,7 +73,6 @@ namespace ManagedBass.Fx
                 Parameters.fRatio = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 

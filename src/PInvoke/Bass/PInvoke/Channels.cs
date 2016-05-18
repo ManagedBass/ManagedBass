@@ -685,32 +685,103 @@ namespace ManagedBass
         /// </remarks>
         [DllImport(DllName, EntryPoint = "BASS_ChannelSlideAttribute")]
         public static extern bool ChannelSlideAttribute(int Handle, ChannelAttribute Attribute, float Value, int Time);
-        
+
         #region Channel Get Level
-        [DllImport(DllName)]
-        static extern int BASS_ChannelGetLevel(int Handle);
+        /// <summary>
+        /// Retrieves the level (peak amplitude) of a sample, stream, MOD music or recording channel.
+        /// </summary>
+        /// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
+        /// <returns>
+        /// If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code.
+        /// <para>
+        /// If successful, the level of the left channel is returned in the low word (low 16-bits), and the level of the right channel is returned in the high word (high 16-bits).
+        /// If the channel is mono, then the low word is duplicated in the high word. 
+        /// The level ranges linearly from 0 (silent) to 32768 (max).
+        /// 0 will be returned when a channel is stalled.
+        /// </para>
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// This function measures the level of the channel's sample data, not the level of the channel in the final output mix, 
+        /// so the channel's volume and panning/balance (as set with <see cref="ChannelSetAttribute(int,ChannelAttribute,float)" />, <see cref="ChannelAttribute.Volume"/> or <see cref="ChannelAttribute.Pan"/>) does not affect it.
+        /// The effect of any DSP/FX set on the channel is present in the measurement, except for DX8 effects when using the "With FX flag" DX8 effect implementation.
+        /// </para>
+        /// <para>
+        /// For channels that are more than stereo, the left level will include all left channels (eg. front-left, rear-left, center), and the right will include all right (front-right, rear-right, LFE).
+        /// If there are an odd number of channels then the left and right levels will include all channels.
+        /// If the level of each individual channel is required, that is available from the other overload(s).
+        /// </para>
+        /// <para>
+        /// 20ms of data is inspected to calculate the level.
+        /// When used with a decoding channel, that means 20ms of data needs to be decoded from the channel in order to calculate the level, and that data is then gone, eg. it is not available to a subsequent <see cref="ChannelGetData(int,IntPtr,int)" /> call.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.NotPlaying">The channel is not playing.</exception>
+        /// <exception cref="Errors.Ended">The decoding channel has reached the end.</exception>
+        /// <exception cref="Errors.BufferLost">Should not happen... check that a valid window handle was used with <see cref="Init" />.</exception>
+        [DllImport(DllName, EntryPoint = "BASS_ChannelGetLevel")]
+        public static extern int ChannelGetLevel(int Handle);
 
-        public static double ChannelGetLevel(int Channel)
+        /// <summary>
+        /// Gets the Level of the Left Channel.
+        /// </summary>
+        public static int ChannelGetLevelLeft(int Handle) => ChannelGetLevel(Handle).LoWord();
+
+        /// <summary>
+        /// Gets the Level of the Right Channel.
+        /// </summary>
+        public static int ChannelGetLevelRight(int Handle) => ChannelGetLevel(Handle).HiWord();
+
+        /// <summary>
+		/// Retrieves the level (peak amplitude) of a sample, stream, MOD music or recording channel.
+		/// </summary>
+		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
+		/// <param name="Levels">The array in which the levels are to be returned.</param>
+		/// <param name="Length">How much data (in seconds) to look at to get the level (limited to 1 second).</param>
+		/// <param name="Flags">What levels to retrieve.</param>
+		/// <returns>
+		/// On success <see langword="true" /> is returned - else <see langword="false" />, use <see cref="LastError" /> to get the error code.
+		/// <para>If successful, the requested levels are returned in the <paramref name="Levels" /> array.</para>
+		/// </returns>
+		/// <remarks>
+		/// This function operates in the same way as <see cref="ChannelGetLevel(int)" /> but has greater flexibility on how the level is measured. 
+		/// The levels are not clipped, so may exceed +/-1.0 on floating-point channels.
+		/// </remarks>
+		/// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.NotPlaying">The channel is not playing.</exception>
+        /// <exception cref="Errors.Ended">The decoding channel has reached the end.</exception>
+        /// <exception cref="Errors.BufferLost">Should not happen... check that a valid window handle was used with <see cref="Init" />.</exception>
+		[DllImport(DllName, EntryPoint = "BASS_ChannelGetLevelEx")]
+        public static extern bool ChannelGetLevel(int Handle, [In, Out] float[] Levels, float Length, LevelRetrievalFlags Flags);
+
+        /// <summary>
+		/// Retrieves the level (peak amplitude) of a sample, stream, MOD music or recording channel.
+		/// </summary>
+		/// <param name="Handle">The channel handle... a HCHANNEL, HMUSIC, HSTREAM, or HRECORD.</param>
+		/// <param name="Length">How much data (in seconds) to look at to get the level (limited to 1 second).</param>
+		/// <param name="Flags">What levels to retrieve.</param>
+		/// <returns>Array of levels on success, else <see langword="null" />. Use <see cref="LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// This function operates in the same way as <see cref="ChannelGetLevel(int)" /> but has greater flexibility on how the level is measured. 
+		/// The levels are not clipped, so may exceed +/-1.0 on floating-point channels.
+		/// </remarks>
+		/// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
+        /// <exception cref="Errors.NotPlaying">The channel is not playing.</exception>
+        /// <exception cref="Errors.Ended">The decoding channel has reached the end.</exception>
+        /// <exception cref="Errors.BufferLost">Should not happen... check that a valid window handle was used with <see cref="Init" />.</exception>
+		public static float[] ChannelGetLevel(int Handle, float Length, LevelRetrievalFlags Flags)
         {
-            var Temp = BASS_ChannelGetLevel(Channel);
-            return (Temp.LoWord() + Temp.HiWord()) / (2.0 * 32768);
-        }
+            var n = ChannelGetInfo(Handle).Channels;
 
-        [DllImport(DllName, EntryPoint = "BASS_ChannelGetLevelEx")]
-        public static extern bool ChannelGetLevel(int handle, [In, Out] float[] levels, float length, LevelRetrievalFlags flags);
-
-        public static float[] ChannelGetLevel(int handle, float length, LevelRetrievalFlags flags)
-        {
-            var n = ChannelGetInfo(handle).Channels;
-
-            if (flags.HasFlag(LevelRetrievalFlags.Mono))
+            if (Flags.HasFlag(LevelRetrievalFlags.Mono))
                 n = 1;
-            else if (flags.HasFlag(LevelRetrievalFlags.Stereo))
+            else if (Flags.HasFlag(LevelRetrievalFlags.Stereo))
                 n = 2;
 
             var levels = new float[n];
 
-            return ChannelGetLevel(handle, levels, length, flags) ? levels : null;
+            return ChannelGetLevel(Handle, levels, Length, Flags) ? levels : null;
         }
         #endregion
 

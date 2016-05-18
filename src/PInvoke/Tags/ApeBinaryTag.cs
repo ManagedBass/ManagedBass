@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Tags
+namespace ManagedBass.Ape
 {
     [StructLayout(LayoutKind.Sequential)]
     public class ApeBinaryTag

@@ -7,22 +7,27 @@ namespace ManagedBass.Cd
 	public enum CDID
 	{
 		/// <summary>
-		/// Returns the catalog number of the CD. The number uses UPC/EAN-code (BAR coding). This might not be available for all CDs.
+		/// Returns the catalog number of the CD.
+		/// The number uses UPC/EAN-code (BAR coding).
+		/// This might not be available for all CDs.
 		/// </summary>
 		UPC = 1,
 		
         /// <summary>
-		/// Produces a CDDB identifier. This can be used to get details on the CD's contents from a CDDB server.
+		/// Produces a CDDB identifier.
+		/// This can be used to get details on the CD's contents from a CDDB server.
 		/// </summary>
 		CDDB = 2,
 		
         /// <summary>
-		/// Produces a CDDB2 identifier. This can be used to get details on the CD's contents from a CDDB2 server.
+		/// Produces a CDDB2 identifier.
+		/// This can be used to get details on the CD's contents from a CDDB2 server.
 		/// </summary>
 		CDDB2 = 3,
 		
         /// <summary>
-		/// Retrieves the CD-TEXT information from the CD. CD-TEXT is not available on the majority of CDs.
+		/// Retrieves the CD-TEXT information from the CD.
+		/// CD-TEXT is not available on the majority of CDs.
 		/// </summary>
 		Text = 4,
 		
@@ -37,17 +42,20 @@ namespace ManagedBass.Cd
 		MusicBrainz = 6,
 
 		/// <summary>
-		/// Use: + track#. Returns the International Standard Recording Code of the track... 0 = first track. This might not be available for all CDs.
+		/// Use: + track#. Returns the International Standard Recording Code of the track... 0 = first track.
+		/// This might not be available for all CDs.
 		/// </summary>
 		ISRC = 256,
 
 		/// <summary>
-		/// Sends a "query" command to the configured CDDB server (see <see cref="BassCd.CDDBServer" />) to get a list of matching entries for the CD's CDDB identifier. The contents of each entry can be retrieved via the BASS_CDID_CDDB_READ option.
+		/// Sends a "query" command to the configured CDDB server (see <see cref="BassCd.CDDBServer" />) to get a list of matching entries for the CD's CDDB identifier.
+		/// The contents of each entry can be retrieved via the <see cref="Read"/> option.
 		/// </summary>
 		Query = 512,
 
 		/// <summary>
-		/// Use: + entry#. Sends a "read" command to the configured CDDB server (see <see cref="BassCd.CDDBServer" />) to get a database entry for the CD's CDDB identifier... 0 = first entry.
+		/// Use: + entry#.
+		/// Sends a "read" command to the configured CDDB server (see <see cref="BassCd.CDDBServer" />) to get a database entry for the CD's CDDB identifier... 0 = first entry.
 		/// </summary>
 		Read = 513,
 

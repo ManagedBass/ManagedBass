@@ -81,16 +81,7 @@ namespace ManagedBass
             if (!_mediaPlayer)
                 _gch.Free();
         }
-
-        /// <summary>
-        /// Update Effect Parameters if effect is active.
-        /// </summary>
-        protected void Update()
-        {
-            if (IsActive) 
-                Bass.FXSetParameters(_effectHandle, _gch.AddrOfPinnedObject());
-        }
-
+        
         /// <summary>
         /// Sets the effect parameters to default by initialising a new instance of <typeparamref name="T"/>.
         /// </summary>
@@ -101,7 +92,7 @@ namespace ManagedBass
             Parameters = new T();
             _gch = GCHandle.Alloc(Parameters, GCHandleType.Pinned);
 
-            Update();
+            OnPropertyChanged("");
         }
 
         /// <summary>
@@ -115,11 +106,8 @@ namespace ManagedBass
                     return;
 
                 if (value && !IsActive)
-                {
                     _effectHandle = Bass.ChannelSetFX(_channel, Parameters.FXType, 1);
-                    Update();
-                }
-
+                
                 else if (!value && IsActive && Bass.ChannelRemoveFX(_channel, _effectHandle))
                     _effectHandle = 0;
 
@@ -130,6 +118,10 @@ namespace ManagedBass
 
         protected void OnPropertyChanged([CallerMemberName]string PropertyName = "")
         {
+            // Update Effect Parameters if effect is active.
+            if (IsActive)
+                Bass.FXSetParameters(_effectHandle, _gch.AddrOfPinnedObject());
+
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
 

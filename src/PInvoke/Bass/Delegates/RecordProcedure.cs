@@ -16,11 +16,6 @@ namespace ManagedBass
     /// <remarks>
     /// <see cref="Bass.RecordFree" /> should not be used to free the recording device within a recording callback function.
     /// Nor should <see cref="Bass.ChannelStop" /> be used to stop the recording; return <see langword="false" /> to do that instead.
-    /// <para>
-    /// It is clever to NOT alloc any Buffer data (e.g. a byte[]) everytime within the callback method, since ALL callbacks should be really fast!
-    /// And if you would do a 'byte[] data = new byte[]' every time here...the GarbageCollector would never really clean up that memory.
-    /// Sideeffects might occure, due to the fact, that BASS will call this callback too fast and too often...
-    /// </para>
     /// </remarks>
     public delegate bool RecordProcedure(int Handle, IntPtr Buffer, int Length, IntPtr User);
 }

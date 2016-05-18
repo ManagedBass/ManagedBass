@@ -11,21 +11,10 @@ namespace ManagedBass.Cd
     /// <para>Supports: .cda</para>
     /// <para>Not available on OSX</para>
     /// </remarks>
-    public static class BassCd
+    public static partial class BassCd
     {
-        const string DllName = "basscd";
         static IntPtr _cddbServer;
-
-        static IntPtr hLib;
-
-        /// <summary>
-        /// Load from a folder other than the Current Directory.
-        /// <param name="Folder">If null (default), Load from Current Directory</param>
-        /// </summary>
-        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
-
-        public static void Unload() => DynamicLibrary.Unload(hLib);
-
+        
         public static readonly Plugin Plugin = new Plugin(DllName);
 
         /// <summary>
@@ -209,18 +198,82 @@ namespace ManagedBass.Cd
         }
 
         #region CreateStream
+        // TODO: Define BASS_CD_TRACK_PREGAP
+        // TODO: Make "no sound" comments point To Bass.NoSoundDevice
+		/// <summary>
+		/// Creates a sample stream from an audio CD track.
+		/// </summary>
+		/// <param name="Drive">The drive... 0 = the first drive.</param>
+		/// <param name="Track">The track... 0 = the first track, BASS_CD_TRACK_PREGAP = 1st track pregap (not all drives support reading of the 1st track pregap).</param>
+		/// <param name="Flags">A combination of <see cref="BassFlags"/></param>
+		/// <returns>If successful, the new stream's handle is returned, else 0 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// <para>
+        /// Only one stream can exist at a time per CD drive.
+        /// If a stream using the drive already exists, this function will fail, unless the <see cref="FreeOld"/> config option is enabled. 
+		/// Note that <see cref="StreamSetTrack" /> can be used to change track without creating a new stream.
+        /// </para>
+		/// <para>
+        /// The sample format of a CD audio stream is always 44100hz stereo 16-bit, unless the <see cref="BassFlags.Float"/> flag is used, in which case it's converted to 32-bit.
+        /// When reading sub-channel data, the sample rate will be 45900hz, taking the additional sub-channel data into account.
+        /// </para>
+		/// <para>
+        /// When reading sub-channel data, BASSCD will automatically de-interleave the data if the drive can't.
+        /// You can check whether the drive can de-interleave the data itself (or even read sub-channel data at all) in the the <see cref="CDInfo.ReadWriteFlags"/> member.
+        /// </para>
+		/// <para>
+        /// When using the <see cref="BassFlags.Decode"/> flag, it's not possible to play the stream, but seeking is still possible.
+        /// Because the decoded sample data is not outputted, "decoding channels" can still be used when there is no output device (using the "no sound" device with <see cref="Bass.Init" />).
+        /// </para>
+		/// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Bass.Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
+        /// <exception cref="Errors.Already">A stream using this drive already exists.</exception>
+        /// <exception cref="Errors.Parameter">The <see cref="BassFlags.CDSubChannel"/> and <see cref="BassFlags.CdC2Errors"/> flags cannot be used without the <see cref="BassFlags.Decode"/> flag or with the <see cref="BassFlags.Float"/> flag. See <see cref="CreateStream(int,int,BassFlags,CDDataProcedure,IntPtr)" />.</exception>
+        /// <exception cref="Errors.NoCD">There's no CD in the drive.</exception>
+        /// <exception cref="Errors.CDTrack"><paramref name="Track" /> is invalid.</exception>
+        /// <exception cref="Errors.NotAudioTrack">The track is not an audio track.</exception>
+        /// <exception cref="Errors.NotAvailable">Reading sub-channel data and/or C2 error info is not supported by the drive, or a read offset is in effect. In case of the latter, see <see cref="CreateStream(int,int,BassFlags,CDDataProcedure,IntPtr)" />.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If using the <see cref="BassFlags.Float"/> flag, it could be that floating-point channels are not supported (ie. no WDM drivers).</exception>
+        /// <exception cref="Errors.Speaker">The device/drivers do not support the requested speaker(s), or you're attempting to assign a stereo stream to a mono speaker.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamCreate")]
         public static extern int CreateStream(int Drive, int Track, BassFlags Flags);
 
         [DllImport(DllName)]
         static extern int BASS_CD_StreamCreateEx(int Drive, int Track, BassFlags Flags, CDDataProcedure proc, IntPtr user);
-        
-        public static int CreateStream(int Drive, int Track, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr))
+
+        /// <summary>
+        /// Creates a sample stream from an audio CD track, optionally providing a callback function to receive sub-channel data and/or C2 error info.
+        /// </summary>
+        /// <param name="Drive">The drive... 0 = the first drive.</param>
+        /// <param name="Track">The track... 0 = the first track, BASS_CD_TRACK_PREGAP = 1st track pregap (not all drives support reading of the 1st track pregap).</param>
+        /// <param name="Flags">A combination of <see cref="BassFlags"/>.</param>
+        /// <param name="Procedure">A callback function to receive sub-channel data and C2 error info... <see langword="null" /> = no callback. If a callback function is provided, sub-channel data and C2 error info will be delivered to it rather than being inserted amongst the sample data.</param>
+        /// <param name="User">User instance data to pass to the callback function.</param>
+        /// <returns>If successful, the new stream's handle is returned, else 0 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// This function is identical to <see cref="CreateStream(int,int,BassFlags)" />, but with the additional option of providing a callback function to receive sub-channel data and C2 error info.
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Bass.Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Device"><paramref name="Drive" /> is invalid.</exception>
+        /// <exception cref="Errors.Already">A stream using this drive already exists.</exception>
+        /// <exception cref="Errors.Parameter">The <see cref="BassFlags.CDSubChannel"/> and <see cref="BassFlags.CdC2Errors"/> flags cannot be used without the <see cref="BassFlags.Decode"/> flag or with the <see cref="BassFlags.Float"/> flag, unless a <see cref="CDDataProcedure" /> is provided.</exception>
+        /// <exception cref="Errors.NoCD">There's no CD in the drive.</exception>
+        /// <exception cref="Errors.CDTrack"><paramref name="Track" /> is invalid.</exception>
+        /// <exception cref="Errors.NotAudioTrack">The track is not an audio track.</exception>
+        /// <exception cref="Errors.NotAvailable">Reading sub-channel data and/or C2 error info is not supported by the drive, or a read offset is in effect, in which case a , in which case a <see cref="CDDataProcedure" /> must be provided to receive sub-channel data or C2 error info.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If using the <see cref="BassFlags.Float"/> flag, it could be that floating-point channels are not supported (ie. no WDM drivers).</exception>
+        /// <exception cref="Errors.Speaker">The device/drivers do not support the requested speaker(s), or you're attempting to assign a stereo stream to a mono speaker.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
+        public static int CreateStream(int Drive, int Track, BassFlags Flags, CDDataProcedure Procedure, IntPtr User = default(IntPtr))
         {
-            var h = BASS_CD_StreamCreateEx(Drive, Track, Flags, proc, user);
+            var h = BASS_CD_StreamCreateEx(Drive, Track, Flags, Procedure, User);
 
             if (h != 0)
-                Extensions.ChannelReferences.Add(h, 0, proc);
+                Extensions.ChannelReferences.Add(h, 0, Procedure);
 
             return h;
         }
@@ -228,6 +281,43 @@ namespace ManagedBass.Cd
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_CD_StreamCreateFile(string File, BassFlags Flags);
 
+        /// <summary>
+        /// Creates a sample stream from an audio CD track, using a CDA file on the CD.
+        /// </summary>
+        /// <param name="File">The CDA filename... for example, "D:\Track01.cda".</param>
+        /// <param name="Flags">A combination of <see cref="BassFlags"/>.</param>
+        /// <returns>If successful, the new stream's handle is returned, else 0 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// Only one stream can exist at a time per CD drive.
+        /// If a stream using the drive already exists, this function will fail, unless the <see cref="FreeOld"/> config option is enabled. 
+        /// Note that <see cref="StreamSetTrack" /> can be used to change track without creating a new stream.
+        /// </para>
+        /// <para>
+        /// The sample format of a CD audio stream is always 44100hz stereo 16-bit, unless the <see cref="BassFlags.Float"/> flag is used, in which case it's converted to 32-bit.
+        /// When reading sub-channel data, the sample rate will be 45900hz, taking the additional sub-channel data into account.
+        /// </para>
+        /// <para>
+        /// When reading sub-channel data, BASSCD will automatically de-interleave the data if the drive can't.
+        /// You can check whether the drive can de-interleave the data itself (or even read sub-channel data at all) in the the <see cref="CDInfo.ReadWriteFlags"/> member.
+        /// </para>
+        /// <para>
+        /// When using the <see cref="BassFlags.Decode"/> flag, it's not possible to play the stream, but seeking is still possible.
+        /// Because the decoded sample data is not outputted, "decoding channels" can still be used when there is no output device (using the "no sound" device with <see cref="Bass.Init" />).
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Bass.Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Already">A stream using this drive already exists.</exception>
+        /// <exception cref="Errors.FileOpen">The file could not be opened.</exception>
+        /// <exception cref="Errors.FileFormat">The file was not recognised as a CDA file.</exception>
+        /// <exception cref="Errors.Parameter">The <see cref="BassFlags.CDSubChannel"/> and <see cref="BassFlags.CdC2Errors"/> flags cannot be used without the <see cref="BassFlags.Decode"/> flag or with the <see cref="BassFlags.Float"/> flag. See <see cref="CreateStream(string,BassFlags,CDDataProcedure,IntPtr)" />.</exception>
+        /// <exception cref="Errors.NoCD">There's no CD in the drive.</exception>
+        /// <exception cref="Errors.NotAudioTrack">The track is not an audio track.</exception>
+        /// <exception cref="Errors.NotAvailable">Reading sub-channel data and/or C2 error info is not supported by the drive, or a read offset is in effect. In case of the latter, see <see cref="CreateStream(string,BassFlags,CDDataProcedure,IntPtr)" />.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If using the <see cref="BassFlags.Float"/> flag, it could be that floating-point channels are not supported (ie. no WDM drivers).</exception>
+        /// <exception cref="Errors.Speaker">The device/drivers do not support the requested speaker(s), or you're attempting to assign a stereo stream to a mono speaker.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int CreateStream(string File, BassFlags Flags)
         {
             return BASS_CD_StreamCreateFile(File, Flags | BassFlags.Unicode);
@@ -236,12 +326,35 @@ namespace ManagedBass.Cd
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_CD_StreamCreateFileEx(string File, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr));
 
-        public static int CreateStream(string File, BassFlags Flags, CDDataProcedure proc, IntPtr user = default(IntPtr))
+        /// <summary>
+		/// Creates a sample stream from an audio CD track, using a CDA file on the CD, optionally providing a callback function to receive sub-channel data and/or C2 error info.
+		/// </summary>
+		/// <param name="File">The CDA filename... for example, "D:\Track01.cda".</param>
+		/// <param name="Flags">A combination of <see cref="BassFlags"/>.</param>
+		/// <param name="Procedure">A callback function to receive sub-channel data and C2 error info... <see langword="null" /> = no callback. If a callback function is provided, sub-channel data and C2 error info will be delivered to it rather than being inserted amongst the sample data.</param>
+		/// <param name="User">User instance data to pass to the callback function.</param>
+		/// <returns>If successful, the new stream's handle is returned, else 0 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// This function is identical to <see cref="CreateStream(string,BassFlags)" />, but with the additional option of providing a callback function to receive sub-channel data and C2 error info.
+		/// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Bass.Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Already">A stream using this drive already exists.</exception>
+        /// <exception cref="Errors.FileOpen">The file could not be opened.</exception>
+        /// <exception cref="Errors.FileFormat">The file was not recognised as a CDA file.</exception>
+        /// <exception cref="Errors.Parameter">The <see cref="BassFlags.CDSubChannel"/> and <see cref="BassFlags.CdC2Errors"/> flags cannot be used without the <see cref="BassFlags.Decode"/> flag or with the <see cref="BassFlags.Float"/> flag, unless a <see cref="CDDataProcedure" /> is provided.</exception>
+        /// <exception cref="Errors.NoCD">There's no CD in the drive.</exception>
+        /// <exception cref="Errors.NotAudioTrack">The track is not an audio track.</exception>
+        /// <exception cref="Errors.NotAvailable">Reading sub-channel data and/or C2 error info is not supported by the drive, or a read offset is in effect, in which case a <see cref="CDDataProcedure" /> must be provided to receive sub-channel data or C2 error info.</exception>
+        /// <exception cref="Errors.SampleFormat">The sample format is not supported by the device/drivers. If using the <see cref="BassFlags.Float"/> flag, it could be that floating-point channels are not supported (ie. no WDM drivers).</exception>
+        /// <exception cref="Errors.Speaker">The device/drivers do not support the requested speaker(s), or you're attempting to assign a stereo stream to a mono speaker.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
+		public static int CreateStream(string File, BassFlags Flags, CDDataProcedure Procedure, IntPtr User = default(IntPtr))
         {
-            var h = BASS_CD_StreamCreateFileEx(File, Flags | BassFlags.Unicode, proc, user);
+            var h = BASS_CD_StreamCreateFileEx(File, Flags | BassFlags.Unicode, Procedure, User);
 
             if (h != 0)
-                Extensions.ChannelReferences.Add(h, 0, proc);
+                Extensions.ChannelReferences.Add(h, 0, Procedure);
 
             return h;
         }
@@ -262,7 +375,6 @@ namespace ManagedBass.Cd
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_StreamGetTrack")]
         public static extern int StreamGetTrack(int Handle);
-
 
         /// <summary>
         /// Changes the track of a CD stream.
@@ -353,17 +465,38 @@ namespace ManagedBass.Cd
         [DllImport(DllName, EntryPoint = "BASS_CD_SetOffset")]
         public static extern bool SetOffset(int Drive, int Offset);
         
-        [DllImport(DllName, EntryPoint = "BASS_CD_GetID")]
-        public static extern string GetID(int Drive, CDID ID);
-        
-		/// <summary>
-		/// Retrieves the TOC from the CD in a drive.
-		/// </summary>
-		/// <param name="Drive">The drive to get info on... 0 = the first drive.</param>
-		/// <param name="Mode">TOC Mode.</param>
-		/// <param name="TOC">An instance of the <see cref="TOC" /> structure to store the information at.</param>
-		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
-		/// <remarks>This function gives the TOC in the form that it is delivered by the drive, except that the byte order may be changed to match the system's native byte order (the TOC is originally big-endian).</remarks>
+        [DllImport(DllName)]
+        static extern IntPtr BASS_CD_GetID(int Drive, CDID ID);
+
+        public static string GetID(int Drive, CDID ID)
+        {
+            var ptr = BASS_CD_GetID(Drive, ID);
+            
+            switch (ID)
+            {
+                case CDID.Text:
+                    throw new InvalidOperationException($"Use {nameof(GetIDText)} overload instead.");
+
+                case CDID.Query:
+                case CDID.Read:
+                case CDID.ReadCache:
+                    return Extensions.PtrToStringUtf8(ptr);
+
+                default:
+                    return Marshal.PtrToStringAnsi(ptr);
+            }
+        }
+
+        public static string[] GetIDText(int Drive) => Extensions.ExtractMultiStringAnsi(BASS_CD_GetID(Drive, CDID.Text));
+
+        /// <summary>
+        /// Retrieves the TOC from the CD in a drive.
+        /// </summary>
+        /// <param name="Drive">The drive to get info on... 0 = the first drive.</param>
+        /// <param name="Mode">TOC Mode.</param>
+        /// <param name="TOC">An instance of the <see cref="TOC" /> structure to store the information at.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>This function gives the TOC in the form that it is delivered by the drive, except that the byte order may be changed to match the system's native byte order (the TOC is originally big-endian).</remarks>
         /// <exception cref="Errors.Device"><paramref name="Drive" /> is not valid.</exception>
         /// <exception cref="Errors.NoCD">There's no CD in the drive.</exception>
         [DllImport(DllName, EntryPoint = "BASS_CD_GetTOC")]

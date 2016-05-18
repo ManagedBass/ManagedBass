@@ -1,4 +1,5 @@
-﻿using ManagedBass.Tags;
+﻿using ManagedBass.Ape;
+using ManagedBass.Tags;
 
 namespace ManagedBass
 {
@@ -79,10 +80,12 @@ namespace ManagedBass
         /// </summary>
         WmaMeta = 11,
 
+#if __IOS__ || __MAC__
         /// <summary>
         /// Apple CoreAudio codec info (see <see cref="CACodecTag"/>).
         /// </summary>
         CoreAudioCodec = 11,
+#endif
 
         /// <summary>
         /// WMA codec: A description of the codec used by the file.

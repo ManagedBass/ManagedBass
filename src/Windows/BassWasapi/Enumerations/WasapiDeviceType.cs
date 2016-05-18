@@ -1,5 +1,8 @@
 ﻿namespace ManagedBass.Wasapi
 {
+    /// <summary>
+    /// Wasapi Device Type to be used with <see cref="WasapiDeviceInfo"/>.
+    /// </summary>
     public enum WasapiDeviceType
     {
         /// <summary>

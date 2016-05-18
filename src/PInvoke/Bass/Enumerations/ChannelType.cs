@@ -59,10 +59,12 @@ namespace ManagedBass
         /// </summary>
         AIFF = 65542,
 
+#if __IOS__ || __MAC__
         /// <summary>
         /// CoreAudio codec stream. Additional information is avaliable via the <see cref="TagType.CoreAudioCodec"/> tag.
         /// </summary>
         CA = 65543,
+#endif
 
         /// <summary>
         /// Media Foundation codec stream. Additional information is avaliable via the <see cref="TagType.MF"/> tag.

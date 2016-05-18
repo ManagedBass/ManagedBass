@@ -14,7 +14,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fGain = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -26,7 +25,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fEdge = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -38,7 +36,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fPostEQCenterFrequency = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -50,7 +47,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fPostEQBandwidth = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -62,7 +58,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fPreLowpassCutoff = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
     }

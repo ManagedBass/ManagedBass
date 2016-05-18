@@ -9,12 +9,28 @@ namespace ManagedBass.Wma
     /// </summary>
     /// <remarks>
     /// Supports: .wma, .wmv
-    /// <para>Not available for Linux and OSX</para>
     /// </remarks>
     public static partial class BassWma
     {
+        /// <summary>
+        /// Retrieves a pointer to the IWMReader interface of a WMA stream, or IWMWriter interface of a WMA encoder.
+        /// </summary>
+        /// <param name="Handle">The WMA stream or encoder handle.</param>
+        /// <returns>If succesful, then a pointer to the requested object is returned, otherwise <see cref="IntPtr.Zero" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// This function allows those that are familiar with the Windows Media Format SDK to access the internal object interface, for extra functionality. 
+        /// If you create any objects through a retrieved interface, make sure you release the objects before calling <see cref="Bass.StreamFree" />.
+        /// </para>
+        /// <para>See the Windows Media Format SDK for information on the IWMReader and associated interfaces.</para>
+        /// <para>
+        /// When streaming local (not internet) files, this function may actually return an IWMSyncReader interface instead of an IWMReader interface. 
+        /// The type of interface can be determined by querying other interfaces from it.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_WMA_GetWMObject")]
-        public static extern IntPtr GetWMObject(int handle);
+        public static extern IntPtr GetWMObject(int Handle);
 
         #region CreateStream Auth
         [DllImport(DllName, CharSet = CharSet.Unicode)]
@@ -48,18 +64,88 @@ namespace ManagedBass.Wma
 
         #region Encode
         #region Encode Write
+        /// <summary>
+        /// Encodes sample data, and writes it to the file or network.
+        /// </summary>
+        /// <param name="Handle">The encoder handle.</param>
+        /// <param name="Buffer">Pointer to the buffer containing the sample data.</param>
+        /// <param name="Length">The number of BYTES in the buffer.</param>
+        /// <returns>If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// The WMA codec expects 16-bit or 24-bit sample data depending on the <see cref="WMAEncodeFlags.Encode24Bit"/> flag, but BASSWMA will accept 8-bit, 16-bit or floating-point data, and convert it to the appropriate format.
+        /// <para>There is generally no need to call this function if the <see cref="WMAEncodeFlags.Source"/> flag has been set on the encoder, as the encoder will automatically be fed the data that its source BASS channel produces.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
         public static extern bool EncodeWrite(int Handle, IntPtr Buffer, int Length);
 
+        /// <summary>
+        /// Encodes sample data, and writes it to the file or network.
+        /// </summary>
+        /// <param name="Handle">The encoder handle.</param>
+        /// <param name="Buffer">byte[] containing the sample data.</param>
+        /// <param name="Length">The number of BYTES in the buffer.</param>
+        /// <returns>If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// The WMA codec expects 16-bit or 24-bit sample data depending on the <see cref="WMAEncodeFlags.Encode24Bit"/> flag, but BASSWMA will accept 8-bit, 16-bit or floating-point data, and convert it to the appropriate format.
+        /// <para>There is generally no need to call this function if the <see cref="WMAEncodeFlags.Source"/> flag has been set on the encoder, as the encoder will automatically be fed the data that its source BASS channel produces.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
         public static extern bool EncodeWrite(int Handle, byte[] Buffer, int Length);
 
+        /// <summary>
+        /// Encodes sample data, and writes it to the file or network.
+        /// </summary>
+        /// <param name="Handle">The encoder handle.</param>
+        /// <param name="Buffer">short[] containing the sample data.</param>
+        /// <param name="Length">The number of BYTES in the buffer.</param>
+        /// <returns>If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// The WMA codec expects 16-bit or 24-bit sample data depending on the <see cref="WMAEncodeFlags.Encode24Bit"/> flag, but BASSWMA will accept 8-bit, 16-bit or floating-point data, and convert it to the appropriate format.
+        /// <para>There is generally no need to call this function if the <see cref="WMAEncodeFlags.Source"/> flag has been set on the encoder, as the encoder will automatically be fed the data that its source BASS channel produces.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
         public static extern bool EncodeWrite(int Handle, short[] Buffer, int Length);
 
+        /// <summary>
+        /// Encodes sample data, and writes it to the file or network.
+        /// </summary>
+        /// <param name="Handle">The encoder handle.</param>
+        /// <param name="Buffer">int[] containing the sample data.</param>
+        /// <param name="Length">The number of BYTES in the buffer.</param>
+        /// <returns>If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// The WMA codec expects 16-bit or 24-bit sample data depending on the <see cref="WMAEncodeFlags.Encode24Bit"/> flag, but BASSWMA will accept 8-bit, 16-bit or floating-point data, and convert it to the appropriate format.
+        /// <para>There is generally no need to call this function if the <see cref="WMAEncodeFlags.Source"/> flag has been set on the encoder, as the encoder will automatically be fed the data that its source BASS channel produces.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
         public static extern bool EncodeWrite(int Handle, int[] Buffer, int Length);
 
+        /// <summary>
+        /// Encodes sample data, and writes it to the file or network.
+        /// </summary>
+        /// <param name="Handle">The encoder handle.</param>
+        /// <param name="Buffer">float[] containing the sample data.</param>
+        /// <param name="Length">The number of BYTES in the buffer.</param>
+        /// <returns>If succesful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// The WMA codec expects 16-bit or 24-bit sample data depending on the <see cref="WMAEncodeFlags.Encode24Bit"/> flag, but BASSWMA will accept 8-bit, 16-bit or floating-point data, and convert it to the appropriate format.
+        /// <para>There is generally no need to call this function if the <see cref="WMAEncodeFlags.Source"/> flag has been set on the encoder, as the encoder will automatically be fed the data that its source BASS channel produces.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WMA_EncodeWrite")]
         public static extern bool EncodeWrite(int Handle, float[] Buffer, int Length);
         #endregion
@@ -293,8 +379,20 @@ namespace ManagedBass.Wma
         #endregion
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern IntPtr BASS_WMA_GetTags(string File, BassFlags Flags);
+        static extern IntPtr BASS_WMA_GetTags(string File, BassFlags Flags = BassFlags.Unicode);
 
-        public static string[] GetTags(string File, BassFlags Flags) => Extensions.ExtractMultiStringUtf8(BASS_WMA_GetTags(File, Flags | BassFlags.Unicode));
+        /// <summary>
+        /// Get the tags from a file, can be used on DRM protected files (not thread-safe!).
+        /// </summary>
+        /// <param name="File">Filename from which to get the tags.</param>
+        /// <returns>If succesful, an array of the requested tags is returned, else <see langword="null" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// This function gives the same tags as <see cref="Bass.ChannelGetTags" /> with <see cref="TagType.WMA"/>, which is a pointer to a series of null-terminated UTF-8 strings (converted to string[]), the final string ending with a double null. 
+        /// Unlike <see cref="Bass.ChannelGetTags" />, this function can also be used with DRM-protected WMA files without a DRM licence, as it does not require a stream to be created.
+        /// </remarks>
+        /// <exception cref="Errors.WmaCodec">The Windows Media modules (v9 or above) are not installed.</exception>
+        /// <exception cref="Errors.FileOpen">The file could not be opened, or it is not a WMA file.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
+        public static string[] GetTags(string File) => Extensions.ExtractMultiStringUtf8(BASS_WMA_GetTags(File));
     }
 }

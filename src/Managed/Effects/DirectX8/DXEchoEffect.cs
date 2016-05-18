@@ -14,7 +14,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fWetDryMix = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -26,7 +25,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fFeedback = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -38,7 +36,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fLeftDelay = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -50,7 +47,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fRightDelay = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -62,7 +58,6 @@ namespace ManagedBass.DirectX8
                 Parameters.lPanDelay = value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
     }

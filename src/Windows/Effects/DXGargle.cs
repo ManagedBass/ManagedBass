@@ -1,5 +1,4 @@
-﻿#if WINDOWS
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ManagedBass.DirectX8
 {
@@ -26,7 +25,6 @@ namespace ManagedBass.DirectX8
                 Parameters.dwRateHz = value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -38,9 +36,7 @@ namespace ManagedBass.DirectX8
                 Parameters.dwWaveShape = value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
     }
 }
-#endif

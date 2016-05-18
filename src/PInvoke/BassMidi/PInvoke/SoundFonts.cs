@@ -94,7 +94,7 @@ namespace ManagedBass.Midi
             if (!FontGetInfo(Handle, out info))
                 return null;
 
-            var ret = new int[info.presets];
+            var ret = new int[info.Presets];
             
             if (FontGetPresets(Handle, ret))
                 return ret;

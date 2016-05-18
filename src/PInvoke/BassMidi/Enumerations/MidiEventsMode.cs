@@ -1,7 +1,10 @@
 ﻿using System;
 
 namespace ManagedBass.Midi
-{
+{    
+	/// <summary>
+	/// The type of event data to apply, to be used with <see cref="BassMidi.StreamEvents(int,MidiEventsMode,IntPtr,int)" />.
+	/// </summary>
     [Flags]
     public enum MidiEventsMode
     {

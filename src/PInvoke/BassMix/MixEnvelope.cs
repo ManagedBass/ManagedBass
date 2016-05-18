@@ -2,6 +2,9 @@
 
 namespace ManagedBass.Mix
 {
+	/// <summary>
+	/// Mixer envelope attribute types, used with <see cref="BassMix.ChannelSetEnvelope(int,MixEnvelope,MixerNode[],int)" />, <see cref="BassMix.ChannelGetEnvelopePosition" /> and <see cref="BassMix.ChannelSetEnvelopePosition" /> to set/retrieve an envelope on a mixer source channel.
+	/// </summary>
     [Flags]
     public enum MixEnvelope
     {

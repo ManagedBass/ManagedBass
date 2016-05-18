@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Tags
+namespace ManagedBass.Flac
 {
     [StructLayout(LayoutKind.Sequential)]
     public class FlacCueTag

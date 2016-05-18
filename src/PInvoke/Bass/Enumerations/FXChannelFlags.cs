@@ -2,7 +2,10 @@
 
 namespace ManagedBass
 {
-    [Flags]
+    /// <summary>
+	/// DSP channels flags.
+	/// </summary>
+	[Flags]
     public enum FXChannelFlags
     {
         /// <summary>

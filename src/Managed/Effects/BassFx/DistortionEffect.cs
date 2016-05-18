@@ -19,7 +19,6 @@ namespace ManagedBass.Fx
             Parameters.fVolume = 1;
 
             OnPropertyChanged("");
-            Update();
         }
 
         /// <summary>
@@ -34,7 +33,6 @@ namespace ManagedBass.Fx
             Parameters.fVolume = 1;
 
             OnPropertyChanged("");
-            Update();
         }
 
         /// <summary>
@@ -49,7 +47,6 @@ namespace ManagedBass.Fx
             Parameters.fVolume = 1;
 
             OnPropertyChanged("");
-            Update();
         }
 
         /// <summary>
@@ -64,7 +61,6 @@ namespace ManagedBass.Fx
             Parameters.fVolume = 0.25f;
 
             OnPropertyChanged("");
-            Update();
         }
         #endregion
 
@@ -79,7 +75,6 @@ namespace ManagedBass.Fx
                 Parameters.fDrive = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -94,7 +89,6 @@ namespace ManagedBass.Fx
                 Parameters.fDryMix = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -109,7 +103,6 @@ namespace ManagedBass.Fx
                 Parameters.fFeedback = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -124,7 +117,6 @@ namespace ManagedBass.Fx
                 Parameters.fVolume = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -139,7 +131,6 @@ namespace ManagedBass.Fx
                 Parameters.fWetMix = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 

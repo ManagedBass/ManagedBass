@@ -14,7 +14,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fCenter = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -26,7 +25,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fBandwidth = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -38,7 +36,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fGain = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
     }

@@ -2,7 +2,10 @@
 
 namespace ManagedBass.Wasapi
 {
-    [Flags]
+    /// <summary>
+	/// The BassWasapi Volume curve to use with <see cref="BassWasapi.GetVolume" /> and <see cref="BassWasapi.SetVolume" />.
+	/// </summary>
+	[Flags]
     public enum WasapiVolumeTypes
     {
         /// <summary>

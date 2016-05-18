@@ -14,7 +14,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fWetDryMix = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -26,7 +25,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fDepth = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -38,7 +36,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fFeedback = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -50,7 +47,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fFrequency = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -62,7 +58,6 @@ namespace ManagedBass.DirectX8
                 Parameters.lWaveform = value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -74,7 +69,6 @@ namespace ManagedBass.DirectX8
                 Parameters.fDelay = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -86,7 +80,6 @@ namespace ManagedBass.DirectX8
                 Parameters.lPhase = value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
     }

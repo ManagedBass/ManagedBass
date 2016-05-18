@@ -11,19 +11,8 @@ namespace ManagedBass.Asio
     /// </remarks>
     public static partial class BassAsio
     {
-        const string DllName = "bassasio";
-        static IntPtr hLib;
-
         static BassAsio() { Unicode = true; }
-
-        /// <summary>
-        /// Load from a folder other than the Current Directory.
-        /// <param name="Folder">If null (default), Load from Current Directory</param>
-        /// </summary>
-        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
-
-        public static void Unload() => DynamicLibrary.Unload(hLib);
-
+        
         #region AddDevice
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_ASIO_AddDevice(Guid clsid, string driver, string name);

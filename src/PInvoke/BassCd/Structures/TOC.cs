@@ -4,6 +4,12 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Cd
 {
+    /// <summary>
+	/// Used with <see cref="BassCd.GetTOC(int,TOCMode, out TOC)" /> to retrieve the TOC from a CD.
+	/// </summary>
+	/// <remarks>
+	/// If <see cref="TOCMode.Index"/> was used in the <see cref="BassCd.GetTOC(int,TOCMode, out TOC)" /> call, first and last will be index numbers rather than track numbers.
+	/// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public struct TOC
     {

@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Channels\CDChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\Channel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\FileChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channels\StreamChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\ManagedFileChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\MediaPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\MediaPlayerFX.cs" />

@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace ManagedBass.Tags
+namespace ManagedBass.Adx
 {	
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ADXLoopTag

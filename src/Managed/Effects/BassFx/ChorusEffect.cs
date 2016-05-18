@@ -33,7 +33,6 @@
             Parameters.fRate = 1;
 
             OnPropertyChanged("");
-            Update();
         }
 
         /// <summary>
@@ -49,7 +48,6 @@
             Parameters.fRate = 50;
 
             OnPropertyChanged("");
-            Update();
         }
 
         /// <summary>
@@ -65,7 +63,6 @@
             Parameters.fRate = 25;
 
             OnPropertyChanged("");
-            Update();
         }
 
         /// <summary>
@@ -81,7 +78,6 @@
             Parameters.fRate = 200;
 
             OnPropertyChanged("");
-            Update();
         }
 
         /// <summary>
@@ -97,7 +93,6 @@
             Parameters.fRate = 200;
 
             OnPropertyChanged("");
-            Update();
         }
 
         /// <summary>
@@ -113,7 +108,6 @@
             Parameters.fRate = 400;
 
             OnPropertyChanged("");
-            Update();
         }
 
         /// <summary>
@@ -129,7 +123,6 @@
             Parameters.fRate = 1;
 
             OnPropertyChanged("");
-            Update();
         }
 
         /// <summary>
@@ -145,7 +138,6 @@
             Parameters.fRate = 5;
 
             OnPropertyChanged("");
-            Update();
         }
         #endregion
 
@@ -160,7 +152,6 @@
                 Parameters.fDryMix = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -175,7 +166,6 @@
                 Parameters.fFeedback = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -190,7 +180,6 @@
                 Parameters.fMaxSweep = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -205,7 +194,6 @@
                 Parameters.fMinSweep = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -220,7 +208,6 @@
                 Parameters.fRate = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -235,7 +222,6 @@
                 Parameters.fWetMix = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 

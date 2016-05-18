@@ -1,5 +1,4 @@
-﻿#if WINDOWS
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace ManagedBass.DirectX8
 {
@@ -36,7 +35,6 @@ namespace ManagedBass.DirectX8
                 Parameters.lRoom = value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -48,7 +46,6 @@ namespace ManagedBass.DirectX8
                 Parameters.lRoomHF = value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -60,7 +57,6 @@ namespace ManagedBass.DirectX8
                 Parameters.flRoomRolloffFactor = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -72,7 +68,6 @@ namespace ManagedBass.DirectX8
                 Parameters.flDecayTime = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -84,7 +79,6 @@ namespace ManagedBass.DirectX8
                 Parameters.flDecayHFRatio = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -96,7 +90,6 @@ namespace ManagedBass.DirectX8
                 Parameters.lReflections = value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -108,7 +101,6 @@ namespace ManagedBass.DirectX8
                 Parameters.flReflectionsDelay = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -120,7 +112,6 @@ namespace ManagedBass.DirectX8
                 Parameters.lReverb = value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -132,7 +123,6 @@ namespace ManagedBass.DirectX8
                 Parameters.flReverbDelay = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -144,7 +134,6 @@ namespace ManagedBass.DirectX8
                 Parameters.flDiffusion = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -156,7 +145,6 @@ namespace ManagedBass.DirectX8
                 Parameters.flDensity = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -168,9 +156,7 @@ namespace ManagedBass.DirectX8
                 Parameters.flHFReference = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
     }
 }
-#endif

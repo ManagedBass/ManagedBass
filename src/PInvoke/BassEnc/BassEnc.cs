@@ -8,25 +8,8 @@ namespace ManagedBass.Enc
     /// </summary>
     public static partial class BassEnc
     {
-#if __IOS__
-        const string DllName = "__internal";
-#else
-        const string DllName = "bassenc";
-#endif
         static IntPtr _castProxy;
-
-#if __ANDROID__ || WINDOWS || LINUX || __MAC__
-        static IntPtr hLib;
         
-        /// <summary>
-        /// Load from a folder other than the Current Directory.
-        /// <param name="Folder">If null (default), Load from Current Directory</param>
-        /// </summary>
-        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
-
-        public static void Unload() => DynamicLibrary.Unload(hLib);
-#endif
-
         #region Version
         [DllImport(DllName)]
         static extern int BASS_Encode_GetVersion();
@@ -303,20 +286,90 @@ namespace ManagedBass.Enc
         public static extern bool EncodeStop(int Handle, bool Queue);
 
         #region Encode Write
+        /// <summary>
+        /// Sends sample data to the encoder.
+        /// </summary>
+        /// <param name="Handle">The encoder or channel handle... a HENCODE, HSTREAM, HMUSIC, or HRECORD.</param>
+        /// <param name="Buffer">A pointer to the buffer containing the sample data.</param>
+        /// <param name="Length">The number of BYTES in the buffer.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// There's usually no need to use this function, as the channel's sample data will automatically be fed to the encoder.
+        /// But in some situations, it could be useful to be able to manually feed the encoder instead.
+        /// <para>The sample data is expected to be the same format as the channel's, or floating-point if the <see cref="Bass.FloatingPointDSP"/> option is enabled.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Ended">The encoder has died.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_Write")]
-        public static extern bool EncodeWrite(int handle, IntPtr buffer, int length);
+        public static extern bool EncodeWrite(int Handle, IntPtr Buffer, int Length);
 
+        /// <summary>
+        /// Sends sample data to the encoder.
+        /// </summary>
+        /// <param name="Handle">The encoder or channel handle... a HENCODE, HSTREAM, HMUSIC, or HRECORD.</param>
+        /// <param name="Buffer">byte[] containing the sample data.</param>
+        /// <param name="Length">The number of BYTES in the buffer.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// There's usually no need to use this function, as the channel's sample data will automatically be fed to the encoder.
+        /// But in some situations, it could be useful to be able to manually feed the encoder instead.
+        /// <para>The sample data is expected to be the same format as the channel's, or floating-point if the <see cref="Bass.FloatingPointDSP"/> option is enabled.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Ended">The encoder has died.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_Write")]
-        public static extern bool EncodeWrite(int handle, byte[] buffer, int length);
+        public static extern bool EncodeWrite(int Handle, byte[] Buffer, int Length);
 
+        /// <summary>
+        /// Sends sample data to the encoder.
+        /// </summary>
+        /// <param name="Handle">The encoder or channel handle... a HENCODE, HSTREAM, HMUSIC, or HRECORD.</param>
+        /// <param name="Buffer">short[] containing the sample data.</param>
+        /// <param name="Length">The number of BYTES in the buffer.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// There's usually no need to use this function, as the channel's sample data will automatically be fed to the encoder.
+        /// But in some situations, it could be useful to be able to manually feed the encoder instead.
+        /// <para>The sample data is expected to be the same format as the channel's, or floating-point if the <see cref="Bass.FloatingPointDSP"/> option is enabled.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Ended">The encoder has died.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_Write")]
-        public static extern bool EncodeWrite(int handle, short[] buffer, int length);
+        public static extern bool EncodeWrite(int Handle, short[] Buffer, int Length);
 
+        /// <summary>
+        /// Sends sample data to the encoder.
+        /// </summary>
+        /// <param name="Handle">The encoder or channel handle... a HENCODE, HSTREAM, HMUSIC, or HRECORD.</param>
+        /// <param name="Buffer">int[] containing the sample data.</param>
+        /// <param name="Length">The number of BYTES in the buffer.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// There's usually no need to use this function, as the channel's sample data will automatically be fed to the encoder.
+        /// But in some situations, it could be useful to be able to manually feed the encoder instead.
+        /// <para>The sample data is expected to be the same format as the channel's, or floating-point if the <see cref="Bass.FloatingPointDSP"/> option is enabled.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Ended">The encoder has died.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_Write")]
-        public static extern bool EncodeWrite(int handle, int[] buffer, int length);
+        public static extern bool EncodeWrite(int Handle, int[] Buffer, int Length);
 
+        /// <summary>
+        /// Sends sample data to the encoder.
+        /// </summary>
+        /// <param name="Handle">The encoder or channel handle... a HENCODE, HSTREAM, HMUSIC, or HRECORD.</param>
+        /// <param name="Buffer">float[] containing the sample data.</param>
+        /// <param name="Length">The number of BYTES in the buffer.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// There's usually no need to use this function, as the channel's sample data will automatically be fed to the encoder.
+        /// But in some situations, it could be useful to be able to manually feed the encoder instead.
+        /// <para>The sample data is expected to be the same format as the channel's, or floating-point if the <see cref="Bass.FloatingPointDSP"/> option is enabled.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Ended">The encoder has died.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Encode_Write")]
-        public static extern bool EncodeWrite(int handle, float[] buffer, int length);
+        public static extern bool EncodeWrite(int Handle, float[] Buffer, int Length);
         #endregion
         #endregion
 

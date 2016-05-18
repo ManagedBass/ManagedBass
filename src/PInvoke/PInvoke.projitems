@@ -145,7 +145,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Plugins\Plugins.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcedureDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Resolution.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Tags\ADXLoopTag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ApeBinaryTag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\BextTag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\CACodecTag.cs" />

@@ -33,6 +33,7 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ADXLoopTag.cs" />
     <Compile Include="BassEnc\ACMEncoder.cs" />
     <Compile Include="BassEnc\ACMFormatFlags.cs" />
     <Compile Include="BassEnc\BassEnc.cs" />

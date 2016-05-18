@@ -2,5 +2,5 @@
 
 namespace ManagedBass.Enc
 {
-    public delegate void EncodeNotifyProcedure(int handle, EncodeNotifyStatus status, IntPtr user);
+    public delegate void EncodeNotifyProcedure(int Handle, EncodeNotifyStatus Status, IntPtr User);
 }

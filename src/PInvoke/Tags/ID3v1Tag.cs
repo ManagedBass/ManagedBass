@@ -187,7 +187,7 @@ namespace ManagedBass.Tags
 
         public string Comment => comment == null ? "" : new string(comment).Replace("\0", "").Trim();
 
-        public string Genre => genre > 147 ? Genres[147] : Genres[genre];
+        public string Genre => Genres[genre > 147 ? 147 : genre];
 
         // If 29th byte of comment[] is null ('\0'), then 30th byte is track number
         public int TrackNo => comment[28] == '\0' ? comment[29] : -1;

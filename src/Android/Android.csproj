@@ -46,6 +46,7 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AndroidAssetChannel.cs" />
   </ItemGroup>
   <Import Project="..\Managed\Managed.projitems" Label="Shared" />
   <Import Project="..\PInvoke\PInvoke.projitems" Label="Shared" />

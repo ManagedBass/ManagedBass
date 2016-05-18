@@ -3,7 +3,10 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Wasapi
 {
-    [StructLayout(LayoutKind.Sequential)]
+    /// <summary>
+	/// Used with <see cref="BassWasapi.GetDeviceInfo(int, out WasapiDeviceInfo)" /> to retrieve information on a Wasapi device.
+	/// </summary>
+	[StructLayout(LayoutKind.Sequential)]
     public struct WasapiDeviceInfo
     {
         IntPtr name;

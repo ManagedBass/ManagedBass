@@ -25,12 +25,6 @@ namespace ManagedBass
     /// <para>4 channels: left-front, right-front, left-rear/side, right-rear/side.</para>
     /// <para>6 channels(5.1): left-front, right-front, center, LFE, left-rear/side, right-rear/side.</para>
     /// <para>8 channels(7.1): left-front, right-front, center, LFE, left-rear/side, right-rear/side, left-rear center, right-rear center.</para>
-    /// <para>
-    /// It is clever to NOT alloc Buffer data (e.g. a float[]) everytime within the callback method, since ALL callbacks should be really fast!
-    /// And if you would do a 'float[] data = new float[]' every time here...the GarbageCollector would never really clean up that memory.
-    /// Sideeffects might occure, due to the fact, that BASS will call this callback too fast and too often...
-    /// However, this is not always the case, so in most examples it'll work just fine - but if you got problems - try moving any memory allocation things outside any callbacks.
-    /// </para>
     /// </remarks>
     public delegate int StreamProcedure(int Handle, IntPtr Buffer, int Length, IntPtr User);
 }

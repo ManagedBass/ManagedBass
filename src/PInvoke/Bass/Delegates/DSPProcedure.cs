@@ -26,12 +26,6 @@ namespace ManagedBass
     /// <para>Also, do not call <see cref="Bass.ChannelRemoveDSP" /> with the same DSP Handle as received by the callback,
     /// or <see cref="Bass.ChannelStop" />, <see cref="Bass.MusicFree" />, <see cref="Bass.StreamFree" /> with the same channel Handle as received by the callback.</para>
     /// <para>If the <see cref="Bass.FloatingPointDSP"/> config option is set, then DSP callback functions will always be passed 32-bit floating-point sample data, regardless of what the channels' actual sample format is.</para>
-    /// <para>
-    /// It is clever to NOT alloc Buffer data (e.g. a float[]) everytime within the callback method, since ALL callbacks should be really fast!
-    /// And if you would do a 'float[] data = new float[]' every time here...the GarbageCollector would never really clean up that memory.
-    /// Sideeffects might occure, due to the fact, that BASS will call this callback too fast and too often...
-    /// However, this is not always the case, so in most examples it'll work just fine - but if you got problems - try moving any memory allocation things outside any callbacks.
-    /// </para>
     /// </remarks>
     public delegate void DSPProcedure(int Handle, int Channel, IntPtr Buffer, int Length, IntPtr User);
 }

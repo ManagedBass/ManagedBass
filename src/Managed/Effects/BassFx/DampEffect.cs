@@ -17,7 +17,6 @@ namespace ManagedBass.Fx
                 Parameters.fGain = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -32,7 +31,6 @@ namespace ManagedBass.Fx
                 Parameters.fRate = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -47,7 +45,6 @@ namespace ManagedBass.Fx
                 Parameters.fTarget = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -62,7 +59,6 @@ namespace ManagedBass.Fx
                 Parameters.fQuiet = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 
@@ -77,7 +73,6 @@ namespace ManagedBass.Fx
                 Parameters.fDelay = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 

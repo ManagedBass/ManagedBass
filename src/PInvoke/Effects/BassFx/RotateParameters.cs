@@ -8,7 +8,14 @@ namespace ManagedBass.Fx
     [StructLayout(LayoutKind.Sequential)]
     public class RotateParameters : IEffectParameter
     {
+        /// <summary>
+        /// Rotation rate/speed in Hz (A negative rate can be used for reverse direction).
+        /// </summary>
         public float fRate;
+
+        /// <summary>
+        /// A <see cref="FXChannelFlags" /> flag to define on which channels to apply the effect. Default: <see cref="FXChannelFlags.All"/>
+        /// </summary>
         public FXChannelFlags lChannel = FXChannelFlags.All;
 
         public EffectType FXType => EffectType.Rotate;

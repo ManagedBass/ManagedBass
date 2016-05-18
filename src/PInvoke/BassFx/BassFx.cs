@@ -6,26 +6,8 @@ namespace ManagedBass.Fx
     /// <summary>
     /// Wraps BassFx: bassfx.dll
     /// </summary>
-    public static class BassFx
+    public static partial class BassFx
     {
-#if __IOS__
-        const string DllName = "__internal";
-#else
-        const string DllName = "bass_fx";
-#endif
-
-#if __ANDROID__ || WINDOWS || LINUX || __MAC__
-        static IntPtr hLib;
-
-        /// <summary>
-        /// Load from a folder other than the Current Directory.
-        /// <param name="Folder">If null (default), Load from Current Directory</param>
-        /// </summary>
-        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
-
-        public static void Unload() => DynamicLibrary.Unload(hLib);
-#endif
-
         #region Version
         [DllImport(DllName)]
         static extern int BASS_FX_GetVersion();
@@ -35,7 +17,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public static Version Version => Extensions.GetVersion(BASS_FX_GetVersion());
         #endregion
-
+        
         [DllImport(DllName, EntryPoint = "BASS_FX_TempoCreate")]
         public static extern int TempoCreate(int Channel, BassFlags Flags);
         
@@ -76,6 +58,16 @@ namespace ManagedBass.Fx
         [DllImport(DllName, EntryPoint = "BASS_FX_BPM_CallbackSet")]
         public static extern bool BPMCallbackSet(int Handle, BPMProcedure Procedure, double Period, int MinMaxBPM, BassFlags Flags, IntPtr User = default(IntPtr));
 
+        /// <summary>
+        /// Reset the BPM buffers.
+        /// </summary>
+        /// <param name="Handle">Stream/music/wma/cd/any other supported add-on format.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// This function flushes the internal buffers of the BPM callback.
+        /// The BPM callback is automatically reset by <see cref="Bass.ChannelSetPosition" />, except when called from a <see cref="SyncFlags.Mixtime"/> <see cref="SyncProcedure" />.
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_FX_BPM_CallbackReset")]
         public static extern bool BPMCallbackReset(int Handle);
         

@@ -24,7 +24,6 @@ namespace ManagedBass.Fx
                 Parameters.fRate = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 

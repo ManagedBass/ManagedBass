@@ -66,7 +66,10 @@
             }
         }
         #endregion
-                
+        
+        /// <summary>
+        /// Loads the File Channel with FX.
+        /// </summary>
         protected override int OnLoad(string FileName)
         {
             var h = Bass.CreateStream(FileName, Flags: BassFlags.Decode);

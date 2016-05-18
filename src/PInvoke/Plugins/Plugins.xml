@@ -3,9 +3,11 @@
   <Plugin ID="APE"
           DocSummary="Wraps BassApe"
           DocRemarks="Supports .ape, .ap1"
+          Namespace="Ape"
           DllName="bass_ape"/>  
   <Plugin ID="FLAC"
           DocSummary="Wraps BassFlac"
+          Namespace="Flac"
           DocRemarks="Supports .flac"/>
   <Plugin ID="OPUS"
           DocSummary="Wraps BassOpus"
@@ -55,6 +57,7 @@
           DocSummary="Wraps BassAdx"
           DocRemarks="Supports .adx"
           DllName="bass_adx"
+          Namespace="Adx"
           Condition="WINDOWS"/>
   <Plugin ID="AIX"
           DocSummary="Wraps BassAix"
@@ -76,6 +79,11 @@
           DllName="bass_aac"
           IsPartial="true"
           Condition="WINDOWS || LINUX || __ANDROID__"/>
+  <Plugin ID="MP4"
+          DllName="bass_aac"
+          IsPartial="true"
+          Condition="WINDOWS || LINUX || __ANDROID__"/>
+          
   <!-- Bass Core -->
   <Plugin IsPartial="true">
     <FileDoc>
@@ -413,4 +421,46 @@
       ]]>
     </UrlDoc>
   </Plugin>
+  
+  <!-- Non Plugins -->
+  <Plugin ID="FX"
+          DllName="bass_fx"
+          IsPartial="true"
+          Namespace="Fx"
+          IsPlugin="false"/>
+
+  <Plugin ID="CD"
+          Condition="WINDOWS || LINUX"
+          IsPartial="true"
+          Namespace="Cd"
+          IsPlugin="false"/>
+
+  <Plugin ID="ENC"
+          IsPartial="true"
+          Namespace="Enc"
+          IsPlugin="false"/>
+
+  <Plugin ID="MIX"
+          IsPartial="true"
+          Namespace="Mix"
+          IsPlugin="false"/>
+
+  <Plugin ID="ASIO"
+          Condition="WINDOWS"
+          IsPartial="true"
+          Namespace="Asio"
+          IsPlugin="false"/>
+
+  <Plugin ID="WASAPI"
+          Condition="WINDOWS"
+          IsPartial="true"
+          Namespace="Wasapi"
+          IsPlugin="false"/>
+
+  <Plugin ID="WINAMP"
+          Condition="WINDOWS"
+          DllName="bass_winamp"
+          IsPartial="true"
+          Namespace="Winamp"
+          IsPlugin="false"/>
 </Plugins>

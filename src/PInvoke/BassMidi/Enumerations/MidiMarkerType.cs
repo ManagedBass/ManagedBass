@@ -2,6 +2,9 @@
 
 namespace ManagedBass.Midi
 {
+	/// <summary>
+	/// The Marker type, to be used with <see cref="BassMidi.StreamGetMark" />.
+	/// </summary>
     [Flags]
     public enum MidiMarkerType
     {

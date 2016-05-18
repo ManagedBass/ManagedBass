@@ -14,23 +14,23 @@ namespace ManagedBass.Wasapi
     /// BASS is not required by BASSWASAPI, but BASS can of course be used to decode, apply DSP/FX, etc.
     /// </para>
     /// </remarks>
-    public static class BassWasapi
+    public static partial class BassWasapi
     {
-        public const int DefaultDevice = -1,
-                         DefaultInputDevice = -2,
-                         DefaultLoopbackDevice = -3;
-
-        const string DllName = "basswasapi";
-        static IntPtr hLib;
+        /// <summary>
+        /// Identifier for Default Device.
+        /// </summary>
+        public const int DefaultDevice = -1;
 
         /// <summary>
-        /// Load from a folder other than the Current Directory.
-        /// <param name="Folder">If null (default), Load from Current Directory</param>
+        /// Identifier for Default Recording Device.
         /// </summary>
-        public static void Load(string Folder = null) => hLib = DynamicLibrary.Load(DllName, Folder);
-
-        public static void Unload() => DynamicLibrary.Unload(hLib);
-
+        public const int DefaultInputDevice = -2;
+        
+        /// <summary>
+        /// Identifier for Default Loopback Device.
+        /// </summary>
+        public const int DefaultLoopbackDevice = -3;
+        
         #region CPU
         [DllImport(DllName)]
         static extern float BASS_WASAPI_GetCPU();
@@ -82,15 +82,32 @@ namespace ManagedBass.Wasapi
         #endregion
 
         #region GetDeviceInfo
-        [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetDeviceInfo")]
-        public static extern bool GetDeviceInfo(int device, out WasapiDeviceInfo info);
-                
         /// <summary>
-        /// 
+		/// Retrieves information on a Wasapi device (endpoint).
+		/// </summary>
+		/// <param name="Device">The device to get the information of... 0 = first.</param>
+		/// <param name="Info">An instance of the <see cref="WasapiDeviceInfo" /> class to store the information at.</param>
+		/// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+		/// <remarks>
+		/// This function can be used to enumerate the available Wasapi devices (endpoints) for a setup dialog. 
+		/// <para>Note: Input (capture) devices can be determined by evaluating <see cref="WasapiDeviceInfo.IsInput"/> and <see cref="WasapiDeviceInfo.IsLoopback"/> members.</para>
+		/// </remarks>
+		/// <exception cref="Errors.Wasapi">WASAPI is not available</exception>
+		/// <exception cref="Errors.Device">The device number specified is invalid.</exception>
+		[DllImport(DllName, EntryPoint = "BASS_WASAPI_GetDeviceInfo")]
+        public static extern bool GetDeviceInfo(int Device, out WasapiDeviceInfo Info);
+
+        /// <summary>
+        /// Retrieves information on a Wasapi device (endpoint).
         /// </summary>
-        /// <param name="Device"></param>
-        /// <returns></returns>
-        /// <remarks>An instance of <see cref="WasapiDeviceInfo"/> structure is returned. Throws <see cref="BassException"/> on Error.</remarks>
+        /// <param name="Device">The device to get the information of... 0 = first.</param>
+        /// <returns>An instance of <see cref="WasapiDeviceInfo"/> structure is returned. Throws <see cref="BassException"/> on Error.</returns>
+        /// <remarks>
+        /// This function can be used to enumerate the available Wasapi devices (endpoints) for a setup dialog. 
+        /// <para>Note: Input (capture) devices can be determined by evaluating <see cref="WasapiDeviceInfo.IsInput"/> and <see cref="WasapiDeviceInfo.IsLoopback"/> members.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Wasapi">WASAPI is not available</exception>
+        /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
         public static WasapiDeviceInfo GetDeviceInfo(int Device)
         {
             WasapiDeviceInfo info;
@@ -184,9 +201,55 @@ namespace ManagedBass.Wasapi
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetData")]
         public static extern int GetData([In, Out] float[] Buffer, int Length);
 
+        /// <summary>
+        /// Adds sample data to an output device buffer ("push" device).
+        /// </summary>
+        /// <param name="Buffer">The pointer to the sample data to provide.</param>
+        /// <param name="Length">The amount of data in bytes. <see cref="GetData(IntPtr,int)" /> with the <see cref="DataFlags.Available"/> flag can be used to check how much data is queued.</param>
+        /// <returns>
+        /// If successful, the the amount of data copied from the provided buffer will be returned
+        /// (which may be less than requested if it doesn't all fit in the device buffer, see the <see cref="WasapiInfo.BufferLength"/> property), else -1 is returned.
+        /// Use <see cref="Bass.LastError" /> to get the error code.
+        /// </returns>
+        /// <remarks>
+        /// You must have initialized the device via <see cref="Init" /> with <see cref="WasapiProcedure" /> = <see langword="null" />.
+        /// <para>As much data as possible will be placed in the device's buffer; this function will have to be called again for any remainder.</para>
+        /// <para>
+        /// Data should be provided at a rate sufficent to sustain playback.
+        /// If the buffer gets exhausted, ouput will stall until more data is provided.
+        /// <see cref="GetData(IntPtr,int)" /> with the <see cref="DataFlags.Available"/> flag can be used to check how much data is buffered.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.NotAvailable">The device is being fed by a <see cref="WasapiProcedure"/> callback function, or it is an input device.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Length" /> is not valid, it must equate to a whole number of samples.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_PutData")]
         public static extern int PutData(IntPtr Buffer, int Length);
 
+        /// <summary>
+        /// Adds sample data to an output device buffer ("push" device).
+        /// </summary>
+        /// <param name="Buffer">float[] providing the sample data.</param>
+        /// <param name="Length">The amount of data in bytes. <see cref="GetData(IntPtr,int)" /> with the <see cref="DataFlags.Available"/> flag can be used to check how much data is queued.</param>
+        /// <returns>
+        /// If successful, the the amount of data copied from the provided buffer will be returned
+        /// (which may be less than requested if it doesn't all fit in the device buffer, see the <see cref="WasapiInfo.BufferLength"/> property), else -1 is returned.
+        /// Use <see cref="Bass.LastError" /> to get the error code.
+        /// </returns>
+        /// <remarks>
+        /// You must have initialized the device via <see cref="Init" /> with <see cref="WasapiProcedure" /> = <see langword="null" />.
+        /// <para>As much data as possible will be placed in the device's buffer; this function will have to be called again for any remainder.</para>
+        /// <para>
+        /// Data should be provided at a rate sufficent to sustain playback.
+        /// If the buffer gets exhausted, ouput will stall until more data is provided.
+        /// <see cref="GetData(IntPtr,int)" /> with the <see cref="DataFlags.Available"/> flag can be used to check how much data is buffered.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.NotAvailable">The device is being fed by a <see cref="WasapiProcedure"/> callback function, or it is an input device.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Length" /> is not valid, it must equate to a whole number of samples.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_PutData")]
         public static extern int PutData(float[] Buffer, int Length);
                 
@@ -203,11 +266,34 @@ namespace ManagedBass.Wasapi
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_Lock")]
         public static extern bool Lock(bool State = true);
 
+        /// <summary>
+        /// Gets the mute status of the current Wasapi device/driver (endpoint).
+        /// </summary>
+        /// <param name="Mode">The type of volume to get.</param>
+        /// <returns><see langword="true" />, if the device/session is muted and <see langword="false" /> if unmuted, else -1. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.NotAvailable">There is no volume control available.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_GetMute")]
-        public static extern bool GetMute(WasapiVolumeTypes mode = WasapiVolumeTypes.Device);
+        public static extern bool GetMute(WasapiVolumeTypes Mode = WasapiVolumeTypes.Device);
 
+        /// <summary>
+        /// Sets the mute status of the current Wasapi device/driver (endpoint).
+        /// </summary>
+        /// <param name="Mode">The type of volume to set.</param>
+        /// <param name="Mute"><see langword="true" /> to mute the device, <see langword="false" /> to unmute the device.</param>
+        /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>When using multiple devices, the current thread's device setting (as set with <see cref="CurrentDevice" />) determines which device this function call applies to.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.NotAvailable">There is no volume control available.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_WASAPI_SetMute")]
-        public static extern bool SetMute(WasapiVolumeTypes mode, bool mute);
+        public static extern bool SetMute(WasapiVolumeTypes Mode, bool Mute);
         
 		/// <summary>
 		/// Gets the audio meter information of the current Wasapi device/driver (endpoint).

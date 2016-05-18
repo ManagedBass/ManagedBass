@@ -23,7 +23,6 @@ namespace ManagedBass.Fx
                 Parameters.fPitchShift = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
         
@@ -38,7 +37,6 @@ namespace ManagedBass.Fx
                 Parameters.fSemitones = (float)value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
         
@@ -54,7 +52,6 @@ namespace ManagedBass.Fx
                 Parameters.lFFTsize = value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
         
@@ -70,7 +67,6 @@ namespace ManagedBass.Fx
                 Parameters.lOsamp = value;
 
                 OnPropertyChanged();
-                Update();
             }
         }
 

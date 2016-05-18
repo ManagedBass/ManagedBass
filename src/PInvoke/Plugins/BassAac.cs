@@ -9,7 +9,7 @@ namespace ManagedBass
             set { Bass.Configure(Configuration.PlayAudioFromMp4, value); }
         }
 
-        public static bool SupportMp4
+        public static bool AacSupportMp4
         {
             get { return Bass.GetConfigBool(Configuration.AacSupportMp4); }
             set { Bass.Configure(Configuration.AacSupportMp4, value); }

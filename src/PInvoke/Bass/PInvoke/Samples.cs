@@ -49,18 +49,78 @@ namespace ManagedBass
         public static extern bool SampleFree(int Handle);
 
         #region Sample Set Data
+        /// <summary>
+        /// Sets a sample's data.
+        /// </summary>
+        /// <param name="Handle">The sample handle.</param>
+        /// <param name="Buffer">Pointer to the data to set.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// <para>A sample's data can be set at any time, including during playback.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleSetData")]
         public static extern bool SampleSetData(int Handle, IntPtr Buffer);
 
+        /// <summary>
+        /// Sets a sample's data.
+        /// </summary>
+        /// <param name="Handle">The sample handle.</param>
+        /// <param name="Buffer">byte[] containing the data to set.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// <para>A sample's data can be set at any time, including during playback.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleSetData")]
         public static extern bool SampleSetData(int Handle, byte[] Buffer);
 
+        /// <summary>
+        /// Sets a sample's data.
+        /// </summary>
+        /// <param name="Handle">The sample handle.</param>
+        /// <param name="Buffer">int[] containing the data to set.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// <para>A sample's data can be set at any time, including during playback.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleSetData")]
         public static extern bool SampleSetData(int Handle, int[] Buffer);
 
+        /// <summary>
+        /// Sets a sample's data.
+        /// </summary>
+        /// <param name="Handle">The sample handle.</param>
+        /// <param name="Buffer">short[] containing the data to set.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// <para>A sample's data can be set at any time, including during playback.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleSetData")]
         public static extern bool SampleSetData(int Handle, short[] Buffer);
 
+        /// <summary>
+        /// Sets a sample's data.
+        /// </summary>
+        /// <param name="Handle">The sample handle.</param>
+        /// <param name="Buffer">float[] containing the data to set.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// <para>A sample's data can be set at any time, including during playback.</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleSetData")]
         public static extern bool SampleSetData(int Handle, float[] Buffer);
         #endregion
@@ -102,20 +162,70 @@ namespace ManagedBass
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleCreate")]
         public static extern int CreateSample(int Length, int Frequency, int Channels, int Max, BassFlags Flags);
-        
+
         #region Sample Get Data
+        /// <summary>
+        /// Retrieves a copy of a sample's data.
+        /// </summary>
+        /// <param name="Handle">The sample handle.</param>
+        /// <param name="Buffer">Pointer to a buffer to receive the data.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleGetData")]
         public static extern bool SampleGetData(int Handle, IntPtr Buffer);
 
+        /// <summary>
+        /// Retrieves a copy of a sample's data.
+        /// </summary>
+        /// <param name="Handle">The sample handle.</param>
+        /// <param name="Buffer">byte[] to receive the data.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleGetData")]
         public static extern bool SampleGetData(int Handle, [In, Out] byte[] Buffer);
 
+        /// <summary>
+        /// Retrieves a copy of a sample's data.
+        /// </summary>
+        /// <param name="Handle">The sample handle.</param>
+        /// <param name="Buffer">short[] to receive the data.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleGetData")]
         public static extern bool SampleGetData(int Handle, [In, Out] short[] Buffer);
 
+        /// <summary>
+        /// Retrieves a copy of a sample's data.
+        /// </summary>
+        /// <param name="Handle">The sample handle.</param>
+        /// <param name="Buffer">int[] to receive the data.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleGetData")]
         public static extern bool SampleGetData(int Handle, [In, Out] int[] Buffer);
 
+        /// <summary>
+        /// Retrieves a copy of a sample's data.
+        /// </summary>
+        /// <param name="Handle">The sample handle.</param>
+        /// <param name="Buffer">float[] to receive the data.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleGetData")]
         public static extern bool SampleGetData(int Handle, [In, Out] float[] Buffer);
         #endregion
