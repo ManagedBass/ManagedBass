@@ -113,7 +113,7 @@ namespace ManagedBass.Wasapi
         }
         #endregion
 
-        public static WasapiPlaybackDevice DefaultDevice => Devices.First(dev => dev.DeviceInfo.IsDefault);
+        public static WasapiPlaybackDevice Default => Devices.First(dev => dev.Info.IsDefault);
 
         public static int Count
         {
@@ -135,7 +135,7 @@ namespace ManagedBass.Wasapi
         {
             get
             {
-                foreach (var dev in WasapiLoopbackDevice.Devices.Where(dev => dev.DeviceInfo.ID == DeviceInfo.ID))
+                foreach (var dev in WasapiLoopbackDevice.Devices.Where(dev => dev.Info.ID == Info.ID))
                     return dev;
 
                 throw new Exception("Could not find a Loopback Device.");

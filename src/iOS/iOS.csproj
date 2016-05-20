@@ -9,7 +9,7 @@
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B07F0848-A4FB-406E-98D6-620CDAE881D9}</ProjectGuid>
+    <ProjectGuid>{DD11DE13-D78E-4ABE-A7FF-FEF30C7FECA3}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,12 +32,12 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Bass.cs" />
-    <Compile Include="IOSMixAudioFlags.cs" />
-    <Compile Include="IOSNotify.cs" />
-    <Compile Include="IOSNotifyProcedure.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ManagedBass.PInvoke, Version=0.22.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ManagedBass.PInvoke.0.1.1\lib\Xamarin.iOS\ManagedBass.PInvoke.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
@@ -45,7 +45,9 @@
   <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
-  <Import Project="..\Managed\Managed.projitems" Label="Shared" />
-  <Import Project="..\PInvoke\PInvoke.projitems" Label="Shared" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="..\Shared\Managed.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

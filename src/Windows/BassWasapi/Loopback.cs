@@ -22,7 +22,7 @@ namespace ManagedBass.Wasapi
 
             if (IncludeSilence)
             {
-                var playbackDevice = PlaybackDevice.Devices.First(Dev => Dev.DeviceInfo.Driver == Device.DeviceInfo.ID);
+                var playbackDevice = PlaybackDevice.Devices.First(Dev => Dev.Info.Driver == Device.Info.ID);
                 
                 _silencePlayer = new Silence(playbackDevice);
             }
@@ -30,7 +30,7 @@ namespace ManagedBass.Wasapi
             Device.Init();
             Device.Callback += B => DataAvailable?.Invoke(B);
 
-            var info = Device.DeviceInfo;
+            var info = Device.Info;
 
             Format = new PCMFormat(info.MixFrequency, info.MixChannels, Resolution.Float);
         }
@@ -53,7 +53,7 @@ namespace ManagedBass.Wasapi
         /// <returns><see langword="true"/> on success, else <see langword="false"/>.</returns>
         public bool Start()
         {
-            _silencePlayer?.Start();
+            _silencePlayer?.Play();
 
             var result = _device.Start();
 

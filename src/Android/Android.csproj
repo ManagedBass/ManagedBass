@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{AD2F2FC0-636D-45B3-A400-94D579CF143F}</ProjectGuid>
+    <ProjectGuid>{E8BA31D2-88F5-40DE-900A-173DDCBAE79D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>ManagedBass</RootNamespace>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
@@ -38,6 +38,10 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ManagedBass.PInvoke, Version=0.22.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ManagedBass.PInvoke.0.1.1\lib\MonoAndroid\ManagedBass.PInvoke.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
@@ -48,7 +52,9 @@
     </Compile>
     <Compile Include="AndroidAssetChannel.cs" />
   </ItemGroup>
-  <Import Project="..\Managed\Managed.projitems" Label="Shared" />
-  <Import Project="..\PInvoke\PInvoke.projitems" Label="Shared" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="..\Shared\Managed.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

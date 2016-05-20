@@ -11,7 +11,7 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <ProjectGuid>{1E6370CD-B475-4FDC-9F6F-8A5ECFC9538C}</ProjectGuid>
+    <ProjectGuid>{EEC6BEDB-F972-44B8-860B-88C84CDFCDBE}</ProjectGuid>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -32,15 +32,20 @@
     <DefineConstants>__MAC__</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ManagedBass.PInvoke, Version=0.22.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ManagedBass.PInvoke.0.1.1\lib\net45\ManagedBass.PInvoke.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DynamicLibrary.cs" />
   </ItemGroup>
-  <Import Project="..\Managed\Managed.projitems" Label="Shared" />
-  <Import Project="..\PInvoke\PInvoke.projitems" Label="Shared" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="..\Shared\Managed.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

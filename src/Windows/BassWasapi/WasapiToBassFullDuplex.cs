@@ -15,20 +15,23 @@
 
         WasapiToBassFullDuplex(WasapiDevice WasapiDevice, bool Decode = false)
         {
-            var info = WasapiDevice.DeviceInfo;
+            var info = WasapiDevice.Info;
 
             _wasapiDevice = WasapiDevice;
 
             Handle = Bass.CreateStream(info.MixFrequency, info.MixChannels, Decode ? BassFlags.Decode : 0, StreamProcedureType.Push);
 
-            WasapiDevice.Callback += s => Bass.StreamPutData(Handle, s.Pointer, s.ByteLength);
+            WasapiDevice.Callback += s => Bass.StreamPutData(Handle, s.Pointer, s.Length);
         }
 
-        public override bool Start()
+        /// <summary>
+        /// Starts the Channel Playback.
+        /// </summary>
+        public override bool Play(bool Restart = false)
         {
             _wasapiDevice.Start();
 
-            return base.Start();
+            return base.Play(Restart);
         }
 
         public override bool Pause()

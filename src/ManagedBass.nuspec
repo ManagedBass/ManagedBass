@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>ManagedBass</id>
-        <version>0.22.0</version>
+        <version>0.23.0</version>
         <title>ManagedBass</title>
         <authors>MathewSachin</authors>
         <licenseUrl>https://raw.githubusercontent.com/ManagedBass/ManagedBass/master/LICENSE.md</licenseUrl>
         <projectUrl>https://github.com/ManagedBass/ManagedBass/</projectUrl>
-        <iconUrl>https://avatars3.githubusercontent.com/u/19162578?v=3&amp;s=60</iconUrl>
+        <iconUrl>https://raw.githubusercontent.com/ManagedBass/ManagedBass/master/ManagedBass.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>
 Free OpenSource .Net Wrapper around un4seen Bass audio library and most of its addons.
@@ -31,6 +31,9 @@ Bass and its Addons are trademarks of their respective owners.
         </releaseNotes>
         <copyright>(c) 2016 Mathew Sachin</copyright>
         <tags>C# Bass Wasapi Asio Recording Audio Music</tags>
+        <dependencies>
+            <dependency id="ManagedBass.PInvoke" version="0.1.0" />
+        </dependencies>
     </metadata>
     <files>
         <file src="Windows\bin\Release\ManagedBass.dll" target="lib\net45"/>

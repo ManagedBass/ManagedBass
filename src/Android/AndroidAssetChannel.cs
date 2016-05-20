@@ -10,7 +10,7 @@ namespace ManagedBass
         /// <summary>
         /// Creates a new instance of <see cref="AndroidAssetChannel"/>.
         /// </summary>
-        public AndroidAssetChannel(string FileName, AssetManager AssetManager, bool IsDecoder = false, Resolution Resolution = Resolution.Short)
-            : base(AssetManager.Open(FileName, Access.Random), IsDecoder, Resolution) { }
+        public AndroidAssetChannel(string FileName, AssetManager AssetManager, BassFlags Flags = BassFlags.Default)
+            : base(AssetManager.Open(FileName, Access.Random), Flags) { }
     }
 }

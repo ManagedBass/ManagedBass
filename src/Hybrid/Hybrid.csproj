@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1AAB26ED-862E-42DD-A5B2-A6BFA67B8FB2}</ProjectGuid>
+    <ProjectGuid>{58EF62FC-54F4-493B-8F85-55B2A9509582}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ManagedBass</RootNamespace>
@@ -33,9 +33,19 @@
     <DefineConstants>TRACE;__HYBRID__</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <Compile Include="..\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
-  <Import Project="..\PInvoke\PInvoke.projitems" Label="Shared" />
-  <Import Project="..\Managed\Managed.projitems" Label="Shared" />
+  <ItemGroup>
+    <Reference Include="ManagedBass.PInvoke, Version=0.22.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ManagedBass.PInvoke.0.1.1\lib\portable-net45+netcore45+wpa81+MonoAndroid+Xamarin.Mac+Xamarin.iOS+MonoTouch\ManagedBass.PInvoke.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="..\Shared\Managed.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

@@ -9,7 +9,7 @@
     <AssemblyName>ManagedBass</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectGuid>{5836FB0C-47B9-4370-B523-6E3B01A63F86}</ProjectGuid>
+    <ProjectGuid>{C4044150-D4A2-4DEE-A5E4-203B28C7C183}</ProjectGuid>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -30,6 +30,10 @@
     <DefineConstants>LINUX</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ManagedBass.PInvoke, Version=0.22.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ManagedBass.PInvoke.0.1.1\lib\net45\ManagedBass.PInvoke.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -37,7 +41,9 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
   </ItemGroup>
-  <Import Project="..\Managed\Managed.projitems" Label="Shared" />
-  <Import Project="..\PInvoke\PInvoke.projitems" Label="Shared" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="..\Shared\Managed.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
