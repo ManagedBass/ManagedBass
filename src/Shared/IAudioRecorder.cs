@@ -27,7 +27,7 @@ namespace ManagedBass
         /// <summary>
         /// Gets if Recording is in Progress.
         /// </summary>
-        bool IsActive { get; }
+        bool IsRecording { get; }
 
         /// <summary>
         /// Format of the recorded data.

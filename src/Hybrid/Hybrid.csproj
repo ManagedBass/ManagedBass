@@ -38,8 +38,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ManagedBass.PInvoke, Version=0.22.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ManagedBass.PInvoke.0.1.1\lib\portable-net45+netcore45+wpa81+MonoAndroid+Xamarin.Mac+Xamarin.iOS+MonoTouch\ManagedBass.PInvoke.dll</HintPath>
+    <Reference Include="ManagedBass.PInvoke, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ManagedBass.PInvoke.0.2.1\lib\portable-net45+netcore45+wpa81+MonoAndroid+Xamarin.Mac+Xamarin.iOS+MonoTouch\ManagedBass.PInvoke.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

@@ -19,7 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Channels\PushStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\ReverseStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\Sample.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\Split.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channels\Splitter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\TempoStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\StreamChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\Silence.cs" />
@@ -50,13 +50,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Effect Base.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\BassEncCast.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\BassEncEncoder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Encoding\CAEncoder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Encoding\CastError.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Encoding\CommandLineEncoder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\ICast.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\IceCast.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\IEncoder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Encoding\LameEncoder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\MimeTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\PCMEncoder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Encoding\ShoutCast.cs" />

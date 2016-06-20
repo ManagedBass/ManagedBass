@@ -45,7 +45,7 @@ namespace ManagedBass.Wasapi
         /// <summary>
         /// Gets if Capturing is in progress.
         /// </summary>
-        public bool IsActive => _device.IsStarted;
+        public bool IsRecording => _device.IsStarted;
 
         /// <summary>
         /// Start Loopback Capture.

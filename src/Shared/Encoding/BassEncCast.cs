@@ -7,7 +7,7 @@ namespace ManagedBass.Enc
         protected BassEncEncoder Encoder { get; }
         readonly EncodeNotifyProcedure _proc;
 
-        protected BassEncCast(BassEncEncoder Encoder)
+        internal BassEncCast(BassEncEncoder Encoder)
         {
             this.Encoder = Encoder;
             _proc = Notify;
@@ -77,23 +77,19 @@ namespace ManagedBass.Enc
             {
                 case EncodeNotifyStatus.CastTimeout:
                     Disconnect();
-                    OnError(CastError.Timeout);
                     break;
 
                 case EncodeNotifyStatus.EncoderDied:
-                    IsConnected = false;
-                    OnError(CastError.EncoderDied);
-                    break;
-
                 case EncodeNotifyStatus.CastServerConnectionDied:
                     IsConnected = false;
-                    OnError(CastError.ConnectionDied);
                     break;
             }
+            
+            OnNotify(Notify);
         }
 
-        public event Action<CastError> Error;
+        public event Action<EncodeNotifyStatus> Notification;
 
-        protected void OnError(CastError ErrorType) => Error?.Invoke(ErrorType);
+        void OnNotify(EncodeNotifyStatus ErrorType) => Notification?.Invoke(ErrorType);
     }
 }

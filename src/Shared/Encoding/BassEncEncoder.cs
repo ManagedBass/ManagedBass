@@ -17,12 +17,12 @@ namespace ManagedBass.Enc
         readonly Stream _stream;
         byte[] _buffer;
         
-        protected BassEncEncoder()
+        internal BassEncEncoder()
         {
             _notifyProcedure = NotifyProcedure;
         }
 
-        protected BassEncEncoder(Stream Stream) : this()
+        internal BassEncEncoder(Stream Stream) : this()
         {
             _encodeProcedure = EncodeProcedure;
             _stream = Stream;

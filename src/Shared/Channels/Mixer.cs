@@ -28,21 +28,11 @@ namespace ManagedBass.Mix
         /// <summary>
         /// Adds a Channel to the Mixer.
         /// </summary>
-        public bool AddChannel(Channel Channel) => AddChannel(Channel.Handle);
-
-        /// <summary>
-        /// Adds a Channel to the Mixer.
-        /// </summary>
-        public bool AddChannel(int Channel) => BassMix.MixerAddChannel(Handle, Channel, BassFlags.Default);
-
+        public bool AddChannel(Channel Channel, BassFlags Flags = BassFlags.Default) => BassMix.MixerAddChannel(Handle, Channel.Handle, Flags);
+        
         /// <summary>
         /// Removes a Channel from the Mixer.
         /// </summary>
-        public bool RemoveChannel(Channel Channel) => RemoveChannel(Channel.Handle);
-
-        /// <summary>
-        /// Removes a Channel from the Mixer.
-        /// </summary>
-        public bool RemoveChannel(int Channel) => BassMix.MixerRemoveChannel(Channel);
+        public bool RemoveChannel(Channel Channel) => BassMix.MixerRemoveChannel(Channel.Handle);
     }
 }

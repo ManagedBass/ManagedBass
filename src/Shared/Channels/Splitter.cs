@@ -2,11 +2,11 @@
 
 namespace ManagedBass.Mix
 {
-    public sealed class Split : Channel
+    public sealed class Splitter : Channel
     {
         Channel _source;
 
-        public Split(Channel DecodingSource, BassFlags Flags = BassFlags.Default, int[] ChannelMap = null)
+        public Splitter(Channel DecodingSource, BassFlags Flags = BassFlags.Default, int[] ChannelMap = null)
         {
             if (!DecodingSource.Info.IsDecodingChannel)
                 throw new ArgumentException("Not a Decoding Channel!");
@@ -15,6 +15,12 @@ namespace ManagedBass.Mix
 
             Handle = BassMix.CreateSplitStream(DecodingSource.Handle, Flags, ChannelMap);
         }
+
+        public void Reset() => BassMix.SplitStreamReset(Handle);
+
+        public void Reset(int Offset) => BassMix.SplitStreamReset(Handle, Offset);
+
+        public int AvailableData => BassMix.SplitStreamGetAvailable(Handle);
 
         public override void Dispose()
         {

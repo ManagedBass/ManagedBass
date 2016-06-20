@@ -18,6 +18,14 @@ namespace ManagedBass.Cd
         {
             Handle = BassCd.CreateStream(Drive, Track, Flags);
         }
+
+        public CDDrive Drive => CDDrive.GetByIndex(BassCd.StreamGetTrack(Handle).HiWord());
+
+        public int TrackNumber
+        {
+            get { return BassCd.StreamGetTrack(Handle).LoWord(); }
+            set { BassCd.StreamSetTrack(Handle, value); }
+        }
     }
 }
 #endif

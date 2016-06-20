@@ -1,4 +1,3 @@
-#if !__HYBRID__
 using System;
 using System.IO;
 using System.Text;
@@ -33,11 +32,11 @@ namespace ManagedBass
         WaveFileWriter(Stream outStream, WaveFormat format)
         {
             _ofstream = outStream;
-            _writer = new BinaryWriter(outStream, Encoding.ASCII);
+            _writer = new BinaryWriter(outStream, Encoding.GetEncoding("us-ascii"));
 
-            _writer.Write(Encoding.ASCII.GetBytes("RIFF"));
+            _writer.Write("RIFF");
             _writer.Write(0); // placeholder
-            _writer.Write(Encoding.ASCII.GetBytes("WAVEfmt "));
+            _writer.Write("WAVEfmt ");
             _waveFormat = format;
 
             _writer.Write(18 + format.ExtraSize); // wave format Length
@@ -46,14 +45,14 @@ namespace ManagedBass
             // CreateFactChunk
             if (format.Encoding != WaveFormatTag.Pcm)
             {
-                _writer.Write(Encoding.ASCII.GetBytes("fact"));
+                _writer.Write("fact");
                 _writer.Write(4);
                 _factSampleCountPos = outStream.Position;
                 _writer.Write(0); // number of samples
             }
 
             // WriteDataChunkHeader
-            _writer.Write(Encoding.ASCII.GetBytes("data"));
+            _writer.Write("data");
             _dataSizePos = outStream.Position;
             _writer.Write(0); // placeholder
 
@@ -63,17 +62,19 @@ namespace ManagedBass
         /// <summary>
         /// Creates a <see cref="WaveFileWriter"/> that writes to a <see cref="Stream"/>.
         /// </summary>
-        public WaveFileWriter(Stream outStream, PCMFormat InputFormat)
-            : this(outStream, InputFormat.ToWaveFormat())
+        public WaveFileWriter(Stream OutStream, PCMFormat InputFormat)
+            : this(OutStream, InputFormat.ToWaveFormat())
         {
             this.InputFormat = InputFormat;
         }
 
+#if !__HYBRID__
         /// <summary>
         /// Creates a <see cref="WaveFileWriter"/> that writes to a File.
         /// </summary>
         public WaveFileWriter(string FilePath, PCMFormat InputFormat)
             : this(new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read), InputFormat) { }
+#endif
         #endregion
 
         #region Write
@@ -180,7 +181,7 @@ namespace ManagedBass
                     if (_waveFormat.Encoding != WaveFormatTag.Pcm)
                     {
                         _writer.Seek((int) _factSampleCountPos, SeekOrigin.Begin);
-                        _writer.Write((int) (Length*8/_waveFormat.BitsPerSample));
+                        _writer.Write((int) (Length * 8 / _waveFormat.BitsPerSample));
                     }
 
                     _writer.Seek((int) _dataSizePos, SeekOrigin.Begin);
@@ -207,4 +208,3 @@ namespace ManagedBass
         #endregion
     }
 }
-#endif

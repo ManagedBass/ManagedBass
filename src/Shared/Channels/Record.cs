@@ -38,7 +38,7 @@ namespace ManagedBass
         /// <summary>
         /// Gets if Capturing is in progress.
         /// </summary>
-        public bool IsActive => Bass.ChannelIsActive(Handle) == PlaybackState.Playing;
+        public bool IsRecording => IsActive == PlaybackState.Playing;
 
         /// <summary>
         /// Start Audio Capture.

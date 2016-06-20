@@ -14,7 +14,7 @@
 #elif LINUX
     "Linux"
 #elif __MAC__
-    "Max"
+    "Mac"
 #elif __ANDROID__
     "Xamarin.Android"
 #elif __IOS__

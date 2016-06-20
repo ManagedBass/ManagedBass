@@ -12,7 +12,6 @@ namespace ManagedBass.Wma
     public class WmaEncoder : IEncoder
     {
         readonly Func<int> _starter;
-        int _handle;
         readonly Stream _outStream;
 
         #region Properties
@@ -22,7 +21,7 @@ namespace ManagedBass.Wma
 
         public int OutputBitRate { get; }
 
-        public bool IsActive => _handle != 0;
+        public bool IsActive => Handle != 0;
 
         public bool IsPaused
         {
@@ -109,28 +108,28 @@ namespace ManagedBass.Wma
         /// </summary>
         /// <param name="Buffer">IntPtr to write from.</param>
         /// <param name="Length">No of bytes to write.</param>
-        public bool Write(IntPtr Buffer, int Length) => BassWma.EncodeWrite(_handle, Buffer, Length);
+        public bool Write(IntPtr Buffer, int Length) => BassWma.EncodeWrite(Handle, Buffer, Length);
 
         /// <summary>
         /// Write data from a byte[].
         /// </summary>
         /// <param name="Buffer">byte[] to write from.</param>
         /// <param name="Length">No of bytes to write.</param>
-        public bool Write(byte[] Buffer, int Length) => BassWma.EncodeWrite(_handle, Buffer, Length);
+        public bool Write(byte[] Buffer, int Length) => BassWma.EncodeWrite(Handle, Buffer, Length);
 
         /// <summary>
         /// Write data from a short[].
         /// </summary>
         /// <param name="Buffer">short[] to write from.</param>
         /// <param name="Length">No of bytes to write, i.e. (No of Shorts) * 2.</param>
-        public bool Write(short[] Buffer, int Length) => BassWma.EncodeWrite(_handle, Buffer, Length);
+        public bool Write(short[] Buffer, int Length) => BassWma.EncodeWrite(Handle, Buffer, Length);
 
         /// <summary>
         /// Write data from a float[].
         /// </summary>
         /// <param name="Buffer">float[] to write from.</param>
         /// <param name="Length">No of bytes to write, i.e. (No of floats) * 4.</param>
-        public bool Write(float[] Buffer, int Length) => BassWma.EncodeWrite(_handle, Buffer, Length);
+        public bool Write(float[] Buffer, int Length) => BassWma.EncodeWrite(Handle, Buffer, Length);
         #endregion
 
         /// <summary>
@@ -138,15 +137,17 @@ namespace ManagedBass.Wma
         /// </summary>
         public void Dispose() => Stop();
 
-        public bool Start() => (_handle = _starter.Invoke()) != 0;
+        public bool Start() => (Handle = _starter.Invoke()) != 0;
 
         public bool Stop()
         {
-            if (!BassWma.EncodeClose(_handle))
+            if (!BassWma.EncodeClose(Handle))
                 return false;
 
-            _handle = 0;
+            Handle = 0;
             return true;
         }
+
+        public int Handle { get; private set; }
     }
 }

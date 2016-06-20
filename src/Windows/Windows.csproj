@@ -47,8 +47,8 @@
     <Compile Include="WmaEncoder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ManagedBass.PInvoke, Version=0.22.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ManagedBass.PInvoke.0.1.1\lib\net45\ManagedBass.PInvoke.dll</HintPath>
+    <Reference Include="ManagedBass.PInvoke, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ManagedBass.PInvoke.0.2.1\lib\net45\ManagedBass.PInvoke.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

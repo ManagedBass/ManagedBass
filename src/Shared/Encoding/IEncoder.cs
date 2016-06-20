@@ -18,5 +18,7 @@ namespace ManagedBass.Enc
         
         bool Start();
         bool Stop();
+
+        int Handle { get; }
     }
 }

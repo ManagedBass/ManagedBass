@@ -1,6 +1,5 @@
 // Adopted from the great article: http://www.codeproject.com/Articles/17890/Do-Anything-With-ID
 
-#if !__HYBRID__
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -182,7 +181,7 @@ namespace ManagedBass.Tags
             if (FrameID == null || !FrameID.Length.Is(3, 4))
                 return false;
 
-            return FrameID.All(ch => char.IsUpper(ch) || char.IsDigit(ch));
+            return FrameID.Cast<char>().All(ch => char.IsUpper(ch) || char.IsDigit(ch));
         }
 
         /// <summary>
@@ -276,7 +275,7 @@ namespace ManagedBass.Tags
 
             ReadedLength -= Convert.ToInt32(_ptr.ToInt32() - pos.ToInt32());
 
-            return GetEncoding(TEncoding).GetString(mStream.ToArray());
+            return GetEncoding(TEncoding).GetString(mStream.ToArray(), 0, (int)mStream.Length);
         }
 
         byte ReadByte()
@@ -324,8 +323,9 @@ namespace ManagedBass.Tags
                     return Encoding.GetEncoding("UTF-16BE");
                 case TextEncodings.Utf8:
                     return Encoding.UTF8;
+
                 default:
-                    return Encoding.Default;
+                    return Encoding.GetEncoding("us-ascii");
             }
         }
 
@@ -337,4 +337,3 @@ namespace ManagedBass.Tags
         #endregion
     }
 }
-#endif
