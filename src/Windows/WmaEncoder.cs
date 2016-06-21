@@ -32,49 +32,31 @@ namespace ManagedBass.Wma
         public bool CanPause => false;
 
         public TagReader Tags { get; set; }
-
-        public PCMFormat InputFormat { get; }
         #endregion
-
-        static WMAEncodeFlags FormatToFlags(PCMFormat Format)
+        
+        public WmaEncoder(string FileName, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
         {
-            switch (Format.Resolution)
-            {
-                case Resolution.Byte:
-                    return WMAEncodeFlags.Byte;
-         
-                case Resolution.Float:
-                    return WMAEncodeFlags.Float;
-
-                default:
-                    return WMAEncodeFlags.Default;
-            }
-        }
-
-        public WmaEncoder(string FileName, PCMFormat Format, int BitRate = 128000)
-        {
-            InputFormat = Format;
-
-            _starter = () => BassWma.EncodeOpenFile(Format.Frequency, Format.Channels, FormatToFlags(Format), BitRate, FileName);
+            _starter = () => BassWma.EncodeOpenFile(Frequency, Channels, Flags, BitRate, FileName);
         }
         
-        public WmaEncoder(int Port, int Clients, PCMFormat Format, int BitRate = 128000)
+        public WmaEncoder(int Port, int Clients, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
         {
-            InputFormat = Format;
-            
-            _starter = () => BassWma.EncodeOpenNetwork(Format.Frequency, Format.Channels, FormatToFlags(Format), BitRate, Port, Clients);
+            _starter = () => BassWma.EncodeOpenNetwork(Frequency, Channels, Flags, BitRate, Port, Clients);
         }
 
-        public WmaEncoder(Stream OutStream, PCMFormat Format, int BitRate = 128000)
+        public WmaEncoder(Stream OutStream, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
         {
             _outStream = OutStream;
 
             if (!OutStream.CanWrite || !OutStream.CanSeek)
                 throw new ArgumentException("Expected and Writable and Seekable Stream", nameof(OutStream));
+            
+            _starter = () => BassWma.EncodeOpen(Frequency, Channels, Flags, BitRate, WMStreamProc);
+        }
 
-            InputFormat = Format;
-
-            _starter = () => BassWma.EncodeOpen(Format.Frequency, Format.Channels, FormatToFlags(Format), BitRate, WMStreamProc);
+        public WmaEncoder(string Url, string UserName, string Password, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
+        {
+            _starter = () => BassWma.EncodeOpenPublish(Frequency, Channels, Flags, BitRate, Url, UserName, Password);
         }
 
         byte[] _buffer;

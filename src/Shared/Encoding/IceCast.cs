@@ -2,7 +2,7 @@ using System;
 
 namespace ManagedBass.Enc
 {
-    public class IceCast : BassEncCast
+    public sealed class IceCast : BassEncCast
     {
         public IceCast(BassEncEncoder Encoder) : base(Encoder)
         {
@@ -29,13 +29,13 @@ namespace ManagedBass.Enc
                     case ChannelType.OGG:
                     case ChannelType.FLAC_OGG:
                     case ChannelType.OPUS:
-                        return MimeTypes.Ogg;
+                        return MimeOgg;
                     
                     case ChannelType.MP3:
-                        return MimeTypes.Mp3;
+                        return MimeMp3;
                         
                     case ChannelType.AAC:
-                        return MimeTypes.Aac;
+                        return MimeAac;
                     
                     default:
                         return null;

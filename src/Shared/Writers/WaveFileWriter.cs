@@ -14,12 +14,7 @@ namespace ManagedBass
         BinaryWriter _writer;
         readonly long _dataSizePos, _factSampleCountPos;
         readonly object _locker = new object();
-
-        /// <summary>
-        /// Format of Input data.
-        /// </summary>
-        public PCMFormat InputFormat { get; }
-
+        
         /// <summary>
         /// Number of bytes of audio
         /// </summary>
@@ -29,7 +24,10 @@ namespace ManagedBass
         #endregion
 
         #region Factory
-        WaveFileWriter(Stream outStream, WaveFormat format)
+        /// <summary>
+        /// Creates a <see cref="WaveFileWriter"/> that writes to a <see cref="Stream"/>.
+        /// </summary>
+        public WaveFileWriter(Stream outStream, WaveFormat format)
         {
             _ofstream = outStream;
             _writer = new BinaryWriter(outStream, Encoding.GetEncoding("us-ascii"));
@@ -59,20 +57,11 @@ namespace ManagedBass
             Length = 0;
         }
         
-        /// <summary>
-        /// Creates a <see cref="WaveFileWriter"/> that writes to a <see cref="Stream"/>.
-        /// </summary>
-        public WaveFileWriter(Stream OutStream, PCMFormat InputFormat)
-            : this(OutStream, InputFormat.ToWaveFormat())
-        {
-            this.InputFormat = InputFormat;
-        }
-
 #if !__HYBRID__
         /// <summary>
         /// Creates a <see cref="WaveFileWriter"/> that writes to a File.
         /// </summary>
-        public WaveFileWriter(string FilePath, PCMFormat InputFormat)
+        public WaveFileWriter(string FilePath, WaveFormat InputFormat)
             : this(new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read), InputFormat) { }
 #endif
         #endregion

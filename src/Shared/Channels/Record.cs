@@ -10,29 +10,36 @@ namespace ManagedBass
         /// <summary>
         /// Creates a new instance of <see cref="Record"/> with the Default Format and Device.
         /// </summary>
-        public Record() : this(RecordDevice.Default, new PCMFormat()) { }
+        public Record() : this(RecordDevice.Default) { }
 
         /// <summary>
         /// Creates a new instance of <see cref="Record"/> with the Default Format.
         /// </summary>
         /// <param name="Device">The <see cref="RecordDevice"/> to use.</param>
-        public Record(RecordDevice Device) : this(Device, new PCMFormat()) { }
+        public Record(RecordDevice Device) : this(Device, 44100, 2, BassFlags.Default) { }
         
         /// <summary>
         /// Creates a new instance of <see cref="Record"/>.
         /// </summary>
         /// <param name="Device">The <see cref="RecordDevice"/> to use.</param>
         /// <param name="Format">Channels, SampleRate, Resolution.</param>
-        public Record(RecordDevice Device, PCMFormat Format)
+        public Record(RecordDevice Device, int Frequency, int Channels, BassFlags Flags)
         {
-            this.Format = Format;
-
             Device.Init();
             var deviceIndex = Device.Index;
 
             Bass.CurrentRecordingDevice = deviceIndex;
+
+            var res = Resolution.Short;
+
+            if (Flags.HasFlag(BassFlags.Byte))
+                res = Resolution.Byte;
+            else if (Flags.HasFlag(BassFlags.Float))
+                res = Resolution.Float;
+
+            AudioFormat = WaveFormat.FromParams(Frequency, Channels, res);
             
-            Handle = Bass.RecordStart(Format.Frequency, Format.Channels, BassFlags.RecordPause | Format.Resolution.ToBassFlag(), Processing);
+            Handle = Bass.RecordStart(Frequency, Channels, BassFlags.RecordPause | Flags, Processing);
         }
 
         /// <summary>
@@ -52,10 +59,7 @@ namespace ManagedBass
         /// <returns><see langword="true"/> on success, else <see langword="false"/>.</returns>
         public override bool Stop() => Bass.ChannelPause(Handle);
 
-        /// <summary>
-        /// The Format of Recorded Data.
-        /// </summary>
-        public PCMFormat Format { get; }
+        public WaveFormat AudioFormat { get; }
 
         #region Callback
         /// <summary>

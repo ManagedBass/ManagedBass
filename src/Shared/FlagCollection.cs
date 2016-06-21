@@ -9,7 +9,7 @@ namespace ManagedBass
             _channel = Channel.Handle;
         }
 
-        public BassFlags Get() => Bass.ChannelFlags(_channel, 0, 0);
+        public BassFlags Flags => Bass.ChannelFlags(_channel, 0, 0);
 
         public bool Has(BassFlags Flag) => Bass.ChannelHasFlag(_channel, Flag);
 

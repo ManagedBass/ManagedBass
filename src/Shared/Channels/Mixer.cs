@@ -10,9 +10,9 @@ namespace ManagedBass.Mix
         /// <summary>
         /// Creates a new instance of <see cref="Mixer"/>.
         /// </summary>
-        public Mixer(PCMFormat Format, BassFlags Flags = BassFlags.Default)
+        public Mixer(int Frequency = 44100, int Channels = 2, BassFlags Flags = BassFlags.Default)
         {
-            Handle = BassMix.CreateMixerStream(Format.Frequency, Format.Channels, Flags);
+            Handle = BassMix.CreateMixerStream(Frequency, Channels, Flags);
         }
 
         #region Read

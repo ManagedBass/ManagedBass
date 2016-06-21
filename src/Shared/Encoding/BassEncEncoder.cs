@@ -7,9 +7,21 @@ namespace ManagedBass.Enc
 {
     public abstract class BassEncEncoder : IEncoder
     {
-        protected static int GetDummyChannel(PCMFormat Format)
+        protected static int GetDummyChannel(WaveFormat Format)
         {
-            return Bass.CreateStream(Format.Frequency, Format.Channels, BassFlags.Decode | Format.Resolution.ToBassFlag(), StreamProcedureType.Push);
+            return Bass.CreateStream(Format.SampleRate, Format.Channels, BassFlags.Decode | ToBassFlags(Format.Encoding, Format.Channels), StreamProcedureType.Push);
+        }
+
+        static BassFlags ToBassFlags(WaveFormatTag WfTag, int Channels)
+        {
+            if (WfTag == WaveFormatTag.Pcm && Channels == 16)
+                return BassFlags.Default;
+            if (WfTag == WaveFormatTag.Pcm && Channels == 8)
+                return BassFlags.Byte;
+            if (WfTag == WaveFormatTag.IeeeFloat && Channels == 32)
+                return BassFlags.Float;
+
+            throw new ArgumentException(nameof(WfTag));
         }
 
         readonly EncodeNotifyProcedure _notifyProcedure;
@@ -162,8 +174,6 @@ namespace ManagedBass.Enc
         }
 
         public virtual int OutputBitRate => -1;
-
-        public abstract PCMFormat InputFormat { get; }
         #endregion
     }
 }

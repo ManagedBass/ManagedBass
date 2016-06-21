@@ -28,15 +28,12 @@ namespace ManagedBass
         /// Gets if Recording is in Progress.
         /// </summary>
         bool IsRecording { get; }
-
-        /// <summary>
-        /// Format of the recorded data.
-        /// </summary>
-        PCMFormat Format { get; }
-
+        
         /// <summary>
         /// Provides the recorded data.
         /// </summary>
         event Action<BufferProvider> DataAvailable;
+
+        WaveFormat AudioFormat { get; }
     }
 }

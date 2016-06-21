@@ -32,10 +32,8 @@ namespace ManagedBass.Wasapi
 
             var info = Device.Info;
 
-            Format = new PCMFormat(info.MixFrequency, info.MixChannels, Resolution.Float);
+            AudioFormat = WaveFormat.FromParams(info.MixFrequency, info.MixChannels, Resolution.Float);
         }
-
-        public PCMFormat Format { get; }
 
         /// <summary>
         /// Returns the soundcard output level.
@@ -87,5 +85,7 @@ namespace ManagedBass.Wasapi
         /// Provides the captured data.
         /// </summary>
         public event Action<BufferProvider> DataAvailable;
+
+        public WaveFormat AudioFormat { get; }
     }
 }

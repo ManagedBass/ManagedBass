@@ -2,7 +2,7 @@ using System;
 
 namespace ManagedBass.Enc
 {
-    public class ShoutCast : BassEncCast
+    public sealed class ShoutCast : BassEncCast
     {
         public ShoutCast(BassEncEncoder Encoder) : base(Encoder)
         {
@@ -24,10 +24,10 @@ namespace ManagedBass.Enc
                 switch (Encoder.OutputType)
                 {
                     case ChannelType.MP3:
-                        return MimeTypes.Mp3;
+                        return MimeMp3;
 
                     case ChannelType.AAC:
-                        return MimeTypes.Aac;
+                        return MimeAac;
 
                     default:
                         return null;
@@ -35,7 +35,7 @@ namespace ManagedBass.Enc
             }
         }
 
-        protected override string _server => SID == null ? $"{ServerAddress}:{ServerPort}" : $"{ServerAddress}:{ServerPort},{SID}";
+        protected override string _server => string.IsNullOrEmpty(SID) ? $"{ServerAddress}:{ServerPort}" : $"{ServerAddress}:{ServerPort},{SID}";
         
         public string SID { get; set; }
     }

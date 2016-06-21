@@ -1,6 +1,5 @@
 ﻿#if WINDOWS || LINUX
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 
 namespace ManagedBass.Cd

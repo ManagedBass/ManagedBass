@@ -2,10 +2,14 @@ using System;
 
 namespace ManagedBass.Enc
 {
-    public abstract class BassEncCast : ICast
+    public abstract class BassEncCast
     {
         protected BassEncEncoder Encoder { get; }
         readonly EncodeNotifyProcedure _proc;
+
+        protected const string MimeMp3 = "audio/mpeg";
+        protected const string MimeOgg = "application/ogg";
+        protected const string MimeAac = "audio/aacp";
 
         internal BassEncCast(BassEncEncoder Encoder)
         {

@@ -43,7 +43,6 @@
     <Compile Include="Effects\DXCompressorEffect.cs" />
     <Compile Include="Effects\DXGargleEffect.cs" />
     <Compile Include="Effects\DX_ID3DL2ReverbEffect.cs" />
-    <Compile Include="WmaCast.cs" />
     <Compile Include="WmaEncoder.cs" />
   </ItemGroup>
   <ItemGroup>

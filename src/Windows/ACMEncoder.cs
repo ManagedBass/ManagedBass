@@ -17,11 +17,10 @@ namespace ManagedBass.Enc
 
             _channel = Channel;
             _encoding = Encoding;
-            InputFormat = PCMFormat.FromChannel(Channel);
             _starter = AcmFormat => BassEnc.EncodeStartACM(_channel, AcmFormat, Flags, FileName);
         }
 
-        public ACMEncoder(string FileName, EncodeFlags Flags, WaveFormatTag Encoding, PCMFormat Format)
+        public ACMEncoder(string FileName, EncodeFlags Flags, WaveFormatTag Encoding, WaveFormat Format)
             : this(FileName, Flags, Encoding, GetDummyChannel(Format))
         {
         }
@@ -31,11 +30,10 @@ namespace ManagedBass.Enc
         {
             _channel = Channel;
             _encoding = Encoding;
-            InputFormat = PCMFormat.FromChannel(Channel);
             _starter = AcmFormat => BassEnc.EncodeStartACM(_channel, AcmFormat, Flags, _encodeProcedure);
         }
 
-        public ACMEncoder(Stream OutStream, EncodeFlags Flags, WaveFormatTag Encoding, PCMFormat Format)
+        public ACMEncoder(Stream OutStream, EncodeFlags Flags, WaveFormatTag Encoding, WaveFormat Format)
             : this(OutStream, Flags, Encoding, GetDummyChannel(Format))
         {
         }
@@ -71,7 +69,5 @@ namespace ManagedBass.Enc
 
             return 0;
         }
-        
-        public override PCMFormat InputFormat { get; }
     }
 }
