@@ -3,20 +3,6 @@ namespace ManagedBass.DirectX8
     public sealed class DXCompressorEffect : Effect<DXCompressorParameters>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="DXCompressorEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public DXCompressorEffect(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="DXCompressorEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public DXCompressorEffect(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
-        /// <summary>
         /// Output gain of signal in dB after compression, in the range from -60 to 60. The default value is 0 dB.
         /// </summary>
         public double Gain

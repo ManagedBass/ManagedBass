@@ -18,20 +18,6 @@ namespace ManagedBass.Fx
     /// </remarks>
     public sealed class EchoEffect : Effect<EchoParameters>
     {
-        /// <summary>
-        /// Creates a new instance of <see cref="EchoEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public EchoEffect(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="EchoEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public EchoEffect(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
         #region Presets
         /// <summary>
         /// Set up a Preset.
@@ -43,7 +29,7 @@ namespace ManagedBass.Fx
             Parameters.fFeedback = 0;
             Parameters.fDelay = 0.2f;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -56,7 +42,7 @@ namespace ManagedBass.Fx
             Parameters.fFeedback = 0.7f;
             Parameters.fDelay = 0.5f;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -69,7 +55,7 @@ namespace ManagedBass.Fx
             Parameters.fFeedback = -0.7f;
             Parameters.fDelay = 0.8f;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -82,7 +68,7 @@ namespace ManagedBass.Fx
             Parameters.fFeedback = 0.5f;
             Parameters.fDelay = 0.1f;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
         #endregion
 

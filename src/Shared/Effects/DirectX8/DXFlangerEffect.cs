@@ -3,20 +3,6 @@ namespace ManagedBass.DirectX8
     public sealed class DXFlangerEffect : Effect<DXFlangerParameters>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="DXFlangerEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public DXFlangerEffect(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="DXFlangerEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public DXFlangerEffect(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
-        /// <summary>
         /// Ratio of wet (processed) signal to dry (unprocessed) signal. Must be in the range from 0 (default) through 100 (all wet).
         /// </summary>
         public double WetDryMix

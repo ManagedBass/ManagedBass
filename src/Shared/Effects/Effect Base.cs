@@ -13,43 +13,50 @@ namespace ManagedBass
     {
         int _channel, _effectHandle, _hfsync;
         GCHandle _gch;
-        readonly SyncProcedure _freeproc;
-        readonly bool _mediaPlayer;
+        bool _mediaPlayer;
         bool _wasActive;
+        readonly SyncProcedure _syncProcedure;
+
+        public Effect()
+        {
+            _syncProcedure = (a, b, c, d) => Dispose();
+        }
 
         /// <summary>
         /// Effect's Parameters.
         /// </summary>
         protected T Parameters = new T();
-
-        protected Effect(int Handle, int Priority)
+        
+        public void ApplyOn(int Channel, int Priority = 0)
         {
-            _channel = Handle;
+            _channel = Channel;
             _priority = Priority;
 
             _gch = GCHandle.Alloc(Parameters, GCHandleType.Pinned);
-
-            _freeproc = (a, b, c, d) => Dispose();
-
-            _hfsync = Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, _freeproc);
+            
+            _hfsync = Bass.ChannelSetSync(Channel, SyncFlags.Free, 0, _syncProcedure);
         }
 
-        protected Effect(MediaPlayer player, int Priority) : this(player.Handle, Priority)
+        public void ApplyOn(Channel Channel, int Priority = 0) => ApplyOn(Channel.Handle, Priority);
+
+        public void ApplyOn(MediaPlayer Player, int Priority = 0)
         {
+            ApplyOn(Player.Handle, Priority);
+
             _mediaPlayer = true;
 
-            player.MediaLoaded += NewHandle =>
-                {
-                    if (_wasActive)
-                        IsActive = false;
+            Player.MediaLoaded += NewHandle =>
+            {
+                if (_wasActive)
+                    IsActive = false;
 
-                    Bass.ChannelRemoveSync(_channel, _hfsync);
+                Bass.ChannelRemoveSync(_channel, _hfsync);
 
-                    _channel = NewHandle;
-                    _hfsync = Bass.ChannelSetSync(NewHandle, SyncFlags.Free, 0, _freeproc);
+                _channel = NewHandle;
+                _hfsync = Bass.ChannelSetSync(NewHandle, SyncFlags.Free, 0, _syncProcedure);
 
-                    IsActive = _wasActive;
-                };
+                IsActive = _wasActive;
+            };
         }
         
         int _priority;
@@ -96,7 +103,7 @@ namespace ManagedBass
             Parameters = new T();
             _gch = GCHandle.Alloc(Parameters, GCHandleType.Pinned);
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -131,6 +138,8 @@ namespace ManagedBass
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
+
+        protected void OnPreset() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
 
         /// <summary>
         /// Fired when a Property value changes.

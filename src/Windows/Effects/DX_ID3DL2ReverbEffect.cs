@@ -3,20 +3,6 @@ namespace ManagedBass.DirectX8
     public sealed class DX_ID3DL2ReverbEffect : Effect<DX_ID3DL2ReverbParameters>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="DX_ID3DL2ReverbEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public DX_ID3DL2ReverbEffect(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="DX_ID3DL2ReverbEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public DX_ID3DL2ReverbEffect(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
-        /// <summary>
         /// Attenuation of the room effect, in millibels (mB), in the range from -10000 to 0. The default value is -1000 mB.
         /// </summary>
         public int Room

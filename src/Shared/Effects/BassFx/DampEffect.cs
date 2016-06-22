@@ -6,20 +6,6 @@ namespace ManagedBass.Fx
     public sealed class DampEffect : Effect<DampParameters>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="DampEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public DampEffect(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="DampEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public DampEffect(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
-        /// <summary>
         /// Amplification level (0...1...n, linear). 
         /// </summary>
         public double Gain

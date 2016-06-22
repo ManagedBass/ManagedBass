@@ -6,20 +6,6 @@ namespace ManagedBass.Fx
     public sealed class ReverbEffect : Effect<ReverbParameters>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="ReverbEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public ReverbEffect(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="ReverbEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public ReverbEffect(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
-        /// <summary>
         /// Damping factor (0.0...1.0, def. 0.5).
         /// </summary>
         public double Damp

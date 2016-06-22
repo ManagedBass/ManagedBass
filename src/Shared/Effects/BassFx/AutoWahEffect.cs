@@ -15,20 +15,6 @@ namespace ManagedBass.Fx
     /// </remarks>
     public sealed class AutoWahEffect : Effect<AutoWahParameters>
     {
-        /// <summary>
-        /// Creates a new instance of <see cref="AutoWahEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public AutoWahEffect(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="AutoWahEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public AutoWahEffect(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
         #region Presets
         /// <summary>
         /// Set up a Preset.
@@ -42,7 +28,7 @@ namespace ManagedBass.Fx
             Parameters.fRange = 4.3f;
             Parameters.fFreq = 50;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -57,7 +43,7 @@ namespace ManagedBass.Fx
             Parameters.fRange = 5.3f;
             Parameters.fFreq = 50;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -72,7 +58,7 @@ namespace ManagedBass.Fx
             Parameters.fRange = 4.3f;
             Parameters.fFreq = 500;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
         #endregion
 

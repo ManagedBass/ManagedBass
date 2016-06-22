@@ -6,10 +6,6 @@
     /// </summary>
     public class PanDSP : DSP
     {
-        public PanDSP(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        public PanDSP(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
         float _pan;
         public double Pan
         {
