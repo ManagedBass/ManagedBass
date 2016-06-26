@@ -48,12 +48,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DSP\GainDSP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DSP\PanDSP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Effect Base.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Encoding\BassEncCast.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Encoding\BassEncEncoder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Encoding\IceCast.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Encoding\IEncoder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Encoding\PCMEncoder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Encoding\ShoutCast.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cast\Cast.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cast\IceCast.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cast\ShoutCast.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IAudioRecorder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlaybackDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FlagCollection.cs" />

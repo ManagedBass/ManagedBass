@@ -2,24 +2,46 @@ using System;
 
 namespace ManagedBass.Enc
 {
-    public abstract class BassEncCast
+    public abstract class Cast
     {
-        protected BassEncEncoder Encoder { get; }
+        readonly int _handle;
+
         readonly EncodeNotifyProcedure _proc;
+        readonly int _bitrate;
+        readonly string _mime;
 
-        protected const string MimeMp3 = "audio/mpeg";
-        protected const string MimeOgg = "application/ogg";
-        protected const string MimeAac = "audio/aacp";
+        const string MimeMp3 = "audio/mpeg";
+        const string MimeOgg = "application/ogg";
+        const string MimeAac = "audio/aacp";
 
-        internal BassEncCast(BassEncEncoder Encoder)
+        internal Cast(int Handle, ChannelType OutputType, int Bitrate = 0)
         {
-            this.Encoder = Encoder;
+            _handle = Handle;
             _proc = Notify;
+            _bitrate = Bitrate;
+
+            switch (OutputType)
+            {
+                case ChannelType.AAC:
+                    _mime = MimeAac;
+                    break;
+
+                case ChannelType.MP3:
+                    _mime = MimeMp3;
+                    break;
+
+                case ChannelType.OGG:
+                    _mime = MimeOgg;
+                    break;
+
+                default:
+                    throw new ArgumentException("Output type should be Mp3, Ogg or Aac", nameof(OutputType));
+            }
         }
 
         public bool IsConnected { get; protected set; }
 
-        public long DataSent => Encoder.GetCount(EncodeCount.Cast);
+        public long DataSent => BassEnc.EncodeGetCount(_handle, EncodeCount.Cast);
 
         public string StationName { get; set; }
 
@@ -28,9 +50,7 @@ namespace ManagedBass.Enc
         public int ServerPort { get; set; } = 8000;
 
         public string Url { get; set; }
-
-        protected abstract string Mime { get; }
-
+        
         public string Genre { get; set; }
 
         public string Description { get; set; }
@@ -45,16 +65,14 @@ namespace ManagedBass.Enc
         protected abstract string _server { get; }
 
         protected virtual string _headers => null;
-
-        protected virtual int _bitrate => Encoder.OutputBitRate;
         #endregion
 
         public void Connect()
         {
-            if (!BassEnc.CastInit(Encoder.Handle,
+            if (!BassEnc.CastInit(_handle,
                  _server,
                  UserName == null ? PassWord : $"{UserName}:{PassWord}",
-                 Mime,
+                 _mime,
                  StationName,
                  Url,
                  Genre,
@@ -66,12 +84,12 @@ namespace ManagedBass.Enc
 
             IsConnected = true;
 
-            BassEnc.EncodeSetNotify(Encoder.Handle, _proc, IntPtr.Zero);
+            BassEnc.EncodeSetNotify(_handle, _proc, IntPtr.Zero);
         }
 
         public void Disconnect()
         {
-            if (Encoder.Stop())
+            if (BassEnc.EncodeStop(_handle))
                 IsConnected = false;
         }
 
@@ -94,6 +112,6 @@ namespace ManagedBass.Enc
 
         public event Action<EncodeNotifyStatus> Notification;
 
-        void OnNotify(EncodeNotifyStatus ErrorType) => Notification?.Invoke(ErrorType);
+        void OnNotify(EncodeNotifyStatus Status) => Notification?.Invoke(Status);
     }
 }

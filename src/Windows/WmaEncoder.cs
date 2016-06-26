@@ -1,38 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using ManagedBass.Enc;
-using ManagedBass.Tags;
 
 namespace ManagedBass.Wma
 {
     /// <summary>
     /// Writes a WMA File. Requires BassWma.dll
     /// </summary>
-    public class WmaEncoder : IEncoder
+    public class WmaEncoder : IAudioWriter
     {
         readonly Func<int> _starter;
         readonly Stream _outStream;
-
-        #region Properties
-        public ChannelType OutputType => ChannelType.WMA;
-
-        public string OutputFileExtension => "wma";
-
-        public int OutputBitRate { get; }
-
-        public bool IsActive => Handle != 0;
-
-        public bool IsPaused
-        {
-            get { return false; }
-            set { }
-        }
-
-        public bool CanPause => false;
-
-        public TagReader Tags { get; set; }
-        #endregion
         
         public WmaEncoder(string FileName, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
         {
