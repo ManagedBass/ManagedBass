@@ -21,8 +21,6 @@ namespace ManagedBass
         /// <summary>
         /// Creates a new instance of <see cref="Record"/>.
         /// </summary>
-        /// <param name="Device">The <see cref="RecordDevice"/> to use.</param>
-        /// <param name="Format">Channels, SampleRate, Resolution.</param>
         public Record(RecordDevice Device, int Frequency, int Channels, BassFlags Flags)
         {
             Device.Init();

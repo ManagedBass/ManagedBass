@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using static ManagedBass.Wasapi.BassWasapi;
 
 namespace ManagedBass.Wasapi
 {
@@ -28,8 +27,8 @@ namespace ManagedBass.Wasapi
             {
                 if (!_notifyRegistered)
                 {
-                    CurrentDevice = DeviceIndex;
-                    _notifyRegistered = SetNotify(Notifyproc);
+                    Ensure();
+                    _notifyRegistered = BassWasapi.SetNotify(Notifyproc);
                 }
 
                 _StateChanged += value;
@@ -41,8 +40,8 @@ namespace ManagedBass.Wasapi
                 if (_StateChanged != null || !_notifyRegistered)
                     return;
 
-                CurrentDevice = DeviceIndex;
-                _notifyRegistered = !SetNotify(null);
+                Ensure();
+                _notifyRegistered = !BassWasapi.SetNotify(null);
             }
         }
         #endregion
@@ -52,11 +51,11 @@ namespace ManagedBass.Wasapi
             _proc = OnProc;
             DeviceIndex = Index;
         }
-
+        
         #region Device Info
         public int DeviceIndex { get; }
 
-        public WasapiDeviceInfo Info => GetDeviceInfo(DeviceIndex);
+        public WasapiDeviceInfo Info => BassWasapi.GetDeviceInfo(DeviceIndex);
         #endregion
 
         #region Callback
@@ -71,27 +70,29 @@ namespace ManagedBass.Wasapi
         public virtual event Action<BufferProvider> Callback;
         #endregion
 
+        protected void Ensure() => BassWasapi.CurrentDevice = DeviceIndex;
+
         public void Dispose()
         {
-            CurrentDevice = DeviceIndex;
-            Free();
+            Ensure();
+            BassWasapi.Free();
         }
 
         #region Read
-        public int Read(IntPtr Buffer, int Length) => GetData(Buffer, Length);
+        public int Read(IntPtr Buffer, int Length) => BassWasapi.GetData(Buffer, Length);
 
-        public int Read(float[] Buffer, int Length) => GetData(Buffer, Length);
+        public int Read(float[] Buffer, int Length) => BassWasapi.GetData(Buffer, Length);
         #endregion
 
         #region Write
-        public void Write(IntPtr Buffer, int Length) => PutData(Buffer, Length);
+        public void Write(IntPtr Buffer, int Length) => BassWasapi.PutData(Buffer, Length);
 
-        public void Write(float[] Buffer, int Length) => PutData(Buffer, Length);
+        public void Write(float[] Buffer, int Length) => BassWasapi.PutData(Buffer, Length);
         #endregion
 
         public bool Lock(bool Lock = true)
         {
-            CurrentDevice = DeviceIndex;
+            Ensure();
             return BassWasapi.Lock(Lock);
         }
 
@@ -99,29 +100,29 @@ namespace ManagedBass.Wasapi
         {
             get
             {
-                CurrentDevice = DeviceIndex;
-                return GetMute();
+                Ensure();
+                return BassWasapi.GetMute();
             }
             set
             {
-                CurrentDevice = DeviceIndex;
-                SetMute(WasapiVolumeTypes.Device, value);
+                Ensure();
+                BassWasapi.SetMute(WasapiVolumeTypes.Device, value);
             }
         }
 
-        public double Level => GetDeviceLevel(DeviceIndex);
+        public double Level => BassWasapi.GetDeviceLevel(DeviceIndex);
 
         public double Volume
         {
             get
             {
-                CurrentDevice = DeviceIndex;
-                return GetVolume(WasapiVolumeTypes.Device | WasapiVolumeTypes.LinearCurve);
+                Ensure();
+                return BassWasapi.GetVolume(WasapiVolumeTypes.Device | WasapiVolumeTypes.LinearCurve);
             }
             set
             {
-                CurrentDevice = DeviceIndex;
-                SetVolume(WasapiVolumeTypes.Device | WasapiVolumeTypes.LinearCurve, (float)value);
+                Ensure();
+                BassWasapi.SetVolume(WasapiVolumeTypes.Device | WasapiVolumeTypes.LinearCurve, (float)value);
             }
         }
 
@@ -132,7 +133,7 @@ namespace ManagedBass.Wasapi
             var flags = Shared ? WasapiInitFlags.Shared : WasapiInitFlags.Exclusive;
             if (UseEventSync) flags |= WasapiInitFlags.EventDriven;
 
-            var result = Init(DeviceIndex,
+            var result = BassWasapi.Init(DeviceIndex,
                                Frequency,
                                Channels,
                                flags,
@@ -147,20 +148,20 @@ namespace ManagedBass.Wasapi
         {
             get
             {
-                CurrentDevice = DeviceIndex;
+                Ensure();
                 return BassWasapi.IsStarted;
             }
         }
 
         public bool Start()
         {
-            CurrentDevice = DeviceIndex;
+            Ensure();
             return BassWasapi.Start();
         }
 
         public bool Stop(bool Reset = true)
         {
-            CurrentDevice = DeviceIndex;
+            Ensure();
             return BassWasapi.Stop(Reset);
         }
 

@@ -9,17 +9,16 @@ namespace ManagedBass.Wma
     /// </summary>
     public class WmaEncoder : IAudioWriter
     {
-        readonly Func<int> _starter;
         readonly Stream _outStream;
         
         public WmaEncoder(string FileName, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
         {
-            _starter = () => BassWma.EncodeOpenFile(Frequency, Channels, Flags, BitRate, FileName);
+            BassWma.EncodeOpenFile(Frequency, Channels, Flags, BitRate, FileName);
         }
         
         public WmaEncoder(int Port, int Clients, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
         {
-            _starter = () => BassWma.EncodeOpenNetwork(Frequency, Channels, Flags, BitRate, Port, Clients);
+            BassWma.EncodeOpenNetwork(Frequency, Channels, Flags, BitRate, Port, Clients);
         }
 
         public WmaEncoder(Stream OutStream, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
@@ -29,12 +28,12 @@ namespace ManagedBass.Wma
             if (!OutStream.CanWrite || !OutStream.CanSeek)
                 throw new ArgumentException("Expected and Writable and Seekable Stream", nameof(OutStream));
             
-            _starter = () => BassWma.EncodeOpen(Frequency, Channels, Flags, BitRate, WMStreamProc);
+            BassWma.EncodeOpen(Frequency, Channels, Flags, BitRate, WMStreamProc);
         }
 
         public WmaEncoder(string Url, string UserName, string Password, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
         {
-            _starter = () => BassWma.EncodeOpenPublish(Frequency, Channels, Flags, BitRate, Url, UserName, Password);
+            BassWma.EncodeOpenPublish(Frequency, Channels, Flags, BitRate, Url, UserName, Password);
         }
 
         byte[] _buffer;
@@ -96,9 +95,7 @@ namespace ManagedBass.Wma
         /// Frees all resources used by the writer.
         /// </summary>
         public void Dispose() => Stop();
-
-        public bool Start() => (Handle = _starter.Invoke()) != 0;
-
+        
         public bool Stop()
         {
             if (!BassWma.EncodeClose(Handle))

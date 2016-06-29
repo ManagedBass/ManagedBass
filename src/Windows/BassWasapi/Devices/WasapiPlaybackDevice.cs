@@ -40,7 +40,7 @@ namespace ManagedBass.Wasapi
         {
             var result = _Init(Frequency, Channels, Shared, UseEventSync, Buffer, Period);
 
-            BassWasapi.CurrentDevice = DeviceIndex;
+            Ensure();
             var info = BassWasapi.Info;
 
             Bass.Init(0);
@@ -92,7 +92,7 @@ namespace ManagedBass.Wasapi
                         return l;
                     };
 
-                BassWasapi.CurrentDevice = DeviceIndex;
+                Ensure();
                 var info = BassWasapi.Info;
 
                 var handle = Bass.CreateStream(info.Frequency, info.Channels, BassFlags.Decode | BassFlags.Float, sproc);

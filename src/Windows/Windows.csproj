@@ -33,7 +33,7 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ACMEncoder.cs" />
+    <Compile Include="AcmEncoder.cs" />
     <Compile Include="BassWasapi\Devices\WasapiDevice.cs" />
     <Compile Include="BassWasapi\Devices\WasapiLoopbackDevice.cs" />
     <Compile Include="BassWasapi\Devices\WasapiPlaybackDevice.cs" />

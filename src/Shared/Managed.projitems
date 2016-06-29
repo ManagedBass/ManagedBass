@@ -59,6 +59,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v2\ID3v2Tag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v2\PictureTag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v2\PictureTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tags\TagProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\TagReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Writers\IAudioWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Writers\WaveFileWriter.cs" />
