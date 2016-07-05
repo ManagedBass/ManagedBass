@@ -3,7 +3,7 @@ version: 0.23.0.{build}
 configuration: Release
 
 before_build:
-- cmd: nuget restore src\ManagedBass.sln
+- nuget restore src\ManagedBass.sln
 
 build:
   project: src\ManagedBass.sln

@@ -53,7 +53,7 @@ namespace ManagedBass.Wasapi
         #region Callback
         int _mixerStream;
 
-        readonly Dictionary<Action<BufferProvider>, Tuple<StreamProcedure, int>> _dict = new Dictionary<Action<BufferProvider>, Tuple<StreamProcedure, int>>();
+        readonly Dictionary<Action<IntPtr, int>, Tuple<StreamProcedure, int>> _dict = new Dictionary<Action<IntPtr, int>, Tuple<StreamProcedure, int>>();
 
         public override int OnProc(IntPtr Buffer, int Length, IntPtr User)
         {
@@ -81,16 +81,16 @@ namespace ManagedBass.Wasapi
         /// <returns>True on Success</returns>
         public bool RemoveOutputSource(int Channel) => BassMix.MixerRemoveChannel(Channel);
 
-        public override event Action<BufferProvider> Callback
+        public override event Action<IntPtr, int> Callback
         {
             add
             {
                 StreamProcedure sproc = (h, b, l, u) =>
-                    {
-                        value.Invoke(new BufferProvider(b, l));
+                {
+                    value.Invoke(b, l);
 
-                        return l;
-                    };
+                    return l;
+                };
 
                 Ensure();
                 var info = BassWasapi.Info;

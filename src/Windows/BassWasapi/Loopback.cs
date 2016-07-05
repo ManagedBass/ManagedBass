@@ -28,7 +28,7 @@ namespace ManagedBass.Wasapi
             }
 
             Device.Init();
-            Device.Callback += B => DataAvailable?.Invoke(B);
+            Device.Callback += (B, L) => DataAvailable?.Invoke(B, L);
 
             var info = Device.Info;
 
@@ -84,7 +84,7 @@ namespace ManagedBass.Wasapi
         /// <summary>
         /// Provides the captured data.
         /// </summary>
-        public event Action<BufferProvider> DataAvailable;
+        public event Action<IntPtr, int> DataAvailable;
 
         public WaveFormat AudioFormat { get; }
     }

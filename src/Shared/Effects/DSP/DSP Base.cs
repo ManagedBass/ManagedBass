@@ -67,7 +67,7 @@ namespace ManagedBass
             else throw new InvalidOperationException("DSP Assignment Failed");
         }
 
-        public void ApplyOn(MediaPlayer Player, int Priority)
+        public void ApplyOn(MediaPlayer Player, int Priority = 0)
         {
             _priority = Priority;
 
@@ -92,10 +92,10 @@ namespace ManagedBass
         void OnDsp(int handle, int channel, IntPtr Buffer, int Length, IntPtr User)
         {
             if (IsAssigned && !Bypass)
-                Callback(new BufferProvider(Buffer, Length));
+                Callback(Buffer, Length);
         }
 
-        protected abstract void Callback(BufferProvider Buffer);
+        protected abstract void Callback(IntPtr Buffer, int Length);
 
         public void Dispose()
         {

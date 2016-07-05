@@ -63,11 +63,11 @@ namespace ManagedBass.Wasapi
 
         public virtual int OnProc(IntPtr Buffer, int Length, IntPtr User)
         {
-            Callback?.Invoke(new BufferProvider(Buffer, Length));
+            Callback?.Invoke(Buffer, Length);
             return Length;
         }
 
-        public virtual event Action<BufferProvider> Callback;
+        public virtual event Action<IntPtr, int> Callback;
         #endregion
 
         protected void Ensure() => BassWasapi.CurrentDevice = DeviceIndex;

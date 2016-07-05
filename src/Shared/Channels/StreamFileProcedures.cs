@@ -15,38 +15,38 @@ namespace ManagedBass
             if (!_stream.CanRead)
                 throw new ArgumentException("Provide a readable stream", nameof(InputStream));
 
-            Close = u => _stream.Dispose();
-            Length = u => _stream.Length;
+            Close = M => _stream.Dispose();
+            Length = M => _stream.Length;
             Read = ReadProc;
             Seek = SeekProc;
         }
 
         byte[] b;
 
-        int ReadProc(IntPtr buffer, int length, IntPtr user)
+        int ReadProc(IntPtr Buffer, int Length, IntPtr User)
         {
             try
             {
-                if (b == null || b.Length < length)
-                    b = new byte[length];
+                if (b == null || b.Length < Length)
+                    b = new byte[Length];
 
-                var read = _stream.Read(b, 0, length);
+                var read = _stream.Read(b, 0, Length);
 
-                Marshal.Copy(b, 0, buffer, read);
+                Marshal.Copy(b, 0, Buffer, read);
 
                 return read;
             }
             catch { return 0; }
         }
 
-        bool SeekProc(long offset, IntPtr user)
+        bool SeekProc(long Offset, IntPtr User)
         {
             if (!_stream.CanSeek)
                 return false;
 
             try
             {
-                _stream.Seek(offset, SeekOrigin.Current);
+                _stream.Seek(Offset, SeekOrigin.Current);
                 return true;
             }
             catch { return false; }

@@ -1,4 +1,6 @@
-﻿namespace ManagedBass
+﻿using System;
+
+namespace ManagedBass
 {
     /// <summary>
     /// Pan DSP.
@@ -18,15 +20,16 @@
             }
         }
 
-        protected override unsafe void Callback(BufferProvider Buffer)
+        protected override unsafe void Callback(IntPtr Buffer, int Length)
         {
             if (_pan == 0)
                 return;
 
-            var ptr = (float*)Buffer.Pointer;
+            var ptr = (float*)Buffer;
 
-            for (var i = Buffer.Length / 4; i > 0; i -= 2, ptr += 2)
-                if (_pan > 0) ptr[0] *= 1 - _pan;
+            for (var i = Length / 4; i > 0; i -= 2, ptr += 2)
+                if (_pan > 0)
+                    ptr[0] *= 1 - _pan;
                 else ptr[1] *= 1 + _pan;
         }
     }

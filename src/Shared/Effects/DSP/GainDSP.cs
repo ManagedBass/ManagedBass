@@ -1,4 +1,6 @@
-﻿namespace ManagedBass
+﻿using System;
+
+namespace ManagedBass
 {
     /// <summary>
     /// Gain DSP.
@@ -18,14 +20,14 @@
             }
         }
 
-        protected override unsafe void Callback(BufferProvider Buffer)
+        protected override unsafe void Callback(IntPtr Buffer, int Length)
         {
             if (_gain == 1)
                 return;
 
-            var ptr = (float*)Buffer.Pointer;
+            var ptr = (float*)Buffer;
 
-            for (var i = Buffer.Length / 4; i > 0; --i, ++ptr)
+            for (var i = Length / 4; i > 0; --i, ++ptr)
                 *ptr *= _gain;
         }
     }

@@ -33,9 +33,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DSP\GainDSP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DSP\PanDSP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Effect Base.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Cast\Cast.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Cast\IceCast.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Cast\ShoutCast.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IAudioRecorder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlaybackDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RecordDevice.cs" />
@@ -47,6 +44,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Writers\IAudioWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Writers\WaveFileWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Writers\WaveFormat.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BufferProvider.cs" />
   </ItemGroup>
 </Project>

@@ -22,7 +22,7 @@
 
             Handle = Bass.CreateStream(info.MixFrequency, info.MixChannels, Decode ? BassFlags.Decode : 0, StreamProcedureType.Push);
 
-            WasapiDevice.Callback += s => Bass.StreamPutData(Handle, s.Pointer, s.Length);
+            WasapiDevice.Callback += (B, L) => Bass.StreamPutData(Handle, B, L);
         }
 
         /// <summary>

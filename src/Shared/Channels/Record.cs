@@ -60,11 +60,11 @@ namespace ManagedBass
         /// <summary>
         /// Provides the captured data.
         /// </summary>
-        public event Action<BufferProvider> DataAvailable;
+        public event Action<IntPtr, int> DataAvailable;
 
         bool Processing(int HRecord, IntPtr Buffer, int Length, IntPtr User)
         {
-            DataAvailable?.Invoke(new BufferProvider(Buffer, Length));
+            DataAvailable?.Invoke(Buffer, Length);
 
             return true;
         }
