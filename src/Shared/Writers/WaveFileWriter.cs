@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using System.Text;
+using static System.Text.Encoding;
 
 namespace ManagedBass
 {
@@ -30,11 +30,11 @@ namespace ManagedBass
         public WaveFileWriter(Stream outStream, WaveFormat format)
         {
             _ofstream = outStream;
-            _writer = new BinaryWriter(outStream, Encoding.GetEncoding("us-ascii"));
+            _writer = new BinaryWriter(outStream, UTF8);
 
-            _writer.Write("RIFF");
+            _writer.Write(UTF8.GetBytes("RIFF"));
             _writer.Write(0); // placeholder
-            _writer.Write("WAVEfmt ");
+            _writer.Write(UTF8.GetBytes("WAVEfmt "));
             _waveFormat = format;
 
             _writer.Write(18 + format.ExtraSize); // wave format Length
@@ -43,14 +43,14 @@ namespace ManagedBass
             // CreateFactChunk
             if (format.Encoding != WaveFormatTag.Pcm)
             {
-                _writer.Write("fact");
+                _writer.Write(UTF8.GetBytes("fact"));
                 _writer.Write(4);
                 _factSampleCountPos = outStream.Position;
                 _writer.Write(0); // number of samples
             }
 
             // WriteDataChunkHeader
-            _writer.Write("data");
+            _writer.Write(UTF8.GetBytes("data"));
             _dataSizePos = outStream.Position;
             _writer.Write(0); // placeholder
 
