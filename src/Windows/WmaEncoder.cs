@@ -13,12 +13,12 @@ namespace ManagedBass.Wma
         
         public WmaEncoder(string FileName, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
         {
-            BassWma.EncodeOpenFile(Frequency, Channels, Flags, BitRate, FileName);
+            Handle = BassWma.EncodeOpenFile(Frequency, Channels, Flags, BitRate, FileName);
         }
         
         public WmaEncoder(int Port, int Clients, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
         {
-            BassWma.EncodeOpenNetwork(Frequency, Channels, Flags, BitRate, Port, Clients);
+            Handle = BassWma.EncodeOpenNetwork(Frequency, Channels, Flags, BitRate, Port, Clients);
         }
 
         public WmaEncoder(Stream OutStream, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
@@ -27,13 +27,13 @@ namespace ManagedBass.Wma
 
             if (!OutStream.CanWrite || !OutStream.CanSeek)
                 throw new ArgumentException("Expected and Writable and Seekable Stream", nameof(OutStream));
-            
-            BassWma.EncodeOpen(Frequency, Channels, Flags, BitRate, WMStreamProc);
+
+            Handle = BassWma.EncodeOpen(Frequency, Channels, Flags, BitRate, WMStreamProc);
         }
 
         public WmaEncoder(string Url, string UserName, string Password, int Frequency, int Channels, WMAEncodeFlags Flags, int BitRate = 128000)
         {
-            BassWma.EncodeOpenPublish(Frequency, Channels, Flags, BitRate, Url, UserName, Password);
+            Handle = BassWma.EncodeOpenPublish(Frequency, Channels, Flags, BitRate, Url, UserName, Password);
         }
 
         byte[] _buffer;

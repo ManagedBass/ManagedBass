@@ -6,21 +6,19 @@ namespace ManagedBass.Enc
 {
     public class AcmEncoder : IAudioWriter
     {
-        static BassFlags ToBassFlags(WaveFormatTag WfTag, int Channels)
+        static BassFlags ToBassFlags(WaveFormatTag WfTag, int BitsPerSample)
         {
-            if (WfTag == WaveFormatTag.Pcm && Channels == 16)
-                return BassFlags.Default;
-            if (WfTag == WaveFormatTag.Pcm && Channels == 8)
+            if (WfTag == WaveFormatTag.Pcm && BitsPerSample == 8)
                 return BassFlags.Byte;
-            if (WfTag == WaveFormatTag.IeeeFloat && Channels == 32)
+            if (WfTag == WaveFormatTag.IeeeFloat && BitsPerSample == 32)
                 return BassFlags.Float;
 
-            throw new ArgumentException(nameof(WfTag));
+            return BassFlags.Default;
         }
 
         static int GetDummyChannel(WaveFormat Format)
         {
-            return Bass.CreateStream(Format.SampleRate, Format.Channels, BassFlags.Decode | ToBassFlags(Format.Encoding, Format.Channels), StreamProcedureType.Push);
+            return Bass.CreateStream(Format.SampleRate, Format.Channels, BassFlags.Decode | ToBassFlags(Format.Encoding, Format.BitsPerSample), StreamProcedureType.Push);
         }
         
         readonly int _channel, _handle;
