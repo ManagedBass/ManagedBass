@@ -56,14 +56,6 @@ namespace ManagedBass
 
             Length = 0;
         }
-        
-#if !__HYBRID__
-        /// <summary>
-        /// Creates a <see cref="WaveFileWriter"/> that writes to a File.
-        /// </summary>
-        public WaveFileWriter(string FilePath, WaveFormat InputFormat)
-            : this(new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read), InputFormat) { }
-#endif
         #endregion
 
         #region Write

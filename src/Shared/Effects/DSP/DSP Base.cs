@@ -67,8 +67,6 @@ namespace ManagedBass
             else throw new InvalidOperationException("DSP Assignment Failed");
         }
 
-        public void ApplyOn(Channel Channel, int Priority = 0) => ApplyOn(Channel.Handle, Priority);
-
         public void ApplyOn(MediaPlayer Player, int Priority)
         {
             _priority = Priority;

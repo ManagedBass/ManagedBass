@@ -5,20 +5,12 @@
 [assembly: AssemblyProduct("ManagedBass")]
 [assembly: AssemblyCopyright("(c) 2016 Mathew Sachin")]
 
-[assembly: AssemblyVersion("0.22.0")]
+[assembly: AssemblyVersion("0.23.0")]
 
 [assembly: AssemblyDescription ("Free Open-Source " +
 
 #if WINDOWS
     "Windows"
-#elif LINUX
-    "Linux"
-#elif __MAC__
-    "Mac"
-#elif __ANDROID__
-    "Xamarin.Android"
-#elif __IOS__
-    "Xamarin.iOS"
 #else
     "-"
 #endif

@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace ManagedBass
 {
@@ -11,8 +12,81 @@ namespace ManagedBass
     /// <para><see cref="MediaPlayer"/> is perfect for UIs, as it implements <see cref="INotifyPropertyChanged"/>.</para>
     /// <para>Also, unlike normal, Properties/Effects/DSP set on a <see cref="MediaPlayer"/> persist through subsequent loads.</para>
     /// </summary>
-    public class MediaPlayer : Channel, INotifyPropertyChanged
+    public class MediaPlayer : IDisposable, INotifyPropertyChanged
     {
+        #region Fields
+        readonly SynchronizationContext _syncContext;
+        int _handle;
+
+        /// <summary>
+        /// Gets the Channel Handle.
+        /// </summary>
+        public int Handle
+        {
+            get { return _handle; }
+            protected set
+            {
+                ChannelInfo info;
+
+                if (!Bass.ChannelGetInfo(value, out info))
+                    throw new ArgumentException("Invalid Channel Handle: " + value);
+
+                _handle = value;
+
+                // Init Events
+                Bass.ChannelSetSync(Handle, SyncFlags.Free, 0, GetSyncProcedure(() => Disposed?.Invoke(this, EventArgs.Empty)));
+                Bass.ChannelSetSync(Handle, SyncFlags.Stop, 0, GetSyncProcedure(() => MediaFailed?.Invoke(this, EventArgs.Empty)));
+                Bass.ChannelSetSync(Handle, SyncFlags.End, 0, GetSyncProcedure(() =>
+                {
+                    if (!Bass.ChannelHasFlag(Handle, BassFlags.Loop))
+                        MediaEnded?.Invoke(this, EventArgs.Empty);
+                }));
+            }
+        }
+
+        bool _restartOnNextPlayback;
+        #endregion
+
+        SyncProcedure GetSyncProcedure(Action Handler)
+        {
+            return (SyncHandle, Channel, Data, User) =>
+            {
+                if (Handler == null)
+                    return;
+
+                if (_syncContext == null)
+                    Handler();
+                else _syncContext.Post(State => Handler(), null);
+            };
+        }
+
+        static MediaPlayer()
+        {
+            var currentDev = Bass.CurrentDevice;
+
+            if (currentDev == -1 || !Bass.GetDeviceInfo(Bass.CurrentDevice).IsInitialized)
+                Bass.Init(currentDev);
+        }
+
+        protected MediaPlayer() { _syncContext = SynchronizationContext.Current; }
+
+        #region Events
+        /// <summary>
+        /// Fired when this Channel is Disposed.
+        /// </summary>
+        public event EventHandler Disposed;
+
+        /// <summary>
+        /// Fired when the Media Playback Ends
+        /// </summary>
+        public event EventHandler MediaEnded;
+
+        /// <summary>
+        /// Fired when the Playback fails
+        /// </summary>
+        public event EventHandler MediaFailed;
+        #endregion
+
         #region Frequency
         double _freq = 44100;
         
@@ -63,9 +137,9 @@ namespace ManagedBass
         /// <summary>
         /// Gets or Sets the Playback Device used.
         /// </summary>
-        public override PlaybackDevice Device
+        public PlaybackDevice Device
         {
-            get { return _dev ?? base.Device; }
+            get { return _dev ?? PlaybackDevice.GetByIndex(Bass.ChannelGetDevice(Handle)); }
             set
             {
                 if (!value.Info.IsInitialized)
@@ -112,7 +186,7 @@ namespace ManagedBass
             get { return _loop; }
             set
             {
-                if (value ? !Flags.Add(BassFlags.Loop) : !Flags.Remove(BassFlags.Loop))
+                if (value ? !Bass.ChannelAddFlag(Handle, BassFlags.Loop) : !Bass.ChannelRemoveFlag(Handle, BassFlags.Loop))
                     return;
 
                 _loop = value;
@@ -128,6 +202,7 @@ namespace ManagedBass
         /// <returns><see langword="true"/> on Success, <see langword="false"/> on failure</returns>
         protected virtual int OnLoad(string FileName) => Bass.CreateStream(FileName);
 
+        #region Tags
         string _title = "", _artist = "", _album = "";
 
         /// <summary>
@@ -167,6 +242,50 @@ namespace ManagedBass
                 _album = value;
                 OnPropertyChanged();
             }
+        }
+        #endregion
+        
+        /// <summary>
+        /// Gets the Playback State of the Channel.
+        /// </summary>
+        public PlaybackState IsActive => Bass.ChannelIsActive(Handle);
+
+        #region Playback
+        /// <summary>
+        /// Starts the Channel Playback.
+        /// </summary>
+        public virtual bool Play(bool Restart = false)
+        {
+            var result = Bass.ChannelPlay(Handle, _restartOnNextPlayback || Restart);
+
+            if (result)
+                _restartOnNextPlayback = false;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Pauses the Channel Playback.
+        /// </summary>
+        public virtual bool Pause() => Bass.ChannelPause(Handle);
+
+        /// <summary>
+        /// Stops the Channel Playback.
+        /// </summary>
+        /// <remarks>Difference from <see cref="Bass.ChannelStop"/>: Playback is restarted when <see cref="Play"/> is called.</remarks>
+        public virtual bool Stop()
+        {
+            _restartOnNextPlayback = true;
+            return Bass.ChannelStop(Handle);
+        }
+        #endregion
+
+        public TimeSpan Duration => TimeSpan.FromSeconds(Bass.ChannelBytes2Seconds(Handle, Bass.ChannelGetLength(Handle)));
+
+        public TimeSpan Position
+        {
+            get { return TimeSpan.FromSeconds(Bass.ChannelBytes2Seconds(Handle, Bass.ChannelGetPosition(Handle))); }
+            set { Bass.ChannelSetPosition(Handle, Bass.ChannelSeconds2Bytes(Handle, value.TotalSeconds)); }
         }
 
         /// <summary>
@@ -218,6 +337,12 @@ namespace ManagedBass
         /// Fired when a Media is Loaded.
         /// </summary>
         public event Action<int> MediaLoaded;
+
+        public virtual void Dispose()
+        {
+            if (Bass.StreamFree(Handle))
+                _handle = 0;
+        }
 
         /// <summary>
         /// Initializes Properties on every call to <see cref="Load"/>.

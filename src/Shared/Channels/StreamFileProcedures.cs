@@ -4,34 +4,21 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
-    /// <summary>
-    /// Creates a Channel from a <see cref="Stream"/> using <see cref="FileProcedures"/>.
-    /// </summary>
-    public class StreamChannel : Channel
+    public class StremFileProcedures : FileProcedures
     {
         readonly Stream _stream;
-        
-        /// <summary>
-        /// Creates a new Instance of <see cref="StreamChannel"/>.
-        /// </summary>
-        /// <param name="InputStream">Stream to load.</param>
-        /// <param name="Flags">Option flags.</param>
-        public StreamChannel(Stream InputStream, BassFlags Flags = BassFlags.Default)
+
+        public StremFileProcedures(Stream InputStream)
         {
             _stream = InputStream;
-            
+
             if (!_stream.CanRead)
                 throw new ArgumentException("Provide a readable stream", nameof(InputStream));
 
-            var procs = new FileProcedures
-            {
-                Close = u => _stream.Dispose(),
-                Length = u => _stream.Length,
-                Read = ReadProc,
-                Seek = SeekProc
-            };
-
-            Handle = Bass.CreateStream(StreamSystem.Buffer, Flags, procs);
+            Close = u => _stream.Dispose();
+            Length = u => _stream.Length;
+            Read = ReadProc;
+            Seek = SeekProc;
         }
 
         byte[] b;

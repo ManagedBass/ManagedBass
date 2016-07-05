@@ -6,25 +6,10 @@
     <SharedGUID>3479219e-33a6-40a6-a60f-e1e31b450ca7</SharedGUID>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)CDDrive.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\CDChannel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\Channel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\FileChannel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\MediaPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\MediaPlayerFX.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\Midi.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\MidiIn.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\Music.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\NetworkStream.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\PushStream.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\ReverseStream.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\Sample.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\Splitter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\TempoStream.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\StreamChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Channels\StreamFileProcedures.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\Silence.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\Mixer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\UserStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Channels\Record.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\BassFx\AutoWahEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\BassFx\BQFEffect.cs" />
@@ -53,9 +38,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Cast\ShoutCast.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IAudioRecorder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PlaybackDevice.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)FlagCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RecordDevice.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SyncParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v2\ID3v2Tag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v2\PictureTag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v2\PictureTypes.cs" />
@@ -65,7 +48,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Writers\WaveFileWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Writers\WaveFormat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BufferProvider.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SyncCollection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SyncHandler.cs" />
   </ItemGroup>
 </Project>

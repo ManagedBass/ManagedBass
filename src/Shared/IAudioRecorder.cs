@@ -18,12 +18,7 @@ namespace ManagedBass
         /// </summary>
         /// <returns><see langword="true"/> on success, else <see langword="false"/>.</returns>
         bool Stop();
-
-        /// <summary>
-        /// Returns the Audio Peak Level.
-        /// </summary>
-        double Level { get; }
-
+        
         /// <summary>
         /// Gets if Recording is in Progress.
         /// </summary>

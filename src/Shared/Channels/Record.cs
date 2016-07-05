@@ -3,10 +3,12 @@
 namespace ManagedBass
 {
     /// <summary>
-    /// Capture audio from Microphone. This class inherits from <see cref="Channel"/> and can have Effects/DSP applied on it.
+    /// Capture audio from Microphone. The <see cref="Handle"/> can be used with BASS functions.
     /// </summary>
-    public sealed class Record : Channel, IAudioRecorder
-    {        
+    public sealed class Record : IAudioRecorder
+    {
+        public int Handle { get; }
+              
         /// <summary>
         /// Creates a new instance of <see cref="Record"/> with the Default Format and Device.
         /// </summary>
@@ -27,37 +29,32 @@ namespace ManagedBass
             var deviceIndex = Device.Index;
 
             Bass.CurrentRecordingDevice = deviceIndex;
-
-            var res = Resolution.Short;
-
-            if (Flags.HasFlag(BassFlags.Byte))
-                res = Resolution.Byte;
-            else if (Flags.HasFlag(BassFlags.Float))
-                res = Resolution.Float;
-
-            AudioFormat = WaveFormat.FromParams(Frequency, Channels, res);
             
             Handle = Bass.RecordStart(Frequency, Channels, BassFlags.RecordPause | Flags, Processing);
+
+            AudioFormat = WaveFormat.FromChannel(Handle);
         }
 
         /// <summary>
         /// Gets if Capturing is in progress.
         /// </summary>
-        public bool IsRecording => IsActive == PlaybackState.Playing;
+        public bool IsRecording => Bass.ChannelIsActive(Handle) == PlaybackState.Playing;
 
         /// <summary>
         /// Start Audio Capture.
         /// </summary>
         /// <returns><see langword="true"/> on success, else <see langword="false"/>.</returns>
-        public bool Start() => Play();
+        public bool Start() => Bass.ChannelPlay(Handle);
 
         /// <summary>
         /// Stop Audio Capture.
         /// </summary>
         /// <returns><see langword="true"/> on success, else <see langword="false"/>.</returns>
-        public override bool Stop() => Bass.ChannelPause(Handle);
+        public bool Stop() => Bass.ChannelPause(Handle);
 
         public WaveFormat AudioFormat { get; }
+
+        public void Dispose() => Bass.StreamFree(Handle);
 
         #region Callback
         /// <summary>

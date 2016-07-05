@@ -20,7 +20,7 @@
 
         protected override unsafe void Callback(BufferProvider Buffer)
         {
-            if (_gain == 0)
+            if (_gain == 1)
                 return;
 
             var ptr = (float*)Buffer.Pointer;

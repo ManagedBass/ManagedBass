@@ -36,9 +36,7 @@ namespace ManagedBass
             
             _hfsync = Bass.ChannelSetSync(Channel, SyncFlags.Free, 0, _syncProcedure);
         }
-
-        public void ApplyOn(Channel Channel, int Priority = 0) => ApplyOn(Channel.Handle, Priority);
-
+        
         public void ApplyOn(MediaPlayer Player, int Priority = 0)
         {
             ApplyOn(Player.Handle, Priority);

@@ -39,15 +39,6 @@ Bass and its Addons are trademarks of their respective owners.
         <file src="Windows\bin\Release\ManagedBass.dll" target="lib\net45"/>
         <file src="Windows\bin\Release\ManagedBass.xml" target="lib\net45"/>
 
-        <file src="Android\bin\Release\ManagedBass.dll" target="lib\MonoAndroid"/>
-        <file src="Android\bin\Release\ManagedBass.xml" target="lib\MonoAndroid"/>
-
-        <file src="Mac\bin\Release\ManagedBass.dll" target="lib\Xamarin.Mac"/>
-        <file src="Mac\bin\Release\ManagedBass.xml" target="lib\Xamarin.Mac"/>
-
-        <file src="iOS\bin\Release\ManagedBass.dll" target="lib\Xamarin.iOS"/>
-        <file src="iOS\bin\Release\ManagedBass.xml" target="lib\Xamarin.iOS"/>
-
         <file src="Hybrid\bin\Release\ManagedBass.dll" target="lib\portable-net45+netcore45+wpa81+MonoAndroid+Xamarin.Mac+Xamarin.iOS+MonoTouch"/>
         <file src="Hybrid\bin\Release\ManagedBass.xml" target="lib\portable-net45+netcore45+wpa81+MonoAndroid+Xamarin.Mac+Xamarin.iOS+MonoTouch"/>
     </files>
