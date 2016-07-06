@@ -27,7 +27,7 @@ namespace ManagedBass
         /// <summary>
         /// Provides the recorded data.
         /// </summary>
-        event Action<IntPtr, int> DataAvailable;
+        event EventHandler<DataAvailableEventArgs> DataAvailable;
 
         WaveFormat AudioFormat { get; }
     }

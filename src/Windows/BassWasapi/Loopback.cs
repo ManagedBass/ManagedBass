@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ManagedBass.Wasapi
 {
@@ -28,7 +29,7 @@ namespace ManagedBass.Wasapi
             }
 
             Device.Init();
-            Device.Callback += (B, L) => DataAvailable?.Invoke(B, L);
+            Device.Callback += Processing;
 
             var info = Device.Info;
 
@@ -81,10 +82,24 @@ namespace ManagedBass.Wasapi
             _silencePlayer?.Dispose();
         }
 
+        #region Callback
         /// <summary>
         /// Provides the captured data.
         /// </summary>
-        public event Action<IntPtr, int> DataAvailable;
+        public event EventHandler<DataAvailableEventArgs> DataAvailable;
+
+        byte[] _buffer;
+
+        void Processing(IntPtr Buffer, int Length)
+        {
+            if (_buffer == null || _buffer.Length < Length)
+                _buffer = new byte[Length];
+
+            Marshal.Copy(Buffer, _buffer, 0, Length);
+
+            DataAvailable?.Invoke(this, new DataAvailableEventArgs(_buffer, Length));
+        }
+        #endregion
 
         public WaveFormat AudioFormat { get; }
     }

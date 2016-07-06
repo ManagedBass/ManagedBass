@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
@@ -60,11 +61,18 @@ namespace ManagedBass
         /// <summary>
         /// Provides the captured data.
         /// </summary>
-        public event Action<IntPtr, int> DataAvailable;
+        public event EventHandler<DataAvailableEventArgs> DataAvailable;
+
+        byte[] _buffer;
 
         bool Processing(int HRecord, IntPtr Buffer, int Length, IntPtr User)
         {
-            DataAvailable?.Invoke(Buffer, Length);
+            if (_buffer == null || _buffer.Length < Length)
+                _buffer = new byte[Length];
+
+            Marshal.Copy(Buffer, _buffer, 0, Length);
+
+            DataAvailable?.Invoke(this, new DataAvailableEventArgs(_buffer, Length));
 
             return true;
         }

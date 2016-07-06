@@ -6,11 +6,6 @@
     <SharedGUID>3479219e-33a6-40a6-a60f-e1e31b450ca7</SharedGUID>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\MediaPlayer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\MediaPlayerFX.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\StreamFileProcedures.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\Silence.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Channels\Record.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\BassFx\AutoWahEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\BassFx\BQFEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\BassFx\ChorusEffect.cs" />
@@ -33,9 +28,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DSP\GainDSP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DSP\PanDSP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Effect Base.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IAudioRecorder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PlaybackDevice.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RecordDevice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Playback\MediaPlayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Playback\MediaPlayerFX.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Playback\PlaybackDevice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Playback\Silence.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Playback\StreamFileProcedures.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Record\DataAvailableEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Record\IAudioRecorder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Record\Record.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Record\RecordDevice.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v2\ID3v2Tag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v2\PictureTag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\ID3v2\PictureTypes.cs" />
