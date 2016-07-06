@@ -254,9 +254,9 @@ namespace ManagedBass
         /// <summary>
         /// Starts the Channel Playback.
         /// </summary>
-        public virtual bool Play(bool Restart = false)
+        public bool Play()
         {
-            var result = Bass.ChannelPlay(Handle, _restartOnNextPlayback || Restart);
+            var result = Bass.ChannelPlay(Handle, _restartOnNextPlayback);
 
             if (result)
                 _restartOnNextPlayback = false;
@@ -267,13 +267,13 @@ namespace ManagedBass
         /// <summary>
         /// Pauses the Channel Playback.
         /// </summary>
-        public virtual bool Pause() => Bass.ChannelPause(Handle);
+        public bool Pause() => Bass.ChannelPause(Handle);
 
         /// <summary>
         /// Stops the Channel Playback.
         /// </summary>
         /// <remarks>Difference from <see cref="Bass.ChannelStop"/>: Playback is restarted when <see cref="Play"/> is called.</remarks>
-        public virtual bool Stop()
+        public bool Stop()
         {
             _restartOnNextPlayback = true;
             return Bass.ChannelStop(Handle);
