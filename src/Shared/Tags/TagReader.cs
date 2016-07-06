@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static System.Runtime.InteropServices.Marshal;
-using static ManagedBass.Bass;
-using static ManagedBass.Extensions;
+using System.Runtime.InteropServices;
 
 namespace ManagedBass.Tags
 {
@@ -22,131 +20,16 @@ namespace ManagedBass.Tags
         /// </summary>
         public List<PictureTag> Pictures { get; } = new List<PictureTag>();
 
-        #region Lookup Tables
-        static readonly TagProperties<IEnumerable<string>> ApeLookupTable = new TagProperties<IEnumerable<string>>
-        {
-            Title = new[] {"title"},
-            Artist = new[] {"artist"},
-            Album = new[] {"album"},
-            AlbumArtist = new [] {"album artist"},
-            Track = new[] {"track"},
-            Year = new[] {"year"},
-            Genre = new[] {"genre"},
-            Copyright = new[] {"copyright"},
-            Encoder = new[] {"encodedby"},
-            Publisher = new[] {"label"},
-            Composer = new[] {"composer"},
-            Conductor = new[] {"conductor"},
-            Lyricist = new[] {"lyricist"},
-            Remixer = new[] {"remixer"},
-            Producer = new[] {"producer"},
-            Comment = new[] {"comment"},
-            Grouping = new[] {"grouping"},
-            Mood = new[] {"mood"},
-            Rating = new[] {"rating"},
-            ISRC = new[] {"isrc"},
-            BPM = new[] {"bpm"}
-        };
-
-        static readonly TagProperties<IEnumerable<string>> OggLookupTable = new TagProperties<IEnumerable<string>>
-        {
-            Title = new[] {"title"},
-            Artist = new[] {"artist"},
-            Album = new[] {"album"},
-            AlbumArtist = new[] {"albumartist"},
-            Track = new[] {"tracknumber"},
-            Year = new[] {"date"},
-            Genre = new[] {"genre"},
-            Copyright = new[] {"copyright"},
-            Encoder = new[] {"encodedby"},
-            Publisher = new[] {"label"},
-            Composer = new[] {"composer"},
-            Conductor = new[] {"conductor"},
-            Lyricist = new[] {"lyricist"},
-            Remixer = new[] {"remixer"},
-            Producer = new[] {"producer"},
-            Comment = new[] {"comment"},
-            Grouping = new[] {"grouping"},
-            Mood = new[] {"mood"},
-            Rating = new[] {"rating"},
-            ISRC = new[] {"isrc"},
-            BPM = new[] {"bpm"}
-        };
-
-        static readonly TagProperties<IEnumerable<string>> RiffInfoLookupTable = new TagProperties<IEnumerable<string>>
-        {
-            Title = new[] {"inam"},
-            Artist = new[] {"iart"},
-            Album = new[] {"iprd"},
-            AlbumArtist = new[] {"isbj"},
-            Track = new[] {"itrk", "iprt"},
-            Year = new[] {"icrd"},
-            Genre = new[] {"ignr"},
-            Copyright = new[] {"icop"},
-            Encoder = new[] {"isft"},
-            Publisher = new[] {"icms"},
-            Composer = new[] {"ieng"},
-            Conductor = new[] {"itch"},
-            Lyricist = new[] {"iwri"},
-            Remixer = new[] {"iedt"},
-            Producer = new[] {"ipro"},
-            Comment = new[] {"icmt"},
-            Grouping = new[] {"isrf"},
-            Mood = new[] {"ikey"},
-            Rating = new[] {"ishp"},
-            ISRC = new[] {"isrc"},
-            BPM = new[] {"ibpm"}
-        };
-
-        static readonly TagProperties<IEnumerable<string>> Mp4LookupTable = new TagProperties<IEnumerable<string>>
-        {
-            Title = new[] { "©nam" },
-            Artist = new[] { "©art" },
-            Album = new[] { "©alb" },
-            AlbumArtist = new[] { "aart" },
-            Track = new[] { "trkn" },
-            Year = new[] { "©day" },
-            Genre = new[] { "©gen" },
-            Copyright = new[] { "cprt" },
-            Encoder = new[] { "©too" },
-            Composer = new[] { "©wrt" },
-            Comment = new[] { "©cmt" },
-            Grouping = new[] { "©grp" },
-            Rating = new[] { "rtng" },
-        };
-
-        static readonly TagProperties<IEnumerable<string>> Id3v2LookupTable = new TagProperties<IEnumerable<string>>
-        {
-            Title = new[] { "TIT2", "TT2" },
-            Artist = new[] { "TPE1", "TP1" },
-            Album = new[] { "TALB", "TAL" },
-            AlbumArtist = new[] { "TPE2", "TP2" },
-            Subtitle = new[] { "TIT3", "TT3" },
-            Track = new[] { "TRK", "TRCK" },
-            Year = new[] { "TYER", "TYE" },
-            Genre = new[] { "TCON", "TCO" },
-            Copyright = new[] { "TCOP", "TCR" },
-            Encoder = new[] { "TENC", "TEN" },
-            Publisher = new[] { "TPUB", "TPB" },
-            Composer = new[] { "TCOM", "TCM" },
-            Conductor = new[] { "TPE3", "TP3" },
-            Lyricist = new[] { "TEXT", "TXT" },
-            Remixer = new[] { "TPE4", "TP4" },
-            Producer = new[] { "TIPL" },
-            Comment = new[] { "COMM", "COM" },
-            Grouping = new[] { "TIT1", "TT1" },
-            Mood = new[] { "TMOO" },
-            Rating = new[] { "POPM" },
-            ISRC = new[] { "TSCR" },
-            BPM = new[] { "TBPM", "TBP" }
-        };
-        #endregion
-
+        /// <summary>
+        /// Gets the Lyrics.
+        /// </summary>
+        public string Lyrics { get; set; }
+        
         public static TagReader Read(string FileName)
         {
-            Init();
+            Bass.Init();
 
-            var h = CreateStream(FileName, Flags: BassFlags.Prescan);
+            var h = Bass.CreateStream(FileName, Flags: BassFlags.Prescan);
 
             TagReader result = null;
 
@@ -154,17 +37,17 @@ namespace ManagedBass.Tags
             {
                 result = Read(h);
 
-                StreamFree(h);
+                Bass.StreamFree(h);
             }
             else
             {
-                h = MusicLoad(FileName, Flags: BassFlags.Prescan);
+                h = Bass.MusicLoad(FileName, Flags: BassFlags.Prescan);
 
                 if (h != 0)
                 {
                     result = Read(h);
 
-                    MusicFree(h);
+                    Bass.MusicFree(h);
                 }
             }
 
@@ -177,7 +60,7 @@ namespace ManagedBass.Tags
         public static TagReader Read(int Channel)
         {
             var result = new TagReader();
-            var info = ChannelGetInfo(Channel);
+            var info = Bass.ChannelGetInfo(Channel);
             
             switch (info.ChannelType)
             {
@@ -221,14 +104,14 @@ namespace ManagedBass.Tags
                     break;
 
                 case ChannelType.DSD:
-                    result.Title = PtrToStringAnsi(ChannelGetTags(Channel, TagType.DSDTitle));
-                    result.Artist = PtrToStringAnsi(ChannelGetTags(Channel, TagType.DSDArtist));
+                    result.Title = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.DSDTitle));
+                    result.Artist = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.DSDArtist));
                     break;
 
                 case ChannelType.MOD:
-                    result.Title = PtrToStringAnsi(ChannelGetTags(Channel, TagType.MusicName));
-                    result.Artist = PtrToStringAnsi(ChannelGetTags(Channel, TagType.MusicAuth));
-                    result.Comment = PtrToStringAnsi(ChannelGetTags(Channel, TagType.MusicMessage));
+                    result.Title = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.MusicName));
+                    result.Artist = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.MusicAuth));
+                    result.Comment = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.MusicMessage));
                     break;
 
                 default:
@@ -244,10 +127,10 @@ namespace ManagedBass.Tags
 
             if (string.IsNullOrWhiteSpace(result.Lyrics))
             {
-                var ptr = ChannelGetTags(Channel, TagType.Lyrics3v2);
+                var ptr = Bass.ChannelGetTags(Channel, TagType.Lyrics3v2);
 
                 if (ptr != IntPtr.Zero)
-                    result.Lyrics = PtrToStringAnsi(ptr);
+                    result.Lyrics = Marshal.PtrToStringAnsi(ptr);
             }
 
             return result;
@@ -268,75 +151,72 @@ namespace ManagedBass.Tags
 
         bool SetTagUsingLookupTable(string Key, string Value, TagProperties<IEnumerable<string>> LookupTable)
         {
-            if (LookupTable.Title.Contains(Key))
+            if (LookupTable.Title != null && LookupTable.Title.Contains(Key))
                 Title = Value;
 
-            else if (LookupTable.Artist.Contains(Key))
+            else if (LookupTable.Artist != null && LookupTable.Artist.Contains(Key))
                 Artist = Value;
 
-            else if (LookupTable.Album.Contains(Key))
+            else if (LookupTable.Album != null && LookupTable.Album.Contains(Key))
                 Album = Value;
 
-            else if (LookupTable.AlbumArtist.Contains(Key))
+            else if (LookupTable.AlbumArtist != null && LookupTable.AlbumArtist.Contains(Key))
                 AlbumArtist = Value;
 
-            else if (LookupTable.Subtitle.Contains(Key))
+            else if (LookupTable.Subtitle != null && LookupTable.Subtitle.Contains(Key))
                 Subtitle = Value;
 
-            else if (LookupTable.BPM.Contains(Key))
+            else if (LookupTable.BPM != null && LookupTable.BPM.Contains(Key))
                 BPM = Value;
 
-            else if (LookupTable.Composer.Contains(Key))
+            else if (LookupTable.Composer != null && LookupTable.Composer.Contains(Key))
                 Composer = Value;
 
-            else if (LookupTable.Copyright.Contains(Key))
+            else if (LookupTable.Copyright != null && LookupTable.Copyright.Contains(Key))
                 Copyright = Value;
 
-            else if (LookupTable.Genre.Contains(Key))
+            else if (LookupTable.Genre != null && LookupTable.Genre.Contains(Key))
                 Genre = Value;
 
-            else if (LookupTable.Grouping.Contains(Key))
+            else if (LookupTable.Grouping != null && LookupTable.Grouping.Contains(Key))
                 Grouping = Value;
 
-            else if (LookupTable.Publisher.Contains(Key))
+            else if (LookupTable.Publisher != null && LookupTable.Publisher.Contains(Key))
                 Publisher = Value;
 
-            else if (LookupTable.Encoder.Contains(Key))
+            else if (LookupTable.Encoder != null && LookupTable.Encoder.Contains(Key))
                 Encoder = Value;
 
-            else if (LookupTable.Lyricist.Contains(Key))
+            else if (LookupTable.Lyricist != null && LookupTable.Lyricist.Contains(Key))
                 Lyricist = Value;
 
-            else if (LookupTable.Year.Contains(Key))
+            else if (LookupTable.Year != null && LookupTable.Year.Contains(Key))
                 Year = Value;
 
-            else if (LookupTable.Conductor.Contains(Key))
+            else if (LookupTable.Conductor != null && LookupTable.Conductor.Contains(Key))
                 Conductor = Value;
 
-            else if (LookupTable.Track.Contains(Key))
+            else if (LookupTable.Track != null && LookupTable.Track.Contains(Key))
                 Track = Value;
 
-            else if (LookupTable.Producer.Contains(Key))
+            else if (LookupTable.Producer != null && LookupTable.Producer.Contains(Key))
                 Producer = Value;
 
-            else if (LookupTable.Comment.Contains(Key))
+            else if (LookupTable.Comment != null && LookupTable.Comment.Contains(Key))
                 Comment = Value;
 
-            else if (LookupTable.Mood.Contains(Key))
+            else if (LookupTable.Mood != null && LookupTable.Mood.Contains(Key))
                 Mood = Value;
 
-            else if (LookupTable.Rating.Contains(Key))
+            else if (LookupTable.Rating != null && LookupTable.Rating.Contains(Key))
                 Rating = Value;
 
-            else if (LookupTable.ISRC.Contains(Key))
+            else if (LookupTable.ISRC != null && LookupTable.ISRC.Contains(Key))
                 ISRC = Value;
 
-            else if (LookupTable.Remixer.Contains(Key))
+            else if (LookupTable.Remixer != null && LookupTable.Remixer.Contains(Key))
                 Remixer = Value;
-
-            else if (LookupTable.Lyrics.Contains(Key))
-                Lyrics = Value;
-
+            
             else return false;
 
             return true;
@@ -345,12 +225,12 @@ namespace ManagedBass.Tags
         #region Specific Tag Types
         public bool ReadApe(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.APE);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.APE);
 
             if (ptr == IntPtr.Zero)
                 return false;
 
-            foreach (var otherTag in ReadUsingLookupTable(ExtractMultiStringUtf8(ptr), ApeLookupTable, '='))
+            foreach (var otherTag in ReadUsingLookupTable(Extensions.ExtractMultiStringUtf8(ptr), LookupTables.Ape, '='))
                 Other.Add(otherTag.Key, otherTag.Value);
 
             return true;
@@ -358,19 +238,19 @@ namespace ManagedBass.Tags
 
         public bool ReadOgg(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.OGG);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.OGG);
 
             if (ptr == IntPtr.Zero)
                 return false;
             
-            foreach (var otherTag in ReadUsingLookupTable(ExtractMultiStringUtf8(ptr), OggLookupTable, '='))
+            foreach (var otherTag in ReadUsingLookupTable(Extensions.ExtractMultiStringUtf8(ptr), LookupTables.Ogg, '='))
                 Other.Add(otherTag.Key, otherTag.Value);
 
             if (string.IsNullOrWhiteSpace(Encoder))
             {
-                var encoderPtr = ChannelGetTags(Channel, TagType.OggEncoder);
+                var encoderPtr = Bass.ChannelGetTags(Channel, TagType.OggEncoder);
                 if (encoderPtr != IntPtr.Zero)
-                    Encoder = PtrToStringUtf8(encoderPtr);
+                    Encoder = Extensions.PtrToStringUtf8(encoderPtr);
             }
 
             return true;
@@ -378,12 +258,12 @@ namespace ManagedBass.Tags
 
         public bool ReadRiffInfo(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.RiffInfo);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.RiffInfo);
 
             if (ptr == IntPtr.Zero)
                 return false;
 
-            foreach (var otherTag in ReadUsingLookupTable(ExtractMultiStringAnsi(ptr), RiffInfoLookupTable, '='))
+            foreach (var otherTag in ReadUsingLookupTable(Extensions.ExtractMultiStringAnsi(ptr), LookupTables.RiffInfo, '='))
                 Other.Add(otherTag.Key, otherTag.Value);
             
             return true;
@@ -391,12 +271,12 @@ namespace ManagedBass.Tags
 
         public bool ReadMp4(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.MP4);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.MP4);
 
             if (ptr == IntPtr.Zero)
                 return false;
 
-            foreach (var otherTag in ReadUsingLookupTable(ExtractMultiStringUtf8(ptr), Mp4LookupTable, '='))
+            foreach (var otherTag in ReadUsingLookupTable(Extensions.ExtractMultiStringUtf8(ptr), LookupTables.Mp4, '='))
                 Other.Add(otherTag.Key, otherTag.Value);
             
             return true;
@@ -404,12 +284,12 @@ namespace ManagedBass.Tags
 
         public bool ReadID3v1(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.ID3);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.ID3);
 
             if (ptr == IntPtr.Zero)
                 return false;
             
-            var id3v1 = (ID3v1Tag)PtrToStructure(ptr, typeof(ID3v1Tag));
+            var id3v1 = (ID3v1Tag) Marshal.PtrToStructure(ptr, typeof(ID3v1Tag));
 
             Title = id3v1.Title;
             Artist = id3v1.Artist;
@@ -424,7 +304,7 @@ namespace ManagedBass.Tags
 
         public bool ReadID3v2(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.ID3v2);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.ID3v2);
 
             if (ptr == IntPtr.Zero)
                 return false;
@@ -432,7 +312,7 @@ namespace ManagedBass.Tags
             var id3V2 = new ID3v2Tag(ptr);
 
             foreach (var frame in id3V2.TextFrames)
-                if (!SetTagUsingLookupTable(frame.Key, frame.Value, Id3v2LookupTable))
+                if (!SetTagUsingLookupTable(frame.Key, frame.Value, LookupTables.Id3v2))
                     Other.Add(frame.Key, frame.Value);
 
             Pictures.AddRange(id3V2.PictureFrames);
@@ -442,12 +322,12 @@ namespace ManagedBass.Tags
 
         public bool ReadBWF(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.RiffBext);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.RiffBext);
 
             if (ptr == IntPtr.Zero)
                 return false;
 
-            var tag = (BextTag)PtrToStructure(ptr, typeof(BextTag));
+            var tag = (BextTag) Marshal.PtrToStructure(ptr, typeof(BextTag));
 
             Title = tag.Description;
             Artist = tag.Originator;

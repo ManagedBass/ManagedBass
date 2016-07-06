@@ -111,10 +111,5 @@ namespace ManagedBass.Tags
         /// Gets the Remixer.
         /// </summary>
         public T Remixer { get; set; }
-
-        /// <summary>
-        /// Gets the Lyrics.
-        /// </summary>
-        public T Lyrics { get; set; }
     }
 }
