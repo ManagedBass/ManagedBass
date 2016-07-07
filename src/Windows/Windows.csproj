@@ -33,7 +33,7 @@
     <Compile Include="..\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AcmEncoder.cs" />
+    <Compile Include="AcmFileWriter.cs" />
     <Compile Include="BassWasapi\Devices\WasapiDevice.cs" />
     <Compile Include="BassWasapi\Devices\WasapiLoopbackDevice.cs" />
     <Compile Include="BassWasapi\Devices\WasapiPlaybackDevice.cs" />
@@ -43,7 +43,7 @@
     <Compile Include="Effects\DXCompressorEffect.cs" />
     <Compile Include="Effects\DXGargleEffect.cs" />
     <Compile Include="Effects\DX_ID3DL2ReverbEffect.cs" />
-    <Compile Include="WmaEncoder.cs" />
+    <Compile Include="WmaFileWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ManagedBass.PInvoke, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL">

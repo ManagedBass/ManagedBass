@@ -7,7 +7,7 @@ namespace ManagedBass
     /// <summary>
     /// Bass Recording Device.
     /// </summary>
-    public class RecordDevice
+    public class RecordDevice : IDisposable
     {
         #region Singleton
         static readonly Dictionary<int, RecordDevice> Singleton = new Dictionary<int, RecordDevice>();
