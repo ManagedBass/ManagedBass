@@ -122,16 +122,7 @@ namespace ManagedBass
             catch { return false; }
         }
         #endregion
-
-        /// <summary>
-        /// Ensures data is written to disk
-        /// </summary>
-        public void Flush()
-        {
-            lock (_locker)
-                _writer.Flush();
-        }
-
+        
         #region IDisposable Members
         /// <summary>
         /// Closes this WaveFile

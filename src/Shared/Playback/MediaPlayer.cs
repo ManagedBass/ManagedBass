@@ -38,8 +38,12 @@ namespace ManagedBass
                 Bass.ChannelSetSync(Handle, SyncFlags.Stop, 0, GetSyncProcedure(() => MediaFailed?.Invoke(this, EventArgs.Empty)));
                 Bass.ChannelSetSync(Handle, SyncFlags.End, 0, GetSyncProcedure(() =>
                 {
-                    if (!Bass.ChannelHasFlag(Handle, BassFlags.Loop))
-                        MediaEnded?.Invoke(this, EventArgs.Empty);
+                    try
+                    {
+                        if (!Bass.ChannelHasFlag(Handle, BassFlags.Loop))
+                            MediaEnded?.Invoke(this, EventArgs.Empty);
+                    }
+                    finally { OnStateChanged(); }
                 }));
             }
         }
@@ -56,7 +60,7 @@ namespace ManagedBass
 
                 if (_syncContext == null)
                     Handler();
-                else _syncContext.Post(State => Handler(), null);
+                else _syncContext.Post(S => Handler(), null);
             };
         }
 
@@ -68,7 +72,7 @@ namespace ManagedBass
                 Bass.Init(currentDev);
         }
 
-        protected MediaPlayer() { _syncContext = SynchronizationContext.Current; }
+        internal MediaPlayer() { _syncContext = SynchronizationContext.Current; }
 
         #region Events
         /// <summary>
@@ -248,7 +252,7 @@ namespace ManagedBass
         /// <summary>
         /// Gets the Playback State of the Channel.
         /// </summary>
-        public PlaybackState IsActive => Bass.ChannelIsActive(Handle);
+        public PlaybackState State => Handle == 0 ? PlaybackState.Stopped : Bass.ChannelIsActive(Handle);
 
         #region Playback
         /// <summary>
@@ -256,18 +260,26 @@ namespace ManagedBass
         /// </summary>
         public bool Play()
         {
-            var result = Bass.ChannelPlay(Handle, _restartOnNextPlayback);
+            try
+            {
+                var result = Bass.ChannelPlay(Handle, _restartOnNextPlayback);
 
-            if (result)
-                _restartOnNextPlayback = false;
+                if (result)
+                    _restartOnNextPlayback = false;
 
-            return result;
+                return result;
+            }
+            finally { OnStateChanged(); }
         }
 
         /// <summary>
         /// Pauses the Channel Playback.
         /// </summary>
-        public bool Pause() => Bass.ChannelPause(Handle);
+        public bool Pause()
+        {
+            try { return Bass.ChannelPause(Handle); }
+            finally { OnStateChanged(); }
+        }
 
         /// <summary>
         /// Stops the Channel Playback.
@@ -275,8 +287,12 @@ namespace ManagedBass
         /// <remarks>Difference from <see cref="Bass.ChannelStop"/>: Playback is restarted when <see cref="Play"/> is called.</remarks>
         public bool Stop()
         {
-            _restartOnNextPlayback = true;
-            return Bass.ChannelStop(Handle);
+            try
+            {
+                _restartOnNextPlayback = true;
+                return Bass.ChannelStop(Handle);
+            }
+            finally { OnStateChanged(); }
         }
         #endregion
 
@@ -340,8 +356,12 @@ namespace ManagedBass
 
         public virtual void Dispose()
         {
-            if (Bass.StreamFree(Handle))
-                _handle = 0;
+            try
+            {
+                if (Bass.StreamFree(Handle))
+                    _handle = 0;
+            }
+            finally { OnStateChanged(); }
         }
 
         /// <summary>
@@ -362,6 +382,8 @@ namespace ManagedBass
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
+
+        void OnStateChanged() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(State)));
 
         /// <summary>
         /// Fired when a property value changes.
