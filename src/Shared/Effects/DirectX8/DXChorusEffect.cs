@@ -1,5 +1,8 @@
 namespace ManagedBass.DirectX8
 {
+    /// <summary>
+    /// DX8 Chorus Effect.
+    /// </summary>
     public sealed class DXChorusEffect : Effect<DXChorusParameters>
     {
         /// <summary>

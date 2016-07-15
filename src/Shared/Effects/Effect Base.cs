@@ -17,7 +17,10 @@ namespace ManagedBass
         bool _wasActive;
         readonly SyncProcedure _syncProcedure;
 
-        public Effect()
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        protected Effect()
         {
             _syncProcedure = (a, b, c, d) => Dispose();
         }
@@ -27,6 +30,11 @@ namespace ManagedBass
         /// </summary>
         protected T Parameters = new T();
         
+        /// <summary>
+        /// Applies the Effect on a <paramref name="Channel"/>.
+        /// </summary>
+        /// <param name="Channel">The Channel to apply the Effect on.</param>
+        /// <param name="Priority">Priority of the Effect in DSP chain.</param>
         public void ApplyOn(int Channel, int Priority = 0)
         {
             _channel = Channel;
@@ -36,7 +44,12 @@ namespace ManagedBass
             
             _hfsync = Bass.ChannelSetSync(Channel, SyncFlags.Free, 0, _syncProcedure);
         }
-        
+
+        /// <summary>
+        /// Applies the Effect on a <see cref="MediaPlayer"/>.
+        /// </summary>
+        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the Effect on.</param>
+        /// <param name="Priority">Priority of the Effect in DSP chain.</param>
         public void ApplyOn(MediaPlayer Player, int Priority = 0)
         {
             ApplyOn(Player.Handle, Priority);
@@ -137,6 +150,9 @@ namespace ManagedBass
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
 
+        /// <summary>
+        /// Called after applying a Preset to notify that multiple properties have changed.
+        /// </summary>
         protected void OnPreset() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
 
         /// <summary>

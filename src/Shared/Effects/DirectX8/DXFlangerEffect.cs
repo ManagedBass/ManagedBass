@@ -1,5 +1,8 @@
 namespace ManagedBass.DirectX8
 {
+    /// <summary>
+    /// DX8 Flanger Effect.
+    /// </summary>
     public sealed class DXFlangerEffect : Effect<DXFlangerParameters>
     {
         /// <summary>

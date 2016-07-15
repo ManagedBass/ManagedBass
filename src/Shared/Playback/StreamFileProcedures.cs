@@ -4,10 +4,17 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
+    /// <summary>
+    /// <see cref="FileProcedures"/> for use with .Net <see cref="Stream"/>.
+    /// </summary>
     public class StremFileProcedures : FileProcedures
     {
         readonly Stream _stream;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="StremFileProcedures"/>.
+        /// </summary>
+        /// <param name="InputStream">The <see cref="Stream"/> to wrap.</param>
         public StremFileProcedures(Stream InputStream)
         {
             _stream = InputStream;

@@ -9,6 +9,10 @@ namespace ManagedBass
     public class PanDSP : DSP
     {
         float _pan;
+
+        /// <summary>
+        /// Pan value (-1 (left) ... 0 (centre) ... 1 (right)).
+        /// </summary>
         public double Pan
         {
             get { return _pan; }
@@ -19,7 +23,10 @@ namespace ManagedBass
                 OnPropertyChanged();
             }
         }
-
+        
+        /// <summary>
+        /// DSP Callback.
+        /// </summary>
         protected override unsafe void Callback(IntPtr Buffer, int Length)
         {
             if (_pan == 0)

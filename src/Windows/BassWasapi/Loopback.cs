@@ -35,12 +35,7 @@ namespace ManagedBass.Wasapi
 
             AudioFormat = WaveFormat.FromParams(info.MixFrequency, info.MixChannels, Resolution.Float);
         }
-
-        /// <summary>
-        /// Returns the soundcard output level.
-        /// </summary>
-        public double Level => _device.Level;
-
+        
         /// <summary>
         /// Gets if Capturing is in progress.
         /// </summary>
@@ -103,6 +98,9 @@ namespace ManagedBass.Wasapi
         }
         #endregion
 
+        /// <summary>
+        /// Gets the <see cref="WaveFormat"/> of the Recorded Audio.
+        /// </summary>
         public WaveFormat AudioFormat { get; }
     }
 }

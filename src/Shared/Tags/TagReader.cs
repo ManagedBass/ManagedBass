@@ -25,6 +25,9 @@ namespace ManagedBass.Tags
         /// </summary>
         public string Lyrics { get; set; }
         
+        /// <summary>
+        /// Reads tags from a File.
+        /// </summary>
         public static TagReader Read(string FileName)
         {
             Bass.Init();
@@ -57,6 +60,9 @@ namespace ManagedBass.Tags
             return result;
         }
 
+        /// <summary>
+        /// Reads tags from a <paramref name="Channel"/>.
+        /// </summary>
         public static TagReader Read(int Channel)
         {
             var result = new TagReader();
@@ -223,6 +229,9 @@ namespace ManagedBass.Tags
         }
 
         #region Specific Tag Types
+        /// <summary>
+        /// Reads <see cref="TagType.APE"/> tags from a <paramref name="Channel"/>.
+        /// </summary>
         public bool ReadApe(int Channel)
         {
             var ptr = Bass.ChannelGetTags(Channel, TagType.APE);
@@ -236,6 +245,9 @@ namespace ManagedBass.Tags
             return true;
         }
 
+        /// <summary>
+        /// Reads <see cref="TagType.OGG"/> tags from a <paramref name="Channel"/>.
+        /// </summary>
         public bool ReadOgg(int Channel)
         {
             var ptr = Bass.ChannelGetTags(Channel, TagType.OGG);
@@ -256,6 +268,9 @@ namespace ManagedBass.Tags
             return true;
         }
 
+        /// <summary>
+        /// Reads <see cref="TagType.RiffInfo"/> tags from a <paramref name="Channel"/>.
+        /// </summary>
         public bool ReadRiffInfo(int Channel)
         {
             var ptr = Bass.ChannelGetTags(Channel, TagType.RiffInfo);
@@ -269,6 +284,9 @@ namespace ManagedBass.Tags
             return true;
         }
 
+        /// <summary>
+        /// Reads <see cref="TagType.MP4"/> tags from a <paramref name="Channel"/>.
+        /// </summary>
         public bool ReadMp4(int Channel)
         {
             var ptr = Bass.ChannelGetTags(Channel, TagType.MP4);
@@ -282,6 +300,9 @@ namespace ManagedBass.Tags
             return true;
         }
 
+        /// <summary>
+        /// Reads <see cref="TagType.ID3"/> tags from a <paramref name="Channel"/>.
+        /// </summary>
         public bool ReadID3v1(int Channel)
         {
             var ptr = Bass.ChannelGetTags(Channel, TagType.ID3);
@@ -302,6 +323,9 @@ namespace ManagedBass.Tags
             return true;
         }
 
+        /// <summary>
+        /// Reads <see cref="TagType.ID3v2"/> tags from a <paramref name="Channel"/>.
+        /// </summary>
         public bool ReadID3v2(int Channel)
         {
             var ptr = Bass.ChannelGetTags(Channel, TagType.ID3v2);
@@ -320,6 +344,9 @@ namespace ManagedBass.Tags
             return true;
         }
 
+        /// <summary>
+        /// Reads <see cref="TagType.RiffBext"/> tags from a <paramref name="Channel"/>.
+        /// </summary>
         public bool ReadBWF(int Channel)
         {
             var ptr = Bass.ChannelGetTags(Channel, TagType.RiffBext);

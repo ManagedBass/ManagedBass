@@ -39,7 +39,7 @@
     <Compile Include="BassWasapi\Devices\WasapiPlaybackDevice.cs" />
     <Compile Include="BassWasapi\Devices\WasapiRecordingDevice.cs" />
     <Compile Include="BassWasapi\Loopback.cs" />
-    <Compile Include="BassWasapi\WasapiToBassFullDuplex.cs" />
+    <Compile Include="BassWasapi\WasapiToBassStream.cs" />
     <Compile Include="Effects\DXCompressorEffect.cs" />
     <Compile Include="Effects\DXGargleEffect.cs" />
     <Compile Include="Effects\DX_ID3DL2ReverbEffect.cs" />

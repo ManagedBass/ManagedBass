@@ -18,6 +18,12 @@
         readonly object _syncLock = new object();
         readonly int _handle;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="WmaFileWriter"/>.
+        /// </summary>
+        /// <param name="FileName">The path to the file to write to.</param>
+        /// <param name="WaveFormat"><see cref="WaveFormat"/> of the input data.</param>
+        /// <param name="BitRate">BitRate of the written file.</param>
         public WmaFileWriter(string FileName, WaveFormat WaveFormat, int BitRate = 128000)
         {
             _handle = BassWma.EncodeOpenFile(WaveFormat.SampleRate, WaveFormat.Channels, ToWmaEncodeFlags(WaveFormat.Encoding, WaveFormat.BitsPerSample), BitRate, FileName);

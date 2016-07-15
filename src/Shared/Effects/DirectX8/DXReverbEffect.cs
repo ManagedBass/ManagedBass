@@ -1,5 +1,8 @@
 namespace ManagedBass.DirectX8
 {
+    /// <summary>
+    /// DX8 Reverb Effect.
+    /// </summary>
     public sealed class DXReverbEffect : Effect<DXReverbParameters>
     {
         /// <summary>

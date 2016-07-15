@@ -1,5 +1,8 @@
 namespace ManagedBass.DirectX8
 {
+    /// <summary>
+    /// DX8 ParamEQ Effect.
+    /// </summary>
     public sealed class DXParamEQEffect : Effect<DXParamEQParameters>
     {
         /// <summary>

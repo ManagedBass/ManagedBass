@@ -4,11 +4,11 @@ using System.Collections.Generic;
 namespace ManagedBass.Wasapi
 {
     /// <summary>
-    /// Wraps a WASAPI Device
+    /// Represents a WASAPI Device
     /// </summary>
     public abstract class WasapiDevice : IDisposable
     {
-        protected static readonly Dictionary<int, WasapiDevice> Singleton = new Dictionary<int, WasapiDevice>();
+        internal static readonly Dictionary<int, WasapiDevice> Singleton = new Dictionary<int, WasapiDevice>();
         
         internal WasapiDevice(int Index)
         {
@@ -17,25 +17,37 @@ namespace ManagedBass.Wasapi
         }
         
         #region Device Info
+        /// <summary>
+        /// Gets the Index of the Wasapi Device.
+        /// </summary>
         public int DeviceIndex { get; }
 
+        /// <summary>
+        /// Gets the Device Info.
+        /// </summary>
         public WasapiDeviceInfo Info => BassWasapi.GetDeviceInfo(DeviceIndex);
         #endregion
 
         #region Callback
         readonly WasapiProcedure _proc;
 
-        protected virtual int OnProc(IntPtr Buffer, int Length, IntPtr User)
+        internal virtual int OnProc(IntPtr Buffer, int Length, IntPtr User)
         {
             Callback?.Invoke(Buffer, Length);
             return Length;
         }
 
+        /// <summary>
+        /// Wasapi Callback.
+        /// </summary>
         public virtual event Action<IntPtr, int> Callback;
         #endregion
 
-        protected void Ensure() => BassWasapi.CurrentDevice = DeviceIndex;
+        internal void Ensure() => BassWasapi.CurrentDevice = DeviceIndex;
 
+        /// <summary>
+        /// Frees the Device.
+        /// </summary>
         public void Dispose()
         {
             Ensure();
@@ -43,37 +55,7 @@ namespace ManagedBass.Wasapi
             BassWasapi.Free();
         }
         
-        public bool Mute
-        {
-            get
-            {
-                Ensure();
-                return BassWasapi.GetMute();
-            }
-            set
-            {
-                Ensure();
-                BassWasapi.SetMute(WasapiVolumeTypes.Device, value);
-            }
-        }
-
-        public double Level => BassWasapi.GetDeviceLevel(DeviceIndex);
-
-        public double Volume
-        {
-            get
-            {
-                Ensure();
-                return BassWasapi.GetVolume(WasapiVolumeTypes.Device | WasapiVolumeTypes.LinearCurve);
-            }
-            set
-            {
-                Ensure();
-                BassWasapi.SetVolume(WasapiVolumeTypes.Device | WasapiVolumeTypes.LinearCurve, (float)value);
-            }
-        }
-
-        protected bool _Init(int Frequency, int Channels, bool Shared, bool UseEventSync, int Buffer, int Period)
+        internal bool _Init(int Frequency, int Channels, bool Shared, bool UseEventSync, int Buffer, int Period)
         {
             if (Info.IsInitialized) return true;
 
@@ -91,6 +73,9 @@ namespace ManagedBass.Wasapi
             return result;
         }
 
+        /// <summary>
+        /// Gets whether the Device is started.
+        /// </summary>
         public bool IsStarted
         {
             get
@@ -100,12 +85,18 @@ namespace ManagedBass.Wasapi
             }
         }
 
+        /// <summary>
+        /// Starts the device.
+        /// </summary>
         public bool Start()
         {
             Ensure();
             return BassWasapi.Start();
         }
 
+        /// <summary>
+        /// Stops the device.
+        /// </summary>
         public bool Stop(bool Reset = true)
         {
             Ensure();
@@ -113,8 +104,14 @@ namespace ManagedBass.Wasapi
         }
 
         #region Overrides
+        /// <summary>
+        /// Compares objects for Equality.
+        /// </summary>
         public override bool Equals(object Obj) => Obj is WasapiDevice && DeviceIndex == ((WasapiDevice)Obj).DeviceIndex;
 
+        /// <summary>
+        /// Returns a string representation of the Wasapi Device.
+        /// </summary>
         public override string ToString()
         {
             return Info.Name
@@ -122,6 +119,10 @@ namespace ManagedBass.Wasapi
                 + (Info.IsDefault ? " (Default)" : string.Empty);
         }
 
+        /// <summary>
+        /// Returns the Device Index.
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode() => DeviceIndex;
         #endregion
     }

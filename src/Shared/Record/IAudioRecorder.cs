@@ -29,6 +29,9 @@ namespace ManagedBass
         /// </summary>
         event EventHandler<DataAvailableEventArgs> DataAvailable;
 
+        /// <summary>
+        /// Gets the <see cref="WaveFormat"/> of the Recorded Audio.
+        /// </summary>
         WaveFormat AudioFormat { get; }
     }
 }

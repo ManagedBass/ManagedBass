@@ -67,8 +67,14 @@ namespace ManagedBass
         /// <returns><see langword="true"/> on success, else <see langword="false"/>.</returns>
         public bool Stop() => Bass.ChannelPause(_handle);
 
+        /// <summary>
+        /// Gets the <see cref="WaveFormat"/> of the Recorded Audio.
+        /// </summary>
         public WaveFormat AudioFormat { get; }
 
+        /// <summary>
+        /// Frees all resources used by this instance.
+        /// </summary>
         public void Dispose()
         {
             Bass.ChannelStop(_handle);

@@ -1,5 +1,8 @@
 namespace ManagedBass.Tags
 {
+    /// <summary>
+    /// Generic class for holding tags.
+    /// </summary>
     public class TagProperties<T>
     {
         /// <summary>

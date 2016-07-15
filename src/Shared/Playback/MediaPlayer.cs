@@ -17,14 +17,11 @@ namespace ManagedBass
         #region Fields
         readonly SynchronizationContext _syncContext;
         int _handle;
-
-        /// <summary>
-        /// Gets the Channel Handle.
-        /// </summary>
-        public int Handle
+        
+        internal int Handle
         {
             get { return _handle; }
-            protected set
+            private set
             {
                 ChannelInfo info;
 
@@ -296,8 +293,14 @@ namespace ManagedBass
         }
         #endregion
 
+        /// <summary>
+        /// Gets the Playback Duration.
+        /// </summary>
         public TimeSpan Duration => TimeSpan.FromSeconds(Bass.ChannelBytes2Seconds(Handle, Bass.ChannelGetLength(Handle)));
 
+        /// <summary>
+        /// Gets or Sets the Playback Position.
+        /// </summary>
         public TimeSpan Position
         {
             get { return TimeSpan.FromSeconds(Bass.ChannelBytes2Seconds(Handle, Bass.ChannelGetPosition(Handle))); }
@@ -354,6 +357,9 @@ namespace ManagedBass
         /// </summary>
         public event Action<int> MediaLoaded;
 
+        /// <summary>
+        /// Frees all resources used by the player.
+        /// </summary>
         public virtual void Dispose()
         {
             try

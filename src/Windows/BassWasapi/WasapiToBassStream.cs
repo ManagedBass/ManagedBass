@@ -3,18 +3,32 @@
     /// <summary>
     /// Provides audio from <see cref="WasapiRecordingDevice"/> or <see cref="WasapiLoopbackDevice"/> in a Bass Channel.
     /// </summary>
-    public sealed class WasapiToBassFullDuplex
+    public sealed class WasapiToBassStream
     {
+        /// <summary>
+        /// Gets the Channel Handle.
+        /// </summary>
         public int Handle { get; }
+
         readonly WasapiDevice _wasapiDevice;
 
-        public WasapiToBassFullDuplex(WasapiRecordingDevice Device, bool Decode = false)
+        /// <summary>
+        /// Creates a new instance of <see cref="WasapiToBassStream"/>.
+        /// </summary>
+        /// <param name="Device"><see cref="WasapiRecordingDevice"/> to use.</param>
+        /// <param name="Decode">Whether to create a decoding channel.</param>
+        public WasapiToBassStream(WasapiRecordingDevice Device, bool Decode = false)
             : this(Device as WasapiDevice, Decode) { Device.Init(); }
 
-        public WasapiToBassFullDuplex(WasapiLoopbackDevice Device, bool Decode = false)
+        /// <summary>
+        /// Creates a new instance of <see cref="WasapiToBassStream"/>.
+        /// </summary>
+        /// <param name="Device"><see cref="WasapiLoopbackDevice"/> to use.</param>
+        /// <param name="Decode">Whether to create a decoding channel.</param>
+        public WasapiToBassStream(WasapiLoopbackDevice Device, bool Decode = false)
             : this(Device as WasapiDevice, Decode) { Device.Init(); }
 
-        WasapiToBassFullDuplex(WasapiDevice WasapiDevice, bool Decode = false)
+        WasapiToBassStream(WasapiDevice WasapiDevice, bool Decode = false)
         {
             var info = WasapiDevice.Info;
 
@@ -35,6 +49,9 @@
             return Bass.ChannelPlay(Handle);
         }
 
+        /// <summary>
+        /// Stops the Channel Playback.
+        /// </summary>
         public bool Stop()
         {
             var result = Bass.ChannelStop(Handle);
@@ -44,6 +61,9 @@
             return result;
         }
 
+        /// <summary>
+        /// Frees all resources used by this channel.
+        /// </summary>
         public void Dispose()
         {
             Bass.StreamFree(Handle);

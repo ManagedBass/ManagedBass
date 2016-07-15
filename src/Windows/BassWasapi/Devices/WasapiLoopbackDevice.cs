@@ -4,10 +4,16 @@ using System.Linq;
 
 namespace ManagedBass.Wasapi
 {
+    /// <summary>
+    /// Represents a Wasapi Loopback Device.
+    /// </summary>
     public class WasapiLoopbackDevice : WasapiDevice
     {
         WasapiLoopbackDevice(int Index) : base(Index) { }
 
+        /// <summary>
+        /// Get Device By Index.
+        /// </summary>
         public static WasapiLoopbackDevice Get(int Device)
         {
             if (Singleton.ContainsKey(Device))
@@ -23,8 +29,15 @@ namespace ManagedBass.Wasapi
             return dev;
         }
 
+        /// <summary>
+        /// Initialises the device.
+        /// </summary>
+        /// <returns>true on success, else false.</returns>
         public bool Init() => _Init(0, 0, true, false, 0, 0);
 
+        /// <summary>
+        /// Enumerates <see cref="WasapiLoopbackDevice"/>s.
+        /// </summary>
         public static IEnumerable<WasapiLoopbackDevice> Devices
         {
             get
@@ -37,8 +50,14 @@ namespace ManagedBass.Wasapi
             }
         }
 
+        /// <summary>
+        /// Gets the Default Device.
+        /// </summary>
         public static WasapiLoopbackDevice Default => Devices.First(Dev => Dev.Info.IsDefault);
 
+        /// <summary>
+        /// Gets the number of Loopback Devices.
+        /// </summary>
         public static int Count
         {
             get
@@ -55,6 +74,9 @@ namespace ManagedBass.Wasapi
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="WasapiPlaybackDevice"/> associated with this device.
+        /// </summary>
         public WasapiPlaybackDevice PlaybackDevice
         {
             get

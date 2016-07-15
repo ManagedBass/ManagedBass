@@ -4,7 +4,7 @@ using System.IO;
 namespace ManagedBass
 {
     /// <summary>
-    /// Represents a Wave file format (WAVEFORMATEX)
+    /// Represents a Wave file format.
     /// </summary>
     public class WaveFormat
     {
@@ -66,6 +66,9 @@ namespace ManagedBass
             }
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="WaveFormat"/> from a <paramref name="Channel"/>.
+        /// </summary>
         public static WaveFormat FromChannel(int Channel)
         {
             var info = Bass.ChannelGetInfo(Channel);

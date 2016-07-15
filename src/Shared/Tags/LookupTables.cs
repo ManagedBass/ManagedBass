@@ -2,7 +2,7 @@
 
 namespace ManagedBass.Tags
 {
-    class LookupTables
+    static class LookupTables
     {
         public static readonly TagProperties<IEnumerable<string>> Ape = new TagProperties<IEnumerable<string>>
         {

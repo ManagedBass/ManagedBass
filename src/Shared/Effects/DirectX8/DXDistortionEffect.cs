@@ -1,5 +1,8 @@
 namespace ManagedBass.DirectX8
 {
+    /// <summary>
+    /// DX8 Distortion Effect.
+    /// </summary>
     public sealed class DXDistortionEffect : Effect<DXDistortionParameters>
     {
         /// <summary>

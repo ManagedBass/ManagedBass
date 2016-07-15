@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Enc
 {
+    /// <summary>
+    /// Writes an audio file encoded using Audio Codecs Managed (ACM).
+    /// </summary>
     public class AcmFileWriter : IAudioWriter
     {
         static BassFlags ToBassFlags(WaveFormatTag WfTag, int BitsPerSample)
@@ -24,6 +27,12 @@ namespace ManagedBass.Enc
         readonly int _channel, _handle;
         readonly object _syncLock = new object();
         
+        /// <summary>
+        /// Creates a new instance of <see cref="AcmFileWriter"/>.
+        /// </summary>
+        /// <param name="FileName">Path to the file to write.</param>
+        /// <param name="Encoding"><see cref="WaveFormatTag"/> for written audio.</param>
+        /// <param name="Format"><see cref="WaveFormat"/> of input audio.</param>
         public AcmFileWriter(string FileName, WaveFormatTag Encoding, WaveFormat Format)
         {
             if (FileName == null)
@@ -61,6 +70,11 @@ namespace ManagedBass.Enc
         public void Dispose() => BassEnc.EncodeStop(_handle, true);
 
         #region Write
+        /// <summary>
+        /// Write data from a byte[].
+        /// </summary>
+        /// <param name="Buffer">byte[] to write from.</param>
+        /// <param name="Length">No of bytes to write.</param>
         public bool Write(byte[] Buffer, int Length)
         {
             lock (_syncLock)
@@ -73,6 +87,11 @@ namespace ManagedBass.Enc
             }
         }
 
+        /// <summary>
+        /// Write data from a short[].
+        /// </summary>
+        /// <param name="Buffer">short[] to write from.</param>
+        /// <param name="Length">No of bytes to write, i.e. (No of Shorts) * 2.</param>
         public bool Write(short[] Buffer, int Length)
         {
             lock (_syncLock)
@@ -85,6 +104,11 @@ namespace ManagedBass.Enc
             }
         }
 
+        /// <summary>
+        /// Write data from a float[].
+        /// </summary>
+        /// <param name="Buffer">float[] to write from.</param>
+        /// <param name="Length">No of bytes to write, i.e. (No of floats) * 4.</param>
         public bool Write(float[] Buffer, int Length)
         {
             lock (_syncLock)

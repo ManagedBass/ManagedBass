@@ -11,6 +11,9 @@ namespace ManagedBass.Fx
         readonly int _handle;
         GCHandle _gch;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="PeakEQ"/>.
+        /// </summary>
         public PeakEQ(int Channel, double Q = 0, double Bandwith = 2.5)
         {
             _handle = Bass.ChannelSetFX(Channel, EffectType.PeakEQ, 0);
@@ -25,6 +28,9 @@ namespace ManagedBass.Fx
             _gch = GCHandle.Alloc(_parameters, GCHandleType.Pinned);
         }
 
+        /// <summary>
+        /// Adds a Band.
+        /// </summary>
         public int AddBand(double CenterFrequency)
         {
             ++_parameters.lBand;
@@ -37,6 +43,9 @@ namespace ManagedBass.Fx
             return _parameters.lBand;
         }
 
+        /// <summary>
+        /// Updates a Band.
+        /// </summary>
         public void UpdateBand(int Band, double Gain)
         {
             _parameters.lBand = Band;

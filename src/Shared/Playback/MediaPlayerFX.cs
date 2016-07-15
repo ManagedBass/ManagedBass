@@ -8,60 +8,60 @@
         int _tempoHandle;
 
         #region Reverse
-        bool rev;
+        bool _rev;
 
         /// <summary>
         /// Gets or Sets the Media playback direction.
         /// </summary>
         public bool Reverse
         {
-            get { return rev; }
+            get { return _rev; }
             set
             {
                 if (!Bass.ChannelSetAttribute(Handle, ChannelAttribute.ReverseDirection, value ? -1 : 1))
                     return;
 
-                rev = value;
+                _rev = value;
                 OnPropertyChanged();
             }
         }
         #endregion
 
         #region Pitch
-        double pitch;
+        double _pitch;
 
         /// <summary>
         /// Gets or Sets the Pitch in Semitones (-60 ... 0 ... 60).
         /// </summary>
         public double Pitch
         {
-            get { return pitch; }
+            get { return _pitch; }
             set
             {
                 if (!Bass.ChannelSetAttribute(_tempoHandle, ChannelAttribute.Pitch, value))
                     return;
 
-                pitch = value;
+                _pitch = value;
                 OnPropertyChanged();
             }
         }
         #endregion
 
         #region Tempo
-        double tempo;
+        double _tempo;
 
         /// <summary>
         /// Gets or Sets the Tempo in Percentage (-95% ... 0 ... 5000%)
         /// </summary>
         public double Tempo
         {
-            get { return tempo; }
+            get { return _tempo; }
             set
             {
                 if (!Bass.ChannelSetAttribute(_tempoHandle, ChannelAttribute.Tempo, value))
                     return;
 
-                tempo = value;
+                _tempo = value;
                 OnPropertyChanged();
             }
         }
@@ -92,12 +92,12 @@
         /// </summary>
         protected override void InitProperties()
         {
-            Reverse = rev;
+            Reverse = _rev;
 
             base.InitProperties();
 
-            Tempo = tempo;
-            Pitch = pitch;
+            Tempo = _tempo;
+            Pitch = _pitch;
         }
     }
 }

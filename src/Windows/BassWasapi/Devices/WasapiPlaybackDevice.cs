@@ -5,10 +5,16 @@ using System.Linq;
 
 namespace ManagedBass.Wasapi
 {
+    /// <summary>
+    /// Represents a Wasapi Playback Device.
+    /// </summary>
     public class WasapiPlaybackDevice : WasapiDevice
     {
         WasapiPlaybackDevice(int Index) : base(Index) { }
 
+        /// <summary>
+        /// Get Device By Index.
+        /// </summary>
         public static WasapiPlaybackDevice Get(int Device)
         {
             if (Singleton.ContainsKey(Device))
@@ -24,6 +30,9 @@ namespace ManagedBass.Wasapi
             return dev;
         }
 
+        /// <summary>
+        /// Enumerates <see cref="WasapiPlaybackDevice"/>s.
+        /// </summary>
         public static IEnumerable<WasapiPlaybackDevice> Devices
         {
             get
@@ -36,6 +45,9 @@ namespace ManagedBass.Wasapi
             }
         }
 
+        /// <summary>
+        /// Initialises the device.
+        /// </summary>
         public bool Init(int Frequency = 44100, int Channels = 2, bool Shared = true, bool UseEventSync = false, int Buffer = 0, int Period = 0)
         {
             var result = _Init(Frequency, Channels, Shared, UseEventSync, Buffer, Period);
@@ -55,7 +67,7 @@ namespace ManagedBass.Wasapi
 
         readonly Dictionary<Action<IntPtr, int>, Tuple<StreamProcedure, int>> _dict = new Dictionary<Action<IntPtr, int>, Tuple<StreamProcedure, int>>();
 
-        protected override int OnProc(IntPtr Buffer, int Length, IntPtr User)
+        internal override int OnProc(IntPtr Buffer, int Length, IntPtr User)
         {
             return Bass.ChannelGetData(_mixerStream, Buffer, Length);
         }
@@ -81,6 +93,9 @@ namespace ManagedBass.Wasapi
         /// <returns>True on Success</returns>
         public bool RemoveOutputSource(int Channel) => BassMix.MixerRemoveChannel(Channel);
 
+        /// <summary>
+        /// Wasapi Callback
+        /// </summary>
         public override event Action<IntPtr, int> Callback
         {
             add
@@ -113,8 +128,14 @@ namespace ManagedBass.Wasapi
         }
         #endregion
 
+        /// <summary>
+        /// Gets the Default Playback Device.
+        /// </summary>
         public static WasapiPlaybackDevice Default => Devices.First(dev => dev.Info.IsDefault);
 
+        /// <summary>
+        /// Gets the number of Playback Devices.
+        /// </summary>
         public static int Count
         {
             get
@@ -131,6 +152,9 @@ namespace ManagedBass.Wasapi
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="LoopbackDevice"/> associated with this device.
+        /// </summary>
         public WasapiLoopbackDevice LoopbackDevice
         {
             get

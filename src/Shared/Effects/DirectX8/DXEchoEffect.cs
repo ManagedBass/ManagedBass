@@ -1,5 +1,8 @@
 namespace ManagedBass.DirectX8
 {
+    /// <summary>
+    /// DX8 Echo Effect.
+    /// </summary>
     public sealed class DXEchoEffect : Effect<DXEchoParameters>
     {
         /// <summary>

@@ -36,6 +36,9 @@ namespace ManagedBass
         }
         #endregion
         
+        /// <summary>
+        /// Gets the Index of the Playback Device.
+        /// </summary>
         public int Index { get; }
 
         #region Static Properties

@@ -50,6 +50,9 @@ namespace ManagedBass
             }
         }
 
+        /// <summary>
+        /// Gets the Recording Device Index.
+        /// </summary>
         public int Index { get; }
 
         /// <summary>
