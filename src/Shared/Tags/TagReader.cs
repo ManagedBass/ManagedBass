@@ -1,17 +1,15 @@
 using System;
 using System.Collections.Generic;
-using static System.Runtime.InteropServices.Marshal;
-using static ManagedBass.Bass;
-using static ManagedBass.Extensions;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ManagedBass.Tags
 {
     /// <summary>
     /// Reads tags from a File or a Channel depending on the <see cref="ChannelType"/>.
     /// </summary>
-    public sealed class TagReader
+    public sealed class TagReader : TagProperties<string>
     {
-        #region Properties
         /// <summary>
         /// Provides tags that didn't fit into any Properties.
         /// </summary>
@@ -23,126 +21,15 @@ namespace ManagedBass.Tags
         public List<PictureTag> Pictures { get; } = new List<PictureTag>();
 
         /// <summary>
-        /// Gets the Title.
-        /// </summary>
-        public string Title { get; private set; }
-
-        /// <summary>
-        /// Gets the Artist.
-        /// </summary>
-        public string Artist { get; private set; }
-
-        /// <summary>
-        /// Gets the Album.
-        /// </summary>
-        public string Album { get; private set; }
-
-        /// <summary>
-        /// Gets the Album Artist.
-        /// </summary>
-        public string AlbumArtist { get; private set; }
-
-        /// <summary>
-        /// Gets the Subtitle.
-        /// </summary>
-        public string Subtitle { get; private set; }
-
-        /// <summary>
-        /// Gets the Beats per Minute (BPM).
-        /// </summary>
-        public string BPM { get; private set; }
-        
-        /// <summary>
-        /// Gets the Composer.
-        /// </summary>
-        public string Composer { get; private set; }
-
-        /// <summary>
-        /// Gets the Copyright.
-        /// </summary>
-        public string Copyright { get; private set; }
-        
-        /// <summary>
-        /// Gets the Genre.
-        /// </summary>
-        public string Genre { get; private set; }
-
-        /// <summary>
-        /// Gets the Grouping.
-        /// </summary>
-        public string Grouping { get; private set; }
-
-        /// <summary>
-        /// Gets the Publisher.
-        /// </summary>
-        public string Publisher { get; private set; }
-        
-        /// <summary>
-        /// Gets the Encoder.
-        /// </summary>
-        public string Encoder { get; private set; }
-
-        /// <summary>
-        /// Gets the Lyricist.
-        /// </summary>
-        public string Lyricist { get; private set; }
-
-        /// <summary>
-        /// Gets the Year.
-        /// </summary>
-        public string Year { get; private set; }
-
-        /// <summary>
-        /// Gets the Conductor.
-        /// </summary>
-        public string Conductor { get; private set; }
-        
-        /// <summary>
-        /// Gets the Track Number.
-        /// </summary>
-        public string Track { get; private set; }
-
-        /// <summary>
-        /// Gets the Producer.
-        /// </summary>
-        public string Producer { get; private set; }
-
-        /// <summary>
-        /// Gets the Comment.
-        /// </summary>
-        public string Comment { get; private set; }
-
-        /// <summary>
-        /// Gets the Mood.
-        /// </summary>
-        public string Mood { get; private set; }
-        
-        /// <summary>
-        /// Gets the Rating.
-        /// </summary>
-        public string Rating { get; private set; }
-
-        /// <summary>
-        /// Gets the ISRC.
-        /// </summary>
-        public string ISRC { get; private set; }
-
-        /// <summary>
-        /// Gets the Remixer.
-        /// </summary>
-        public string Remixer { get; private set; }
-
-        /// <summary>
         /// Gets the Lyrics.
         /// </summary>
-        public string Lyrics { get; private set; }
-        #endregion
-
+        public string Lyrics { get; set; }
+        
         public static TagReader Read(string FileName)
         {
-            Init();
+            Bass.Init();
 
-            var h = CreateStream(FileName, Flags: BassFlags.Prescan);
+            var h = Bass.CreateStream(FileName, Flags: BassFlags.Prescan);
 
             TagReader result = null;
 
@@ -150,17 +37,17 @@ namespace ManagedBass.Tags
             {
                 result = Read(h);
 
-                StreamFree(h);
+                Bass.StreamFree(h);
             }
             else
             {
-                h = MusicLoad(FileName, Flags: BassFlags.Prescan);
+                h = Bass.MusicLoad(FileName, Flags: BassFlags.Prescan);
 
                 if (h != 0)
                 {
                     result = Read(h);
 
-                    MusicFree(h);
+                    Bass.MusicFree(h);
                 }
             }
 
@@ -173,7 +60,7 @@ namespace ManagedBass.Tags
         public static TagReader Read(int Channel)
         {
             var result = new TagReader();
-            var info = ChannelGetInfo(Channel);
+            var info = Bass.ChannelGetInfo(Channel);
             
             switch (info.ChannelType)
             {
@@ -217,14 +104,14 @@ namespace ManagedBass.Tags
                     break;
 
                 case ChannelType.DSD:
-                    result.Title = PtrToStringAnsi(ChannelGetTags(Channel, TagType.DSDTitle));
-                    result.Artist = PtrToStringAnsi(ChannelGetTags(Channel, TagType.DSDArtist));
+                    result.Title = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.DSDTitle));
+                    result.Artist = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.DSDArtist));
                     break;
 
                 case ChannelType.MOD:
-                    result.Title = PtrToStringAnsi(ChannelGetTags(Channel, TagType.MusicName));
-                    result.Artist = PtrToStringAnsi(ChannelGetTags(Channel, TagType.MusicAuth));
-                    result.Comment = PtrToStringAnsi(ChannelGetTags(Channel, TagType.MusicMessage));
+                    result.Title = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.MusicName));
+                    result.Artist = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.MusicAuth));
+                    result.Comment = Marshal.PtrToStringAnsi(Bass.ChannelGetTags(Channel, TagType.MusicMessage));
                     break;
 
                 default:
@@ -240,436 +127,169 @@ namespace ManagedBass.Tags
 
             if (string.IsNullOrWhiteSpace(result.Lyrics))
             {
-                var ptr = ChannelGetTags(Channel, TagType.Lyrics3v2);
+                var ptr = Bass.ChannelGetTags(Channel, TagType.Lyrics3v2);
 
                 if (ptr != IntPtr.Zero)
-                    result.Lyrics = PtrToStringAnsi(ptr);
+                    result.Lyrics = Marshal.PtrToStringAnsi(ptr);
             }
 
             return result;
         }
 
+        IEnumerable<KeyValuePair<string, string>> ReadUsingLookupTable(IEnumerable<string> Tags, TagProperties<IEnumerable<string>> LookupTable, char Separator)
+        {
+            foreach (var tag in Tags)
+            {
+                var arrx = tag.Split(Separator);
+                var key = arrx[0].ToLower();
+                var value = arrx[1];
+
+                if (!SetTagUsingLookupTable(key, value, LookupTable))
+                    yield return new KeyValuePair<string, string>(arrx[0], value);
+            }
+        }
+
+        bool SetTagUsingLookupTable(string Key, string Value, TagProperties<IEnumerable<string>> LookupTable)
+        {
+            if (LookupTable.Title != null && LookupTable.Title.Contains(Key))
+                Title = Value;
+
+            else if (LookupTable.Artist != null && LookupTable.Artist.Contains(Key))
+                Artist = Value;
+
+            else if (LookupTable.Album != null && LookupTable.Album.Contains(Key))
+                Album = Value;
+
+            else if (LookupTable.AlbumArtist != null && LookupTable.AlbumArtist.Contains(Key))
+                AlbumArtist = Value;
+
+            else if (LookupTable.Subtitle != null && LookupTable.Subtitle.Contains(Key))
+                Subtitle = Value;
+
+            else if (LookupTable.BPM != null && LookupTable.BPM.Contains(Key))
+                BPM = Value;
+
+            else if (LookupTable.Composer != null && LookupTable.Composer.Contains(Key))
+                Composer = Value;
+
+            else if (LookupTable.Copyright != null && LookupTable.Copyright.Contains(Key))
+                Copyright = Value;
+
+            else if (LookupTable.Genre != null && LookupTable.Genre.Contains(Key))
+                Genre = Value;
+
+            else if (LookupTable.Grouping != null && LookupTable.Grouping.Contains(Key))
+                Grouping = Value;
+
+            else if (LookupTable.Publisher != null && LookupTable.Publisher.Contains(Key))
+                Publisher = Value;
+
+            else if (LookupTable.Encoder != null && LookupTable.Encoder.Contains(Key))
+                Encoder = Value;
+
+            else if (LookupTable.Lyricist != null && LookupTable.Lyricist.Contains(Key))
+                Lyricist = Value;
+
+            else if (LookupTable.Year != null && LookupTable.Year.Contains(Key))
+                Year = Value;
+
+            else if (LookupTable.Conductor != null && LookupTable.Conductor.Contains(Key))
+                Conductor = Value;
+
+            else if (LookupTable.Track != null && LookupTable.Track.Contains(Key))
+                Track = Value;
+
+            else if (LookupTable.Producer != null && LookupTable.Producer.Contains(Key))
+                Producer = Value;
+
+            else if (LookupTable.Comment != null && LookupTable.Comment.Contains(Key))
+                Comment = Value;
+
+            else if (LookupTable.Mood != null && LookupTable.Mood.Contains(Key))
+                Mood = Value;
+
+            else if (LookupTable.Rating != null && LookupTable.Rating.Contains(Key))
+                Rating = Value;
+
+            else if (LookupTable.ISRC != null && LookupTable.ISRC.Contains(Key))
+                ISRC = Value;
+
+            else if (LookupTable.Remixer != null && LookupTable.Remixer.Contains(Key))
+                Remixer = Value;
+            
+            else return false;
+
+            return true;
+        }
+
+        #region Specific Tag Types
         public bool ReadApe(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.APE);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.APE);
 
             if (ptr == IntPtr.Zero)
                 return false;
 
-            var arr = ExtractMultiStringUtf8(ptr);
-
-            foreach (var item in arr)
-            {
-                var arrx = item.Split('=');
-                var Key = arrx[0];
-                var Value = arrx[1];
-
-                switch (Key.ToLower())
-                {
-                    case "title":
-                        Title = Value;
-                        break;
-
-                    case "artist":
-                        Artist = Value;
-                        break;
-
-                    case "album":
-                        Album = Value;
-                        break;
-
-                    case "album artist":
-                        AlbumArtist = Value;
-                        break;
-                        
-                    case "track":
-                        Track = Value;
-                        break;
-
-                    case "year":
-                        Year = Value;
-                        break;
-
-                    case "genre":
-                        Genre = Value;
-                        break;
-
-                    case "copyright":
-                        Copyright = Value;
-                        break;
-
-                    case "encodedby":
-                        Encoder = Value;
-                        break;
-
-                    case "label":
-                        Publisher = Value;
-                        break;
-
-                    case "composer":
-                        Composer = Value;
-                        break;
-
-                    case "conductor":
-                        Conductor = Value;
-                        break;
-
-                    case "lyricist":
-                        Lyricist = Value;
-                        break;
-
-                    case "remixer":
-                        Remixer = Value;
-                        break;
-
-                    case "producer":
-                        Producer = Value;
-                        break;
-
-                    case "comment":
-                        Comment = Value;
-                        break;
-
-                    case "grouping":
-                        Grouping = Value;
-                        break;
-
-                    case "mood":
-                        Mood = Value;
-                        break;
-
-                    case "rating":
-                        Rating = Value;
-                        break;
-
-                    case "isrc":
-                        ISRC = Value;
-                        break;
-
-                    case "bpm":
-                        BPM = Value;
-                        break;
-
-                    default:
-                        Other.Add(Key, Value);
-                        break;
-                }
-            }
+            foreach (var otherTag in ReadUsingLookupTable(Extensions.ExtractMultiStringUtf8(ptr), LookupTables.Ape, '='))
+                Other.Add(otherTag.Key, otherTag.Value);
 
             return true;
         }
 
         public bool ReadOgg(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.OGG);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.OGG);
 
             if (ptr == IntPtr.Zero)
                 return false;
+            
+            foreach (var otherTag in ReadUsingLookupTable(Extensions.ExtractMultiStringUtf8(ptr), LookupTables.Ogg, '='))
+                Other.Add(otherTag.Key, otherTag.Value);
 
-            var arr = ExtractMultiStringUtf8(ptr);
-
-            foreach (var item in arr)
+            if (string.IsNullOrWhiteSpace(Encoder))
             {
-                var arrx = item.Split('=');
-                var Key = arrx[0];
-                var Value = arrx[1];
-
-                switch (Key.ToLower())
-                {
-                    case "title":
-                        Title = Value;
-                        break;
-
-                    case "artist":
-                        Artist = Value;
-                        break;
-
-                    case "album":
-                        Album = Value;
-                        break;
-
-                    case "albumartist":
-                        AlbumArtist = Value;
-                        break;
-
-                    case "tracknumber":
-                        Track = Value;
-                        break;
-
-                    case "date":
-                        Year = Value;
-                        break;
-
-                    case "genre":
-                        Genre = Value;
-                        break;
-
-                    case "copyright":
-                        Copyright = Value;
-                        break;
-
-                    case "encodedby":
-                        Encoder = Value;
-                        break;
-
-                    case "label":
-                        Publisher = Value;
-                        break;
-
-                    case "composer":
-                        Composer = Value;
-                        break;
-
-                    case "conductor":
-                        Conductor = Value;
-                        break;
-
-                    case "lyricist":
-                        Lyricist = Value;
-                        break;
-
-                    case "remixer":
-                        Remixer = Value;
-                        break;
-
-                    case "producer":
-                        Producer = Value;
-                        break;
-
-                    case "comment":
-                        Comment = Value;
-                        break;
-
-                    case "grouping":
-                        Grouping = Value;
-                        break;
-
-                    case "mood":
-                        Mood = Value;
-                        break;
-
-                    case "rating":
-                        Rating = Value;
-                        break;
-
-                    case "isrc":
-                        ISRC = Value;
-                        break;
-
-                    case "bpm":
-                        BPM = Value;
-                        break;
-
-                    default:
-                        Other.Add(Key, Value);
-                        break;
-                }
+                var encoderPtr = Bass.ChannelGetTags(Channel, TagType.OggEncoder);
+                if (encoderPtr != IntPtr.Zero)
+                    Encoder = Extensions.PtrToStringUtf8(encoderPtr);
             }
-
-            var encoder = PtrToStringUtf8(ChannelGetTags(Channel, TagType.OggEncoder));
-            if (!string.IsNullOrWhiteSpace(encoder))
-                Encoder = encoder;
 
             return true;
         }
 
         public bool ReadRiffInfo(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.RiffInfo);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.RiffInfo);
 
             if (ptr == IntPtr.Zero)
                 return false;
 
-            var arr = ExtractMultiStringAnsi(ptr);
-
-            foreach (var item in arr)
-            {
-                var arrx = item.Split('=');
-                var Key = arrx[0];
-                var Value = arrx[1];
-
-                switch (Key.ToLower())
-                {
-                    case "inam":
-                        Title = Value;
-                        break;
-
-                    case "iart":
-                        Artist = Value;
-                        break;
-
-                    case "iprd":
-                        Album = Value;
-                        break;
-
-                    case "isbj":
-                        AlbumArtist = Value;
-                        break;
-                        
-                    case "iprt":
-                    case "itrk":
-                        Track = Value;
-                        break;
-
-                    case "icrd":
-                        Year = Value;
-                        break;
-
-                    case "ignr":
-                        Genre = Value;
-                        break;
-
-                    case "icop":
-                        Copyright = Value;
-                        break;
-
-                    case "isft":
-                        Encoder = Value;
-                        break;
-
-                    case "icms":
-                        Publisher = Value;
-                        break;
-
-                    case "ieng":
-                        Composer = Value;
-                        break;
-
-                    case "itch":
-                        Conductor = Value;
-                        break;
-
-                    case "iwri":
-                        Lyricist = Value;
-                        break;
-
-                    case "iedt":
-                        Remixer = Value;
-                        break;
-
-                    case "ipro":
-                        Producer = Value;
-                        break;
-
-                    case "icmt":
-                        Comment = Value;
-                        break;
-
-                    case "isrf":
-                        Grouping = Value;
-                        break;
-
-                    case "ikey":
-                        Mood = Value;
-                        break;
-
-                    case "ishp":
-                        Rating = Value;
-                        break;
-
-                    case "isrc":
-                        ISRC = Value;
-                        break;
-
-                    case "ibpm":
-                        BPM = Value;
-                        break;
-
-                    default:
-                        Other.Add(Key, Value);
-                        break;
-                }
-            }
-
+            foreach (var otherTag in ReadUsingLookupTable(Extensions.ExtractMultiStringAnsi(ptr), LookupTables.RiffInfo, '='))
+                Other.Add(otherTag.Key, otherTag.Value);
+            
             return true;
         }
 
         public bool ReadMp4(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.MP4);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.MP4);
 
             if (ptr == IntPtr.Zero)
                 return false;
 
-            var arr = ExtractMultiStringUtf8(ptr);
-
-            foreach (var item in arr)
-            {
-                var arrx = item.Split('=');
-                var Key = arrx[0];
-                var Value = arrx[1];
-
-                switch (Key.ToLower())
-                {
-                    case "©nam":
-                        Title = Value;
-                        break;
-
-                    case "©art":
-                        Artist = Value;
-                        break;
-
-                    case "©alb":
-                        Album = Value;
-                        break;
-
-                    case "aart":
-                        AlbumArtist = Value;
-                        break;
-                        
-                    case "trkn":
-                        Track = Value;
-                        break;
-
-                    case "©day":
-                        Year = Value;
-                        break;
-
-                    case "©gen":
-                        Genre = Value;
-                        break;
-
-                    case "cprt":
-                        Copyright = Value;
-                        break;
-
-                    case "©too":
-                        Encoder = Value;
-                        break;
-                        
-                    case "©wrt":
-                        Composer = Value;
-                        break;
-                        
-                    case "©cmt":
-                        Comment = Value;
-                        break;
-
-                    case "©grp":
-                        Grouping = Value;
-                        break;
-                        
-                    case "rtng":
-                        Rating = Value;
-                        break;
-                        
-                    default:
-                        Other.Add(Key, Value);
-                        break;
-                }
-            }
-
+            foreach (var otherTag in ReadUsingLookupTable(Extensions.ExtractMultiStringUtf8(ptr), LookupTables.Mp4, '='))
+                Other.Add(otherTag.Key, otherTag.Value);
+            
             return true;
         }
 
         public bool ReadID3v1(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.ID3);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.ID3);
 
             if (ptr == IntPtr.Zero)
                 return false;
             
-            var id3v1 = (ID3v1Tag)PtrToStructure(ptr, typeof(ID3v1Tag));
+            var id3v1 = (ID3v1Tag) Marshal.PtrToStructure(ptr, typeof(ID3v1Tag));
 
             Title = id3v1.Title;
             Artist = id3v1.Artist;
@@ -684,146 +304,30 @@ namespace ManagedBass.Tags
 
         public bool ReadID3v2(int Channel)
         {
-#if __HYBRID__
-            return false;
-#else
-            var ptr = ChannelGetTags(Channel, TagType.ID3v2);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.ID3v2);
 
             if (ptr == IntPtr.Zero)
                 return false;
 
-            var id3v2 = new ID3v2Tag(ptr);
+            var id3V2 = new ID3v2Tag(ptr);
 
-            foreach (var frame in id3v2.TextFrames)
-            {
-                switch (frame.Key)
-                {
-                    case "TALB":
-                    case "TAL":
-                        Album = frame.Value;
-                        break;
+            foreach (var frame in id3V2.TextFrames)
+                if (!SetTagUsingLookupTable(frame.Key, frame.Value, LookupTables.Id3v2))
+                    Other.Add(frame.Key, frame.Value);
 
-                    case "TBPM":
-                    case "TBP":
-                        BPM = frame.Value;
-                        break;
-
-                    case "TCOM":
-                    case "TCM":
-                        Composer = frame.Value;
-                        break;
-
-                    case "TCOP":
-                    case "TCR":
-                        Copyright = frame.Value;
-                        break;
-
-                    case "TIT1":
-                    case "TT1":
-                        Grouping = frame.Value;
-                        break;
-
-                    case "TIT2":
-                    case "TT2":
-                        Title = frame.Value;
-                        break;
-
-                    case "TIT3":
-                    case "TT3":
-                        Subtitle = frame.Value;
-                        break;
-
-                    case "TPE1":
-                    case "TP1":
-                        Artist = frame.Value;
-                        break;
-
-                    case "TPE2":
-                    case "TP2":
-                        AlbumArtist = frame.Value;
-                        break;
-
-                    case "TCON":
-                    case "TCO":
-                        Genre = frame.Value;
-                        break;
-
-                    case "TPUB":
-                    case "TPB":
-                        Publisher = frame.Value;
-                        break;
-
-                    case "TENC":
-                    case "TEN":
-                        Encoder = frame.Value;
-                        break;
-
-                    case "TEXT":
-                    case "TXT":
-                        Lyricist = frame.Value;
-                        break;
-
-                    case "TYER":
-                    case "TYE":
-                        Year = frame.Value;
-                        break;
-
-                    case "TPE3":
-                    case "TP3":
-                        Conductor = frame.Value;
-                        break;
-
-                    case "TRK":
-                    case "TRCK":
-                        Track = frame.Value;
-                        break;
-
-                    case "TPE4":
-                    case "TP4":
-                        Remixer = frame.Value;
-                        break;
-
-                    case "TIPL":
-                        Producer = frame.Value;
-                        break;
-
-                    case "COMM":
-                    case "COM":
-                        Comment = frame.Value;
-                        break;
-
-                    case "TMOO":
-                        Mood = frame.Value;
-                        break;
-
-                    case "TSCR":
-                        ISRC = frame.Value;
-                        break;
-
-                    case "POPM":
-                        Rating = frame.Value;
-                        break;
-
-                    default:
-                        Other.Add(frame.Key, frame.Value);
-                        break;
-                }
-            }
-
-            Pictures.AddRange(id3v2.PictureFrames);
+            Pictures.AddRange(id3V2.PictureFrames);
 
             return true;
-#endif
         }
 
         public bool ReadBWF(int Channel)
         {
-            var ptr = ChannelGetTags(Channel, TagType.RiffBext);
+            var ptr = Bass.ChannelGetTags(Channel, TagType.RiffBext);
 
             if (ptr == IntPtr.Zero)
                 return false;
 
-            var tag = (BextTag)PtrToStructure(ptr, typeof(BextTag));
+            var tag = (BextTag) Marshal.PtrToStructure(ptr, typeof(BextTag));
 
             Title = tag.Description;
             Artist = tag.Originator;
@@ -832,5 +336,6 @@ namespace ManagedBass.Tags
 
             return true;
         }
+        #endregion
     }
 }

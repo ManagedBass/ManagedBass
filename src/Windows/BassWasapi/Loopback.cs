@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ManagedBass.Wasapi
 {
@@ -28,14 +29,12 @@ namespace ManagedBass.Wasapi
             }
 
             Device.Init();
-            Device.Callback += B => DataAvailable?.Invoke(B);
+            Device.Callback += Processing;
 
             var info = Device.Info;
 
-            Format = new PCMFormat(info.MixFrequency, info.MixChannels, Resolution.Float);
+            AudioFormat = WaveFormat.FromParams(info.MixFrequency, info.MixChannels, Resolution.Float);
         }
-
-        public PCMFormat Format { get; }
 
         /// <summary>
         /// Returns the soundcard output level.
@@ -81,11 +80,29 @@ namespace ManagedBass.Wasapi
         {
             _device.Dispose();
             _silencePlayer?.Dispose();
+
+            _buffer = null;
         }
 
+        #region Callback
         /// <summary>
         /// Provides the captured data.
         /// </summary>
-        public event Action<BufferProvider> DataAvailable;
+        public event EventHandler<DataAvailableEventArgs> DataAvailable;
+
+        byte[] _buffer;
+
+        void Processing(IntPtr Buffer, int Length)
+        {
+            if (_buffer == null || _buffer.Length < Length)
+                _buffer = new byte[Length];
+
+            Marshal.Copy(Buffer, _buffer, 0, Length);
+
+            DataAvailable?.Invoke(this, new DataAvailableEventArgs(_buffer, Length));
+        }
+        #endregion
+
+        public WaveFormat AudioFormat { get; }
     }
 }

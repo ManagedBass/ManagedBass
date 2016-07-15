@@ -321,11 +321,8 @@ namespace ManagedBass.Tags
                     return Encoding.Unicode;
                 case TextEncodings.Utf16Be:
                     return Encoding.GetEncoding("UTF-16BE");
-                case TextEncodings.Utf8:
-                    return Encoding.UTF8;
-
                 default:
-                    return Encoding.GetEncoding("us-ascii");
+                    return Encoding.UTF8;
             }
         }
 

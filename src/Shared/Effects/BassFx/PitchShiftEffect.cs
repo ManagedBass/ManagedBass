@@ -9,20 +9,6 @@ namespace ManagedBass.Fx
     public sealed class PitchShiftEffect : Effect<PitchShiftParameters>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="PitchShiftEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public PitchShiftEffect(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="PitchShiftEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public PitchShiftEffect(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
-        /// <summary>
         /// A factor value which is between 0.5 (one octave down) and 2 (one octave up) (1 won't change the pitch, default).
         /// </summary>
         public double PitchShift

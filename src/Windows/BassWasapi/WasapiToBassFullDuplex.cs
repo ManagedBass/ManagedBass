@@ -3,8 +3,9 @@
     /// <summary>
     /// Provides audio from <see cref="WasapiRecordingDevice"/> or <see cref="WasapiLoopbackDevice"/> in a Bass Channel.
     /// </summary>
-    public sealed class WasapiToBassFullDuplex : Channel
+    public sealed class WasapiToBassFullDuplex
     {
+        public int Handle { get; }
         readonly WasapiDevice _wasapiDevice;
 
         public WasapiToBassFullDuplex(WasapiRecordingDevice Device, bool Decode = false)
@@ -21,40 +22,31 @@
 
             Handle = Bass.CreateStream(info.MixFrequency, info.MixChannels, Decode ? BassFlags.Decode : 0, StreamProcedureType.Push);
 
-            WasapiDevice.Callback += s => Bass.StreamPutData(Handle, s.Pointer, s.Length);
+            WasapiDevice.Callback += (B, L) => Bass.StreamPutData(Handle, B, L);
         }
 
         /// <summary>
         /// Starts the Channel Playback.
         /// </summary>
-        public override bool Play(bool Restart = false)
+        public bool Play()
         {
             _wasapiDevice.Start();
 
-            return base.Play(Restart);
+            return Bass.ChannelPlay(Handle);
         }
 
-        public override bool Pause()
+        public bool Stop()
         {
-            var result = base.Pause();
+            var result = Bass.ChannelStop(Handle);
 
             _wasapiDevice.Stop();
 
             return result;
         }
 
-        public override bool Stop()
+        public void Dispose()
         {
-            var result = base.Stop();
-
-            _wasapiDevice.Stop();
-
-            return result;
-        }
-
-        public override void Dispose()
-        {
-            base.Dispose();
+            Bass.StreamFree(Handle);
 
             _wasapiDevice.Dispose();
         }

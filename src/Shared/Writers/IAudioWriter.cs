@@ -27,10 +27,5 @@ namespace ManagedBass
         /// <param name="Data">float[] to write from.</param>
         /// <param name="Length">No of bytes to write, i.e. (No of floats) * 4.</param>
         bool Write(float[] Data, int Length);
-        
-        /// <summary>
-        /// Gets the Input Format.
-        /// </summary>
-        PCMFormat InputFormat { get; }
     }
 }

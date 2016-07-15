@@ -50,7 +50,7 @@ namespace ManagedBass
 
         public Resolution Resolution { get; private set; }
         
-        protected DSP(int Channel, int Priority)
+        public void ApplyOn(int Channel, int Priority = 0)
         {
             this.Channel = Channel;
             
@@ -67,13 +67,13 @@ namespace ManagedBass
             else throw new InvalidOperationException("DSP Assignment Failed");
         }
 
-        protected DSP(MediaPlayer player, int Priority)
+        public void ApplyOn(MediaPlayer Player, int Priority = 0)
         {
             _priority = Priority;
 
-            Reassign(player.Handle);
+            Reassign(Player.Handle);
 
-            player.MediaLoaded += Reassign;
+            Player.MediaLoaded += Reassign;
         }
 
         void Reassign(int h)
@@ -92,10 +92,10 @@ namespace ManagedBass
         void OnDsp(int handle, int channel, IntPtr Buffer, int Length, IntPtr User)
         {
             if (IsAssigned && !Bypass)
-                Callback(new BufferProvider(Buffer, Length));
+                Callback(Buffer, Length);
         }
 
-        protected abstract void Callback(BufferProvider Buffer);
+        protected abstract void Callback(IntPtr Buffer, int Length);
 
         public void Dispose()
         {

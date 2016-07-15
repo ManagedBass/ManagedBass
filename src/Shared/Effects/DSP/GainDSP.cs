@@ -1,4 +1,6 @@
-﻿namespace ManagedBass
+﻿using System;
+
+namespace ManagedBass
 {
     /// <summary>
     /// Gain DSP.
@@ -6,10 +8,6 @@
     /// </summary>
     public class GainDSP : DSP
     {
-        public GainDSP(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        public GainDSP(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
         float _gain = 1;
         public double Gain
         {
@@ -22,14 +20,14 @@
             }
         }
 
-        protected override unsafe void Callback(BufferProvider Buffer)
+        protected override unsafe void Callback(IntPtr Buffer, int Length)
         {
-            if (_gain == 0)
+            if (_gain == 1)
                 return;
 
-            var ptr = (float*)Buffer.Pointer;
+            var ptr = (float*)Buffer;
 
-            for (var i = Buffer.Length / 4; i > 0; --i, ++ptr)
+            for (var i = Length / 4; i > 0; --i, ++ptr)
                 *ptr *= _gain;
         }
     }

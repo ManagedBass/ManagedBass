@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using System.Text;
+using static System.Text.Encoding;
 
 namespace ManagedBass
 {
@@ -14,12 +14,7 @@ namespace ManagedBass
         BinaryWriter _writer;
         readonly long _dataSizePos, _factSampleCountPos;
         readonly object _locker = new object();
-
-        /// <summary>
-        /// Format of Input data.
-        /// </summary>
-        public PCMFormat InputFormat { get; }
-
+        
         /// <summary>
         /// Number of bytes of audio
         /// </summary>
@@ -29,14 +24,17 @@ namespace ManagedBass
         #endregion
 
         #region Factory
-        WaveFileWriter(Stream outStream, WaveFormat format)
+        /// <summary>
+        /// Creates a <see cref="WaveFileWriter"/> that writes to a <see cref="Stream"/>.
+        /// </summary>
+        public WaveFileWriter(Stream outStream, WaveFormat format)
         {
             _ofstream = outStream;
-            _writer = new BinaryWriter(outStream, Encoding.GetEncoding("us-ascii"));
+            _writer = new BinaryWriter(outStream, UTF8);
 
-            _writer.Write("RIFF");
+            _writer.Write(UTF8.GetBytes("RIFF"));
             _writer.Write(0); // placeholder
-            _writer.Write("WAVEfmt ");
+            _writer.Write(UTF8.GetBytes("WAVEfmt "));
             _waveFormat = format;
 
             _writer.Write(18 + format.ExtraSize); // wave format Length
@@ -45,36 +43,19 @@ namespace ManagedBass
             // CreateFactChunk
             if (format.Encoding != WaveFormatTag.Pcm)
             {
-                _writer.Write("fact");
+                _writer.Write(UTF8.GetBytes("fact"));
                 _writer.Write(4);
                 _factSampleCountPos = outStream.Position;
                 _writer.Write(0); // number of samples
             }
 
             // WriteDataChunkHeader
-            _writer.Write("data");
+            _writer.Write(UTF8.GetBytes("data"));
             _dataSizePos = outStream.Position;
             _writer.Write(0); // placeholder
 
             Length = 0;
         }
-        
-        /// <summary>
-        /// Creates a <see cref="WaveFileWriter"/> that writes to a <see cref="Stream"/>.
-        /// </summary>
-        public WaveFileWriter(Stream OutStream, PCMFormat InputFormat)
-            : this(OutStream, InputFormat.ToWaveFormat())
-        {
-            this.InputFormat = InputFormat;
-        }
-
-#if !__HYBRID__
-        /// <summary>
-        /// Creates a <see cref="WaveFileWriter"/> that writes to a File.
-        /// </summary>
-        public WaveFileWriter(string FilePath, PCMFormat InputFormat)
-            : this(new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read), InputFormat) { }
-#endif
         #endregion
 
         #region Write
@@ -141,16 +122,7 @@ namespace ManagedBass
             catch { return false; }
         }
         #endregion
-
-        /// <summary>
-        /// Ensures data is written to disk
-        /// </summary>
-        public void Flush()
-        {
-            lock (_locker)
-                _writer.Flush();
-        }
-
+        
         #region IDisposable Members
         /// <summary>
         /// Closes this WaveFile

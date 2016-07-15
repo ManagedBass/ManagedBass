@@ -5,20 +5,6 @@ namespace ManagedBass.Fx
     /// </summary>
     public sealed class DistortionEffect : Effect<DistortionParameters>
     {
-        /// <summary>
-        /// Creates a new instance of <see cref="DistortionEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public DistortionEffect(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="DistortionEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public DistortionEffect(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
         #region Presets
         /// <summary>
         /// Set up a Preset.
@@ -31,7 +17,7 @@ namespace ManagedBass.Fx
             Parameters.fFeedback = 0;
             Parameters.fVolume = 1;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -45,7 +31,7 @@ namespace ManagedBass.Fx
             Parameters.fFeedback = 0.1f;
             Parameters.fVolume = 1;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -59,7 +45,7 @@ namespace ManagedBass.Fx
             Parameters.fFeedback = 0.1f;
             Parameters.fVolume = 1;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -73,7 +59,7 @@ namespace ManagedBass.Fx
             Parameters.fFeedback = -0.18f;
             Parameters.fVolume = 0.25f;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
         #endregion
 

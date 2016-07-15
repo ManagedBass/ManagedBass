@@ -3,20 +3,6 @@ namespace ManagedBass.DirectX8
     public sealed class DXChorusEffect : Effect<DXChorusParameters>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="DXChorusEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public DXChorusEffect(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="DXChorusEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public DXChorusEffect(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
-        /// <summary>
         /// Waveform of the LFO. Default = <see cref="DXWaveform.Sine"/>.
         /// </summary>
         public DXWaveform Waveform

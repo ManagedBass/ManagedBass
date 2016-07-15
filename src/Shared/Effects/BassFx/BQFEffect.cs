@@ -9,22 +9,6 @@ namespace ManagedBass.Fx
     public class BQFEffect : Effect<BQFParameters>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="BQFEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="BQFType">BQF Effect Type.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public BQFEffect(int Channel, BQFType BQFType, int Priority = 0) : base(Channel, Priority) { Parameters.lFilter = BQFType; }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="BQFEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="BQFType">BQF Effect Type.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public BQFEffect(MediaPlayer Player, BQFType BQFType, int Priority = 0) : base(Player, Priority) { Parameters.lFilter = BQFType; }
-
-        /// <summary>
         /// Gain in dB (-15...0...+15). Default 0dB (used only for PEAKINGEQ and Shelving filters).
         /// </summary>
         public double Gain

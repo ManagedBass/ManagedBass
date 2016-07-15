@@ -12,20 +12,6 @@ namespace ManagedBass.Fx
     public sealed class CompressorEffect : Effect<CompressorParameters>
     {
         /// <summary>
-        /// Creates a new instance of <see cref="CompressorEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public CompressorEffect(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="CompressorEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public CompressorEffect(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
-        /// <summary>
         /// Time in ms before compression reaches its full value, in the range from 0.01 to 500. Default = 20.
         /// </summary>
         public double Attack

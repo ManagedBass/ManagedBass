@@ -1,13 +1,11 @@
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
 
 namespace ManagedBass
 {
     /// <summary>
     /// Represents a Wave file format (WAVEFORMATEX)
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 2)]
     public class WaveFormat
     {
         /// <summary>
@@ -47,18 +45,34 @@ namespace ManagedBass
         /// <param name="Channels">number of channels</param>
         public static WaveFormat CreateIeeeFloat(int SampleRate, int Channels)
         {
-            return new WaveFormat
+            return new WaveFormat(SampleRate, 32, Channels)
             {
-                Encoding = WaveFormatTag.IeeeFloat,
-                Channels = Channels,
-                BitsPerSample = 32,
-                SampleRate = SampleRate,
-                BlockAlign = 4 * Channels,
-                AverageBytesPerSecond = SampleRate * 4 * Channels,
-                ExtraSize = 0
+                Encoding = WaveFormatTag.IeeeFloat
             };
         }
-        
+
+        internal static WaveFormat FromParams(int Frequency, int Channels, Resolution Resolution)
+        {
+            switch (Resolution)
+            {
+                case Resolution.Byte:
+                    return new WaveFormat(Frequency, 8, Channels);
+                    
+                case Resolution.Float:
+                    return CreateIeeeFloat(Frequency, Channels);
+
+                default:
+                    return new WaveFormat(Frequency, Channels);
+            }
+        }
+
+        public static WaveFormat FromChannel(int Channel)
+        {
+            var info = Bass.ChannelGetInfo(Channel);
+
+            return FromParams(info.Frequency, info.Channels, info.Resolution);
+        }
+
         /// <summary>
         /// Gets or Sets the encoding Type used
         /// </summary>
@@ -80,33 +94,33 @@ namespace ManagedBass
         }
 
         /// <summary>
-        /// Gets the number of channels (1=mono,2=stereo etc)
+        /// Gets or Sets the number of channels (1=mono,2=stereo etc)
         /// </summary>
-        public int Channels { get; protected set; }
+        public int Channels { get; set; }
 
         /// <summary>
-        /// Gets the sample rate (samples per second)
+        /// Gets or Sets the sample rate (samples per second)
         /// </summary>
-        public int SampleRate { get; protected set; }
+        public int SampleRate { get; set; }
 
         /// <summary>
-        /// Gets the average number of bytes used per second
+        /// Gets or Sets the average number of bytes used per second
         /// </summary>
-        public int AverageBytesPerSecond { get; protected set; }
+        public int AverageBytesPerSecond { get; set; }
 
         /// <summary>
-        /// Gets the block alignment
+        /// Gets or Sets the block alignment
         /// </summary>
-        public int BlockAlign { get; protected set; }
+        public int BlockAlign { get; set; }
 
         /// <summary>
-        /// Gets the number of bits per sample (usually 16 or 32, sometimes 24 or 8)
+        /// Gets or Sets the number of bits per sample (usually 16 or 32, sometimes 24 or 8)
         /// Can be 0 for some codecs
         /// </summary>
-        public int BitsPerSample { get; protected set; }
+        public int BitsPerSample { get; set; }
 
         /// <summary>
-        /// Gets the number of extra bytes used by this waveformat.
+        /// Gets or Sets the number of extra bytes used by this waveformat.
         /// Often 0, except for compressed formats which store extra data after the WAVEFORMATEX header
         /// </summary>
         public int ExtraSize { get; set; }

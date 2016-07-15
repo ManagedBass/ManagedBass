@@ -19,20 +19,6 @@
     /// </remarks>
     public sealed class ChorusEffect : Effect<ChorusParameters>
     {
-        /// <summary>
-        /// Creates a new instance of <see cref="ChorusEffect"/>.
-        /// </summary>
-        /// <param name="Channel">The <paramref name="Channel"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public ChorusEffect(int Channel, int Priority = 0) : base(Channel, Priority) { }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="ChorusEffect"/> supporting <see cref="MediaPlayer"/>'s persistence.
-        /// </summary>
-        /// <param name="Player">The <see cref="MediaPlayer"/> to apply the effect on.</param>
-        /// <param name="Priority">Priority of the Effect... default = 0.</param>
-        public ChorusEffect(MediaPlayer Player, int Priority = 0) : base(Player, Priority) { }
-
         #region Presets
         /// <summary>
         /// Set up a Preset.
@@ -46,7 +32,7 @@
             Parameters.fMaxSweep = 5;
             Parameters.fRate = 1;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -61,7 +47,7 @@
             Parameters.fMaxSweep = 200;
             Parameters.fRate = 50;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -76,7 +62,7 @@
             Parameters.fMaxSweep = 100;
             Parameters.fRate = 25;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -91,7 +77,7 @@
             Parameters.fMaxSweep = 50;
             Parameters.fRate = 200;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -106,7 +92,7 @@
             Parameters.fMaxSweep = 400;
             Parameters.fRate = 200;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -121,7 +107,7 @@
             Parameters.fMaxSweep = 400;
             Parameters.fRate = 400;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -136,7 +122,7 @@
             Parameters.fMaxSweep = 2;
             Parameters.fRate = 1;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
 
         /// <summary>
@@ -151,7 +137,7 @@
             Parameters.fMaxSweep = 10;
             Parameters.fRate = 5;
 
-            OnPropertyChanged("");
+            OnPreset();
         }
         #endregion
 
