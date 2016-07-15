@@ -80,6 +80,8 @@ namespace ManagedBass.Wasapi
         {
             _device.Dispose();
             _silencePlayer?.Dispose();
+
+            _buffer = null;
         }
 
         #region Callback

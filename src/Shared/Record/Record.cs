@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 namespace ManagedBass
 {
     /// <summary>
-    /// Capture audio from Microphone. The <see cref="Handle"/> can be used with BASS functions.
+    /// Capture audio from Microphone.
     /// </summary>
     public sealed class Record : IAudioRecorder
     {
-        public int Handle { get; }
-              
+        readonly int _handle;
+
         /// <summary>
         /// Creates a new instance of <see cref="Record"/> with the Default Format and Device.
         /// </summary>
@@ -19,43 +19,63 @@ namespace ManagedBass
         /// Creates a new instance of <see cref="Record"/> with the Default Format.
         /// </summary>
         /// <param name="Device">The <see cref="RecordDevice"/> to use.</param>
-        public Record(RecordDevice Device) : this(Device, 44100, 2, BassFlags.Default) { }
-        
+        public Record(RecordDevice Device) : this(Device, 44100, 2) { }
+
         /// <summary>
         /// Creates a new instance of <see cref="Record"/>.
         /// </summary>
-        public Record(RecordDevice Device, int Frequency, int Channels, BassFlags Flags)
+        public Record(RecordDevice Device, int Frequency, int Channels, Resolution Resolution = Resolution.Short)
         {
+            Bass.Init(0);
             Device.Init();
             var deviceIndex = Device.Index;
 
             Bass.CurrentRecordingDevice = deviceIndex;
-            
-            Handle = Bass.RecordStart(Frequency, Channels, BassFlags.RecordPause | Flags, Processing);
 
-            AudioFormat = WaveFormat.FromChannel(Handle);
+            var flags = BassFlags.Default;
+
+            switch (Resolution)
+            {
+                case Resolution.Byte:
+                    flags |= BassFlags.Byte;
+                    break;
+
+                case Resolution.Float:
+                    flags |= BassFlags.Float;
+                    break;
+            }
+
+            _handle = Bass.RecordStart(Frequency, Channels, BassFlags.RecordPause | flags, Processing);
+
+            AudioFormat = WaveFormat.FromChannel(_handle);
         }
 
         /// <summary>
         /// Gets if Capturing is in progress.
         /// </summary>
-        public bool IsRecording => Bass.ChannelIsActive(Handle) == PlaybackState.Playing;
+        public bool IsRecording => Bass.ChannelIsActive(_handle) == PlaybackState.Playing;
 
         /// <summary>
         /// Start Audio Capture.
         /// </summary>
         /// <returns><see langword="true"/> on success, else <see langword="false"/>.</returns>
-        public bool Start() => Bass.ChannelPlay(Handle);
+        public bool Start() => Bass.ChannelPlay(_handle);
 
         /// <summary>
         /// Stop Audio Capture.
         /// </summary>
         /// <returns><see langword="true"/> on success, else <see langword="false"/>.</returns>
-        public bool Stop() => Bass.ChannelPause(Handle);
+        public bool Stop() => Bass.ChannelPause(_handle);
 
         public WaveFormat AudioFormat { get; }
 
-        public void Dispose() => Bass.StreamFree(Handle);
+        public void Dispose()
+        {
+            Bass.ChannelStop(_handle);
+            Bass.StreamFree(_handle);
+
+            _buffer = null;
+        }
 
         #region Callback
         /// <summary>

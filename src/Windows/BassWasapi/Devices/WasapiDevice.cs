@@ -9,43 +9,7 @@ namespace ManagedBass.Wasapi
     public abstract class WasapiDevice : IDisposable
     {
         protected static readonly Dictionary<int, WasapiDevice> Singleton = new Dictionary<int, WasapiDevice>();
-
-        #region Notify
-        static readonly WasapiNotifyProcedure Notifyproc = OnNotify;
-
-        static void OnNotify(WasapiNotificationType Notify, int Device, IntPtr User)
-        {
-            Singleton[Device]._StateChanged?.Invoke(Notify);
-        }
-
-        bool _notifyRegistered;
-        event Action<WasapiNotificationType> _StateChanged;
-
-        public event Action<WasapiNotificationType> StateChanged
-        {
-            add
-            {
-                if (!_notifyRegistered)
-                {
-                    Ensure();
-                    _notifyRegistered = BassWasapi.SetNotify(Notifyproc);
-                }
-
-                _StateChanged += value;
-            }
-            remove
-            {
-                _StateChanged -= value;
-
-                if (_StateChanged != null || !_notifyRegistered)
-                    return;
-
-                Ensure();
-                _notifyRegistered = !BassWasapi.SetNotify(null);
-            }
-        }
-        #endregion
-
+        
         internal WasapiDevice(int Index)
         {
             _proc = OnProc;
@@ -61,7 +25,7 @@ namespace ManagedBass.Wasapi
         #region Callback
         readonly WasapiProcedure _proc;
 
-        public virtual int OnProc(IntPtr Buffer, int Length, IntPtr User)
+        protected virtual int OnProc(IntPtr Buffer, int Length, IntPtr User)
         {
             Callback?.Invoke(Buffer, Length);
             return Length;
@@ -75,27 +39,10 @@ namespace ManagedBass.Wasapi
         public void Dispose()
         {
             Ensure();
+            Callback = null;
             BassWasapi.Free();
         }
-
-        #region Read
-        public int Read(IntPtr Buffer, int Length) => BassWasapi.GetData(Buffer, Length);
-
-        public int Read(float[] Buffer, int Length) => BassWasapi.GetData(Buffer, Length);
-        #endregion
-
-        #region Write
-        public void Write(IntPtr Buffer, int Length) => BassWasapi.PutData(Buffer, Length);
-
-        public void Write(float[] Buffer, int Length) => BassWasapi.PutData(Buffer, Length);
-        #endregion
-
-        public bool Lock(bool Lock = true)
-        {
-            Ensure();
-            return BassWasapi.Lock(Lock);
-        }
-
+        
         public bool Mute
         {
             get

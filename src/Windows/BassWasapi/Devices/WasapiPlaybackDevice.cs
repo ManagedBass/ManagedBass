@@ -55,7 +55,7 @@ namespace ManagedBass.Wasapi
 
         readonly Dictionary<Action<IntPtr, int>, Tuple<StreamProcedure, int>> _dict = new Dictionary<Action<IntPtr, int>, Tuple<StreamProcedure, int>>();
 
-        public override int OnProc(IntPtr Buffer, int Length, IntPtr User)
+        protected override int OnProc(IntPtr Buffer, int Length, IntPtr User)
         {
             return Bass.ChannelGetData(_mixerStream, Buffer, Length);
         }
