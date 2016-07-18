@@ -28,24 +28,10 @@ namespace ManagedBass
         {
             Bass.Init(0);
             Device.Init();
-            var deviceIndex = Device.Index;
-
-            Bass.CurrentRecordingDevice = deviceIndex;
-
-            var flags = BassFlags.Default;
-
-            switch (Resolution)
-            {
-                case Resolution.Byte:
-                    flags |= BassFlags.Byte;
-                    break;
-
-                case Resolution.Float:
-                    flags |= BassFlags.Float;
-                    break;
-            }
-
-            _handle = Bass.RecordStart(Frequency, Channels, BassFlags.RecordPause | flags, Processing);
+            
+            Bass.CurrentRecordingDevice = Device.Index;
+            
+            _handle = Bass.RecordStart(Frequency, Channels, BassFlags.RecordPause | Resolution.ToBassFlag(), Processing);
 
             AudioFormat = WaveFormat.FromChannel(_handle);
         }

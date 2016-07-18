@@ -14,22 +14,7 @@ Download the versions you need.
 
 See the [Sample Repositories](https://github.com/ManagedBass) for examples.
 
-Features
------------------------------------------
-* Free, Open-Source, No-Registration required.
-
-* Simplified Member Names.  
-  e.g. Instead of `BassWma.BASS_WMA_EncodeOpenFile()` you could use `BassWma.EncodeOpenFile();`
-
-* **NEW**: Introducing Separate classes for Plugins.
-
-* ManagedBass also provides completely managed types for your use along with the wrapper types.  
-  Namespaces are grouped by AddOns or Features.
-
-* Now, available in different flavors for Windows, Mac, Linux, Xamarin.Android and Xamarin.iOS.  
-  **NEW**: A Portable Class Library which can target Windows Store is also included.
-
-Bass and other Add-Ons are trademarks of their respective owners: **Un4Seen Bass - (c) Ian Luck**
+> ManagedBass depends on [ManagedBass.PInvoke](https://github.com/ManagedBass/ManagedBass.PInvoke) for PInvoke declarations which is quite stable package.
 
 Getting Started
 -----------------------------------------

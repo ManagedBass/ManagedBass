@@ -11,19 +11,12 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>
 Free OpenSource .Net Wrapper around un4seen Bass audio library and most of its addons.
-This project is currently in development.
-You can contribute to it on GitHub.
 
-Samples available on GitHub.
-
-The Library is compiled for AnyCPU.
-But the Bass dlls need to be checked for x64 or x86.
-Put the Bass dlls in the same folder as ManagedBass.dll.
+Bass and its Add-Ons can be downloaded at http://un4seen.com/  
+ManagedBass is targeted for **Any CPU**, but bass Libraries(.dll/.so/.dylib/.a) are separate for x86, x64, ARM, etc.  
+Download the versions you need.
 
 ManagedBass does not need to be licensed for Commercial use, but bass and many of the addons have to be.
-Check the below website for more details
-Bass dlls are available at http://www.un4seen.com/bass
-
 Bass and its Addons are trademarks of their respective owners.
         </description>
         <summary>Free OpenSource .Net Wrapper for Un4seen Bass.</summary>
@@ -32,7 +25,7 @@ Bass and its Addons are trademarks of their respective owners.
         <copyright>(c) 2016 Mathew Sachin</copyright>
         <tags>C# Bass Wasapi Asio Recording Audio Music</tags>
         <dependencies>
-            <dependency id="ManagedBass.PInvoke" version="0.1.0" />
+            <dependency id="ManagedBass.PInvoke" version="0.2.1" />
         </dependencies>
     </metadata>
     <files>
