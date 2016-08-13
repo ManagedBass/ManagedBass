@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DirectX8\DXDistortionEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DirectX8\DXEchoEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DirectX8\DXFlangerEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Effects\DirectX8\DXParamEQ.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DirectX8\DXParamEQEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DirectX8\DXReverbEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DSP\DSP Base.cs" />

@@ -1,8 +1,11 @@
+using System;
+
 namespace ManagedBass.DirectX8
 {
     /// <summary>
     /// DX8 ParamEQ Effect.
     /// </summary>
+    [Obsolete("Use DXParamEQ instead.")]
     public sealed class DXParamEQEffect : Effect<DXParamEQParameters>
     {
         /// <summary>
@@ -13,7 +16,7 @@ namespace ManagedBass.DirectX8
             get { return Parameters.fCenter; }
             set
             {
-                Parameters.fCenter = (float)value;
+                Parameters.fCenter = (float) value;
 
                 OnPropertyChanged();
             }
@@ -27,7 +30,7 @@ namespace ManagedBass.DirectX8
             get { return Parameters.fBandwidth; }
             set
             {
-                Parameters.fBandwidth = (float)value;
+                Parameters.fBandwidth = (float) value;
 
                 OnPropertyChanged();
             }
@@ -41,7 +44,7 @@ namespace ManagedBass.DirectX8
             get { return Parameters.fGain; }
             set
             {
-                Parameters.fGain = (float)value;
+                Parameters.fGain = (float) value;
 
                 OnPropertyChanged();
             }

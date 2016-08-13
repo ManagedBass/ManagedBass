@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass.Fx
@@ -5,10 +6,10 @@ namespace ManagedBass.Fx
     /// <summary>
     /// BassFx Peaking Equalizer Effect.
     /// </summary>
-    public sealed class PeakEQ
+    public sealed class PeakEQ : IDisposable
     {
         readonly PeakEQParameters _parameters;
-        readonly int _handle;
+        readonly int _channel, _handle;
         GCHandle _gch;
 
         /// <summary>
@@ -16,6 +17,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public PeakEQ(int Channel, double Q = 0, double Bandwith = 2.5)
         {
+            _channel = Channel;
             _handle = Bass.ChannelSetFX(Channel, EffectType.PeakEQ, 0);
 
             _parameters = new PeakEQParameters
@@ -48,6 +50,8 @@ namespace ManagedBass.Fx
         /// </summary>
         public void UpdateBand(int Band, double Gain)
         {
+            var cur = _parameters.lBand;
+
             _parameters.lBand = Band;
 
             Bass.FXGetParameters(_handle, _gch.AddrOfPinnedObject());
@@ -55,6 +59,17 @@ namespace ManagedBass.Fx
             _parameters.fGain = (float)Gain;
 
             Bass.FXSetParameters(_handle, _gch.AddrOfPinnedObject());
+
+            _parameters.lBand = cur;
+        }
+
+        /// <summary>
+        /// Frees all resources used by this instance.
+        /// </summary>
+        public void Dispose()
+        {
+            _gch.Free();
+            Bass.ChannelRemoveFX(_channel, _handle);
         }
     }
 }
