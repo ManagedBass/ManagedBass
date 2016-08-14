@@ -19,6 +19,8 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public DXParamEQ(int Channel, double Bandwidth = 18)
         {
+            _channel = Channel;
+
             _parameters = new DXParamEQParameters
             {
                 fBandwidth = (float)Bandwidth
@@ -30,7 +32,9 @@ namespace ManagedBass.DirectX8
         /// <summary>
         /// Adds a Band.
         /// </summary>
-        public int AddBand(double CenterFrequency)
+        /// <param name="CenterFrequency">The Band's center frequency in hertz, in the range from 80 to 16000. This value cannot exceed one-third of the frequency of the channel. Default = 100 Hz.</param>
+        /// <returns>The Band Index to be used with <see cref="UpdateBand"/>.</returns>
+        public int AddBand(double CenterFrequency = 100)
         {
             _parameters.fCenter = (float)CenterFrequency;
             _parameters.fGain = 0;
@@ -46,6 +50,8 @@ namespace ManagedBass.DirectX8
         /// <summary>
         /// Updates a Band.
         /// </summary>
+        /// <param name="Band">The Index of the Band to Update (as returned by <see cref="AddBand"/>).</param>
+        /// <param name="Gain">The new Gain value for the Band (-15 ... 0 ... 15).</param>
         public void UpdateBand(int Band, double Gain)
         {
             Bass.FXGetParameters(_handles[Band], _gch.AddrOfPinnedObject());

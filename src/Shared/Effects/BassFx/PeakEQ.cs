@@ -33,7 +33,9 @@ namespace ManagedBass.Fx
         /// <summary>
         /// Adds a Band.
         /// </summary>
-        public int AddBand(double CenterFrequency)
+        /// <param name="CenterFrequency">The Band's center frequency in Hz. Default = 1000. Max = 1/2 of SampleRate.</param>
+        /// <returns>The Band Index to be used with <see cref="UpdateBand"/>.</returns>
+        public int AddBand(double CenterFrequency = 1000)
         {
             ++_parameters.lBand;
 
@@ -48,6 +50,8 @@ namespace ManagedBass.Fx
         /// <summary>
         /// Updates a Band.
         /// </summary>
+        /// <param name="Band">The Index of the Band to Update (as returned by <see cref="AddBand"/>).</param>
+        /// <param name="Gain">The new Gain value for the Band (-15 ... 0 ... 15).</param>
         public void UpdateBand(int Band, double Gain)
         {
             var cur = _parameters.lBand;
