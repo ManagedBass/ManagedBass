@@ -69,7 +69,10 @@ namespace ManagedBass
                 Bass.Init(currentDev);
         }
 
-        internal MediaPlayer() { _syncContext = SynchronizationContext.Current; }
+        /// <summary>
+        /// Creates a new instance of <see cref="MediaPlayer"/>.
+        /// </summary>
+        public MediaPlayer() { _syncContext = SynchronizationContext.Current; }
 
         #region Events
         /// <summary>

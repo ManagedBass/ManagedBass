@@ -3,7 +3,7 @@
     /// <summary>
     /// A Reusable Channel which can Load files like a Player including Tempo, Pitch and Reverse options using BassFx.
     /// </summary>
-    public sealed class MediaPlayerFX : MediaPlayer
+    public class MediaPlayerFX : MediaPlayer
     {
         int _tempoHandle;
 
