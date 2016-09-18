@@ -29,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DSP\GainDSP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\DSP\PanDSP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Effect Base.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)INPC.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Playback\MediaPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Playback\MediaPlayerFX.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Playback\PlaybackDevice.cs" />

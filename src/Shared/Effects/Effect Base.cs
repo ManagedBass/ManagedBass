@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Runtime.CompilerServices;
-using System.ComponentModel;
 
 namespace ManagedBass
 {
@@ -9,7 +7,7 @@ namespace ManagedBass
     /// Wraps a Bass Effect such that you don't need to touch the Bass functions to Handle it.
     /// </summary>
     /// <typeparam name="T">Type of the <see cref="IEffectParameter"/></typeparam>
-    public abstract class Effect<T> : IDisposable, INotifyPropertyChanged where T : class, IEffectParameter, new()
+    public abstract class Effect<T> : INPC, IDisposable where T : class, IEffectParameter, new()
     {
         int _channel, _effectHandle, _hfsync;
         GCHandle _gch;
@@ -137,27 +135,10 @@ namespace ManagedBass
             }
             get { return _channel != 0 && _effectHandle != 0; }
         }
-
-        /// <summary>
-        /// Fire the <see cref="PropertyChanged"/> event.
-        /// </summary>
-        protected void OnPropertyChanged([CallerMemberName]string PropertyName = "")
-        {
-            // Update Effect Parameters if effect is active.
-            if (IsActive)
-                Bass.FXSetParameters(_effectHandle, _gch.AddrOfPinnedObject());
-
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
-        }
-
+        
         /// <summary>
         /// Called after applying a Preset to notify that multiple properties have changed.
         /// </summary>
-        protected void OnPreset() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
-
-        /// <summary>
-        /// Fired when a Property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPreset() => OnPropertyChanged("");
     }
 }

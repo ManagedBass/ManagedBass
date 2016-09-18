@@ -1,13 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace ManagedBass
 {
     /// <summary>
     /// Base class for DSPs.
     /// </summary>
-    public abstract class DSP : IDisposable, INotifyPropertyChanged
+    public abstract class DSP : INPC, IDisposable
     {
         /// <summary>
         /// Gets the Channel on which the DSP is applied.
@@ -138,18 +136,5 @@ namespace ManagedBass
             Bass.ChannelRemoveDSP(Channel, _handle);
             IsAssigned = false;
         }
-
-        /// <summary>
-        /// Fires the <see cref="PropertyChanged"/> event.
-        /// </summary>
-        protected void OnPropertyChanged([CallerMemberName]string PropertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
-        }
-
-        /// <summary>
-        /// Fired when a Property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
