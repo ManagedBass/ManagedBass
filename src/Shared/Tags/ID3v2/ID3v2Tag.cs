@@ -107,7 +107,7 @@ namespace ManagedBass.Tags
 
                 var text = ReadText(Length, textEncoding);
 
-                TextFrames.Add(FrameID, text);
+                AddTextFrame(FrameID, text);
                 return true;
             }
 
@@ -123,7 +123,7 @@ namespace ManagedBass.Tags
             
                     _ptr += Length; // Skip Counter value
                         
-                    TextFrames.Add("POPM", rating);                        
+                    AddTextFrame("POPM", rating);                        
                     return true;
 
                 case "COM":
@@ -141,7 +141,7 @@ namespace ManagedBass.Tags
 
                     ReadText(Length, TextEncoding, ref Length, true); // Skip Description
 
-                    TextFrames.Add("COMM", ReadText(Length, TextEncoding));
+                    AddTextFrame("COMM", ReadText(Length, TextEncoding));
                     return true;
 
                 case "APIC":
@@ -182,6 +182,14 @@ namespace ManagedBass.Tags
                 return false;
 
             return FrameID.Cast<char>().All(ch => char.IsUpper(ch) || char.IsDigit(ch));
+        }
+
+        // Multiple values for text tags are separated by ';'.
+        void AddTextFrame(string Key, string Value)
+        {
+            if (TextFrames.ContainsKey(Key))
+                TextFrames[Key] += ";" + Value;
+            else TextFrames.Add(Key, Value);
         }
 
         /// <summary>
