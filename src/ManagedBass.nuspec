@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>ManagedBass</id>
-        <version>0.23.0</version>
+        <version>0.24.0</version>
         <title>ManagedBass</title>
         <authors>MathewSachin</authors>
         <licenseUrl>https://raw.githubusercontent.com/ManagedBass/Resources/master/LICENSE.md</licenseUrl>
@@ -25,14 +25,14 @@ Bass and its Addons are trademarks of their respective owners.
         <copyright>(c) 2016 Mathew Sachin</copyright>
         <tags>C# Bass Wasapi Asio Recording Audio Music</tags>
         <dependencies>
-            <dependency id="ManagedBass.PInvoke" version="0.2.1" />
+            <dependency id="ManagedBass.PInvoke" version="0.5.0" />
         </dependencies>
     </metadata>
     <files>
         <file src="Windows\bin\Release\ManagedBass.dll" target="lib\net45"/>
         <file src="Windows\bin\Release\ManagedBass.xml" target="lib\net45"/>
 
-        <file src="Hybrid\bin\Release\ManagedBass.dll" target="lib\portable-net45+netcore45+wpa81+MonoAndroid+Xamarin.Mac+Xamarin.iOS+MonoTouch"/>
-        <file src="Hybrid\bin\Release\ManagedBass.xml" target="lib\portable-net45+netcore45+wpa81+MonoAndroid+Xamarin.Mac+Xamarin.iOS+MonoTouch"/>
+        <file src="Portable\bin\Release\ManagedBass.dll" target="lib\portable-net45+netcore45+wpa81+MonoAndroid+Xamarin.Mac+Xamarin.iOS+MonoTouch"/>
+        <file src="Portable\bin\Release\ManagedBass.xml" target="lib\portable-net45+netcore45+wpa81+MonoAndroid+Xamarin.Mac+Xamarin.iOS+MonoTouch"/>
     </files>
 </package>

@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{3479219E-33A6-40A6-A60F-E1E31B450CA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hybrid", "Hybrid\Hybrid.csproj", "{58EF62FC-54F4-493B-8F85-55B2A9509582}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portable", "Portable\Portable.csproj", "{58EF62FC-54F4-493B-8F85-55B2A9509582}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows", "Windows\Windows.csproj", "{24767423-9682-4B16-8E86-60526BDB67A4}"
 EndProject
@@ -16,18 +16,12 @@ Global
 		Shared\Managed.projitems*{58ef62fc-54f4-493b-8f85-55b2a9509582}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		AppStore|Any CPU = AppStore|Any CPU
-		AppStore|x86 = AppStore|x86
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{58EF62FC-54F4-493B-8F85-55B2A9509582}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
-		{58EF62FC-54F4-493B-8F85-55B2A9509582}.AppStore|Any CPU.Build.0 = Release|Any CPU
-		{58EF62FC-54F4-493B-8F85-55B2A9509582}.AppStore|x86.ActiveCfg = Release|Any CPU
-		{58EF62FC-54F4-493B-8F85-55B2A9509582}.AppStore|x86.Build.0 = Release|Any CPU
 		{58EF62FC-54F4-493B-8F85-55B2A9509582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{58EF62FC-54F4-493B-8F85-55B2A9509582}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58EF62FC-54F4-493B-8F85-55B2A9509582}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -36,10 +30,6 @@ Global
 		{58EF62FC-54F4-493B-8F85-55B2A9509582}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58EF62FC-54F4-493B-8F85-55B2A9509582}.Release|x86.ActiveCfg = Release|Any CPU
 		{58EF62FC-54F4-493B-8F85-55B2A9509582}.Release|x86.Build.0 = Release|Any CPU
-		{24767423-9682-4B16-8E86-60526BDB67A4}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
-		{24767423-9682-4B16-8E86-60526BDB67A4}.AppStore|Any CPU.Build.0 = Release|Any CPU
-		{24767423-9682-4B16-8E86-60526BDB67A4}.AppStore|x86.ActiveCfg = Release|Any CPU
-		{24767423-9682-4B16-8E86-60526BDB67A4}.AppStore|x86.Build.0 = Release|Any CPU
 		{24767423-9682-4B16-8E86-60526BDB67A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{24767423-9682-4B16-8E86-60526BDB67A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24767423-9682-4B16-8E86-60526BDB67A4}.Debug|x86.ActiveCfg = Debug|Any CPU
