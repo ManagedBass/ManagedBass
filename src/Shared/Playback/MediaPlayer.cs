@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace ManagedBass
@@ -11,7 +12,7 @@ namespace ManagedBass
     /// <para><see cref="MediaPlayer"/> is perfect for UIs, as it implements <see cref="INotifyPropertyChanged"/>.</para>
     /// <para>Also, unlike normal, Properties/Effects/DSP set on a <see cref="MediaPlayer"/> persist through subsequent loads.</para>
     /// </summary>
-    public class MediaPlayer : INPC, IDisposable
+    public class MediaPlayer : INotifyPropertyChanged, IDisposable
     {
         #region Fields
         readonly SynchronizationContext _syncContext;
@@ -384,5 +385,25 @@ namespace ManagedBass
         }
         
         void OnStateChanged() => OnPropertyChanged(nameof(State));
+
+        /// <summary>
+        /// Fired when a property value changes.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Fires the <see cref="PropertyChanged"/> event.
+        /// </summary>
+        protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null)
+        {
+            if (PropertyChanged == null)
+                return;
+
+            Action f = () => PropertyChanged.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+
+            if (_syncContext == null)
+                f();
+            else _syncContext.Post(S => f(), null);
+        }
     }
 }
