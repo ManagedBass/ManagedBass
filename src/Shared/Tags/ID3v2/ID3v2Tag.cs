@@ -214,7 +214,7 @@ namespace ManagedBass.Tags
             if (MaxLength <= 0)
                 return "";
 
-            var pos = _ptr;
+            var bytesRead = 0;
 
             var mStream = new MemoryStream();
 
@@ -229,6 +229,7 @@ namespace ManagedBass.Tags
                     // FF FE
                     TEncoding = TextEncodings.Utf16; // UTF-16 (LE)
                     _ptr -= 1;
+                    bytesRead += 1;
                     MaxLength -= 2;
                 }
 
@@ -237,6 +238,7 @@ namespace ManagedBass.Tags
                     // FE FF
                     TEncoding = TextEncodings.Utf16Be;
                     _ptr -= 1;
+                    bytesRead += 1;
                     MaxLength -= 2;
                 }
 
@@ -246,8 +248,10 @@ namespace ManagedBass.Tags
                     TEncoding = TextEncodings.Utf8;
                     MaxLength -= 3;
                 }
-
-                else _ptr -= 3;
+                {
+                    _ptr -= 3;
+                    bytesRead += 3;
+                }
             }
 
             var is2ByteSeprator = TEncoding.Is(TextEncodings.Utf16, TextEncodings.Utf16Be);
@@ -281,7 +285,7 @@ namespace ManagedBass.Tags
             if (MaxLength < 0)
                 _ptr += MaxLength;
 
-            ReadedLength -= Convert.ToInt32(_ptr.ToInt32() - pos.ToInt32());
+            ReadedLength -= bytesRead;
 
             return GetEncoding(TEncoding).GetString(mStream.ToArray(), 0, (int)mStream.Length);
         }
