@@ -30,9 +30,6 @@
     <DefineConstants>WINDOWS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="AcmFileWriter.cs" />
     <Compile Include="BassWasapi\Devices\WasapiDevice.cs" />
     <Compile Include="BassWasapi\Devices\WasapiLoopbackDevice.cs" />
@@ -47,13 +44,16 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ManagedBass.PInvoke, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ManagedBass.PInvoke.0.5.0\lib\net45\ManagedBass.PInvoke.dll</HintPath>
+      <HintPath>..\packages\ManagedBass.PInvoke.0.6.1\lib\net45\ManagedBass.PInvoke.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="..\Shared\Managed.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

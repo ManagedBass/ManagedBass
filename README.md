@@ -20,3 +20,9 @@ Install-Package ManagedBass
 * Download the BASS libraries from http://un4seen.com and place them in Build Output Directory.
 
 See https://github.com/ManagedBass/Home for more info.
+
+# Changes coming in v1.0
+- The code in this repository will be replaced by that in https://github.com/ManagedBass/ManagedBass.vNext.
+- The NuGet package will be split per AddOn.
+- ManagedBass.PInvoke package will be discontinued.
+- The current repository will be moved to some other repository and package.
