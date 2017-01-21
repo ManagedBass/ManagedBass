@@ -26,5 +26,4 @@
         <file src="iOS\bin\Release\ManagedBass.Hls.dll" target="lib\Xamarin.iOS"/>
         <file src="iOS\bin\Release\ManagedBass.Hls.xml" target="lib\Xamarin.iOS"/>
     </files>
-    </files>
 </package>

@@ -23,5 +23,4 @@
         <file src="Portable\bin\Release\ManagedBass.ZXTune.dll" target="lib\portable-net45+MonoAndroid"/>
         <file src="Portable\bin\Release\ManagedBass.ZXTune.xml" target="lib\portable-net45+MonoAndroid"/>
     </files>
-    </files>
 </package>
