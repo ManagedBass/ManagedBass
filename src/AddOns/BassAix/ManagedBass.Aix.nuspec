@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>ManagedBass.Aix</id>
+        <version>1.0.0</version>
+        <title>ManagedBass.Aix</title>
+        <authors>MathewSachin</authors>
+        <licenseUrl>https://raw.githubusercontent.com/ManagedBass/Home/master/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/ManagedBass/ManagedBass.PInvoke/</projectUrl>
+        <iconUrl>https://github.com/ManagedBass.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>ManagedBass Aix AddOn</description>
+        <summary>ManagedBass Aix AddOn</summary>
+        <releaseNotes>
+        </releaseNotes>
+        <copyright>(c) 2016 Mathew Sachin</copyright>
+        <tags>Bass Wasapi Asio Record Audio Music</tags>
+        <dependencies>
+            <dependency id="ManagedBass" version="1.0.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Release\ManagedBass.Aix.dll" target="lib\net45"/>
+        <file src="bin\Release\ManagedBass.Aix.xml" target="lib\net45"/>
+    </files>
+</package>

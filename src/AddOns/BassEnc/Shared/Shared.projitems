@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>f0fc2f2c-d971-46e3-8c6c-6c8a0f3b70cd</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>BassEnc</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Delegates\EncodeClientProcedure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Delegates\EncodeNotifyProcedure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Delegates\EncodeProcedure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Delegates\EncodeProcedureEx.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Delegates\EncoderProcedure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enumerations\EncodeCount.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enumerations\EncodeFlags.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enumerations\EncodeMetaDataType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enumerations\EncodeNotifyStatus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enumerations\EncodeServer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enumerations\EncodeStats.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PInvoke\BassEnc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PInvoke\BassEnc_Ogg.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PInvoke\BassEnc_Opus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PInvoke\Cast.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PInvoke\Encoding.cs" />
+  </ItemGroup>
+</Project>

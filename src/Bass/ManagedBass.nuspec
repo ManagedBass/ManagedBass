@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>ManagedBass</id>
+        <version>1.0.0</version>
+        <title>ManagedBass</title>
+        <authors>MathewSachin</authors>
+        <licenseUrl>https://raw.githubusercontent.com/ManagedBass/Home/master/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/ManagedBass/ManagedBass.PInvoke/</projectUrl>
+        <iconUrl>https://github.com/ManagedBass.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>.Net Wrapper for un4seen Audio Library.</description>
+        <summary>ManagedBass Library for un4seen BASS.</summary>
+        <releaseNotes>
+        </releaseNotes>
+        <copyright>(c) 2016 Mathew Sachin</copyright>
+        <tags>Bass Wasapi Asio Record Audio Music</tags>
+    </metadata>
+    <files>
+        <file src="Desktop\bin\Release\ManagedBass.dll" target="lib\net45"/>
+        <file src="Desktop\bin\Release\ManagedBass.xml" target="lib\net45"/>
+
+        <file src="Mobile\bin\Release\ManagedBass.dll" target="lib\portable-MonoAndroid+uap"/>
+        <file src="Mobile\bin\Release\ManagedBass.xml" target="lib\portable-MonoAndroid+uap"/>
+
+        <file src="iOS\bin\Release\ManagedBass.dll" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\ManagedBass.xml" target="lib\Xamarin.iOS"/>
+    </files>
+</package>
