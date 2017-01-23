@@ -17,6 +17,9 @@ namespace ManagedBass
         /// </summary>
         public static void Add(int Handle, int SpecificHandle, object proc)
         {
+            if (proc == null)
+                return;
+
             if (proc.Equals(Freeproc))
                 return;
 
