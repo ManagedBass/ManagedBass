@@ -54,9 +54,9 @@ namespace ManagedBass
         public static bool Unload() => DynamicLibrary.Unload(hLib);
 
         /// <summary>
-        /// Gets the Formats supported by Bass.
+        /// Gets the Formats supported by Bass separated by `;`. The list is not necessarily complete.
         /// </summary>
-        public static PluginFormat[] SupportedFormats => PluginGetInfo(0).Formats;
+        public static string SupportedFormats => "*.mp3;*.mp2;*.mp1;*.ogg;*.wav;*.aif";
 
         /// <summary>
         /// Updates the HSTREAM and HMUSIC channel playback buffers.
