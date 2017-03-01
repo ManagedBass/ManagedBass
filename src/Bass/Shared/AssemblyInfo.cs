@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿#if !NETSTANDARD1_4
+
+using System.Reflection;
 
 [assembly: AssemblyTitle("ManagedBass")]
 [assembly: AssemblyDescription("Free Open-Source .Net Wrapper for un4seen BASS audio library.")]
@@ -7,3 +9,5 @@
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+#endif
