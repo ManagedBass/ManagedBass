@@ -1,11 +1,12 @@
 version: 1.0.0.{build}
 
+image: Visual Studio 2017
+
 configuration: Release
 
 before_build:
 - nuget restore src\ManagedBass.sln
 
-# Disable builds till AppVeyor supports Visual Studio 2017
 build: off
-  #project: src\ManagedBass.sln
-  #verbosity: minimal
+  project: src\ManagedBass.sln
+  verbosity: minimal
