@@ -7,6 +7,6 @@ configuration: Release
 before_build:
 - nuget restore src\ManagedBass.sln
 
-build: off
+build:
   project: src\ManagedBass.sln
   verbosity: minimal
