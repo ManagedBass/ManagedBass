@@ -9,7 +9,6 @@
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassFlac.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\CueSheetTrackType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tags\FlacCueTag.cs" />

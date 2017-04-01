@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <AssemblyName>ManagedBass.Asio</AssemblyName>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AssemblyName>ManagedBass</AssemblyName>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Bass\Portable\Bass.csproj" />
-  </ItemGroup>
+  <Import Project="..\..\Bass\Shared\Shared.projitems" Label="Shared" />
 
 </Project>

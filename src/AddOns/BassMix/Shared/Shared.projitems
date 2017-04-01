@@ -9,7 +9,6 @@
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassMix.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MixEnvelope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MixerNode.cs" />

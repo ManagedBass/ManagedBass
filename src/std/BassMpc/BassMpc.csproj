@@ -2,9 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <AssemblyName>ManagedBass.Asio</AssemblyName>
+    <AssemblyName>ManagedBass.Mpc</AssemblyName>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
+
+  <Import Project="..\..\AddOns\BassMpc\Shared\Shared.projitems" Label="Shared" />
 
   <ItemGroup>
     <ProjectReference Include="..\..\Bass\Portable\Bass.csproj" />
