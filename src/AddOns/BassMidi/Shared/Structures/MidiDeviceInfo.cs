@@ -1,5 +1,4 @@
-﻿#if __IOS__ || __DESKTOP__
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass.Midi
@@ -53,4 +52,3 @@ namespace ManagedBass.Midi
 		public override string ToString() => Name;
     }
 }
-#endif

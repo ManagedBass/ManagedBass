@@ -240,7 +240,6 @@
         /// </summary>
         AC3DynamicRangeCompression = 65537,
 
-#if __DESKTOP__
         /// <summary>
         /// See <see cref="Wma.BassWma.PrebufferInternetStreams"/>.
         /// </summary>
@@ -265,9 +264,7 @@
         /// See <see cref="Wma.BassWma.AsyncDecoding"/>.
         /// </summary>
         WmaAsync = 65807,
-#endif
 
-#if __DESKTOP__
         /// <summary>
         /// See <see cref="Cd.BassCd.FreeOld"/>.
         /// </summary>
@@ -292,7 +289,6 @@
         /// See <see cref="Cd.BassCd.CDDBServer"/>.
         /// </summary>
         CDDBServer = 66052,
-#endif
 
         /// <summary>
         /// See <see cref="Enc.BassEnc.DSPPriority"/>.
@@ -304,12 +300,10 @@
         /// </summary>
         EncodeQueue = 66305,
 
-#if __DESKTOP__
         /// <summary>
         /// See <see cref="Enc.BassEnc.ACMLoad"/>.
         /// </summary>
         EncodeACMLoad = 66306,
-#endif
 
         /// <summary>
         /// See <see cref="Enc.BassEnc.CastTimeout"/>.
@@ -376,12 +370,10 @@
         /// </summary>
         DSDFrequency = 67584,
 
-#if __DESKTOP__
         /// <summary>
         /// See <see cref="Winamp.BassWinamp.InputTimeout"/>.
         /// </summary>
         WinampInputTimeout = 67584,
-#endif
 
         /// <summary>
         /// See <see cref="Dsd.BassDsd.DefaultGain"/>.

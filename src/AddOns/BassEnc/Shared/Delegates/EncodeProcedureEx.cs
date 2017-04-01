@@ -1,5 +1,4 @@
-﻿#if __IOS__ || __DESKTOP__
-using System;
+﻿using System;
 
 namespace ManagedBass.Enc
 {
@@ -15,4 +14,3 @@ namespace ManagedBass.Enc
     /// <remarks>To have the encoded data received by this callback function, the encoder needs to be told to output to STDOUT (instead of a file).</remarks>
     public delegate void EncodeProcedureEx(int Handle, int Channel, IntPtr Buffer, int Length, int Offset, IntPtr User);
 }
-#endif

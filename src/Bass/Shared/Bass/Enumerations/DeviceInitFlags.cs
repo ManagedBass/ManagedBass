@@ -55,12 +55,10 @@ namespace ManagedBass
         /// </summary>
         NoSpeakerAssignment = 0x1000,
 
-#if __DESKTOP__
         /// <summary>
         /// Linux-only: Initialize the device using the ALSA "dmix" plugin, else initialize the device for exclusive access.
         /// </summary>
         DMix = 0x2000,
-#endif
 
         /// <summary>
         /// Set the device's output rate to freq, otherwise leave it as it is.

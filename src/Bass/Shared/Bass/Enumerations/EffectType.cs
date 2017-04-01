@@ -26,7 +26,6 @@
         /// </summary>
         DXFlanger,
 
-#if __DESKTOP__
         /// <summary>
         /// DX8 Compressor (Windows Only).
         /// </summary>
@@ -41,7 +40,6 @@
         /// DX8 I3DL2 (Interactive 3D Audio Level 2) reverb (Windows Only).
         /// </summary>
         DX_I3DL2Reverb,
-#endif
 
         /// <summary>
         /// DX8 Parametric equalizer.

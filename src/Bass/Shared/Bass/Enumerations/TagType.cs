@@ -77,12 +77,10 @@
         /// </summary>
         WmaMeta = 11,
 
-#if __IOS__ || __DESKTOP__
         /// <summary>
         /// Apple CoreAudio codec info (see <see cref="Tags.CACodecTag"/>).
         /// </summary>
         CoreAudioCodec = 11,
-#endif
 
         /// <summary>
         /// WMA codec: A description of the codec used by the file.

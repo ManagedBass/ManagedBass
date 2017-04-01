@@ -26,7 +26,6 @@
         /// </summary>
         Off,
 
-#if __DESKTOP__
         /// <summary>
         /// This algorithm gives the highest quality 3D audio effect, but uses more CPU (Windows Only).
         /// <para>
@@ -44,6 +43,5 @@
         /// </para>
         /// </summary>
         Light
-#endif
     }
 }

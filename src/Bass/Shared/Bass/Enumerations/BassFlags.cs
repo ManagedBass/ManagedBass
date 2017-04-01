@@ -37,7 +37,6 @@ namespace ManagedBass
         /// </summary>
         Bass3D = 0x8,
 
-#if __DESKTOP__
         /// <summary>
         /// Force the stream to not use hardware mixing (Windows Only).
         /// </summary>
@@ -49,7 +48,6 @@ namespace ManagedBass
         /// Requires DirectX 8 or above.
         /// </summary>
         FX = 0x80,
-#endif
         
         /// <summary>
         /// Use 32-bit floating-point sample data (see Floating-Point Channels for details).

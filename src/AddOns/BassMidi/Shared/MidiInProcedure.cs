@@ -1,5 +1,4 @@
-﻿#if __IOS__ || __DESKTOP__
-using System;
+﻿using System;
 
 namespace ManagedBass.Midi
 {
@@ -13,4 +12,3 @@ namespace ManagedBass.Midi
     /// <param name="User">The user instance data given when <see cref="BassMidi.InInit" /> was called.</param>
     public delegate void MidiInProcedure(int Device, double Time, IntPtr Buffer, int Length, IntPtr User);
 }
-#endif

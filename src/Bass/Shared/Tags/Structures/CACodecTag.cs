@@ -1,5 +1,4 @@
-﻿#if __IOS__ || __DESKTOP__
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace ManagedBass
@@ -37,4 +36,3 @@ namespace ManagedBass
         }
     }
 }
-#endif

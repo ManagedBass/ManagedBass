@@ -215,7 +215,6 @@
         /// </summary>
         Busy = 46,
 
-#if __DESKTOP__
         #region BassWma
         /// <summary>
         /// BassWma: The file is protected
@@ -247,7 +246,7 @@
         /// BassWASAPI: WASAPI Not available
         /// </summary>
         Wasapi = 5000,
-#endif
+
         /// <summary>
 		/// BassEnc: ACM codec selection cancelled
 		/// </summary>
