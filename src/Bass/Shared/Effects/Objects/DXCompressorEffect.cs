@@ -1,7 +1,7 @@
 namespace ManagedBass.DirectX8
 {
     /// <summary>
-    /// DX8 Compressor Effect.
+    /// DX8 Compressor Effect (Windows only).
     /// </summary>
     public sealed class DXCompressorEffect : Effect<DXCompressorParameters>
     {

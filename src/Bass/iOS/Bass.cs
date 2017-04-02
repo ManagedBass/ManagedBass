@@ -9,6 +9,7 @@ namespace ManagedBass
 
         static event IOSNotifyProcedure _iosnotify;
 
+        // TODO: Needs MonoPInvokeDelegateAttribute.
         /// <summary>
         /// Fired when an iOS Audio Session Notification occurs.
         /// </summary>

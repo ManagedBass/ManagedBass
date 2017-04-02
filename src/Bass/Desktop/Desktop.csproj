@@ -33,14 +33,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bass.cs" />
-    <Compile Include="DSInterface.cs" />
-    <Compile Include="Effects\Structures\DXCompressorParameters.cs" />
-    <Compile Include="Effects\Structures\DXGargleParameters.cs" />
-    <Compile Include="Effects\Structures\DX_ID3DL2ReverbParameters.cs" />
-    <Compile Include="EAXEnvironment.cs" />
-    <Compile Include="Effects\Objects\DXCompressorEffect.cs" />
-    <Compile Include="Effects\Objects\DXGargleEffect.cs" />
-    <Compile Include="Effects\Objects\DX_ID3DL2ReverbEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

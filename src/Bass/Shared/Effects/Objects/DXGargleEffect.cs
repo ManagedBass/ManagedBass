@@ -1,7 +1,7 @@
 namespace ManagedBass.DirectX8
 {
     /// <summary>
-    /// DX8 Gargle Effect.
+    /// DX8 Gargle Effect (Windows only).
     /// </summary>
     public sealed class DXGargleEffect : Effect<DXGargleParameters>
     {

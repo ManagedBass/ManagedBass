@@ -3,7 +3,7 @@
 namespace ManagedBass.DirectX8
 {
     /// <summary>
-    /// Parameters for DX8 ID3L2 Reverb Effect.
+    /// Parameters for DX8 ID3L2 Reverb Effect (Windows only).
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class DX_ID3DL2ReverbParameters : IEffectParameter

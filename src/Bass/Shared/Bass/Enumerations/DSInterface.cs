@@ -1,7 +1,7 @@
 ﻿namespace ManagedBass
 {
     /// <summary>
-    /// Direct Sound interface flags for use with <see cref="Bass.GetDSoundObject(DSInterface)" />.
+    /// Direct Sound interface flags for use with <see cref="Bass.GetDSoundObject(DSInterface)" /> (Windows only).
     /// </summary>
     public enum DSInterface
     {

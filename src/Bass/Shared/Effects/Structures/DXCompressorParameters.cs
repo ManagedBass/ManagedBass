@@ -3,7 +3,7 @@
 namespace ManagedBass.DirectX8
 {
     /// <summary>
-    /// Parameters for DX8 Compressor Effect.
+    /// Parameters for DX8 Compressor Effect (Windows only).
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public class DXCompressorParameters : IEffectParameter

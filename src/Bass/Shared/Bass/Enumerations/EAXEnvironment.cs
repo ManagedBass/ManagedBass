@@ -1,7 +1,7 @@
 ﻿namespace ManagedBass
 {
     /// <summary>
-    /// EAX environment constants to be used with <see cref="Bass.SetEAXParameters" />
+    /// EAX environment constants to be used with <see cref="Bass.SetEAXParameters" /> (Windows only).
     /// </summary>
     public enum EAXEnvironment
     {
