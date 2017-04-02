@@ -6,10 +6,10 @@
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="..\..\AddOns\BassHls\Shared\Shared.projitems" Label="Shared" />
+  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Bass\Portable\Bass.csproj" />
+    <ProjectReference Include="..\..\..\Bass\Portable\Bass.csproj" />
   </ItemGroup>
 
 </Project>

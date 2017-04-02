@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <AssemblyName>ManagedBass.Opus</AssemblyName>
+    <AssemblyName>ManagedBass.Dsd</AssemblyName>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="..\..\AddOns\BassOpus\Shared\Shared.projitems" Label="Shared" />
+  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Bass\Portable\Bass.csproj" />
+    <ProjectReference Include="..\..\..\Bass\Portable\Bass.csproj" />
   </ItemGroup>
 
 </Project>
