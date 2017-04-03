@@ -32,7 +32,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ACMFormatFlags.cs" />
     <Compile Include="BassEnc.cs" />
   </ItemGroup>
   <ItemGroup>

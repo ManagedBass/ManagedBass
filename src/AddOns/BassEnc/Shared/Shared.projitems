@@ -9,12 +9,12 @@
     <Import_RootNamespace>BassEnc</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Delegates\EncodeClientProcedure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Delegates\EncodeNotifyProcedure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Delegates\EncodeProcedure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Delegates\EncodeProcedureEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Delegates\EncoderProcedure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enumerations\ACMFormatFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enumerations\EncodeCount.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enumerations\EncodeFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enumerations\EncodeMetaDataType.cs" />
