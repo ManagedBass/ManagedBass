@@ -28,3 +28,7 @@ packages/
 # MSTest test Results
 [Tt]est[Rr]esults.xml
 [Bb]uild[Ll]og.xml
+
+# Xml Documentation files
+ManagedBass.xml
+ManagedBass.*.xml

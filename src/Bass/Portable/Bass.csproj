@@ -4,7 +4,7 @@
     <TargetFramework>netstandard1.4</TargetFramework>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AssemblyName>ManagedBass</AssemblyName>
-    <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <Import Project="..\..\Bass\Shared\Shared.projitems" Label="Shared" />
