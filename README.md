@@ -8,7 +8,7 @@ Download the versions you need.
 
 See the [Sample Repositories](https://github.com/ManagedBass) for examples.
 
-> ~~ManagedBass depends on [ManagedBass.PInvoke](https://github.com/ManagedBass/ManagedBass.PInvoke) for PInvoke declarations which is quite stable package.~~
+> ~~ManagedBass depends on `ManagedBass.PInvoke` for PInvoke declarations which is quite stable package.~~
 
 > ManagedBass is now provided as a set of packages split per AddOn.
 
@@ -28,5 +28,3 @@ See https://github.com/ManagedBass/Home for more info.
 - Changed `#if` directives of Mac, Windows and Linux to `__DESKTOP__`.
 - No dependency on `ManagedBass.PInvoke`.
 - Using C# 7 on Visual Studio 2017.
-
-> Looking for the old version? See the [Legacy](https://github.com/ManagedBass/Legacy) repository.
