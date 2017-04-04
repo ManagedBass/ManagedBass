@@ -20,7 +20,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\ManagedBass.WA.dll" target="lib\net45"/>
-        <file src="bin\Release\ManagedBass.WA.xml" target="lib\net45"/>
+        <file src="bin\Release\netstandard1.4\ManagedBass.WA.dll" target="lib\netstandard1.4"/>
+        <file src="bin\Release\netstandard1.4\ManagedBass.WA.xml" target="lib\netstandard1.4"/>
     </files>
 </package>

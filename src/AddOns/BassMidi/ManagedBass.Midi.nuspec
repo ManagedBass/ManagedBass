@@ -23,8 +23,8 @@
         <file src="Desktop\bin\Release\ManagedBass.Midi.dll" target="lib\net45"/>
         <file src="Desktop\bin\Release\ManagedBass.Midi.xml" target="lib\net45"/>
 
-        <file src="Mobile\bin\Release\ManagedBass.Midi.dll" target="lib\portable-MonoAndroid+uap"/>
-        <file src="Mobile\bin\Release\ManagedBass.Midi.xml" target="lib\portable-MonoAndroid+uap"/>
+        <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Midi.dll" target="lib\netstandard1.4"/>
+        <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Midi.xml" target="lib\netstandard1.4"/>
 
         <file src="iOS\bin\Release\ManagedBass.Midi.dll" target="lib\Xamarin.iOS"/>
         <file src="iOS\bin\Release\ManagedBass.Midi.xml" target="lib\Xamarin.iOS"/>

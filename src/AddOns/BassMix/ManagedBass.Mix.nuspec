@@ -20,8 +20,8 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="Portable\bin\Release\ManagedBass.Mix.dll" target="lib\portable-net45+MonoAndroid+uap"/>
-        <file src="Portable\bin\Release\ManagedBass.Mix.xml" target="lib\portable-net45+MonoAndroid+uap"/>
+        <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Mix.dll" target="lib\netstandard1.4"/>
+        <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Mix.xml" target="lib\netstandard1.4"/>
 
         <file src="iOS\bin\Release\ManagedBass.Mix.dll" target="lib\Xamarin.iOS"/>
         <file src="iOS\bin\Release\ManagedBass.Mix.xml" target="lib\Xamarin.iOS"/>

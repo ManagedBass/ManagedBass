@@ -20,7 +20,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\ManagedBass.Aix.dll" target="lib\net45"/>
-        <file src="bin\Release\ManagedBass.Aix.xml" target="lib\net45"/>
+        <file src="bin\Release\netstandard1.4\ManagedBass.Aix.dll" target="lib\netstandard1.4"/>
+        <file src="bin\Release\netstandard1.4\ManagedBass.Aix.xml" target="lib\netstandard1.4"/>
     </files>
 </package>
