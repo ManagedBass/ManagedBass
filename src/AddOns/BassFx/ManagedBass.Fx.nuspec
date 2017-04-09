@@ -23,7 +23,7 @@
         <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Fx.dll" target="lib\netstandard1.4"/>
         <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Fx.xml" target="lib\netstandard1.4"/>
 
-        <file src="iOS\bin\Release\ManagedBass.Fx.dll" target="lib\Xamarin.iOS"/>
-        <file src="iOS\bin\Release\ManagedBass.Fx.xml" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.Fx.dll" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.Fx.xml" target="lib\Xamarin.iOS"/>
     </files>
 </package>

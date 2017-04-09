@@ -20,13 +20,13 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="Desktop\bin\Release\ManagedBass.Enc.dll" target="lib\net45"/>
-        <file src="Desktop\bin\Release\ManagedBass.Enc.xml" target="lib\net45"/>
+        <file src="Desktop\bin\Release\netstandard1.4\ManagedBass.Enc.dll" target="lib\net45"/>
+        <file src="Desktop\bin\Release\netstandard1.4\ManagedBass.Enc.xml" target="lib\net45"/>
 
         <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Enc.dll" target="lib\netstandard1.4"/>
         <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Enc.xml" target="lib\netstandard1.4"/>
 
-        <file src="iOS\bin\Release\ManagedBass.Enc.dll" target="lib\Xamarin.iOS"/>
-        <file src="iOS\bin\Release\ManagedBass.Enc.xml" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.Enc.dll" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.Enc.xml" target="lib\Xamarin.iOS"/>
     </files>
 </package>

@@ -23,7 +23,7 @@
         <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Hls.dll" target="lib\netstandard1.4"/>
         <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Hls.xml" target="lib\netstandard1.4"/>
         
-        <file src="iOS\bin\Release\ManagedBass.Hls.dll" target="lib\Xamarin.iOS"/>
-        <file src="iOS\bin\Release\ManagedBass.Hls.xml" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.Hls.dll" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.Hls.xml" target="lib\Xamarin.iOS"/>
     </files>
 </package>

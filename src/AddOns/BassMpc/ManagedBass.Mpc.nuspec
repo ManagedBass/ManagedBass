@@ -23,7 +23,7 @@
         <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Mpc.dll" target="lib\netstandard1.4"/>
         <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Mpc.xml" target="lib\netstandard1.4"/>
         
-        <file src="iOS\bin\Release\ManagedBass.Mpc.dll" target="lib\Xamarin.iOS"/>
-        <file src="iOS\bin\Release\ManagedBass.Mpc.xml" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.Mpc.dll" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.Mpc.xml" target="lib\Xamarin.iOS"/>
     </files>
 </package>
