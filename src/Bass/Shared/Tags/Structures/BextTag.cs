@@ -90,7 +90,7 @@ namespace ManagedBass
         /// <param name="Channel">The Channel to read the tag from.</param>
         public static BextTag Read(int Channel)
         {
-            return (BextTag)Marshal.PtrToStructure(Bass.ChannelGetTags(Channel, TagType.RiffBext), typeof(BextTag));
+            return Marshal.PtrToStructure<BextTag>(Bass.ChannelGetTags(Channel, TagType.RiffBext));
         }
     }
 }
