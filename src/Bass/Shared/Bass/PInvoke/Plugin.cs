@@ -20,7 +20,7 @@ namespace ManagedBass
         /// <para>Note: There is no guarantee that the check is complete or might contain formats not being supported on your particular OS/machine (due to additional or missing audio codecs).</para>
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
-        public static PluginInfo PluginGetInfo(int Handle) => (PluginInfo)Marshal.PtrToStructure(BASS_PluginGetInfo(Handle), typeof (PluginInfo));
+        public static PluginInfo PluginGetInfo(int Handle) => Marshal.PtrToStructure<PluginInfo>(BASS_PluginGetInfo(Handle));
 
         #region PluginLoad
         [DllImport(DllName, CharSet = CharSet.Unicode)]

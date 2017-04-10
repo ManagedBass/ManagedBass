@@ -78,7 +78,7 @@ namespace ManagedBass.Flac
         /// </summary>
         public static FlacPictureTag Read(int Channel, int Index)
         {
-            return (FlacPictureTag)Marshal.PtrToStructure(Bass.ChannelGetTags(Channel, TagType.FlacPicture + Index), typeof(FlacPictureTag));
+            return Marshal.PtrToStructure<FlacPictureTag>(Bass.ChannelGetTags(Channel, TagType.FlacPicture + Index));
         }
     }
 }

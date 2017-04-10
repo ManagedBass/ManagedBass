@@ -17,13 +17,13 @@
         <tags>Bass Wasapi Asio Record Audio Music</tags>
     </metadata>
     <files>
-        <file src="Desktop\bin\Release\ManagedBass.dll" target="lib\net45"/>
-        <file src="Desktop\bin\Release\ManagedBass.xml" target="lib\net45"/>
+        <file src="Desktop\bin\Release\netstandard1.4\ManagedBass.dll" target="lib\net45"/>
+        <file src="Desktop\bin\Release\netstandard1.4\ManagedBass.xml" target="lib\net45"/>
 
-        <file src="Mobile\bin\Release\ManagedBass.dll" target="lib\portable-MonoAndroid+uap"/>
-        <file src="Mobile\bin\Release\ManagedBass.xml" target="lib\portable-MonoAndroid+uap"/>
+        <file src="Portable\bin\Release\netstandard1.4\ManagedBass.dll" target="lib\netstandard1.4"/>
+        <file src="Portable\bin\Release\netstandard1.4\ManagedBass.xml" target="lib\netstandard1.4"/>
 
-        <file src="iOS\bin\Release\ManagedBass.dll" target="lib\Xamarin.iOS"/>
-        <file src="iOS\bin\Release\ManagedBass.xml" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.dll" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.xml" target="lib\Xamarin.iOS"/>
     </files>
 </package>

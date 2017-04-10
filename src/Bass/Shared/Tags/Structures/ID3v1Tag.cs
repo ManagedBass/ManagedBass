@@ -204,7 +204,7 @@ namespace ManagedBass
         /// <param name="Channel">The Channel to read from.</param>
         public static ID3v1Tag Read(int Channel)
         {
-            return (ID3v1Tag)Marshal.PtrToStructure(Bass.ChannelGetTags(Channel, TagType.ID3), typeof(ID3v1Tag));
+            return Marshal.PtrToStructure<ID3v1Tag>(Bass.ChannelGetTags(Channel, TagType.ID3));
         }
 
         /// <summary>

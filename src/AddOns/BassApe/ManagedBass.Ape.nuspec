@@ -20,10 +20,10 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="Portable\bin\Release\ManagedBass.Ape.dll" target="lib\portable-net45+MonoAndroid"/>
-        <file src="Portable\bin\Release\ManagedBass.Ape.xml" target="lib\portable-net45+MonoAndroid"/>
+        <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Ape.dll" target="lib\netstandard1.4"/>
+        <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Ape.xml" target="lib\netstandard1.4"/>
         
-        <file src="iOS\bin\Release\ManagedBass.Ape.dll" target="lib\Xamarin.iOS"/>
-        <file src="iOS\bin\Release\ManagedBass.Ape.xml" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.Ape.dll" target="lib\Xamarin.iOS"/>
+        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.Ape.xml" target="lib\Xamarin.iOS"/>
     </files>
 </package>

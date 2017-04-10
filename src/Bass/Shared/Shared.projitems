@@ -6,15 +6,22 @@
     <SharedGUID>ec57d38f-2b7c-4547-9012-3f1aad7e8bab</SharedGUID>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bass\Enumerations\DSInterface.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Bass\Enumerations\EAXEnvironment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DXChorusEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DXCompressorEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DXDistortionEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DXEchoEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DXFlangerEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DXGargleEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DXParamEQ.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DXParamEQEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DXReverbEffect.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DX_ID3DL2ReverbEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\Effect Base.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Effects\Structures\DXCompressorParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Effects\Structures\DXGargleParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Effects\Structures\DX_ID3DL2ReverbParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GCPin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BassException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bass\Delegates\DownloadProcedure.cs" />
@@ -106,7 +113,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)WaveFormat.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Effects\Structures\" />
     <Folder Include="$(MSBuildThisFileDirectory)Tags\Structures\" />
   </ItemGroup>
 </Project>

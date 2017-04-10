@@ -18,6 +18,9 @@ namespace ManagedBass
         readonly SynchronizationContext _syncContext;
         int _handle;
         
+        /// <summary>
+        /// Channel Handle of the loaded audio file.
+        /// </summary>
         protected internal int Handle
         {
             get { return _handle; }

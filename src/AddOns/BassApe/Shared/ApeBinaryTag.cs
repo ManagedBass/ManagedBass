@@ -47,7 +47,7 @@ namespace ManagedBass.Ape
         /// <param name="Index">Index of tag.</param>
         public static ApeBinaryTag Read(int Channel, int Index)
         {
-            return (ApeBinaryTag)Marshal.PtrToStructure(Bass.ChannelGetTags(Channel, TagType.ApeBinary + Index), typeof(ApeBinaryTag));
+            return Marshal.PtrToStructure<ApeBinaryTag>(Bass.ChannelGetTags(Channel, TagType.ApeBinary + Index));
         }
 
         /// <summary>

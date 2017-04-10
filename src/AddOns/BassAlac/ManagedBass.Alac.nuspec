@@ -20,7 +20,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\ManagedBass.Alac.dll" target="lib\portable-net45+MonoAndroid"/>
-        <file src="bin\Release\ManagedBass.Alac.xml" target="lib\portable-net45+MonoAndroid"/>
+        <file src="bin\Release\netstandard1.4\ManagedBass.Alac.dll" target="lib\netstandard1.4"/>
+        <file src="bin\Release\netstandard1.4\ManagedBass.Alac.xml" target="lib\netstandard1.4"/>
     </files>
 </package>
