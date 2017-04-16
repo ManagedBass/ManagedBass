@@ -5,11 +5,6 @@ namespace ManagedBass.Midi
 {
     public static partial class BassMidi
     {
-        /// <summary>
-        /// Use this library as a Plugin.
-        /// </summary>
-        public static readonly Plugin Plugin = new Plugin(DllName);
-
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_MIDI_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags, int Frequency = 0);
 

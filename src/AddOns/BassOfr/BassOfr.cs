@@ -38,12 +38,7 @@ namespace ManagedBass.Ofr
         /// </summary>
         /// <returns><see langword="true" />, if the library unloaded successfully, else <see langword="false" />.</returns>
         public static bool Unload() => DynamicLibrary.Unload(hLib);
-
-        /// <summary>
-        /// Use this library as a Plugin.
-        /// </summary>
-        public static readonly Plugin Plugin = new Plugin(DllName);
-
+        
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_OFR_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 

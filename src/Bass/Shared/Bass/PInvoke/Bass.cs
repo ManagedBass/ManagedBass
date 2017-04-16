@@ -26,32 +26,11 @@ namespace ManagedBass
 #else
         const string DllName = "bass";
 #endif
-
-        static IntPtr hLib;
-
-        /// <summary>
-        /// Load this library into Memory.
-        /// </summary>
-        /// <param name="Folder">Directory to Load from... <see langword="null"/> (default) = Load from Current Directory.</param>
-        /// <returns><see langword="true" />, if the library loaded successfully, else <see langword="false" />.</returns>
-        /// <remarks>
-        /// <para>
-        /// An external library is loaded into memory when any of its methods are called for the first time.
-        /// This results in the first method call being slower than all subsequent calls.
-        /// </para>
-        /// <para>
-        /// Some BASS libraries and add-ons may introduce new options to the main BASS lib like new parameters.
-        /// But, before using these new options the respective library must be already loaded.
-        /// This method can be used to make sure, that this library has been loaded.
-        /// </para>
-        /// </remarks>
-        public static bool Load(string Folder = null) => (hLib = DynamicLibrary.Load(DllName, Folder)) != IntPtr.Zero;
-
-        /// <summary>
-        /// Unloads this library from Memory.
-        /// </summary>
-        /// <returns><see langword="true" />, if the library unloaded successfully, else <see langword="false" />.</returns>
-        public static bool Unload() => DynamicLibrary.Unload(hLib);
+        
+        public static void Load()
+        {
+            BASS_GetVersion();
+        }
 
         /// <summary>
         /// Gets the Formats supported by Bass separated by `;`. The list is not necessarily complete.
