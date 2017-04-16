@@ -16,6 +16,8 @@ namespace ManagedBass.Alac
         public static void Load()
         {
             BASS_ALAC_StreamCreateFile(false, "", 0, 0, 0);
+
+            Bass.PluginLoad(DllName);
         }
         
         [DllImport(DllName, CharSet = CharSet.Unicode)]

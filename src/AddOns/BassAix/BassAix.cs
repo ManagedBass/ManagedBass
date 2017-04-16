@@ -13,6 +13,8 @@ namespace ManagedBass.Aix
         public static void Load()
         {
             BASS_AIX_StreamCreateFile(false, "", 0, 0, 0);
+
+            Bass.PluginLoad(DllName);
         }
                 
         [DllImport(DllName, CharSet = CharSet.Unicode)]

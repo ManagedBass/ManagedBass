@@ -20,6 +20,8 @@ namespace ManagedBass.Ac3
         public static void Load()
         {
             BASS_AC3_StreamCreateFile(false, "", 0, 0, 0);
+
+            Bass.PluginLoad(DllName);
         }
 		        
         [DllImport(DllName, CharSet = CharSet.Unicode)]

@@ -16,6 +16,8 @@ namespace ManagedBass.Cd
         public static void Load()
         {
             BASS_CD_StreamCreateFile("", 0);
+
+            Bass.PluginLoad(DllName);
         }
 		
         /// <summary>

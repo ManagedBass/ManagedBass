@@ -20,6 +20,8 @@ namespace ManagedBass.Spx
         public static void Load()
         {
             BASS_SPX_StreamCreateFile(false, "", 0, 0, 0);
+
+            Bass.PluginLoad(DllName);
         }
 		        
         [DllImport(DllName, CharSet = CharSet.Unicode)]

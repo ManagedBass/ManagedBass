@@ -17,6 +17,8 @@ namespace ManagedBass.ZXTune
         public static void Load()
         {
             BASS_ZXTUNE_StreamCreateFile(false, "", 0, 0, 0);
+
+            Bass.PluginLoad(DllName);
         }
 		        
         [DllImport(DllName, CharSet = CharSet.Unicode)]
