@@ -187,6 +187,12 @@
         Attack = 28,
 
         /// <summary>
+        /// Set the decay time (MIDI controller 75, NRPN 164h)
+        /// param : decay time (0-127, 0=-64, 64=normal, 127=+63).
+        /// </summary>
+        Decay = 29,
+
+        /// <summary>
         /// To be defined.
         /// param : to be defined.
         /// </summary>
@@ -265,6 +271,30 @@
         ChorusReverb = 42,
 
         /// <summary>
+        /// Set the user effect send level (MIDI controller 94).
+        /// This will have no audible effect unless custom processing is applied to the user effect mix via <see cref="BassMidi.StreamGetChannel"/>.
+        /// </summary>
+        UserFX = 43,
+
+        /// <summary>
+        /// Set the user effect level.
+        /// param : user effect level (0=off, 100=0dB, 200=+6dB).
+        /// </summary>
+        UserFXLevel = 44,
+
+        /// <summary>
+        /// Set the user effect send to reverb level.
+        /// param : user effect send to reverb level (0=off, 100=0dB, 200=+6dB).
+        /// </summary>
+        UserFXReverb = 45,
+
+        /// <summary>
+        /// Set the user effect send to chorus level.
+        /// param : user effect send to chorus level (0=off, 100=0dB, 200=+6dB).
+        /// </summary>
+        UserFXChorus = 46,
+        
+        /// <summary>
         /// Set the fine tuning of a drum key (MIDI NRPN 19knh).
         /// param : LOBYTE = key number (0-127), HIBYTE = finetune in cents (0-127, 0=-100, 64=normal, 127=+100).
         /// </summary>
@@ -311,6 +341,12 @@
         /// param : LOBYTE = key number (0-127), HIBYTE = level (0-127, 127=full/normal).
         /// </summary>
         DrumLevel = 57,
+
+        /// <summary>
+        /// Set the user effect send level of a drum key (MIDI NRPN 1Fknh)
+        /// param : LOBYTE = key number (0-127), HIBYTE = user effect level (0-127, 127=normal/full).
+        /// </summary>
+        DrumUserFX = 58,
         
         /// <summary>
         /// Set the soft pedal/switch (MIDI controller 67).
@@ -376,6 +412,60 @@
         BankLSB = 70,
 
         /// <summary>
+        /// Set a key's pressure/aftertouch.
+        /// param : LOBYTE = key number (0-127), HIBYTE = pressure level (0-127).
+        /// </summary>
+        KeyPressure = 71,
+
+        /// <summary>
+        /// Set the maximum effect of key pressure/aftertouch on vibrato depth.
+        /// param : vibrato depth effect in cents (0=none, 128=100, 256=200, etc).
+        /// </summary>
+        KeyPressureVibrato = 72,
+
+        /// <summary>
+        /// Set the maximum effect of key pressure/aftertouch on pitch.
+        /// param : pitch effect in semitones (0=-24, 24=none, 48=+24).
+        /// </summary>
+        KeyPressurePitch = 73,
+
+        /// <summary>
+        /// Set the maximum effect of key pressure/aftertouch on filter cutoff.
+        /// param : filter cutoff effect in cents (0=-9600, 9600=none, 19200=+9600).
+        /// </summary>
+        KeyPressureFilter = 74,
+
+        /// <summary>
+        /// Set the maximum effect of key pressure/aftertouch on volume.
+        /// param : volume effect percentage (0=-100, 100=none, 200=+100).
+        /// </summary>
+        KeyPressureVolume = 75,
+
+        /// <summary>
+        /// Set the sostenuto pedal/switch (MIDI controller 66).
+        /// param : sostenuto is on? (0-63=no, 64-127=yes).
+        /// </summary>
+        Sostenuto = 76,
+
+        /// <summary>
+        /// Set the maximum effect of modulation (MIDI controller 1) on pitch.
+        /// param : pitch effect in semitones (0=-24, 24=none, 48=+24).
+        /// </summary>
+        ModPitch = 77,
+
+        /// <summary>
+        /// Set the maximum effect of modulation (MIDI controller 1) on filter cutoff.
+        /// param : filter cutoff effect in cents (0=-9600, 9600=none, 19200=+9600).
+        /// </summary>
+        ModFilter = 78,
+
+        /// <summary>
+        /// Set the maximum effect of modulation (MIDI controller 1) on volume.
+        /// param : volume effect percentage (0=-100, 100=none, 200=+100).
+        /// </summary>
+        ModVolume = 79,
+
+        /// <summary>
         /// Set the level.
         /// param : the level (0=silent, 100=0dB, 200=+6dB).
         /// </summary>
@@ -398,9 +488,28 @@
         SystemEx = 0x10002,
 
         /// <summary>
+        /// Set a tempo modification.
+        /// Changing the tempo affects the stream length, and the <see cref="Bass.ChannelGetLength"/> byte value will no longer be valid.
+        /// The modification does not affect seeking.
+        /// param : speed in 100ths of a percent (100=1%/min, 10000=100%/normal, 20000=200%).
+        /// </summary>
+        Speed = 0x10004,
+
+        /// <summary>
         /// Used with <see cref="BassMidi.CreateStream(MidiEvent[],int,BassFlags,int)"/> to mark the end of a track (the next event will be in a new track).
         /// </summary>
         EndTrack = 0x10003,
+
+        /// <summary>
+        /// Used with <see cref="BassMidi.StreamGetEvent(int, int, MidiEventType)"/> to check the total no of keys pressed in the specified channel.
+        /// If a key is simultaneously pressed multiple times, it will still only be counted once.
+        /// </summary>
+        Notes = 0x20000,
+
+        /// <summary>
+        /// Used with <see cref="BassMidi.StreamGetEvent(int, int, MidiEventType)"/> to check the total no of active voices.
+        /// </summary>
+        Voices = 0x20001,
 
         /// <summary>
         /// Flag: no running status.

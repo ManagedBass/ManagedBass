@@ -9,12 +9,13 @@
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Delegates\MidiFilterProcedure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enumerations\FontInitFlags.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enumerations\MidiEventsMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enumerations\MidiEventType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enumerations\MidiMarkerType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enumerations\MidiSystem.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MidiInProcedure.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Delegates\MidiInProcedure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PInvoke\BassMidi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PInvoke\Configure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PInvoke\CreateStream.cs" />

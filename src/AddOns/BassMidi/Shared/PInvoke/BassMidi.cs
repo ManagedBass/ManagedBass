@@ -607,6 +607,25 @@ namespace ManagedBass.Midi
 
             return marks;
         }
+
+        /// <summary>
+        /// Retrieves the preset currently in use on a channel of a MIDI stream.
+        /// </summary>
+        /// <param name="Handle">The MIDI stream to retrieve the soundfont configuration of... 0 = get default soundfont configuration.</param>
+        /// <param name="Channel">The MIDI channel... 0 = channel 1.</param>
+        /// <param name="Font">The structure to receive font information.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// This function tells what preset from what soundfont is currently being used on a particular MIDI channel.
+        /// That information can be used to get the preset's name from <see cref="FontGetPreset(int, int, int)"/>.
+        /// No preset information will be available for a MIDI channel until a note is played in that channel.
+        /// The present and bank numbers will not necessarily match the channel's current <see cref="MidiEventType.Program"/> and <see cref="MidiEventType.Bank"/> event values, but rather what the MIDI stream's soundfont configuration maps those event values to.
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.Parameter"><paramref name="Channel"/> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">No preset is currently in use on the specified MIDI channel.</exception>
+        [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamGetPreset")]
+        public static extern bool StreamGetPreset(int Handle, int Channel, out MidiFont Font);
         
 		/// <summary>
 		/// Preloads the samples required by a MIDI file stream.
@@ -676,6 +695,25 @@ namespace ManagedBass.Midi
         {
             return BASS_MIDI_StreamSetFonts(Handle, Fonts, Count | BassMidiFontEx);
         }
+
+        /// <summary>
+        /// Set an event filtering function on a MIDI stream.
+        /// </summary>
+        /// <param name="Handle">The MIDI stream handle.</param>
+        /// <param name="Seeking">Also filter events when seeking.</param>
+        /// <param name="Procedure">The callback function... null = no filtering.</param>
+        /// <param name="User">User instance data to pass to the callback function.</param>
+        /// <returns>If successful, true is returned, else false is returned. Use <see cref="Bass.LastError"/> to get the error code.</returns>
+        /// <remarks>
+        /// This function allows a MIDI stream to have its events modified during playback via a callback function.
+        /// The callback function will be called before an event is processed, and it can choose to keep the event as is, or it can modify or drop the event.
+        /// The filtering can also be applied to events while seeking, so that playback begins in a filtered state after seeking.
+        /// Filtering only applies to a MIDI stream's defined event sequence, not any events that are applied via <see cref="StreamEvent(int, int, MidiEventType, byte, byte)"/> or <see cref="StreamEvents(int, MidiEventsMode, byte[], int)"/>.
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
+        /// <exception cref="Errors.NotAvailable">The stream does not have an event sequence.</exception>
+        [DllImport(DllName, EntryPoint = "BASS_MIDI_StreamSetFilter")]
+        public static extern bool StreamSetFilter(int Handle, bool Seeking, MidiFilterProcedure Procedure, IntPtr User = default(IntPtr));
 
         /// <summary>
         /// Convert raw MIDI data to <see cref="MidiEvent"/> structures.

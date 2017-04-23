@@ -428,6 +428,18 @@ namespace ManagedBass
         MidiVoicesActive = 0x12004,
 
         /// <summary>
+        /// BASSMIDI: The current state of a MIDI stream.
+        /// </summary>
+        MidiState = 0x12005,
+
+        /// <summary>
+        /// BASSMIDI: The sample rate conversion quality of a MIDI stream's samples.
+        /// </summary>
+        MidiSRC = 0x12006,
+
+        MidiKill = 0x12007,
+
+        /// <summary>
         /// BASSMIDI: The volume level (0.0=silent, 1.0=normal/default) of a track in a MIDI file stream + track#.
         /// <para>track#: The track to set the volume of... 0 = first track.</para>
         /// <para>
