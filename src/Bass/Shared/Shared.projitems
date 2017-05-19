@@ -84,7 +84,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Bass\Structures\SampleInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bass\Structures\Vector3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BitHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DynamicLibrary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Structures\DXChorusParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Structures\DXDistortionParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Structures\DXEchoParameters.cs" />
@@ -95,7 +94,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEffectParameter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MediaPlayer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plugin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ChannelReferences.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Resolution.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StreamFileProcedures.cs" />
