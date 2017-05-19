@@ -10,12 +10,7 @@ namespace ManagedBass.WaDsp
     public static class BassWaDsp
     {
         const string DllName = "bass_wadsp";
-
-        public static void Load()
-        {
-            BASS_WADSP_GetVersion();
-        }
-        
+                
         /// <summary>
         /// Removes a Winamp DSP from the Bass DSP chain which had been set up with <see cref="ChannelSetDSP" /> before.
         /// </summary>

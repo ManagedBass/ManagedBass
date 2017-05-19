@@ -13,12 +13,7 @@ namespace ManagedBass.Enc
 #else
         const string DllName = "bassenc_opus";
 #endif
-
-        public static void Load()
-        {
-            BASS_Encode_OPUS_GetVersion();
-        }
-        
+                
         [DllImport(DllName)]
         static extern int BASS_Encode_OPUS_GetVersion();
 

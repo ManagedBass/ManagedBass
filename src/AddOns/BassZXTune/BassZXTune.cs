@@ -13,13 +13,6 @@ namespace ManagedBass.ZXTune
 #else
         const string DllName = "basszxtune";
 #endif
-
-        public static void Load()
-        {
-            BASS_ZXTUNE_StreamCreateFile(false, "", 0, 0, 0);
-
-            Bass.PluginLoad(DllName);
-        }
 		        
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_ZXTUNE_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);

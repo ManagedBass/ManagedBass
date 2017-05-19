@@ -9,12 +9,7 @@ namespace ManagedBass.Asio
     public static partial class BassAsio
     {
         const string DllName = "bassasio";
-
-        public static void Load()
-        {
-            BASS_ASIO_GetVersion();
-        }
-                
+                        
         #region AddDevice
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_ASIO_AddDevice(Guid clsid, string driver, string name);

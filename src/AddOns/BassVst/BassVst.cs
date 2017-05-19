@@ -9,12 +9,7 @@ namespace ManagedBass.Vst
 	public static class BassVst
 	{
 		const string DllName = "bass_vst";
-
-        public static void Load()
-        {
-            BASS_VST_ChannelCreate(0, 0, "", 0);
-        }
-        
+                
         /// <summary>
         /// Creates a new BASS stream based on any VST instrument plugin (VSTi).
         /// </summary>

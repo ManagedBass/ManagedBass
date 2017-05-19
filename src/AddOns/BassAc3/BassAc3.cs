@@ -16,14 +16,7 @@ namespace ManagedBass.Ac3
 #else
         const string DllName = "bass_ac3";
 #endif
-
-        public static void Load()
-        {
-            BASS_AC3_StreamCreateFile(false, "", 0, 0, 0);
-
-            Bass.PluginLoad(DllName);
-        }
-		        
+        
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_AC3_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 

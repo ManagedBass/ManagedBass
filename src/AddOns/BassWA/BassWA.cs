@@ -9,12 +9,7 @@ namespace ManagedBass.WA
     public static class BassWA
     {
         const string DllName = "bass_wa";
-
-        public static void Load()
-        {
-            IsPlaying(false);
-        }
-        
+                
         /// <summary>
         /// Starts the visualization plugin and the selected module within the plugin you provide.
         /// </summary>

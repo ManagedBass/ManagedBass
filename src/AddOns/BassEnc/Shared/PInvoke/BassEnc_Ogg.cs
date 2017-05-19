@@ -13,11 +13,6 @@ namespace ManagedBass.Enc
 #else
         const string DllName = "bassenc_ogg";
 #endif
-
-        public static void Load()
-        {
-            BASS_Encode_OGG_GetVersion();
-        }
         
         [DllImport(DllName)]
         static extern int BASS_Encode_OGG_GetVersion();

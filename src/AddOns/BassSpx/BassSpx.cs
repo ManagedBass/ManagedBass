@@ -16,14 +16,7 @@ namespace ManagedBass.Spx
 #else
         const string DllName = "bass_spx";
 #endif
-
-        public static void Load()
-        {
-            BASS_SPX_StreamCreateFile(false, "", 0, 0, 0);
-
-            Bass.PluginLoad(DllName);
-        }
-		        
+      
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_SPX_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 

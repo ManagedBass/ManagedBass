@@ -17,11 +17,6 @@ namespace ManagedBass.Wasapi
     public static class BassWasapi
     {
         const string DllName = "basswasapi";
-
-        public static void Load()
-        {
-            BASS_WASAPI_GetVersion();
-        }
         
         /// <summary>
         /// Identifier for Default Device.

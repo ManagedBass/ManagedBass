@@ -15,10 +15,6 @@ namespace ManagedBass.Tags
 #else
         const string DllName = "tags";
 #endif
-        public static void Load()
-        {
-            TAGS_GetVersion();
-        }
         
         [DllImport(DllName)]
         static extern int TAGS_GetVersion();

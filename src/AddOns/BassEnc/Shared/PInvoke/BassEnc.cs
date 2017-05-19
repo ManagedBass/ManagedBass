@@ -15,11 +15,6 @@ namespace ManagedBass.Enc
         const string DllName = "bassenc";
 #endif
         
-        public static void Load()
-        {
-            BASS_Encode_GetVersion();
-        }
-
         #region Version
         [DllImport(DllName)]
         static extern int BASS_Encode_GetVersion();

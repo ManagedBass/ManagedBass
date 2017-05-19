@@ -13,11 +13,6 @@ namespace ManagedBass.Winamp
     public static class BassWinamp
     {
         const string DllName = "bass_winamp";
-
-        public static void Load()
-        {
-            CreateStream("", 0);
-        }
         
         /// <summary>
         /// Winamp input timeout (in milliseconds) to wait until timing out, because the plugin is not using the output system.

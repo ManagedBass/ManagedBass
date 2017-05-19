@@ -9,12 +9,7 @@ namespace ManagedBass.Sfx
 	public static class BassSfx
 	{
 		const string DllName = "bass_sfx";
-
-        public static void Load()
-        {
-            BASS_SFX_GetVersion();
-        }
-        
+                
         [DllImport(DllName)]
 		static extern BassSfxError BASS_SFX_ErrorGetCode();
 

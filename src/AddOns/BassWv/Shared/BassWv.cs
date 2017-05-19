@@ -16,18 +16,7 @@ namespace ManagedBass.Wv
 #else
         const string DllName = "basswv";
 #endif
-
-        public static void Load()
-        {
-            BASS_WV_StreamCreateFile(false, "", 0, 0, 0);
-
-#if __IOS__
-            Bass.PluginLoad("BASSWV");
-#else
-            Bass.PluginLoad(DllName);
-#endif
-        }
-		
+        		
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_WV_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 

@@ -12,14 +12,7 @@ namespace ManagedBass.Aac
     public static class BassAac
     {
         const string DllName = "bass_aac";
-
-        public static void Load()
-        {
-            BASS_AAC_StreamCreateFile(false, "", 0, 0, 0);
-
-            Bass.PluginLoad(DllName);
-        }
-		
+        		
         /// <summary>
         /// Play audio from Mp4... default = true.
         /// </summary>

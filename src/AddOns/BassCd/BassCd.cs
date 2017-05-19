@@ -12,14 +12,7 @@ namespace ManagedBass.Cd
     public static class BassCd
     {
         const string DllName = "basscd";
-
-        public static void Load()
-        {
-            BASS_CD_StreamCreateFile("", 0);
-
-            Bass.PluginLoad(DllName);
-        }
-		
+        		
         /// <summary>
         /// Track Pregap constant
         /// </summary>

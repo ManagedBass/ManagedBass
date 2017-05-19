@@ -14,17 +14,6 @@ namespace ManagedBass.Hls
         const string DllName = "basshls";
 #endif
         
-        public static void Load()
-        {
-            BASS_HLS_StreamCreateFile(false, "", 0, 0, 0);
-
-#if __IOS__
-            Bass.PluginLoad("BASSHLS");
-#else
-            Bass.PluginLoad(DllName);
-#endif
-        }
-		
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_HLS_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 

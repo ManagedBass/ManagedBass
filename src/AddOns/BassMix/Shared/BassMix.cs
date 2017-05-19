@@ -14,11 +14,6 @@ namespace ManagedBass.Mix
         const string DllName = "bassmix";
 #endif
         
-        public static void Load()
-        {
-            SplitStreamReset(0);
-        }
-
         #region Split
         /// <summary>
         /// Creates a splitter stream (adds a reader channel to a decoding source channel).

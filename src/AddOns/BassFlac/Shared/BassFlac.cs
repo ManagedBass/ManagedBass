@@ -17,17 +17,6 @@ namespace ManagedBass.Flac
         const string DllName = "bassflac";
 #endif
         
-        public static void Load()
-        {
-            BASS_FLAC_StreamCreateFile(false, "", 0, 0, 0);
-
-#if __IOS__
-            Bass.PluginLoad("BASSFLAC");
-#else
-            Bass.PluginLoad(DllName);
-#endif
-        }
-
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_FLAC_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 

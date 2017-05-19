@@ -27,11 +27,6 @@ namespace ManagedBass
         const string DllName = "bass";
 #endif
         
-        public static void Load()
-        {
-            BASS_GetVersion();
-        }
-
         /// <summary>
         /// Gets the Formats supported by Bass separated by `;`. The list is not necessarily complete.
         /// </summary>

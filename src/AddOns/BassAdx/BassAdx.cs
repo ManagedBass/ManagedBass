@@ -12,14 +12,7 @@ namespace ManagedBass.Adx
     public static class BassAdx
     {
         const string DllName = "bass_adx";
-
-        public static void Load()
-        {
-            BASS_ADX_StreamCreateFile(false, "", 0, 0, 0);
-
-            Bass.PluginLoad(DllName);
-        }
-                
+        
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_ADX_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 

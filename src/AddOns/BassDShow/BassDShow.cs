@@ -9,12 +9,7 @@ namespace ManagedBass.DShow
 	public static class BassDShow
 	{
 		const string DllName = "xVideo";
-
-        public static void Load()
-        {
-            BASS_DSHOW_GetVersion();
-        }
-        
+                
         /// <summary>
         /// This method is an alternative way to get item names on methods that require callbacks.
         /// </summary>

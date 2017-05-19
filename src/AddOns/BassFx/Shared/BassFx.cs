@@ -13,11 +13,6 @@ namespace ManagedBass.Fx
 #else
         const string DllName = "bass_fx";
 #endif
-
-        public static void Load()
-        {
-            BASS_FX_GetVersion();
-        }
         
         #region Version
         [DllImport(DllName)]

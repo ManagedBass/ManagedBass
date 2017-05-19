@@ -16,17 +16,6 @@ namespace ManagedBass.Midi
 #else
         const string DllName = "bassmidi";
 #endif
-
-        public static void Load()
-        {
-            BASS_MIDI_StreamCreateFile(false, "", 0, 0, 0);
-
-#if __IOS__
-            Bass.PluginLoad("BASSMIDI");
-#else
-            Bass.PluginLoad(DllName);
-#endif
-        }
         
         const int BassMidiFontEx = 0x1000000;
 

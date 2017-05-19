@@ -14,13 +14,6 @@ namespace ManagedBass.Wma
     public static class BassWma
     {
         const string DllName = "basswma";
-
-        public static void Load()
-        {
-            BASS_WMA_StreamCreateFile(false, "", 0, 0, 0);
-
-            Bass.PluginLoad(DllName);
-        }
         
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_WMA_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);

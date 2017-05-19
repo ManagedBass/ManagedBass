@@ -16,18 +16,7 @@ namespace ManagedBass.Dsd
 #else
         const string DllName = "bassdsd";
 #endif
-        
-        public static void Load()
-        {
-            BASS_DSD_StreamCreateFile(false, "", 0, 0, 0);
-
-#if __IOS__
-            Bass.PluginLoad("BASS_DSD");
-#else
-            Bass.PluginLoad(DllName);
-#endif
-        }
-        
+                
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_DSD_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags, int Frequency = 0);
 

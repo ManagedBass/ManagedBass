@@ -16,18 +16,7 @@ namespace ManagedBass.Ape
 #else
         const string DllName = "bass_ape";
 #endif
-        
-        public static void Load()
-        {
-            BASS_APE_StreamCreateFile(false, "", 0, 0, 0);
-
-#if __IOS__
-            Bass.PluginLoad("BASS_APE");
-#else
-            Bass.PluginLoad(DllName);
-#endif
-        }
-        
+                
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_APE_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 

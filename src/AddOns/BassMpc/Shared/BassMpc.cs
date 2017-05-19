@@ -16,18 +16,7 @@ namespace ManagedBass.Mpc
 #else
         const string DllName = "bass_mpc";
 #endif
-
-        public static void Load()
-        {
-            BASS_MPC_StreamCreateFile(false, "", 0, 0, 0);
-
-#if __IOS__
-            Bass.PluginLoad("BASS_MPC");
-#else
-            Bass.PluginLoad(DllName);
-#endif
-        }
-		        
+     
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_MPC_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 

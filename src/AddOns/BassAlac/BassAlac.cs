@@ -12,14 +12,7 @@ namespace ManagedBass.Alac
     public static class BassAlac
     {
         const string DllName = "bassalac";
-
-        public static void Load()
-        {
-            BASS_ALAC_StreamCreateFile(false, "", 0, 0, 0);
-
-            Bass.PluginLoad(DllName);
-        }
-        
+                
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_ALAC_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 

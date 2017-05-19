@@ -16,18 +16,7 @@ namespace ManagedBass.Opus
 #else
         const string DllName = "bassopus";
 #endif
-
-        public static void Load()
-        {
-            BASS_OPUS_StreamCreateFile(false, "", 0, 0, 0);
-
-#if __IOS__
-            Bass.PluginLoad("BASSOPUS");
-#else
-            Bass.PluginLoad(DllName);
-#endif
-        }
-		
+        		
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_OPUS_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 

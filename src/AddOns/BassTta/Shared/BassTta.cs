@@ -16,17 +16,6 @@ namespace ManagedBass.Tta
 #else
         const string DllName = "bass_tta";
 #endif
-
-        public static void Load()
-        {
-            BASS_TTA_StreamCreateFile(false, "", 0, 0, 0);
-
-#if __IOS__
-            Bass.PluginLoad("BASSTTA");
-#else
-            Bass.PluginLoad(DllName);
-#endif
-        }
 		
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_TTA_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);

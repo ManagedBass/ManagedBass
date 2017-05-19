@@ -9,14 +9,7 @@ namespace ManagedBass.Aix
     public static class BassAix
     {
         const string DllName = "bass_aix";
-
-        public static void Load()
-        {
-            BASS_AIX_StreamCreateFile(false, "", 0, 0, 0);
-
-            Bass.PluginLoad(DllName);
-        }
-                
+                        
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_AIX_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 
