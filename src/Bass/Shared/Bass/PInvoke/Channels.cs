@@ -634,7 +634,7 @@ namespace ManagedBass
         /// <returns>If the attribute (or any) is sliding, then <see langword="true" /> is returned, else <see langword="false" /> is returned.</returns>
         [DllImport(DllName, EntryPoint = "BASS_ChannelIsSliding")]
         public static extern bool ChannelIsSliding(int Handle, ChannelAttribute Attribute);
-        
+
         /// <summary>
         /// Slides a channel's attribute from its current value to a new value.
         /// </summary>
@@ -696,12 +696,12 @@ namespace ManagedBass
         /// <summary>
         /// Gets the Level of the Left Channel.
         /// </summary>
-        public static int ChannelGetLevelLeft(int Handle) => ChannelGetLevel(Handle).LoWord();
+        public static ushort ChannelGetLevelLeft(int Handle) => (ushort)ChannelGetLevel(Handle).LoWord();
 
         /// <summary>
         /// Gets the Level of the Right Channel.
         /// </summary>
-        public static int ChannelGetLevelRight(int Handle) => ChannelGetLevel(Handle).HiWord();
+        public static ushort ChannelGetLevelRight(int Handle) => (ushort)ChannelGetLevel(Handle).HiWord();
 
         /// <summary>
         /// Retrieves the level (peak amplitude) of a sample, stream, MOD music or recording channel.
