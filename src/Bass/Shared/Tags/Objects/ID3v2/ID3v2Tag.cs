@@ -216,78 +216,79 @@ namespace ManagedBass
 
             var bytesRead = 0;
 
-            var mStream = new MemoryStream();
-
-            if (DetectEncoding && MaxLength >= 3)
+            using (var mStream = new MemoryStream())
             {
-                var buffer = new byte[3];
-                
-                Read(buffer, 0, buffer.Length);
-                
-                if (buffer[0] == 0xFF && buffer[1] == 0xFE)
-                {   
-                    // FF FE
-                    TEncoding = TextEncodings.Utf16; // UTF-16 (LE)
-                    _ptr -= 1;
-                    bytesRead += 1;
-                    MaxLength -= 2;
-                }
-
-                else if (buffer[0] == 0xFE && buffer[1] == 0xFF)
-                {   
-                    // FE FF
-                    TEncoding = TextEncodings.Utf16Be;
-                    _ptr -= 1;
-                    bytesRead += 1;
-                    MaxLength -= 2;
-                }
-
-                else if (buffer[0] == 0xEF && buffer[1] == 0xBB && buffer[2] == 0xBF)
+                if (DetectEncoding && MaxLength >= 3)
                 {
-                    // EF BB BF
-                    TEncoding = TextEncodings.Utf8;
-                    MaxLength -= 3;
-                }
-                {
-                    _ptr -= 3;
-                    bytesRead += 3;
-                }
-            }
+                    var buffer = new byte[3];
 
-            var is2ByteSeprator = TEncoding == TextEncodings.Utf16 || TEncoding == TextEncodings.Utf16Be;
+                    Read(buffer, 0, buffer.Length);
 
-            while (MaxLength > 0)
-            {
-                var buf = ReadByte();
-
-                if (buf != 0) // if it's data byte
-                    mStream.WriteByte(buf);
-
-                else // if Buf == 0
-                {
-                    if (is2ByteSeprator)
+                    if (buffer[0] == 0xFF && buffer[1] == 0xFE)
                     {
-                        var temp = ReadByte();
-
-                        if (temp == 0)
-                            break;
-
-                        mStream.WriteByte(buf);
-                        mStream.WriteByte(temp);
-                        MaxLength--;
+                        // FF FE
+                        TEncoding = TextEncodings.Utf16; // UTF-16 (LE)
+                        _ptr -= 1;
+                        bytesRead += 1;
+                        MaxLength -= 2;
                     }
-                    else break;
+
+                    else if (buffer[0] == 0xFE && buffer[1] == 0xFF)
+                    {
+                        // FE FF
+                        TEncoding = TextEncodings.Utf16Be;
+                        _ptr -= 1;
+                        bytesRead += 1;
+                        MaxLength -= 2;
+                    }
+
+                    else if (buffer[0] == 0xEF && buffer[1] == 0xBB && buffer[2] == 0xBF)
+                    {
+                        // EF BB BF
+                        TEncoding = TextEncodings.Utf8;
+                        MaxLength -= 3;
+                    }
+                    {
+                        _ptr -= 3;
+                        bytesRead += 3;
+                    }
                 }
 
-                MaxLength--;
+                var is2ByteSeprator = TEncoding == TextEncodings.Utf16 || TEncoding == TextEncodings.Utf16Be;
+
+                while (MaxLength > 0)
+                {
+                    var buf = ReadByte();
+
+                    if (buf != 0) // if it's data byte
+                        mStream.WriteByte(buf);
+
+                    else // if Buf == 0
+                    {
+                        if (is2ByteSeprator)
+                        {
+                            var temp = ReadByte();
+
+                            if (temp == 0)
+                                break;
+
+                            mStream.WriteByte(buf);
+                            mStream.WriteByte(temp);
+                            MaxLength--;
+                        }
+                        else break;
+                    }
+
+                    MaxLength--;
+                }
+
+                if (MaxLength < 0)
+                    _ptr += MaxLength;
+
+                ReadedLength -= bytesRead;
+
+                return GetEncoding(TEncoding).GetString(mStream.ToArray(), 0, (int)mStream.Length);
             }
-
-            if (MaxLength < 0)
-                _ptr += MaxLength;
-
-            ReadedLength -= bytesRead;
-
-            return GetEncoding(TEncoding).GetString(mStream.ToArray(), 0, (int)mStream.Length);
         }
 
         byte ReadByte()
