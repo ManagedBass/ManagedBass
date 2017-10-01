@@ -497,6 +497,18 @@ namespace ManagedBass
         /// <summary>
         /// Disable playback ramping? 
         /// </summary>
-        NoRamp = 0xb
+        NoRamp = 0xb,
+
+        /// <summary>
+        /// Amount of data to asynchronously buffer from a splitter's source.
+        /// 0 = disable asynchronous buffering. The asynchronous buffering will be limited to the splitter's buffer length.
+        /// </summary>
+        SplitAsyncBuffer = 0x15010,
+
+        /// <summary>
+        /// Maximum amount of data to asynchronously buffer at a time from a splitter's source.
+        /// 0 = as much as possible.
+        /// </summary>
+        SplitAsyncPeriod = 0x15011
     }
 }

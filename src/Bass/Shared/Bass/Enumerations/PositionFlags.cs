@@ -52,6 +52,11 @@ namespace ManagedBass
         MIDIDecaySeek = 0x4000,
 
         /// <summary>
+        /// Mixer playback buffering when seeking.
+        /// </summary>
+        MixerReset = 0x10000,
+
+        /// <summary>
         /// MOD Music Flag: Stop all notes when moving position.
         /// </summary>
         MusicPositionReset = 0x8000,

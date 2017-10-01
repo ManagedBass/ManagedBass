@@ -275,6 +275,29 @@ namespace ManagedBass.Mix
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelRemove")]
         public static extern bool MixerRemoveChannel(int Handle);
 
+        [DllImport(DllName)]
+        static extern int BASS_Mixer_StreamGetChannels(int Handle, [In, Out] int[] Channels, int Count);
+
+        /// <summary>
+        /// Retrieves a mixer's source channels.
+        /// </summary>
+        /// <param name="Handle">The Mixer Handle.</param>
+        /// <returns>An array containing mixer source channels or null on error. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>To determine whether a particular channel is plugged in a mixer, it is simpler to use <see cref="ChannelGetMixer"/> instead of this function.</remarks>
+        public static int[] MixerGetChannels(int Handle)
+        {
+            var count = BASS_Mixer_StreamGetChannels(Handle, null, 0);
+
+            if (count == -1)
+                return null;
+
+            var result = new int[count];
+
+            BASS_Mixer_StreamGetChannels(Handle, result, count);
+
+            return result;
+        }
+
         #region Configuration
         /// <summary>
         /// The splitter Buffer Length in milliseconds... 100 (min) to 5000 (max).
