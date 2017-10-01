@@ -7,7 +7,7 @@ namespace ManagedBass
     /// <summary>
     /// Writes Wave data to a .wav file
     /// </summary>
-    public class WaveFileWriter
+    public class WaveFileWriter : IDisposable
     {
         #region Fields
         Stream _ofstream;
