@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 
 namespace ManagedBass
@@ -9,7 +9,7 @@ namespace ManagedBass
     /// </summary>
     public static class ChannelReferences
     {
-        static readonly Dictionary<Tuple<int, int>, object> Procedures = new Dictionary<Tuple<int, int>, object>();
+        static readonly ConcurrentDictionary<Tuple<int, int>, object> Procedures = new ConcurrentDictionary<Tuple<int, int>, object>();
         static readonly SyncProcedure Freeproc = Callback;
         
         /// <summary>
@@ -32,7 +32,7 @@ namespace ManagedBass
 
             if (contains)
                 Procedures[key] = proc;
-            else Procedures.Add(key, proc);
+            else Procedures.TryAdd(key, proc);
         }
 
         /// <summary>
@@ -41,9 +41,7 @@ namespace ManagedBass
         public static void Remove(int Handle, int SpecialHandle)
         {
             var key = Tuple.Create(Handle, SpecialHandle);
-            
-            if (Procedures.ContainsKey(key))
-                Procedures.Remove(key);
+            Procedures.TryRemove(key, out object unused);
         }
         
         static void Callback(int Handle, int Channel, int Data, IntPtr User)
@@ -52,7 +50,7 @@ namespace ManagedBass
             var toRemove = Procedures.Where(Pair => Pair.Key.Item1 == Channel).Select(Pair => Pair.Key).ToArray();
             
             foreach (var key in toRemove)
-                Procedures.Remove(key);
+                Procedures.TryRemove(key, out object unused);
         }
     }
 }
