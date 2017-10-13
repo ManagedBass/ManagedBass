@@ -696,12 +696,28 @@ namespace ManagedBass
         /// <summary>
         /// Gets the Level of the Left Channel.
         /// </summary>
-        public static int ChannelGetLevelLeft(int Handle) => ChannelGetLevel(Handle).LoWord();
+        public static int ChannelGetLevelLeft(int Handle)
+        {
+            int value = ChannelGetLevel(Handle);
+
+            if (value == -1)
+                return -1;
+
+            return value.LoWord();
+        }
 
         /// <summary>
         /// Gets the Level of the Right Channel.
         /// </summary>
-        public static int ChannelGetLevelRight(int Handle) => ChannelGetLevel(Handle).HiWord();
+        public static int ChannelGetLevelRight(int Handle)
+        {
+            int value = ChannelGetLevel(Handle);
+
+            if (value == -1)
+                return -1;
+
+            return value.HiWord();
+        }
 
         /// <summary>
         /// Retrieves the level (peak amplitude) of a sample, stream, MOD music or recording channel.
