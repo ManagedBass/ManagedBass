@@ -10,7 +10,7 @@ namespace ManagedBass
         /// <summary>
         /// The return value is the high-order double word of the specified value.
         /// </summary>
-        public static long HiDword(this long DWord) => DWord >> 32;
+        public static long HiDword(this long DWord) => (long)((ulong)DWord >> 32);
 
         /// <summary>
         /// The return value is the low-order word of the specified value.
@@ -20,7 +20,7 @@ namespace ManagedBass
         /// <summary>
         /// The return value is the high-order word of the specified value.
         /// </summary>
-        public static int HiWord(this int DWord) => DWord >> 16;
+        public static int HiWord(this int DWord) => (int)((uint)DWord >> 16);
 
         /// <summary>
         /// The return value is the low-order word of the specified value.
