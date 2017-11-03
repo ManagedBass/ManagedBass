@@ -11,11 +11,7 @@ namespace ManagedBass.Dsd
     /// </remarks>
     public static class BassDsd
     {
-#if __IOS__
-        const string DllName = "__Internal";
-#else
         const string DllName = "bassdsd";
-#endif
                 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_DSD_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags, int Frequency = 0);
