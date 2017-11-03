@@ -11,11 +11,7 @@ namespace ManagedBass.Opus
     /// </remarks>
     public static class BassOpus
     {
-#if __IOS__
-        const string DllName = "__Internal";
-#else
         const string DllName = "bassopus";
-#endif
         		
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_OPUS_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
