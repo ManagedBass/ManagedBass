@@ -8,11 +8,7 @@ namespace ManagedBass.Hls
     /// </summary>
     public static class BassHls
     {
-#if __IOS__
-        const string DllName = "__Internal";
-#else
         const string DllName = "basshls";
-#endif
         
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_HLS_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
