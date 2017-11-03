@@ -20,10 +20,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Dsd.dll" target="lib\netstandard1.4"/>
-        <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Dsd.xml" target="lib\netstandard1.4"/>
-        
-        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.Dsd.dll" target="lib\Xamarin.iOS"/>
-        <file src="iOS\bin\Release\netstandard1.4\ManagedBass.Dsd.xml" target="lib\Xamarin.iOS"/>
+        <file src="bin\Release\netstandard1.4\ManagedBass.Dsd.dll" target="lib\netstandard1.4"/>
+        <file src="bin\Release\netstandard1.4\ManagedBass.Dsd.xml" target="lib\netstandard1.4"/>
     </files>
 </package>
