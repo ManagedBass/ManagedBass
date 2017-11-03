@@ -22,7 +22,5 @@
     <files>
         <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Ape.dll" target="lib\netstandard1.4"/>
         <file src="Portable\bin\Release\netstandard1.4\ManagedBass.Ape.xml" target="lib\netstandard1.4"/>
-        
-        <file src="ManagedBass.Ape.dll.config" target="lib\Xamarin.iOS"/>
     </files>
 </package>
