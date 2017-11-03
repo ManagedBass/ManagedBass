@@ -11,12 +11,8 @@ namespace ManagedBass.Wv
     /// </remarks>
     public static class BassWv
     {
-#if __IOS__
-        const string DllName = "__Internal";
-#else
         const string DllName = "basswv";
-#endif
-        		
+
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_WV_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 
