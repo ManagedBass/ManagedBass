@@ -163,7 +163,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassDsd", "AddOns\BassDsd\B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassFlac", "AddOns\BassFlac\BassFlac.csproj", "{FFCA0A66-B9D6-4060-866C-DA6215E03040}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassFx", "AddOns\BassFx\Portable\BassFx.csproj", "{62830AC1-398E-45F6-8C77-B6346019A65D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassFx", "AddOns\BassFx\BassFx.csproj", "{62830AC1-398E-45F6-8C77-B6346019A65D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassHls", "AddOns\BassHls\Portable\BassHls.csproj", "{6154A4AA-F695-4ACB-9C52-4C4EBDA50B45}"
 EndProject
