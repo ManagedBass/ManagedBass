@@ -85,10 +85,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassSpx", "BassSpx", "{00FE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassFlac", "BassFlac", "{1A8056DC-FE57-40F2-84C0-B859932344E5}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "AddOns\BassFlac\Shared\Shared.shproj", "{126EB288-40A6-49F8-90C6-4C457157B017}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "AddOns\BassFlac\iOS\iOS.csproj", "{33B75450-3350-493A-A6FB-A45495BF10B0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassMidi", "BassMidi", "{46E48BCB-C105-4049-A64B-DFC1621B5A2D}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "AddOns\BassMidi\Shared\Shared.shproj", "{1FB51416-F915-4DBB-9AC2-120333C73FF8}"
@@ -165,7 +161,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassApe", "AddOns\BassApe\B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassDsd", "AddOns\BassDsd\BassDsd.csproj", "{00EA2796-F332-451E-82B9-763487485C2C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassFlac", "AddOns\BassFlac\Portable\BassFlac.csproj", "{FFCA0A66-B9D6-4060-866C-DA6215E03040}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassFlac", "AddOns\BassFlac\BassFlac.csproj", "{FFCA0A66-B9D6-4060-866C-DA6215E03040}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassFx", "AddOns\BassFx\Portable\BassFx.csproj", "{62830AC1-398E-45F6-8C77-B6346019A65D}"
 EndProject
@@ -190,12 +186,10 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		AddOns\BassFx\Shared\Shared.projitems*{00d52d0d-8309-4625-90c1-b225bdfa9188}*SharedItemsImports = 13
-		AddOns\BassFlac\Shared\Shared.projitems*{126eb288-40a6-49f8-90c6-4c457157b017}*SharedItemsImports = 13
 		AddOns\BassMidi\Shared\Shared.projitems*{1fb51416-f915-4dbb-9ac2-120333c73ff8}*SharedItemsImports = 13
 		Bass\Shared\Shared.projitems*{2128ef61-f422-439a-beb2-be39bac713ee}*SharedItemsImports = 4
 		AddOns\BassTags\Shared\Shared.projitems*{25c516f5-2f19-452f-a323-7bb2d86b0ab3}*SharedItemsImports = 4
 		AddOns\BassTta\Shared\Shared.projitems*{2fffbd62-09a9-4102-9d29-d1496d89fcf5}*SharedItemsImports = 4
-		AddOns\BassFlac\Shared\Shared.projitems*{33b75450-3350-493a-a6fb-a45495bf10b0}*SharedItemsImports = 4
 		AddOns\BassEnc\Shared\Shared.projitems*{3ba4ff0c-458a-44da-b267-3409151598d7}*SharedItemsImports = 4
 		AddOns\BassTags\Shared\Shared.projitems*{519ca48d-4634-4896-a613-6a39bb85ba6f}*SharedItemsImports = 13
 		AddOns\BassHls\Shared\Shared.projitems*{66398bda-c98e-434a-9cad-59c238ae6e46}*SharedItemsImports = 4
@@ -254,10 +248,6 @@ Global
 		{C0BE39B4-9F9F-4B0F-8E56-235FDE999EF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0BE39B4-9F9F-4B0F-8E56-235FDE999EF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0BE39B4-9F9F-4B0F-8E56-235FDE999EF7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33B75450-3350-493A-A6FB-A45495BF10B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33B75450-3350-493A-A6FB-A45495BF10B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33B75450-3350-493A-A6FB-A45495BF10B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33B75450-3350-493A-A6FB-A45495BF10B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A4D1F1CE-73E9-4F5F-B399-E69D7BF998AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A4D1F1CE-73E9-4F5F-B399-E69D7BF998AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4D1F1CE-73E9-4F5F-B399-E69D7BF998AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -454,8 +444,6 @@ Global
 		{4BDD4A47-C60E-4950-B171-224D947A984C} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
 		{00FE2826-BEF4-4300-8ABA-EFBE19B7D8AC} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
 		{1A8056DC-FE57-40F2-84C0-B859932344E5} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
-		{126EB288-40A6-49F8-90C6-4C457157B017} = {1A8056DC-FE57-40F2-84C0-B859932344E5}
-		{33B75450-3350-493A-A6FB-A45495BF10B0} = {1A8056DC-FE57-40F2-84C0-B859932344E5}
 		{46E48BCB-C105-4049-A64B-DFC1621B5A2D} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
 		{1FB51416-F915-4DBB-9AC2-120333C73FF8} = {46E48BCB-C105-4049-A64B-DFC1621B5A2D}
 		{A4D1F1CE-73E9-4F5F-B399-E69D7BF998AA} = {46E48BCB-C105-4049-A64B-DFC1621B5A2D}
