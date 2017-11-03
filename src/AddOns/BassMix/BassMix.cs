@@ -8,11 +8,7 @@ namespace ManagedBass.Mix
     /// </summary>
     public static class BassMix
     {
-#if __IOS__
-        const string DllName = "__Internal";
-#else
         const string DllName = "bassmix";
-#endif
         
         #region Split
         /// <summary>

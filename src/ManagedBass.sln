@@ -23,11 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassWinamp", "BassWinamp", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassMix", "BassMix", "{DA8F1FAA-8700-42EE-A5B5-7F7A21C45039}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "AddOns\BassMix\Shared\Shared.shproj", "{DDD15511-75A1-4D14-A231-46B06A5155EC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "Bass\iOS\iOS.csproj", "{2128EF61-F422-439A-BEB2-BE39BAC713EE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "AddOns\BassMix\iOS\iOS.csproj", "{B3BB59A9-E642-4C8B-B7FE-514ACB5DEBC9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassFx", "BassFx", "{5F18CAAD-AD81-4B0E-93A4-38E935A3AA35}"
 EndProject
@@ -159,7 +155,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassFx", "AddOns\BassFx\Bas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassHls", "AddOns\BassHls\BassHls.csproj", "{6154A4AA-F695-4ACB-9C52-4C4EBDA50B45}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassMix", "AddOns\BassMix\Portable\BassMix.csproj", "{FE79230F-4D58-4B0C-8076-D17CFBBF8259}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassMix", "AddOns\BassMix\BassMix.csproj", "{FE79230F-4D58-4B0C-8076-D17CFBBF8259}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassMpc", "AddOns\BassMpc\Portable\BassMpc.csproj", "{2DA3DF25-649D-4CCA-B66E-8E6AC29889E9}"
 EndProject
@@ -191,11 +187,9 @@ Global
 		AddOns\BassMidi\Shared\Shared.projitems*{a4d1f1ce-73e9-4f5f-b399-e69d7bf998aa}*SharedItemsImports = 4
 		AddOns\BassEnc\Shared\Shared.projitems*{a885cf43-1f88-4ec7-af35-4c73776b1c42}*SharedItemsImports = 13
 		AddOns\BassMpc\Shared\Shared.projitems*{a9b93675-59f5-4672-be32-118f61e6347c}*SharedItemsImports = 4
-		AddOns\BassMix\Shared\Shared.projitems*{b3bb59a9-e642-4c8b-b7fe-514acb5debc9}*SharedItemsImports = 4
 		AddOns\BassWv\Shared\Shared.projitems*{c0be39b4-9f9f-4b0f-8e56-235fde999ef7}*SharedItemsImports = 4
 		Bass\Shared\Shared.projitems*{cd4e203e-c152-4914-93f8-59010befcb52}*SharedItemsImports = 13
 		AddOns\BassEnc\Shared\Shared.projitems*{d7a05b65-f427-4d11-a156-5f5459044b22}*SharedItemsImports = 4
-		AddOns\BassMix\Shared\Shared.projitems*{ddd15511-75a1-4d14-a231-46b06a5155ec}*SharedItemsImports = 13
 		AddOns\BassTta\Shared\Shared.projitems*{f1a52870-a4a7-4f6c-9de1-cf4a76ced745}*SharedItemsImports = 13
 		AddOns\BassOpus\Shared\Shared.projitems*{f4729d56-08dc-4b5b-9db5-3e9b9904a4d4}*SharedItemsImports = 13
 	EndGlobalSection
@@ -216,10 +210,6 @@ Global
 		{2128EF61-F422-439A-BEB2-BE39BAC713EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2128EF61-F422-439A-BEB2-BE39BAC713EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2128EF61-F422-439A-BEB2-BE39BAC713EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3BB59A9-E642-4C8B-B7FE-514ACB5DEBC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3BB59A9-E642-4C8B-B7FE-514ACB5DEBC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3BB59A9-E642-4C8B-B7FE-514ACB5DEBC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3BB59A9-E642-4C8B-B7FE-514ACB5DEBC9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D7A05B65-F427-4D11-A156-5F5459044B22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7A05B65-F427-4D11-A156-5F5459044B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7A05B65-F427-4D11-A156-5F5459044B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -393,9 +383,7 @@ Global
 		{5129C71C-6B93-49C3-9C33-58601F250523} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
 		{7B304BAF-C396-4AE3-8BF6-F947F136D908} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
 		{DA8F1FAA-8700-42EE-A5B5-7F7A21C45039} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
-		{DDD15511-75A1-4D14-A231-46B06A5155EC} = {DA8F1FAA-8700-42EE-A5B5-7F7A21C45039}
 		{2128EF61-F422-439A-BEB2-BE39BAC713EE} = {2F77A940-A236-4FCB-950C-03600F1F4EDC}
-		{B3BB59A9-E642-4C8B-B7FE-514ACB5DEBC9} = {DA8F1FAA-8700-42EE-A5B5-7F7A21C45039}
 		{5F18CAAD-AD81-4B0E-93A4-38E935A3AA35} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
 		{D7A05B65-F427-4D11-A156-5F5459044B22} = {32C0B6FE-4187-44E4-8F10-453FB1BB6287}
 		{B5DC7C7E-6BB3-4DA0-AD95-612F85B9DF31} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
