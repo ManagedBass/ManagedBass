@@ -11,11 +11,7 @@ namespace ManagedBass.Tta
     /// </remarks>
     public static class BassTta
     {
-#if __IOS__
-        const string DllName = "__Internal";
-#else
         const string DllName = "bass_tta";
-#endif
 		
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_TTA_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);

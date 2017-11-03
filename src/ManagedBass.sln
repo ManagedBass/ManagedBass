@@ -89,10 +89,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassOpus", "BassOpus", "{A9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassTta", "BassTta", "{D95987D7-C3BD-4B8C-BBF6-23F75CBD3E6E}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "AddOns\BassTta\Shared\Shared.shproj", "{F1A52870-A4A7-4F6C-9DE1-CF4A76CED745}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "AddOns\BassTta\iOS\iOS.csproj", "{2FFFBD62-09A9-4102-9D29-D1496D89FCF5}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassTags", "BassTags", "{5641770D-6D49-435A-85FD-3333EF0A776A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BassAac", "AddOns\BassAac\BassAac.csproj", "{91E80AF2-D853-46B1-A2F6-C828320C45A9}"
@@ -151,7 +147,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassOpus", "AddOns\BassOpus
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassTags", "AddOns\BassTags\BassTags.csproj", "{A1186DFD-562D-4E9F-92E0-D8D7533B1ECD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassTta", "AddOns\BassTta\Portable\BassTta.csproj", "{5FE5D23A-0029-42A2-8C4F-68CB9590C6C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassTta", "AddOns\BassTta\BassTta.csproj", "{5FE5D23A-0029-42A2-8C4F-68CB9590C6C9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassWv", "AddOns\BassWv\Portable\BassWv.csproj", "{AA72E426-627B-497C-8219-F344577D4DE0}"
 EndProject
@@ -163,7 +159,6 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		AddOns\BassMidi\Shared\Shared.projitems*{1fb51416-f915-4dbb-9ac2-120333c73ff8}*SharedItemsImports = 13
 		Bass\Shared\Shared.projitems*{2128ef61-f422-439a-beb2-be39bac713ee}*SharedItemsImports = 4
-		AddOns\BassTta\Shared\Shared.projitems*{2fffbd62-09a9-4102-9d29-d1496d89fcf5}*SharedItemsImports = 4
 		AddOns\BassEnc\Shared\Shared.projitems*{3ba4ff0c-458a-44da-b267-3409151598d7}*SharedItemsImports = 4
 		Bass\Shared\Shared.projitems*{78ebb66c-05cb-4a2d-94a7-5eb29c5f02ed}*SharedItemsImports = 4
 		AddOns\BassMidi\Shared\Shared.projitems*{794cfb9c-8bac-48b8-abe6-b1003eae0766}*SharedItemsImports = 4
@@ -173,7 +168,6 @@ Global
 		AddOns\BassWv\Shared\Shared.projitems*{c0be39b4-9f9f-4b0f-8e56-235fde999ef7}*SharedItemsImports = 4
 		Bass\Shared\Shared.projitems*{cd4e203e-c152-4914-93f8-59010befcb52}*SharedItemsImports = 13
 		AddOns\BassEnc\Shared\Shared.projitems*{d7a05b65-f427-4d11-a156-5f5459044b22}*SharedItemsImports = 4
-		AddOns\BassTta\Shared\Shared.projitems*{f1a52870-a4a7-4f6c-9de1-cf4a76ced745}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -208,10 +202,6 @@ Global
 		{794CFB9C-8BAC-48B8-ABE6-B1003EAE0766}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{794CFB9C-8BAC-48B8-ABE6-B1003EAE0766}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{794CFB9C-8BAC-48B8-ABE6-B1003EAE0766}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2FFFBD62-09A9-4102-9D29-D1496D89FCF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FFFBD62-09A9-4102-9D29-D1496D89FCF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FFFBD62-09A9-4102-9D29-D1496D89FCF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2FFFBD62-09A9-4102-9D29-D1496D89FCF5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{91E80AF2-D853-46B1-A2F6-C828320C45A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{91E80AF2-D853-46B1-A2F6-C828320C45A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91E80AF2-D853-46B1-A2F6-C828320C45A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -386,8 +376,6 @@ Global
 		{566B4EC0-CC28-4638-B3B8-A1E3EE5AA541} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
 		{A9393A44-7774-4818-BAA8-A27E32EBF452} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
 		{D95987D7-C3BD-4B8C-BBF6-23F75CBD3E6E} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
-		{F1A52870-A4A7-4F6C-9DE1-CF4A76CED745} = {D95987D7-C3BD-4B8C-BBF6-23F75CBD3E6E}
-		{2FFFBD62-09A9-4102-9D29-D1496D89FCF5} = {D95987D7-C3BD-4B8C-BBF6-23F75CBD3E6E}
 		{5641770D-6D49-435A-85FD-3333EF0A776A} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
 		{91E80AF2-D853-46B1-A2F6-C828320C45A9} = {90D116C1-1544-4D1D-A0EB-32948A2D6156}
 		{AA5AF252-5B20-4921-A8CE-945D6235DC7A} = {1848F234-E664-4C64-9584-01AD87E31F7D}
