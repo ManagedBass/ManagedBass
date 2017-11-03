@@ -85,10 +85,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassDsd", "BassDsd", "{922F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassMpc", "BassMpc", "{566B4EC0-CC28-4638-B3B8-A1E3EE5AA541}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "AddOns\BassMpc\Shared\Shared.shproj", "{717A3C0B-8E34-4E31-BDD1-C11539DF0E40}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "AddOns\BassMpc\iOS\iOS.csproj", "{A9B93675-59F5-4672-BE32-118F61E6347C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassOpus", "BassOpus", "{A9393A44-7774-4818-BAA8-A27E32EBF452}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "AddOns\BassOpus\Shared\Shared.shproj", "{F4729D56-08DC-4B5B-9DB5-3E9B9904A4D4}"
@@ -157,7 +153,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassHls", "AddOns\BassHls\B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassMix", "AddOns\BassMix\BassMix.csproj", "{FE79230F-4D58-4B0C-8076-D17CFBBF8259}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassMpc", "AddOns\BassMpc\Portable\BassMpc.csproj", "{2DA3DF25-649D-4CCA-B66E-8E6AC29889E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassMpc", "AddOns\BassMpc\BassMpc.csproj", "{2DA3DF25-649D-4CCA-B66E-8E6AC29889E9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassOpus", "AddOns\BassOpus\Portable\BassOpus.csproj", "{250D688B-BE3E-4A95-B2DD-E3CB78D92ACF}"
 EndProject
@@ -179,14 +175,12 @@ Global
 		AddOns\BassTta\Shared\Shared.projitems*{2fffbd62-09a9-4102-9d29-d1496d89fcf5}*SharedItemsImports = 4
 		AddOns\BassEnc\Shared\Shared.projitems*{3ba4ff0c-458a-44da-b267-3409151598d7}*SharedItemsImports = 4
 		AddOns\BassTags\Shared\Shared.projitems*{519ca48d-4634-4896-a613-6a39bb85ba6f}*SharedItemsImports = 13
-		AddOns\BassMpc\Shared\Shared.projitems*{717a3c0b-8e34-4e31-bdd1-c11539df0e40}*SharedItemsImports = 13
 		Bass\Shared\Shared.projitems*{78ebb66c-05cb-4a2d-94a7-5eb29c5f02ed}*SharedItemsImports = 4
 		AddOns\BassMidi\Shared\Shared.projitems*{794cfb9c-8bac-48b8-abe6-b1003eae0766}*SharedItemsImports = 4
 		AddOns\BassWv\Shared\Shared.projitems*{7cdaa724-cc87-4774-9f5e-6726daea4713}*SharedItemsImports = 13
 		AddOns\BassOpus\Shared\Shared.projitems*{8272a5bd-e3f4-4e31-b5ca-28fc08bfa9a7}*SharedItemsImports = 4
 		AddOns\BassMidi\Shared\Shared.projitems*{a4d1f1ce-73e9-4f5f-b399-e69d7bf998aa}*SharedItemsImports = 4
 		AddOns\BassEnc\Shared\Shared.projitems*{a885cf43-1f88-4ec7-af35-4c73776b1c42}*SharedItemsImports = 13
-		AddOns\BassMpc\Shared\Shared.projitems*{a9b93675-59f5-4672-be32-118f61e6347c}*SharedItemsImports = 4
 		AddOns\BassWv\Shared\Shared.projitems*{c0be39b4-9f9f-4b0f-8e56-235fde999ef7}*SharedItemsImports = 4
 		Bass\Shared\Shared.projitems*{cd4e203e-c152-4914-93f8-59010befcb52}*SharedItemsImports = 13
 		AddOns\BassEnc\Shared\Shared.projitems*{d7a05b65-f427-4d11-a156-5f5459044b22}*SharedItemsImports = 4
@@ -226,10 +220,6 @@ Global
 		{794CFB9C-8BAC-48B8-ABE6-B1003EAE0766}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{794CFB9C-8BAC-48B8-ABE6-B1003EAE0766}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{794CFB9C-8BAC-48B8-ABE6-B1003EAE0766}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A9B93675-59F5-4672-BE32-118F61E6347C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9B93675-59F5-4672-BE32-118F61E6347C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A9B93675-59F5-4672-BE32-118F61E6347C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A9B93675-59F5-4672-BE32-118F61E6347C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8272A5BD-E3F4-4E31-B5CA-28FC08BFA9A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8272A5BD-E3F4-4E31-B5CA-28FC08BFA9A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8272A5BD-E3F4-4E31-B5CA-28FC08BFA9A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -414,8 +404,6 @@ Global
 		{794CFB9C-8BAC-48B8-ABE6-B1003EAE0766} = {46E48BCB-C105-4049-A64B-DFC1621B5A2D}
 		{922FB332-5A93-40A7-A500-180A7EA91731} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
 		{566B4EC0-CC28-4638-B3B8-A1E3EE5AA541} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
-		{717A3C0B-8E34-4E31-BDD1-C11539DF0E40} = {566B4EC0-CC28-4638-B3B8-A1E3EE5AA541}
-		{A9B93675-59F5-4672-BE32-118F61E6347C} = {566B4EC0-CC28-4638-B3B8-A1E3EE5AA541}
 		{A9393A44-7774-4818-BAA8-A27E32EBF452} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
 		{F4729D56-08DC-4B5B-9DB5-3E9B9904A4D4} = {A9393A44-7774-4818-BAA8-A27E32EBF452}
 		{8272A5BD-E3F4-4E31-B5CA-28FC08BFA9A7} = {A9393A44-7774-4818-BAA8-A27E32EBF452}

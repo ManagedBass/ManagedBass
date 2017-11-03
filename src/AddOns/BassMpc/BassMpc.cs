@@ -11,11 +11,7 @@ namespace ManagedBass.Mpc
     /// </remarks>
     public static class BassMpc
     {
-#if __IOS__
-        const string DllName = "__Internal";
-#else
         const string DllName = "bass_mpc";
-#endif
      
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_MPC_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
