@@ -31,10 +31,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "AddOns\BassMix\iOS\i
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassFx", "BassFx", "{5F18CAAD-AD81-4B0E-93A4-38E935A3AA35}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "AddOns\BassFx\Shared\Shared.shproj", "{00D52D0D-8309-4625-90C1-B225BDFA9188}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "AddOns\BassFx\iOS\iOS.csproj", "{B92F37C7-4BCB-4917-B15E-9BD1AF5E4884}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iOS", "AddOns\BassEnc\iOS\iOS.csproj", "{D7A05B65-F427-4D11-A156-5F5459044B22}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassCd", "BassCd", "{B5DC7C7E-6BB3-4DA0-AD95-612F85B9DF31}"
@@ -185,7 +181,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassMidi", "AddOns\BassMidi
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		AddOns\BassFx\Shared\Shared.projitems*{00d52d0d-8309-4625-90c1-b225bdfa9188}*SharedItemsImports = 13
 		AddOns\BassMidi\Shared\Shared.projitems*{1fb51416-f915-4dbb-9ac2-120333c73ff8}*SharedItemsImports = 13
 		Bass\Shared\Shared.projitems*{2128ef61-f422-439a-beb2-be39bac713ee}*SharedItemsImports = 4
 		AddOns\BassTags\Shared\Shared.projitems*{25c516f5-2f19-452f-a323-7bb2d86b0ab3}*SharedItemsImports = 4
@@ -203,7 +198,6 @@ Global
 		AddOns\BassMpc\Shared\Shared.projitems*{a9b93675-59f5-4672-be32-118f61e6347c}*SharedItemsImports = 4
 		AddOns\BassHls\Shared\Shared.projitems*{b2cfbfe2-e223-4cb2-81b0-25e142b401aa}*SharedItemsImports = 13
 		AddOns\BassMix\Shared\Shared.projitems*{b3bb59a9-e642-4c8b-b7fe-514acb5debc9}*SharedItemsImports = 4
-		AddOns\BassFx\Shared\Shared.projitems*{b92f37c7-4bcb-4917-b15e-9bd1af5e4884}*SharedItemsImports = 4
 		AddOns\BassWv\Shared\Shared.projitems*{c0be39b4-9f9f-4b0f-8e56-235fde999ef7}*SharedItemsImports = 4
 		Bass\Shared\Shared.projitems*{cd4e203e-c152-4914-93f8-59010befcb52}*SharedItemsImports = 13
 		AddOns\BassEnc\Shared\Shared.projitems*{d7a05b65-f427-4d11-a156-5f5459044b22}*SharedItemsImports = 4
@@ -232,10 +226,6 @@ Global
 		{B3BB59A9-E642-4C8B-B7FE-514ACB5DEBC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3BB59A9-E642-4C8B-B7FE-514ACB5DEBC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3BB59A9-E642-4C8B-B7FE-514ACB5DEBC9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B92F37C7-4BCB-4917-B15E-9BD1AF5E4884}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B92F37C7-4BCB-4917-B15E-9BD1AF5E4884}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B92F37C7-4BCB-4917-B15E-9BD1AF5E4884}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B92F37C7-4BCB-4917-B15E-9BD1AF5E4884}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D7A05B65-F427-4D11-A156-5F5459044B22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7A05B65-F427-4D11-A156-5F5459044B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7A05B65-F427-4D11-A156-5F5459044B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -417,8 +407,6 @@ Global
 		{2128EF61-F422-439A-BEB2-BE39BAC713EE} = {2F77A940-A236-4FCB-950C-03600F1F4EDC}
 		{B3BB59A9-E642-4C8B-B7FE-514ACB5DEBC9} = {DA8F1FAA-8700-42EE-A5B5-7F7A21C45039}
 		{5F18CAAD-AD81-4B0E-93A4-38E935A3AA35} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
-		{00D52D0D-8309-4625-90C1-B225BDFA9188} = {5F18CAAD-AD81-4B0E-93A4-38E935A3AA35}
-		{B92F37C7-4BCB-4917-B15E-9BD1AF5E4884} = {5F18CAAD-AD81-4B0E-93A4-38E935A3AA35}
 		{D7A05B65-F427-4D11-A156-5F5459044B22} = {32C0B6FE-4187-44E4-8F10-453FB1BB6287}
 		{B5DC7C7E-6BB3-4DA0-AD95-612F85B9DF31} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
 		{43F007E0-C585-434D-8589-E6F0540C5275} = {BDBF2AF3-D93A-4F7C-9912-BABBF2322D6E}
