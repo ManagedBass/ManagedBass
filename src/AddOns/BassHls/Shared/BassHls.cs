@@ -37,19 +37,12 @@ namespace ManagedBass.Hls
         {
             return GCPin.CreateStreamHelper(Pointer => CreateStream(Pointer, Offset, Length, Flags), Memory);
         }
-
-        [DllImport(DllName)]
-        static extern int BASS_HLS_StreamCreateFileUser(StreamSystem system, BassFlags flags, [In, Out] FileProcedures procs, IntPtr user);
-
+        
         /// <summary>Create a stream using User File Procedures.</summary>
+        [Obsolete]
         public static int CreateStream(StreamSystem System, BassFlags Flags, FileProcedures Procedures, IntPtr User = default(IntPtr))
         {
-            var h = BASS_HLS_StreamCreateFileUser(System, Flags, Procedures, User);
-
-            if (h != 0)
-                ChannelReferences.Add(h, 0, Procedures);
-
-            return h;
+            return 0;
         }
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
