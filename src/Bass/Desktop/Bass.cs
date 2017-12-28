@@ -187,8 +187,8 @@ namespace ManagedBass
         /// </remarks>
         public static bool VistaTruePlayPosition
         {
-            get { return GetConfigBool(Configuration.TruePlayPosition); }
-            set { Configure(Configuration.TruePlayPosition, value); }
+            get => GetConfigBool(Configuration.TruePlayPosition);
+            set => Configure(Configuration.TruePlayPosition, value);
         }
 
         /// <summary>
@@ -213,8 +213,8 @@ namespace ManagedBass
         /// </remarks>
         public static bool IncludeDefaultDevice
         {
-            get { return GetConfigBool(Configuration.IncludeDefaultDevice); }
-            set { Configure(Configuration.IncludeDefaultDevice, value); }
+            get => GetConfigBool(Configuration.IncludeDefaultDevice);
+            set => Configure(Configuration.IncludeDefaultDevice, value);
         }
 
         /// <summary>
@@ -237,8 +237,8 @@ namespace ManagedBass
         /// </remarks>
         public static bool VistaSpeakerAssignment
         {
-            get { return GetConfigBool(Configuration.VistaSpeakerAssignment); }
-            set { Configure(Configuration.VistaSpeakerAssignment, value); }
+            get => GetConfigBool(Configuration.VistaSpeakerAssignment);
+            set => Configure(Configuration.VistaSpeakerAssignment, value);
         }
 
         /// <summary>
@@ -255,8 +255,8 @@ namespace ManagedBass
         /// </remarks>
         public static bool UnicodeDeviceInformation
         {
-            get { return GetConfigBool(Configuration.UnicodeDeviceInformation); }
-            set { Configure(Configuration.UnicodeDeviceInformation, value); }
+            get => GetConfigBool(Configuration.UnicodeDeviceInformation);
+            set => Configure(Configuration.UnicodeDeviceInformation, value);
         }
 
         /// <summary>
@@ -267,8 +267,8 @@ namespace ManagedBass
         /// </remarks>
         public static bool MFVideo
         {
-            get { return GetConfigBool(Configuration.MFVideo); }
-            set { Configure(Configuration.MFVideo, value); }
+            get => GetConfigBool(Configuration.MFVideo);
+            set => Configure(Configuration.MFVideo, value);
         }
 
         /// <summary>
@@ -276,8 +276,8 @@ namespace ManagedBass
         /// </summary>
         public static bool NoTimerResolution
         {
-            get { return GetConfigBool(Configuration.NoTimerResolution); }
-            set { Configure(Configuration.NoTimerResolution, value); }
+            get => GetConfigBool(Configuration.NoTimerResolution);
+            set => Configure(Configuration.NoTimerResolution, value);
         }
         #endregion
     }

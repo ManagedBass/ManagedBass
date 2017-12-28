@@ -18,8 +18,8 @@ namespace ManagedBass.Aac
         /// </summary>
         public static bool PlayAudioFromMp4
         {
-            get { return Bass.GetConfigBool(Configuration.PlayAudioFromMp4); }
-            set { Bass.Configure(Configuration.PlayAudioFromMp4, value); }
+            get => Bass.GetConfigBool(Configuration.PlayAudioFromMp4);
+            set => Bass.Configure(Configuration.PlayAudioFromMp4, value);
         }
 
         /// <summary>
@@ -27,8 +27,8 @@ namespace ManagedBass.Aac
         /// </summary>
         public static bool AacSupportMp4
         {
-            get { return Bass.GetConfigBool(Configuration.AacSupportMp4); }
-            set { Bass.Configure(Configuration.AacSupportMp4, value); }
+            get => Bass.GetConfigBool(Configuration.AacSupportMp4);
+            set => Bass.Configure(Configuration.AacSupportMp4, value);
         }
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]

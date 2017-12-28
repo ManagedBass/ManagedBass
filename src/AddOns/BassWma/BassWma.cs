@@ -602,8 +602,8 @@ namespace ManagedBass.Wma
         /// </summary>
         public static bool CanSeekNetworkStreams
         {
-            get { return Bass.GetConfigBool(Configuration.WmaNetSeek); }
-            set { Bass.Configure(Configuration.WmaNetSeek, value); }
+            get => Bass.GetConfigBool(Configuration.WmaNetSeek);
+            set => Bass.Configure(Configuration.WmaNetSeek, value);
         }
 
         /// <summary>
@@ -613,8 +613,8 @@ namespace ManagedBass.Wma
         /// </summary>
         public static bool PlayWMVAudio
         {
-            get { return Bass.GetConfigBool(Configuration.WmaVideo); }
-            set { Bass.Configure(Configuration.WmaVideo, value); }
+            get => Bass.GetConfigBool(Configuration.WmaVideo);
+            set => Bass.Configure(Configuration.WmaVideo, value);
         }
 
         /// <summary>
@@ -631,8 +631,8 @@ namespace ManagedBass.Wma
         /// </summary>
         public static bool PrebufferInternetStreams
         {
-            get { return Bass.GetConfigBool(Configuration.WmaNetPreBuffer); }
-            set { Bass.Configure(Configuration.WmaNetPreBuffer, value); }
+            get => Bass.GetConfigBool(Configuration.WmaNetPreBuffer);
+            set => Bass.Configure(Configuration.WmaNetPreBuffer, value);
         }
 
         /// <summary>
@@ -645,8 +645,8 @@ namespace ManagedBass.Wma
         /// </summary>
         public static bool UseBassFileHandling
         {
-            get { return Bass.GetConfigBool(Configuration.WmaBassFileHandling); }
-            set { Bass.Configure(Configuration.WmaBassFileHandling, value); }
+            get => Bass.GetConfigBool(Configuration.WmaBassFileHandling);
+            set => Bass.Configure(Configuration.WmaBassFileHandling, value);
         }
 
         /// <summary>
@@ -661,8 +661,8 @@ namespace ManagedBass.Wma
         /// </summary>
         public static bool AsyncDecoding
         {
-            get { return Bass.GetConfigBool(Configuration.WmaAsync); }
-            set { Bass.Configure(Configuration.WmaAsync, value); }
+            get => Bass.GetConfigBool(Configuration.WmaAsync);
+            set => Bass.Configure(Configuration.WmaAsync, value);
         }
         #endregion
 

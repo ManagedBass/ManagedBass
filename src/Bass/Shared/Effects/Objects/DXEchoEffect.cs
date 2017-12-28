@@ -10,7 +10,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double WetDryMix
         {
-            get { return Parameters.fWetDryMix; }
+            get => Parameters.fWetDryMix;
             set
             {
                 Parameters.fWetDryMix = (float)value;
@@ -24,7 +24,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Feedback
         {
-            get { return Parameters.fFeedback; }
+            get => Parameters.fFeedback;
             set
             {
                 Parameters.fFeedback = (float)value;
@@ -38,7 +38,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double LeftDelay
         {
-            get { return Parameters.fLeftDelay; }
+            get => Parameters.fLeftDelay;
             set
             {
                 Parameters.fLeftDelay = (float)value;
@@ -52,7 +52,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double RightDelay
         {
-            get { return Parameters.fRightDelay; }
+            get => Parameters.fRightDelay;
             set
             {
                 Parameters.fRightDelay = (float)value;
@@ -66,7 +66,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public bool PanDelay
         {
-            get { return Parameters.lPanDelay; }
+            get => Parameters.lPanDelay;
             set
             {
                 Parameters.lPanDelay = value;

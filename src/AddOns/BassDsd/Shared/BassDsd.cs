@@ -85,8 +85,8 @@ namespace ManagedBass.Dsd
         /// </remarks>
         public static int DefaultFrequency
         {
-            get { return Bass.GetConfig(Configuration.DSDFrequency); }
-            set { Bass.Configure(Configuration.DSDFrequency, value); }
+            get => Bass.GetConfig(Configuration.DSDFrequency);
+            set => Bass.Configure(Configuration.DSDFrequency, value);
         }
 
         /// <summary>
@@ -102,8 +102,8 @@ namespace ManagedBass.Dsd
         /// </remarks>
         public static int DefaultGain
         {
-            get { return Bass.GetConfig(Configuration.DSDGain); }
-            set { Bass.Configure(Configuration.DSDGain, value); }
+            get => Bass.GetConfig(Configuration.DSDGain);
+            set => Bass.Configure(Configuration.DSDGain, value);
         }
     }
 }

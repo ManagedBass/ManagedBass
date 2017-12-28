@@ -23,7 +23,7 @@ namespace ManagedBass
         /// </summary>
         protected internal int Handle
         {
-            get { return _handle; }
+            get => _handle;
             private set
             {
                 if (!Bass.ChannelGetInfo(value, out var info))
@@ -101,7 +101,7 @@ namespace ManagedBass
         /// </summary>
         public double Frequency
         {
-            get { return _freq; }
+            get => _freq;
             set
             {
                 if (!Bass.ChannelSetAttribute(Handle, ChannelAttribute.Frequency, value))
@@ -124,7 +124,7 @@ namespace ManagedBass
         /// </summary>
         public double Balance
         {
-            get { return _pan; }
+            get => _pan;
             set
             {
                 if (!Bass.ChannelSetAttribute(Handle, ChannelAttribute.Pan, value))
@@ -144,7 +144,7 @@ namespace ManagedBass
         /// </summary>
         public int Device
         {
-            get { return (_dev = _dev == -1 ? Bass.ChannelGetDevice(Handle) : _dev); }
+            get => (_dev = _dev == -1 ? Bass.ChannelGetDevice(Handle) : _dev);
             set
             {
                 if (!Bass.GetDeviceInfo(value).IsInitialized)
@@ -168,7 +168,7 @@ namespace ManagedBass
         /// </summary>
         public double Volume
         {
-            get { return _vol; }
+            get => _vol;
             set
             {
                 if (!Bass.ChannelSetAttribute(Handle, ChannelAttribute.Volume, value))
@@ -188,7 +188,7 @@ namespace ManagedBass
         /// </summary>
         public bool Loop
         {
-            get { return _loop; }
+            get => _loop;
             set
             {
                 if (value ? !Bass.ChannelAddFlag(Handle, BassFlags.Loop) : !Bass.ChannelRemoveFlag(Handle, BassFlags.Loop))
@@ -215,7 +215,7 @@ namespace ManagedBass
         /// </summary>
         public string Title 
         {
-            get { return _title; }
+            get => _title;
             private set
             {
                 _title = value;
@@ -228,7 +228,7 @@ namespace ManagedBass
         /// </summary>
         public string Artist
         {
-            get { return _artist; }
+            get => _artist;
             private set
             {
                 _artist = value;
@@ -241,7 +241,7 @@ namespace ManagedBass
         /// </summary>
         public string Album
         {
-            get { return _album; }
+            get => _album;
             private set
             {
                 _album = value;
@@ -307,8 +307,8 @@ namespace ManagedBass
         /// </summary>
         public TimeSpan Position
         {
-            get { return TimeSpan.FromSeconds(Bass.ChannelBytes2Seconds(Handle, Bass.ChannelGetPosition(Handle))); }
-            set { Bass.ChannelSetPosition(Handle, Bass.ChannelSeconds2Bytes(Handle, value.TotalSeconds)); }
+            get => TimeSpan.FromSeconds(Bass.ChannelBytes2Seconds(Handle, Bass.ChannelGetPosition(Handle)));
+            set => Bass.ChannelSetPosition(Handle, Bass.ChannelSeconds2Bytes(Handle, value.TotalSeconds));
         }
 
         /// <summary>

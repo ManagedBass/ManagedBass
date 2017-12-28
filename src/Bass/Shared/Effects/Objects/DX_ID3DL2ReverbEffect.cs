@@ -10,7 +10,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public int Room
         {
-            get { return Parameters.lRoom; }
+            get => Parameters.lRoom;
             set
             {
                 Parameters.lRoom = value;
@@ -24,7 +24,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public int RoomHF
         {
-            get { return Parameters.lRoomHF; }
+            get => Parameters.lRoomHF;
             set
             {
                 Parameters.lRoomHF = value;
@@ -38,7 +38,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double RoomRolloffFactor
         {
-            get { return Parameters.flRoomRolloffFactor; }
+            get => Parameters.flRoomRolloffFactor;
             set
             {
                 Parameters.flRoomRolloffFactor = (float)value;
@@ -52,7 +52,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double DecayTime
         {
-            get { return Parameters.flDecayTime; }
+            get => Parameters.flDecayTime;
             set
             {
                 Parameters.flDecayTime = (float)value;
@@ -66,7 +66,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double DecayHFRatio
         {
-            get { return Parameters.flDecayHFRatio; }
+            get => Parameters.flDecayHFRatio;
             set
             {
                 Parameters.flDecayHFRatio = (float)value;
@@ -80,7 +80,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public int Reflections
         {
-            get { return Parameters.lReflections; }
+            get => Parameters.lReflections;
             set
             {
                 Parameters.lReflections = value;
@@ -94,7 +94,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double ReflectionsDelay
         {
-            get { return Parameters.flReflectionsDelay; }
+            get => Parameters.flReflectionsDelay;
             set
             {
                 Parameters.flReflectionsDelay = (float)value;
@@ -108,7 +108,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public int Reverb
         {
-            get { return Parameters.lReverb; }
+            get => Parameters.lReverb;
             set
             {
                 Parameters.lReverb = value;
@@ -122,7 +122,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double ReverbDelay
         {
-            get { return Parameters.flReverbDelay; }
+            get => Parameters.flReverbDelay;
             set
             {
                 Parameters.flReverbDelay = (float)value;
@@ -136,7 +136,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Diffusion
         {
-            get { return Parameters.flDiffusion; }
+            get => Parameters.flDiffusion;
             set
             {
                 Parameters.flDiffusion = (float)value;
@@ -150,7 +150,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Density
         {
-            get { return Parameters.flDensity; }
+            get => Parameters.flDensity;
             set
             {
                 Parameters.flDensity = (float)value;
@@ -164,7 +164,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double HFReference
         {
-            get { return Parameters.flHFReference; }
+            get => Parameters.flHFReference;
             set
             {
                 Parameters.flHFReference = (float)value;

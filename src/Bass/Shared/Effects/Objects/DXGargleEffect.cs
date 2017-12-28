@@ -10,7 +10,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public int Rate
         {
-            get { return Parameters.dwRateHz; }
+            get => Parameters.dwRateHz;
             set
             {
                 Parameters.dwRateHz = value;
@@ -24,7 +24,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public DXWaveform WaveShape
         {
-            get { return Parameters.dwWaveShape; }
+            get => Parameters.dwWaveShape;
             set
             {
                 Parameters.dwWaveShape = value;

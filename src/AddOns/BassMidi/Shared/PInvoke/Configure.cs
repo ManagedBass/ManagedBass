@@ -22,8 +22,8 @@ namespace ManagedBass.Midi
         /// </summary>
         public static bool Compact
         {
-            get { return Bass.GetConfigBool(Configuration.MidiCompact); }
-            set { Bass.Configure(Configuration.MidiCompact, value); }
+            get => Bass.GetConfigBool(Configuration.MidiCompact);
+            set => Bass.Configure(Configuration.MidiCompact, value);
         }
 
         /// <summary>
@@ -32,8 +32,8 @@ namespace ManagedBass.Midi
         /// </summary>
         public static int AutoFont
         {
-            get { return Bass.GetConfig(Configuration.MidiAutoFont); }
-            set { Bass.Configure(Configuration.MidiAutoFont, value); }
+            get => Bass.GetConfig(Configuration.MidiAutoFont);
+            set => Bass.Configure(Configuration.MidiAutoFont, value);
         }
 
         /// <summary>
@@ -52,8 +52,8 @@ namespace ManagedBass.Midi
         /// </summary>
         public static int Voices
         {
-            get { return Bass.GetConfig(Configuration.MidiVoices); }
-            set { Bass.Configure(Configuration.MidiVoices, value); }
+            get => Bass.GetConfig(Configuration.MidiVoices);
+            set => Bass.Configure(Configuration.MidiVoices, value);
         }
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace ManagedBass.Midi
         /// </summary>
         public static int InputPorts
         {
-            get { return Bass.GetConfig(Configuration.MidiInputPorts); }
-            set { Bass.Configure(Configuration.MidiInputPorts, value); }
+            get => Bass.GetConfig(Configuration.MidiInputPorts);
+            set => Bass.Configure(Configuration.MidiInputPorts, value);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace ManagedBass.Midi
         /// </summary>
         public static string DefaultFont
         {
-            get { return Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.MidiDefaultFont)); }
+            get => Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.MidiDefaultFont));
             set
             {
                 var ptr = Marshal.StringToHGlobalAnsi(value);

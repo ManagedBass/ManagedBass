@@ -146,7 +146,7 @@
         /// </summary>
         public double DryMix
         {
-            get { return Parameters.fDryMix; }
+            get => Parameters.fDryMix;
             set
             {
                 Parameters.fDryMix = (float)value;
@@ -160,7 +160,7 @@
         /// </summary>
         public double Feedback
         {
-            get { return Parameters.fFeedback; }
+            get => Parameters.fFeedback;
             set
             {
                 Parameters.fFeedback = (float)value;
@@ -174,7 +174,7 @@
         /// </summary>
         public double MaxSweep
         {
-            get { return Parameters.fMaxSweep; }
+            get => Parameters.fMaxSweep;
             set
             {
                 Parameters.fMaxSweep = (float)value;
@@ -188,7 +188,7 @@
         /// </summary>
         public double MinSweep
         {
-            get { return Parameters.fMinSweep; }
+            get => Parameters.fMinSweep;
             set
             {
                 Parameters.fMinSweep = (float)value;
@@ -202,7 +202,7 @@
         /// </summary>
         public double Rate
         {
-            get { return Parameters.fRate; }
+            get => Parameters.fRate;
             set
             {
                 Parameters.fRate = (float)value;
@@ -216,7 +216,7 @@
         /// </summary>
         public double WetMix
         {
-            get { return Parameters.fWetMix; }
+            get => Parameters.fWetMix;
             set
             {
                 Parameters.fWetMix = (float)value;
@@ -230,7 +230,7 @@
         /// </summary>
         public FXChannelFlags Channels
         {
-            get { return Parameters.lChannel; }
+            get => Parameters.lChannel;
             set
             {
                 Parameters.lChannel = value;

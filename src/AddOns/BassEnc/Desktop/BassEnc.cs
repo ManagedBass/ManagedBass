@@ -10,7 +10,7 @@ namespace ManagedBass.Enc
         /// </summary>
         public static string ACMLoad
         {
-            get { return Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.EncodeACMLoad)); }
+            get => Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.EncodeACMLoad));
             set
             {
                 var ptr = Marshal.StringToHGlobalAnsi(value);

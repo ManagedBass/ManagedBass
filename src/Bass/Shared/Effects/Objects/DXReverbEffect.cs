@@ -10,7 +10,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double InGain
         {
-            get { return Parameters.fInGain; }
+            get => Parameters.fInGain;
             set
             {
                 Parameters.fInGain = (float)value;
@@ -24,7 +24,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double ReverbMix
         {
-            get { return Parameters.fReverbMix; }
+            get => Parameters.fReverbMix;
             set
             {
                 Parameters.fReverbMix = (float)value;
@@ -38,7 +38,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double ReverbTime
         {
-            get { return Parameters.fReverbTime; }
+            get => Parameters.fReverbTime;
             set
             {
                 Parameters.fReverbTime = (float)value;
@@ -52,7 +52,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double HighFreqRTRatio
         {
-            get { return Parameters.fHighFreqRTRatio; }
+            get => Parameters.fHighFreqRTRatio;
             set
             {
                 Parameters.fHighFreqRTRatio = (float)value;
