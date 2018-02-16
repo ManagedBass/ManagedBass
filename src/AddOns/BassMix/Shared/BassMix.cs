@@ -14,6 +14,16 @@ namespace ManagedBass.Mix
         const string DllName = "bassmix";
 #endif
         
+        #region Version
+        [DllImport(DllName)]
+        static extern int BASS_Mixer_GetVersion();
+
+        /// <summary>
+        /// Gets the Version of BassMix that is loaded.
+        /// </summary>
+        public static Version Version => Extensions.GetVersion(BASS_Mixer_GetVersion());
+        #endregion
+
         #region Split
         /// <summary>
         /// Creates a splitter stream (adds a reader channel to a decoding source channel).
