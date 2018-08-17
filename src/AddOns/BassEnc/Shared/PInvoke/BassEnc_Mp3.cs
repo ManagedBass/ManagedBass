@@ -27,6 +27,7 @@ namespace ManagedBass.Enc
 
         /// <summary>
         /// Start Mp3 Encoding to <see cref="EncodeProcedureEx"/>.
+
         /// For best documentation on functionality see http://www.un4seen.com/doc/
         /// </summary>
         /// <param name="Handle">The channel handle... a HSTREAM, HMUSIC, or HRECORD.</param>
@@ -45,6 +46,7 @@ namespace ManagedBass.Enc
         /// EncodeFlags.Autofree Automatically free the encoder when the source channel is freed.If queuing is enabled, any remaining queued data will be sent to the encoder before it is freed.
         /// EncodeFlags.Unicode options is in UTF-16 form.Otherwise it should be UTF-8 or ISO-8859-1 (or a mix of the two).</param>
         /// <param name="ProcedureEx">Optional callback function to receive the encoded data... null = no callback.</param>
+
         /// <param name="User">User instance data to pass to the callback function.</param>
         /// <returns>The encoder handle is returned if the encoder is successfully started, else 0 is returned. Use <see cref="Bass.LastError"/> to get the error code</returns>
         /// <remarks>
@@ -54,6 +56,7 @@ namespace ManagedBass.Enc
         /// <exception cref="Errors.SampleFormat">The channel's sample format is not supported by the encoder.</exception>
         /// <exception cref="Errors.NotAvailable">This function is not available on platforms/architectures without an FPU.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem! </exception>
+
         public static int Start(int Handle, string Options, EncodeFlags Flags, EncodeProcedureEx ProcedureEx, IntPtr User)
         {
             return BASS_Encode_MP3_Start(Handle, Options, Flags | EncodeFlags.Unicode, ProcedureEx, User);
