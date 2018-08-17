@@ -23,14 +23,14 @@ namespace ManagedBass.Enc
         public static Version Version => Extensions.GetVersion(BASS_Encode_FLAC_GetVersion());
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_Encode_FLAC_Start(int Handle, string Options, EncodeFlags Flags, EncodeProcedure Procedure, IntPtr User);
+        static extern int BASS_Encode_FLAC_Start(int Handle, string Options, EncodeFlags Flags, EncodeProcedureEx ProcedureEx, IntPtr User);
 
         /// <summary>
         /// Start FLAC Encoding to <see cref="EncodeProcedure"/>.
         /// </summary>
-        public static int Start(int Handle, string Options, EncodeFlags Flags, EncodeProcedure Procedure, IntPtr User)
+        public static int Start(int Handle, string Options, EncodeFlags Flags, EncodeProcedureEx ProcedureEx, IntPtr User)
         {
-            return BASS_Encode_FLAC_Start(Handle, Options, Flags | EncodeFlags.Unicode, Procedure, User);
+            return BASS_Encode_FLAC_Start(Handle, Options, Flags | EncodeFlags.Unicode, ProcedureEx, User);
         }
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
