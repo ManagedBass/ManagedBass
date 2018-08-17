@@ -23,10 +23,10 @@ namespace ManagedBass.Enc
         public static Version Version => Extensions.GetVersion(BASS_Encode_MP3_GetVersion());
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
-        static extern int BASS_Encode_MP3_Start(int Handle, string Options, EncodeFlags Flags, EncodeProcedure Procedure, IntPtr User);
+        static extern int BASS_Encode_MP3_Start(int Handle, string Options, EncodeFlags Flags, EncodeProcedureEx ProcedureEx, IntPtr User);
 
         /// <summary>
-        /// Start Mp3 Encoding to <see cref="EncodeProcedure"/>.
+        /// Start Mp3 Encoding to <see cref="EncodeProcedureEx"/>.
         /// For best documentation on functionality see http://www.un4seen.com/doc/
         /// </summary>
         /// <param name="Handle">The channel handle... a HSTREAM, HMUSIC, or HRECORD.</param>
@@ -37,8 +37,14 @@ namespace ManagedBass.Enc
         /// See the LAME documentation for details on the aforementioned options and defaults.
         /// https://svn.code.sf.net/p/lame/svn/trunk/lame/USAGE
         /// </param>
-        /// <param name="Flags">A combination of <see cref="EncodeFlags"/>.</param>
-        /// <param name="Procedure">Optional callback function to receive the encoded data... null = no callback.</param>
+        /// <param name="Flags">A combination of <see cref="EncodeFlags"/>
+        /// EncodeFlags.Queue	Queue data to feed the encoder asynchronously. This prevents the data source (DSP system or BASS_Encode_Write call) getting blocked by the encoder, but if data is queud more quickly than the encoder can process it, that could result in lost data.
+        /// EncodeFlags.Limit Limit the encoding rate to real-time speed, by introducing a delay when the rate is too high.With BASS 2.4.6 or above, this flag is ignored when the encoder is fed in a playback buffer update cycle (including BASS_Update and BASS_ChannelUpdate calls), to avoid possibly causing playback buffer underruns.Except for in those instances, this flag is applied automatically when the encoder is feeding a Shoutcast or Icecast server.
+        /// EncodeFlags.UnlimitedCastDataRate    Don't limit the encoding rate to real-time speed when feeding a Shoutcast or Icecast server. This flag overrides the BASS_ENCODE_LIMIT flag.
+        /// EncodeFlags.Pause Start the encoder in a paused state.
+        /// EncodeFlags.Autofree Automatically free the encoder when the source channel is freed.If queuing is enabled, any remaining queued data will be sent to the encoder before it is freed.
+        /// EncodeFlags.Unicode options is in UTF-16 form.Otherwise it should be UTF-8 or ISO-8859-1 (or a mix of the two).</param>
+        /// <param name="ProcedureEx">Optional callback function to receive the encoded data... null = no callback.</param>
         /// <param name="User">User instance data to pass to the callback function.</param>
         /// <returns>The encoder handle is returned if the encoder is successfully started, else 0 is returned. Use <see cref="Bass.LastError"/> to get the error code</returns>
         /// <remarks>
@@ -48,9 +54,9 @@ namespace ManagedBass.Enc
         /// <exception cref="Errors.SampleFormat">The channel's sample format is not supported by the encoder.</exception>
         /// <exception cref="Errors.NotAvailable">This function is not available on platforms/architectures without an FPU.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem! </exception>
-        public static int Start(int Handle, string Options, EncodeFlags Flags, EncodeProcedure Procedure, IntPtr User)
+        public static int Start(int Handle, string Options, EncodeFlags Flags, EncodeProcedureEx ProcedureEx, IntPtr User)
         {
-            return BASS_Encode_MP3_Start(Handle, Options, Flags | EncodeFlags.Unicode, Procedure, User);
+            return BASS_Encode_MP3_Start(Handle, Options, Flags | EncodeFlags.Unicode, ProcedureEx, User);
         }
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
@@ -67,7 +73,13 @@ namespace ManagedBass.Enc
         /// See the LAME documentation for details on the aforementioned options and defaults.
         /// https://svn.code.sf.net/p/lame/svn/trunk/lame/USAGE
         /// </param>
-        /// <param name="Flags">A combination of <see cref="EncodeFlags"/>.</param>
+        /// <param name="Flags">A combination of <see cref="EncodeFlags"/>
+        /// EncodeFlags.Queue	Queue data to feed the encoder asynchronously. This prevents the data source (DSP system or BASS_Encode_Write call) getting blocked by the encoder, but if data is queud more quickly than the encoder can process it, that could result in lost data.
+        /// EncodeFlags.Limit Limit the encoding rate to real-time speed, by introducing a delay when the rate is too high.With BASS 2.4.6 or above, this flag is ignored when the encoder is fed in a playback buffer update cycle (including BASS_Update and BASS_ChannelUpdate calls), to avoid possibly causing playback buffer underruns.Except for in those instances, this flag is applied automatically when the encoder is feeding a Shoutcast or Icecast server.
+        /// EncodeFlags.UnlimitedCastDataRate    Don't limit the encoding rate to real-time speed when feeding a Shoutcast or Icecast server. This flag overrides the BASS_ENCODE_LIMIT flag.
+        /// EncodeFlags.Pause Start the encoder in a paused state.
+        /// EncodeFlags.Autofree Automatically free the encoder when the source channel is freed.If queuing is enabled, any remaining queued data will be sent to the encoder before it is freed.
+        /// EncodeFlags.Unicode options is in UTF-16 form.Otherwise it should be UTF-8 or ISO-8859-1 (or a mix of the two).</param>
         /// <param name="FileName">Output filename... null = no output file.</param>
         /// <returns>The encoder handle is returned if the encoder is successfully started, else 0 is returned. Use <see cref="Bass.LastError"/> to get the error code</returns>
         /// <remarks>
