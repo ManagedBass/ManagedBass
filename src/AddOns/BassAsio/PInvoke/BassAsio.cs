@@ -137,7 +137,7 @@ namespace ManagedBass.Asio
         /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
         public static int CurrentDevice
         {
-            get { return BASS_ASIO_GetDevice(); }
+            get => BASS_ASIO_GetDevice();
             set
             {
                 if (!BASS_ASIO_SetDevice(value))
@@ -267,8 +267,8 @@ namespace ManagedBass.Asio
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static double Rate
         {
-            get { return BASS_ASIO_GetRate(); }
-            set 
+            get => BASS_ASIO_GetRate();
+		    set 
             {
                 if (!BASS_ASIO_SetRate(value)) 
                     throw new BassException(LastError);
@@ -404,8 +404,8 @@ namespace ManagedBass.Asio
         /// <exception cref="Errors.NotAvailable">This function is only available before any devices have been enumerated.</exception>
         public static bool Unicode
         {
-            get { return unicode; }
-            set
+            get => unicode;
+		    set
             {
                 if (BASS_ASIO_SetUnicode(value))
                     unicode = value;

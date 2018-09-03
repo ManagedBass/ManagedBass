@@ -92,8 +92,8 @@ namespace ManagedBass
         /// </remarks>
         public static int PlaybackBufferLength
         {
-            get { return GetConfig(Configuration.PlaybackBufferLength); }
-            set { Configure(Configuration.PlaybackBufferLength, value); }
+            get => GetConfig(Configuration.PlaybackBufferLength);
+            set => Configure(Configuration.PlaybackBufferLength, value);
         }
 
         /// <summary>
@@ -125,8 +125,8 @@ namespace ManagedBass
         /// </remarks>
         public static int UpdatePeriod
         {
-            get { return GetConfig(Configuration.UpdatePeriod); }
-            set { Configure(Configuration.UpdatePeriod, value); }
+            get => GetConfig(Configuration.UpdatePeriod);
+            set => Configure(Configuration.UpdatePeriod, value);
         }
 
         /// <summary>
@@ -141,8 +141,8 @@ namespace ManagedBass
         /// </remarks>
         public static int GlobalSampleVolume
         {
-            get { return GetConfig(Configuration.GlobalSampleVolume); }
-            set { Configure(Configuration.GlobalSampleVolume, value); }
+            get => GetConfig(Configuration.GlobalSampleVolume);
+            set => Configure(Configuration.GlobalSampleVolume, value);
         }
 
         /// <summary>
@@ -157,8 +157,8 @@ namespace ManagedBass
         /// </remarks>
         public static int GlobalStreamVolume
         {
-            get { return GetConfig(Configuration.GlobalStreamVolume); }
-            set { Configure(Configuration.GlobalStreamVolume, value); }
+            get => GetConfig(Configuration.GlobalStreamVolume);
+            set => Configure(Configuration.GlobalStreamVolume, value);
         }
 
         /// <summary>
@@ -173,8 +173,8 @@ namespace ManagedBass
         /// </remarks>
         public static int GlobalMusicVolume
         {
-            get { return GetConfig(Configuration.GlobalMusicVolume); }
-            set { Configure(Configuration.GlobalMusicVolume, value); }
+            get => GetConfig(Configuration.GlobalMusicVolume);
+            set => Configure(Configuration.GlobalMusicVolume, value);
         }
 
         /// <summary>
@@ -193,8 +193,8 @@ namespace ManagedBass
         /// </remarks>
         public static bool LogarithmicVolumeCurve
         {
-            get { return GetConfigBool(Configuration.LogarithmicVolumeCurve); }
-            set { Configure(Configuration.LogarithmicVolumeCurve, value); }
+            get => GetConfigBool(Configuration.LogarithmicVolumeCurve);
+            set => Configure(Configuration.LogarithmicVolumeCurve, value);
         }
 
         /// <summary>
@@ -205,8 +205,8 @@ namespace ManagedBass
         /// </remarks>
         public static bool LogarithmicPanningCurve
         {
-            get { return GetConfigBool(Configuration.LogarithmicPanCurve); }
-            set { Configure(Configuration.LogarithmicPanCurve, value); }
+            get => GetConfigBool(Configuration.LogarithmicPanCurve);
+            set => Configure(Configuration.LogarithmicPanCurve, value);
         }
 
         /// <summary>
@@ -228,8 +228,8 @@ namespace ManagedBass
         /// </remarks>
         public static bool FloatingPointDSP
         {
-            get { return GetConfigBool(Configuration.FloatDSP); }
-            set { Configure(Configuration.FloatDSP, value); }
+            get => GetConfigBool(Configuration.FloatDSP);
+            set => Configure(Configuration.FloatDSP, value);
         }
 
         /// <summary>
@@ -248,8 +248,8 @@ namespace ManagedBass
         /// </remarks>
         public static int UpdateThreads
         {
-            get { return GetConfig(Configuration.UpdateThreads); }
-            set { Configure(Configuration.UpdateThreads, value); }
+            get => GetConfig(Configuration.UpdateThreads);
+            set => Configure(Configuration.UpdateThreads, value);
         }
 
         /// <summary>
@@ -265,8 +265,8 @@ namespace ManagedBass
         /// </remarks>
         public static int AsyncFileBufferLength
         {
-            get { return GetConfig(Configuration.AsyncFileBufferLength); }
-            set { Configure(Configuration.AsyncFileBufferLength, value); }
+            get => GetConfig(Configuration.AsyncFileBufferLength);
+            set => Configure(Configuration.AsyncFileBufferLength, value);
         }
 
         /// <summary>
@@ -283,8 +283,8 @@ namespace ManagedBass
         /// </summary>
         public static int NetTimeOut
         {
-            get { return GetConfig(Configuration.NetTimeOut); }
-            set { Configure(Configuration.NetTimeOut, value); }
+            get => GetConfig(Configuration.NetTimeOut);
+            set => Configure(Configuration.NetTimeOut, value);
         }
 
         /// <summary>
@@ -293,8 +293,8 @@ namespace ManagedBass
         /// </summary>
         public static int NetReadTimeOut
         {
-            get { return GetConfig(Configuration.NetReadTimeOut); }
-            set { Configure(Configuration.NetReadTimeOut, value); }
+            get => GetConfig(Configuration.NetReadTimeOut);
+            set => Configure(Configuration.NetReadTimeOut, value);
         }
 
         /// <summary>
@@ -318,8 +318,8 @@ namespace ManagedBass
         /// </remarks>
         public static int NetBufferLength
         {
-            get { return GetConfig(Configuration.NetBufferLength); }
-            set { Configure(Configuration.NetBufferLength, value); }
+            get => GetConfig(Configuration.NetBufferLength);
+            set => Configure(Configuration.NetBufferLength, value);
         }
 
         /// <summary>
@@ -332,8 +332,8 @@ namespace ManagedBass
         /// </remarks>
         public static int PauseNoPlay
         {
-            get { return GetConfig(Configuration.PauseNoPlay); }
-            set { Configure(Configuration.PauseNoPlay, value); }
+            get => GetConfig(Configuration.PauseNoPlay);
+            set => Configure(Configuration.PauseNoPlay, value);
         }
 
         /// <summary>
@@ -350,8 +350,8 @@ namespace ManagedBass
         /// </remarks>
         public static int NetPreBuffer
         {
-            get { return GetConfig(Configuration.NetPreBuffer); }
-            set { Configure(Configuration.NetPreBuffer, value); }
+            get => GetConfig(Configuration.NetPreBuffer);
+            set => Configure(Configuration.NetPreBuffer, value);
         }
 
         /// <summary>
@@ -360,8 +360,8 @@ namespace ManagedBass
         /// </summary>
         public static bool FTPPassive
         {
-            get { return GetConfigBool(Configuration.NetPassive); }
-            set { Configure(Configuration.NetPassive, value); }
+            get => GetConfigBool(Configuration.NetPassive);
+            set => Configure(Configuration.NetPassive, value);
         }
 
         /// <summary>
@@ -376,8 +376,8 @@ namespace ManagedBass
         /// </remarks>
         public static int NetPlaylist
         {
-            get { return GetConfig(Configuration.NetPlaylist); }
-            set { Configure(Configuration.NetPlaylist, value); }
+            get => GetConfig(Configuration.NetPlaylist);
+            set => Configure(Configuration.NetPlaylist, value);
         }
 
         /// <summary>
@@ -385,7 +385,7 @@ namespace ManagedBass
         /// </summary>
         public static string NetAgent
         {
-            get { return Marshal.PtrToStringAnsi(GetConfigPtr(Configuration.NetAgent)); }
+            get => Marshal.PtrToStringAnsi(GetConfigPtr(Configuration.NetAgent));
             set
             {
                 var ptr = Marshal.StringToHGlobalAnsi(value);
@@ -406,7 +406,7 @@ namespace ManagedBass
         /// </remarks>
         public static string NetProxy
         {
-            get { return Marshal.PtrToStringAnsi(GetConfigPtr(Configuration.NetProxy)); }
+            get => Marshal.PtrToStringAnsi(GetConfigPtr(Configuration.NetProxy));
             set
             {
                 var ptr = Marshal.StringToHGlobalAnsi(value);
@@ -427,8 +427,8 @@ namespace ManagedBass
         /// </remarks>
         public static int MusicVirtial
         {
-            get { return GetConfig(Configuration.MusicVirtual); }
-            set { Configure(Configuration.MusicVirtual, value); }
+            get => GetConfig(Configuration.MusicVirtual);
+            set => Configure(Configuration.MusicVirtual, value);
         }
 
         /// <summary>
@@ -444,8 +444,8 @@ namespace ManagedBass
         /// </remarks>
         public static int FileVerificationBytes
         {
-            get { return GetConfig(Configuration.FileVerificationBytes); }
-            set { Configure(Configuration.FileVerificationBytes, value); }
+            get => GetConfig(Configuration.FileVerificationBytes);
+            set => Configure(Configuration.FileVerificationBytes, value);
         }
 
         /// <summary>
@@ -463,12 +463,12 @@ namespace ManagedBass
         /// </remarks>
         public static int NetVerificationBytes
         {
-            get { return GetConfig(Configuration.NetVerificationBytes); }
-            set { Configure(Configuration.NetVerificationBytes, value); }
+            get => GetConfig(Configuration.NetVerificationBytes);
+            set => Configure(Configuration.NetVerificationBytes, value);
         }
-        
+
         /// <summary>
-        /// Linux, Android and CE only: The output device Buffer Length in milliseconds.
+        /// The output device Buffer Length in milliseconds.
         /// </summary>
         /// <remarks>
         /// The device Buffer is where the final mix of all playing channels is placed, ready for the device to play.
@@ -480,15 +480,17 @@ namespace ManagedBass
         /// Changes to this config setting only affect subsequently initialized devices, not any that are already initialized.
         /// This config option is only available on Linux, Android and Windows CE.
         /// The device's Buffer is determined automatically on other platforms.
-        /// Platform-specific: On Linux, the driver may choose to use a different Buffer Length
+        /// Platform-specific:
+        /// On Windows, this config option only applies when WASAPI output is used.
+        /// On Linux, the driver may choose to use a different Buffer Length
         /// if it decides that the specified Length is too short or long.
         /// The Buffer Length actually being used can be obtained with <see cref="BassInfo"/>,
         /// like this: <see cref="BassInfo.Latency"/> + <see cref="BassInfo.MinBufferLength"/> / 2.
         /// </remarks>
         public static int DeviceBufferLength
         {
-            get { return GetConfig(Configuration.DeviceBufferLength); }
-            set { Configure(Configuration.DeviceBufferLength, value); }
+            get => GetConfig(Configuration.DeviceBufferLength);
+            set => Configure(Configuration.DeviceBufferLength, value);
         }
 
         /// <summary>
@@ -502,8 +504,8 @@ namespace ManagedBass
         /// </remarks>
         public static bool SuppressMP3ErrorCorruptionSilence
         {
-            get { return GetConfigBool(Configuration.SuppressMP3ErrorCorruptionSilence); }
-            set { Configure(Configuration.SuppressMP3ErrorCorruptionSilence, value); }
+            get => GetConfigBool(Configuration.SuppressMP3ErrorCorruptionSilence);
+            set => Configure(Configuration.SuppressMP3ErrorCorruptionSilence, value);
         }
 
         /// <summary>
@@ -523,8 +525,8 @@ namespace ManagedBass
         /// </remarks>
         public static int SRCQuality
         {
-            get { return GetConfig(Configuration.SRCQuality); }
-            set { Configure(Configuration.SRCQuality, value); }
+            get => GetConfig(Configuration.SRCQuality);
+            set => Configure(Configuration.SRCQuality, value);
         }
 
         /// <summary>
@@ -543,8 +545,8 @@ namespace ManagedBass
         /// </remarks>
         public static int SampleSRCQuality
         {
-            get { return GetConfig(Configuration.SampleSRCQuality); }
-            set { Configure(Configuration.SampleSRCQuality, value); }
+            get => GetConfig(Configuration.SampleSRCQuality);
+            set => Configure(Configuration.SampleSRCQuality, value);
         }
 
         /// <summary>
@@ -558,8 +560,8 @@ namespace ManagedBass
         /// </remarks>
         public static bool OggPreScan
         {
-            get { return GetConfigBool(Configuration.OggPreScan); }
-            set { Configure(Configuration.OggPreScan, value); }
+            get => GetConfigBool(Configuration.OggPreScan);
+            set => Configure(Configuration.OggPreScan, value);
         }
 
         /// <summary>
@@ -567,8 +569,8 @@ namespace ManagedBass
         /// </summary>
         public static bool DeviceNonStop
         {
-            get { return GetConfigBool(Configuration.DevNonStop); }
-            set { Configure(Configuration.DevNonStop, value); }
+            get => GetConfigBool(Configuration.DevNonStop);
+            set => Configure(Configuration.DevNonStop, value);
         }
     }
 }

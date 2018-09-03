@@ -1,4 +1,6 @@
-﻿namespace ManagedBass
+﻿using System;
+
+namespace ManagedBass
 {
     /// <summary>
     /// Bass Error Codes returned by <see cref="Bass.LastError" /> and BassAsio.LastError.
@@ -63,7 +65,13 @@
         /// <summary>
         /// SSL/HTTPS support isn't available.
         /// </summary>
+        [Obsolete("Use SSL instead.")]
         SLL = 10,
+        
+        /// <summary>
+        /// SSL/HTTPS support isn't available.
+        /// </summary>
+        SSL = 10,
 
         /// <summary>
         /// No CD in drive

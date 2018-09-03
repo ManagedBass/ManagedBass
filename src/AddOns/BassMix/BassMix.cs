@@ -10,6 +10,16 @@ namespace ManagedBass.Mix
     {
         const string DllName = "bassmix";
         
+        #region Version
+        [DllImport(DllName)]
+        static extern int BASS_Mixer_GetVersion();
+
+        /// <summary>
+        /// Gets the Version of BassMix that is loaded.
+        /// </summary>
+        public static Version Version => Extensions.GetVersion(BASS_Mixer_GetVersion());
+        #endregion
+
         #region Split
         /// <summary>
         /// Creates a splitter stream (adds a reader channel to a decoding source channel).
@@ -313,8 +323,8 @@ namespace ManagedBass.Mix
         /// </remarks>
         public static int SplitBufferLength
         {
-            get { return Bass.GetConfig(Configuration.SplitBufferLength); }
-            set { Bass.Configure(Configuration.SplitBufferLength, value); }
+            get => Bass.GetConfig(Configuration.SplitBufferLength);
+            set => Bass.Configure(Configuration.SplitBufferLength, value);
         }
 
         /// <summary>
@@ -338,8 +348,8 @@ namespace ManagedBass.Mix
         /// </remarks>
         public static int MixerBufferLength
         {
-            get { return Bass.GetConfig(Configuration.MixerBufferLength); }
-            set { Bass.Configure(Configuration.MixerBufferLength, value); }
+            get => Bass.GetConfig(Configuration.MixerBufferLength);
+            set => Bass.Configure(Configuration.MixerBufferLength, value);
         }
 
         /// <summary>
@@ -356,8 +366,8 @@ namespace ManagedBass.Mix
         /// </remarks>
         public static int MixerPositionEx
         {
-            get { return Bass.GetConfig(Configuration.MixerPositionEx); }
-            set { Bass.Configure(Configuration.MixerPositionEx, value); }
+            get => Bass.GetConfig(Configuration.MixerPositionEx);
+            set => Bass.Configure(Configuration.MixerPositionEx, value);
         }
         #endregion
 

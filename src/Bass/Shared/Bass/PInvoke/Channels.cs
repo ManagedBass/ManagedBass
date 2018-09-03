@@ -634,7 +634,12 @@ namespace ManagedBass
         /// <returns>If the attribute (or any) is sliding, then <see langword="true" /> is returned, else <see langword="false" /> is returned.</returns>
         [DllImport(DllName, EntryPoint = "BASS_ChannelIsSliding")]
         public static extern bool ChannelIsSliding(int Handle, ChannelAttribute Attribute);
-        
+
+        const int SlideLog = 0x1000000;
+
+        [DllImport(DllName)]
+        static extern bool BASS_ChannelSlideAttribute(int Handle, int Attribute, float Value, int Time);
+
         /// <summary>
         /// Slides a channel's attribute from its current value to a new value.
         /// </summary>
@@ -642,6 +647,7 @@ namespace ManagedBass
         /// <param name="Attribute">The attribute to slide the value of.</param>
         /// <param name="Value">The new attribute value. See the attribute's documentation for details on the possible values.</param>
         /// <param name="Time">The Length of time (in milliseconds) that it should take for the attribute to reach the <paramref name="Value" />.</param>
+        /// <param name="Logarithmic">Slide logarithmically.</param>
         /// <returns>If successful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not a valid channel.</exception>
         /// <exception cref="Errors.Type"><paramref name="Attribute" /> is not valid.</exception>
@@ -653,8 +659,15 @@ namespace ManagedBass
         /// The sync will not be triggered in the case of an existing slide being replaced by a new one.</para>
         /// <para>Attribute slides are unaffected by whether the channel is playing, paused or stopped. They carry on regardless.</para>
         /// </remarks>
-        [DllImport(DllName, EntryPoint = "BASS_ChannelSlideAttribute")]
-        public static extern bool ChannelSlideAttribute(int Handle, ChannelAttribute Attribute, float Value, int Time);
+        public static bool ChannelSlideAttribute(int Handle, ChannelAttribute Attribute, float Value, int Time, bool Logarithmic = false)
+        {
+            var attr = (int)Attribute;
+
+            if (Logarithmic)
+                attr |= SlideLog;
+
+            return BASS_ChannelSlideAttribute(Handle, attr, Value, Time);
+        }
 
         #region Channel Get Level
         /// <summary>

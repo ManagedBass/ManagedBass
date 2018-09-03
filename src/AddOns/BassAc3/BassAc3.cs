@@ -74,8 +74,8 @@ namespace ManagedBass.Ac3
         /// </summary>
         public static bool DRC
         {
-            get { return Bass.GetConfigBool(Configuration.AC3DynamicRangeCompression); }
-            set { Bass.Configure(Configuration.AC3DynamicRangeCompression, value); }
+            get => Bass.GetConfigBool(Configuration.AC3DynamicRangeCompression);
+            set => Bass.Configure(Configuration.AC3DynamicRangeCompression, value);
         }
     }
 }

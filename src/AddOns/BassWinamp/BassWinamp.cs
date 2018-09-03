@@ -19,8 +19,8 @@ namespace ManagedBass.Winamp
         /// </summary>
         public static int InputTimeout
         {
-            get { return Bass.GetConfig(Configuration.WinampInputTimeout); }
-            set { Bass.Configure(Configuration.WinampInputTimeout, value); }
+            get => Bass.GetConfig(Configuration.WinampInputTimeout);
+            set => Bass.Configure(Configuration.WinampInputTimeout, value);
         }
 
         /// <summary>

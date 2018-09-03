@@ -74,8 +74,8 @@ namespace ManagedBass.Wasapi
         /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
         public static int CurrentDevice
         {
-            get { return BASS_WASAPI_GetDevice(); }
-            set 
+            get => BASS_WASAPI_GetDevice();
+		    set 
             { 
                 if (!BASS_WASAPI_SetDevice(value))
                     throw new BassException(); 

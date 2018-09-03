@@ -37,6 +37,17 @@ namespace ManagedBass.Wasapi
         /// When used with shared mode, the User-provided 'Buffer' and 'period' lengths are ignored 
         /// and WASAPI decides what Buffer to use (<see cref="BassWasapi.Info"/> can be used to check that).
         /// </summary>
-        EventDriven = 0x10
+        EventDriven = 0x10,
+
+        /// <summary>
+        /// buffer and period are in samples rather than seconds.
+        /// </summary>
+        Samples = 0x20,
+
+        /// <summary>
+        /// Apply dither (TPDF) when converting floating-point sample data to the device's format.
+        /// This flag only has effect on exclusive mode output.
+        /// </summary>
+        Dither = 0x40
     }
 }

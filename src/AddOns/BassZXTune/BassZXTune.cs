@@ -57,8 +57,8 @@ namespace ManagedBass.ZXTune
         /// </summary>
         public static int MaxFileSize
         {
-            get { return Bass.GetConfig(Configuration.ZXTuneMaxFileSize); }
-            set { Bass.Configure(Configuration.ZXTuneMaxFileSize, value); }
+            get => Bass.GetConfig(Configuration.ZXTuneMaxFileSize);
+            set => Bass.Configure(Configuration.ZXTuneMaxFileSize, value);
         }
     }
 }

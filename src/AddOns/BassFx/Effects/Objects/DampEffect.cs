@@ -10,7 +10,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Gain
         {
-            get { return Parameters.fGain; }
+            get => Parameters.fGain;
             set
             {
                 Parameters.fGain = (float)value;
@@ -24,7 +24,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Rate
         {
-            get { return Parameters.fRate; }
+            get => Parameters.fRate;
             set
             {
                 Parameters.fRate = (float)value;
@@ -38,7 +38,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Target
         {
-            get { return Parameters.fTarget; }
+            get => Parameters.fTarget;
             set
             {
                 Parameters.fTarget = (float)value;
@@ -52,7 +52,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Quiet
         {
-            get { return Parameters.fQuiet; }
+            get => Parameters.fQuiet;
             set
             {
                 Parameters.fQuiet = (float)value;
@@ -66,7 +66,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Delay
         {
-            get { return Parameters.fDelay; }
+            get => Parameters.fDelay;
             set
             {
                 Parameters.fDelay = (float)value;
@@ -80,7 +80,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public FXChannelFlags Channels
         {
-            get { return Parameters.lChannel; }
+            get => Parameters.lChannel;
             set
             {
                 Parameters.lChannel = value;

@@ -44,8 +44,8 @@ namespace ManagedBass.Cd
         /// </remarks>
         public static bool FreeOld
         {
-            get { return Bass.GetConfigBool(Configuration.CDFreeOld); }
-            set { Bass.Configure(Configuration.CDFreeOld, value); }
+            get => Bass.GetConfigBool(Configuration.CDFreeOld);
+            set => Bass.Configure(Configuration.CDFreeOld, value);
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace ManagedBass.Cd
         /// </summary>
         public static int RetryCount
         {
-            get { return Bass.GetConfig(Configuration.CDRetry); }
-            set { Bass.Configure(Configuration.CDRetry, value); }
+            get => Bass.GetConfig(Configuration.CDRetry);
+            set => Bass.Configure(Configuration.CDRetry, value);
         }
 
         /// <summary>
@@ -63,8 +63,8 @@ namespace ManagedBass.Cd
         /// </summary>
         public static bool AutoSpeedReduction
         {
-            get { return Bass.GetConfigBool(Configuration.CDAutoSpeed); }
-            set { Bass.Configure(Configuration.CDAutoSpeed, value); }
+            get => Bass.GetConfigBool(Configuration.CDAutoSpeed);
+            set => Bass.Configure(Configuration.CDAutoSpeed, value);
         }
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace ManagedBass.Cd
         /// </summary>
         public static bool SkipError
         {
-            get { return Bass.GetConfigBool(Configuration.CDSkipError); }
-            set { Bass.Configure(Configuration.CDSkipError, value); }
+            get => Bass.GetConfigBool(Configuration.CDSkipError);
+            set => Bass.Configure(Configuration.CDSkipError, value);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace ManagedBass.Cd
         /// </remarks>
         public static string CDDBServer
         {
-            get { return Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.CDDBServer)); }
+            get => Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.CDDBServer));
             set
             {
                 if (_cddbServer != IntPtr.Zero)
