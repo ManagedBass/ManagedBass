@@ -93,6 +93,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassMidi", "AddOns\BassMidi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AddOns", "AddOns", "{27976565-211B-4A18-8501-89D534534BF4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{B5C0D018-8F6C-48E1-9372-110313AF4A59}"
+	ProjectSection(SolutionItems) = preProject
+		app.config = app.config
+		Bass\ManagedBass.nuspec = Bass\ManagedBass.nuspec
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		AddOns\BassMidi\Shared\Shared.projitems*{1fb51416-f915-4dbb-9ac2-120333c73ff8}*SharedItemsImports = 13
