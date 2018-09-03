@@ -267,6 +267,16 @@ namespace ManagedBass
         /// <summary>
         /// Wave format stream, Float 32-bit.
         /// </summary>
-        WaveFloat = 0x50003
+        WaveFloat = 0x50003,
+
+        /// <summary>
+        /// Dummy stream.
+        /// </summary>
+        Dummy = 0x18000,
+
+        /// <summary>
+        /// Device mix stream.
+        /// </summary>
+        Device = 0x18001
     }
 }

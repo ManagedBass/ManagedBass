@@ -188,6 +188,21 @@ namespace ManagedBass
         /// </summary>
         ScannedInfo = 0xa,
 
+        /// <summary>
+        /// Disable playback ramping? 
+        /// </summary>
+        NoRamp = 0xB,
+
+        /// <summary>
+        /// The average bitrate of a file stream. 
+        /// </summary>
+        Bitrate = 0xC,
+
+        /// <summary>
+        /// Playback buffering length.
+        /// </summary>
+        Buffer = 0xD,
+        
         #region MOD Music
         /// <summary>
         /// The amplification level of a MOD music... 0 (min) to 100 (max).
@@ -488,16 +503,6 @@ namespace ManagedBass
         /// The mixer needs to have the <see cref="BassFlags.Decode"/> and <see cref="BassFlags.MixerPositionEx"/> flags set to use this attribute. 
         /// </remarks>
         MixerLatency = 0x15000,
-
-        /// <summary>
-        /// The average bitrate of a file stream. 
-        /// </summary>
-        Bitrate = 0xc,
-
-        /// <summary>
-        /// Disable playback ramping? 
-        /// </summary>
-        NoRamp = 0xb,
 
         /// <summary>
         /// Amount of data to asynchronously buffer from a splitter's source.
