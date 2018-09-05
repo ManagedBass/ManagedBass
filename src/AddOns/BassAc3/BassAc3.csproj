@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
     <AssemblyName>ManagedBass.Ac3</AssemblyName>
+    <Version>3.0.0</Version>
+    <Authors>MathewSachin</Authors>
+    <Description>ManagedBass Ac3 AddOn</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
