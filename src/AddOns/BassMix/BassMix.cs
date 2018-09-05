@@ -219,7 +219,7 @@ namespace ManagedBass.Mix
         /// Channels are also automatically unplugged when they are freed.
         /// </para>
         /// <para>
-        /// When mixing a channel, the mixer makes use of the channel's attributes (freq/volume/pan), as set with <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)" /> or <see cref="Bass.ChannelSlideAttribute(int,ChannelAttribute,float,int)" />.
+        /// When mixing a channel, the mixer makes use of the channel's attributes (freq/volume/pan), as set with <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)" /> or <see cref="Bass.ChannelSlideAttribute(int,ChannelAttribute,float,int,bool)" />.
         /// The <see cref="Bass.LogarithmicVolumeCurve"/> and <see cref="Bass.LogarithmicPanningCurve"/> config option settings are also used.
         /// </para>
         /// <para>

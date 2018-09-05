@@ -88,7 +88,7 @@
         }
 
         /// <summary>
-        /// Initializes Properties on every call to <see cref="MediaPlayer.Load"/>.
+        /// Initializes Properties on every call to MediaPlayer.Load.
         /// </summary>
         protected override void InitProperties()
         {

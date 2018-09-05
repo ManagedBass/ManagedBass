@@ -76,7 +76,7 @@ namespace ManagedBass.Wma
         /// <summary>
         /// Use a BASS channel as source (provided in Frequency parameter).
         /// Channels parameter is ignored.
-        /// If the BASSenc add-on is loaded, then the <see cref="ManagedBass.Enc.BassEnc.DSPPriority" /> setting is used to determine where in the channel's DSP chain the encoding is performed, otherwise priority -1000 is used.
+        /// If the BASSenc add-on is loaded, then the BassEnc.DSPPriority setting is used to determine where in the channel's DSP chain the encoding is performed, otherwise priority -1000 is used.
         /// </summary>
         Source = 0x80000
     }
