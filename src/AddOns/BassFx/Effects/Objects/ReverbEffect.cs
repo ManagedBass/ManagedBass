@@ -10,7 +10,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Damp
         {
-            get { return Parameters.fDamp; }
+            get => Parameters.fDamp;
             set
             {
                 Parameters.fDamp = (float)value;
@@ -24,7 +24,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double DryMix
         {
-            get { return Parameters.fDryMix; }
+            get => Parameters.fDryMix;
             set
             {
                 Parameters.fDryMix = (float)value;
@@ -38,7 +38,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double RoomSize
         {
-            get { return Parameters.fRoomSize; }
+            get => Parameters.fRoomSize;
             set
             {
                 Parameters.fRoomSize = (float)value;
@@ -52,7 +52,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double WetMix
         {
-            get { return Parameters.fWetMix; }
+            get => Parameters.fWetMix;
             set
             {
                 Parameters.fWetMix = (float)value;
@@ -67,7 +67,7 @@ namespace ManagedBass.Fx
         /// <remarks>It should at least be 4 for moderate scaling ratios. A value of 32 is recommended for best quality (better quality = higher CPU usage).</remarks>
         public double Width
         {
-            get { return Parameters.fWidth; }
+            get => Parameters.fWidth;
             set
             {
                 Parameters.fWidth = (float)value;
@@ -81,7 +81,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public int Mode
         {
-            get { return Parameters.lMode; }
+            get => Parameters.lMode;
             set
             {
                 Parameters.lMode = value;
@@ -95,7 +95,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public FXChannelFlags Channels
         {
-            get { return Parameters.lChannel; }
+            get => Parameters.lChannel;
             set
             {
                 Parameters.lChannel = value;

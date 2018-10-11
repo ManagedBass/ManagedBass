@@ -132,7 +132,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double DryMix
         {
-            get { return Parameters.fDryMix; }
+            get => Parameters.fDryMix;
             set
             {
                 Parameters.fDryMix = (float)value;
@@ -146,7 +146,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Feedback
         {
-            get { return Parameters.fFeedback; }
+            get => Parameters.fFeedback;
             set
             {
                 Parameters.fFeedback = (float)value;
@@ -160,7 +160,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Frequency
         {
-            get { return Parameters.fFreq; }
+            get => Parameters.fFreq;
             set
             {
                 Parameters.fFreq = (float)value;
@@ -174,7 +174,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Range
         {
-            get { return Parameters.fRange; }
+            get => Parameters.fRange;
             set
             {
                 Parameters.fRange = (float)value;
@@ -188,7 +188,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Rate
         {
-            get { return Parameters.fRate; }
+            get => Parameters.fRate;
             set
             {
                 Parameters.fRate = (float)value;
@@ -202,7 +202,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double WetMix
         {
-            get { return Parameters.fWetMix; }
+            get => Parameters.fWetMix;
             set
             {
                 Parameters.fWetMix = (float)value;
@@ -216,7 +216,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public FXChannelFlags Channels
         {
-            get { return Parameters.lChannel; }
+            get => Parameters.lChannel;
             set
             {
                 Parameters.lChannel = value;

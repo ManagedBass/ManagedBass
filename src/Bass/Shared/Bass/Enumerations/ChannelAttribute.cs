@@ -53,7 +53,7 @@ namespace ManagedBass
         /// <para>
         /// This attribute applies to playback of the channel, and does not affect the
         /// channel's sample data, so has no real effect on decoding channels.
-        /// It is still adjustable though, so that it can be used by the <see cref="Mix.BassMix"/> add-on,
+        /// It is still adjustable though, so that it can be used by the BassMix add-on,
         /// and anything else that wants to use it.
         /// </para>
         /// <para>
@@ -155,13 +155,13 @@ namespace ManagedBass
         /// <para>
         /// Whenever possible, a channel's sample rate should match the output device's rate to avoid the need for any sample rate conversion.
         /// The device's sample rate could be used in <see cref="Bass.CreateStream(int,int,BassFlags,StreamProcedure,IntPtr)" />
-        /// or <see cref="Bass.MusicLoad(string,long,int,BassFlags,int)" /> or <see cref="Midi.BassMidi" /> stream creation calls, for example.
+        /// or <see cref="Bass.MusicLoad(string,long,int,BassFlags,int)" /> or BassMidi stream creation calls, for example.
         /// </para>
         /// <para>
         /// The sample rate conversion occurs (when required) during playback,
         /// after the sample data has left the channel's playback Buffer, so it does not affect the data delivered by <see cref="Bass.ChannelGetData(int,IntPtr,int)" />.
         /// Although this attribute has no direct effect on decoding channels,
-        /// it is still available so that it can be used by the <see cref="Mix.BassMix" /> add-on and anything else that wants to use it.
+        /// it is still available so that it can be used by the BassMix add-on and anything else that wants to use it.
         /// </para>
         /// <para>
         /// This attribute can be set at any time, and changes take immediate effect.
@@ -188,6 +188,21 @@ namespace ManagedBass
         /// </summary>
         ScannedInfo = 0xa,
 
+        /// <summary>
+        /// Disable playback ramping? 
+        /// </summary>
+        NoRamp = 0xB,
+
+        /// <summary>
+        /// The average bitrate of a file stream. 
+        /// </summary>
+        Bitrate = 0xC,
+
+        /// <summary>
+        /// Playback buffering length.
+        /// </summary>
+        Buffer = 0xD,
+        
         #region MOD Music
         /// <summary>
         /// The amplification level of a MOD music... 0 (min) to 100 (max).
@@ -327,44 +342,44 @@ namespace ManagedBass
 
         /// <summary>
         /// BassFx Tempo Option: Use FIR low-pass (anti-alias) filter (gain speed, lose quality)? true=1 (default), false=0.
-        /// <para>See <see cref="Fx.BassFx.TempoCreate"/> for details.</para>
+        /// <para>See BassFx.TempoCreate for details.</para>
         /// <para>On iOS, Android, WinCE and Linux ARM platforms this is by default disabled for lower CPU usage.</para>
         /// </summary>
         TempoUseAAFilter = 0x10010,
 
         /// <summary>
         /// BassFx Tempo Option: FIR low-pass (anti-alias) filter Length in taps (8 .. 128 taps, default = 32, should be %4).
-        /// <para>See <see cref="Fx.BassFx.TempoCreate"/> for details.</para>
+        /// <para>See BassFx.TempoCreate for details.</para>
         /// </summary>
         TempoAAFilterLength = 0x10011,
 
         /// <summary>
         /// BassFx Tempo Option: Use quicker tempo change algorithm (gain speed, lose quality)? true=1, false=0 (default).
-        /// <para>See <see cref="Fx.BassFx.TempoCreate"/> for details.</para>
+        /// <para>See BassFx.TempoCreate for details.</para>
         /// </summary>
         TempoUseQuickAlgorithm = 0x10012,
 
         /// <summary>
         /// BassFx Tempo Option: Tempo Sequence in milliseconds (default = 82).
-        /// <para>See <see cref="Fx.BassFx.TempoCreate"/> for details.</para>
+        /// <para>See BassFx.TempoCreate for details.</para>
         /// </summary>
         TempoSequenceMilliseconds = 0x10013,
 
         /// <summary>
         /// BassFx Tempo Option: SeekWindow in milliseconds (default = 14).
-        /// <para>See <see cref="Fx.BassFx.TempoCreate"/> for details.</para>
+        /// <para>See BassFx.TempoCreate for details.</para>
         /// </summary>
         TempoSeekWindowMilliseconds = 0x10014,
 
         /// <summary>
         /// BassFx Tempo Option: Tempo Overlap in milliseconds (default = 12).
-        /// <para>See <see cref="Fx.BassFx.TempoCreate"/> for details.</para>
+        /// <para>See BassFx.TempoCreate for details.</para>
         /// </summary>
         TempoOverlapMilliseconds = 0x10015,
 
         /// <summary>
         /// BassFx Tempo Option: Prevents clicks with tempo changes (default = FALSE).
-        /// <para>See <see cref="Fx.BassFx.TempoCreate"/> for details.</para>
+        /// <para>See BassFx.TempoCreate for details.</para>
         /// </summary>
         TempoPreventClick = 0x10016,
 
@@ -379,7 +394,7 @@ namespace ManagedBass
         /// BASSMIDI: Gets the Pulses Per Quarter Note (or ticks per beat) value of the MIDI file.
         /// <para>
         /// This attribute is the number of ticks per beat as defined by the MIDI file;
-        /// it will be 0 for MIDI streams created via <see cref="Midi.BassMidi.CreateStream(int,BassFlags,int)"/>,
+        /// it will be 0 for MIDI streams created via BassMidi.CreateStream(int,BassFlags,int),
         /// It is read-only, so can't be modified via <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)"/>.
         /// </para>
         /// </summary>
@@ -390,12 +405,12 @@ namespace ManagedBass
         /// <para>
         /// It is not strictly the CPU usage that is measured, but rather how timely the stream is able to render data.
         /// For example, a limit of 50% would mean that the rendering would need to be at least 2x real-time speed.
-        /// When the limit is exceeded, <see cref="Midi.BassMidi"/> will begin killing voices, starting with the  most quiet.
+        /// When the limit is exceeded, BassMidi will begin killing voices, starting with the  most quiet.
         /// When the CPU usage is limited, the stream's samples are loaded asynchronously
         /// so that any loading delays (eg. due to slow disk) do not hold up the stream for too long.
         /// If a sample cannot be loaded in time, then it will be silenced
         /// until it is available and the stream will continue playing other samples as normal in the meantime.
-        /// This does not affect sample loading via <see cref="Midi.BassMidi.StreamLoadSamples"/>, which always operates synchronously.
+        /// This does not affect sample loading via BassMidi.StreamLoadSamples, which always operates synchronously.
         /// By default, a MIDI stream will have no CPU limit.
         /// </para>
         /// </summary>
@@ -448,7 +463,7 @@ namespace ManagedBass
         /// During playback, the effect of changes to this attribute are not heard instantaneously, due to buffering.
         /// To reduce the delay, use the <see cref="Bass.PlaybackBufferLength"/> config option to reduce the Buffer Length.
         /// This attribute can also be used to count the number of tracks in a MIDI file stream.
-        /// MIDI streams created via <see cref="Midi.BassMidi.CreateStream(int,BassFlags,int)"/> do not have any tracks.
+        /// MIDI streams created via BassMidi.CreateStream(int,BassFlags,int) do not have any tracks.
         /// </para>
         /// </summary>
         MidiTrackVolume = 0x12100,
@@ -483,21 +498,11 @@ namespace ManagedBass
         /// BassMix: Custom output latency in seconds... default = 0 (no accounting for latency). Changes take immediate effect.
         /// </summary>
         /// <remarks>
-        /// When a mixer is played by BASS, the <see cref="Mix.BassMix.ChannelGetData(int,IntPtr,int)"/>, <see cref="Mix.BassMix.ChannelGetLevel(int)"/>, <see cref="Mix.BassMix.ChannelGetLevel(int,float[],float,LevelRetrievalFlags)"/>, and <see cref="Mix.BassMix.ChannelGetPosition(int,PositionFlags)"/> functions will get the output latency and account for that so that they reflect what is currently being heard, but that cannot be done when a different output system is used, eg. ASIO or WASAPI.
+        /// When a mixer is played by BASS, the BassMix.ChannelGetData(int,IntPtr,int), BassMix.ChannelGetLevel(int), BassMix.ChannelGetLevel(int,float[],float,LevelRetrievalFlags)", and BassMix.ChannelGetPosition(int,PositionFlags) functions will get the output latency and account for that so that they reflect what is currently being heard, but that cannot be done when a different output system is used, eg. ASIO or WASAPI.
         /// In that case, this attribute can be used to tell the mixer what the output latency is, so that those functions can still account for it.
         /// The mixer needs to have the <see cref="BassFlags.Decode"/> and <see cref="BassFlags.MixerPositionEx"/> flags set to use this attribute. 
         /// </remarks>
         MixerLatency = 0x15000,
-
-        /// <summary>
-        /// The average bitrate of a file stream. 
-        /// </summary>
-        Bitrate = 0xc,
-
-        /// <summary>
-        /// Disable playback ramping? 
-        /// </summary>
-        NoRamp = 0xb,
 
         /// <summary>
         /// Amount of data to asynchronously buffer from a splitter's source.

@@ -14,7 +14,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Rate
         {
-            get { return Parameters.fRate; }
+            get => Parameters.fRate;
             set
             {
                 Parameters.fRate = (float)value;
@@ -28,7 +28,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public FXChannelFlags Channels
         {
-            get { return Parameters.lChannel; }
+            get => Parameters.lChannel;
             set
             {
                 Parameters.lChannel = value;

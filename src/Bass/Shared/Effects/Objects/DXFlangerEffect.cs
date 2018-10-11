@@ -10,7 +10,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double WetDryMix
         {
-            get { return Parameters.fWetDryMix; }
+            get => Parameters.fWetDryMix;
             set
             {
                 Parameters.fWetDryMix = (float)value;
@@ -24,7 +24,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Depth
         {
-            get { return Parameters.fDepth; }
+            get => Parameters.fDepth;
             set
             {
                 Parameters.fDepth = (float)value;
@@ -38,7 +38,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Feedback
         {
-            get { return Parameters.fFeedback; }
+            get => Parameters.fFeedback;
             set
             {
                 Parameters.fFeedback = (float)value;
@@ -52,7 +52,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Frequency
         {
-            get { return Parameters.fFrequency; }
+            get => Parameters.fFrequency;
             set
             {
                 Parameters.fFrequency = (float)value;
@@ -66,7 +66,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public DXWaveform Waveform
         {
-            get { return Parameters.lWaveform; }
+            get => Parameters.lWaveform;
             set
             {
                 Parameters.lWaveform = value;
@@ -80,7 +80,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Delay
         {
-            get { return Parameters.fDelay; }
+            get => Parameters.fDelay;
             set
             {
                 Parameters.fDelay = (float)value;
@@ -94,7 +94,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public DXPhase Phase
         {
-            get { return Parameters.lPhase; }
+            get => Parameters.lPhase;
             set
             {
                 Parameters.lPhase = value;

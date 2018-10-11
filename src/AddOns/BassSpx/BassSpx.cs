@@ -11,11 +11,7 @@ namespace ManagedBass.Spx
     /// </remarks>
     public static class BassSpx
     {
-#if __IOS__
-        const string DllName = "__Internal";
-#else
         const string DllName = "bass_spx";
-#endif
       
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_SPX_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);

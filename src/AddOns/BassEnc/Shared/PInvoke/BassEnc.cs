@@ -35,8 +35,8 @@ namespace ManagedBass.Enc
         /// </remarks>
         public static int DSPPriority
         {
-            get { return Bass.GetConfig(Configuration.EncodePriority); }
-            set { Bass.Configure(Configuration.EncodePriority, value); }
+            get => Bass.GetConfig(Configuration.EncodePriority);
+            set => Bass.Configure(Configuration.EncodePriority, value);
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace ManagedBass.Enc
         /// </remarks>
         public static int Queue
         {
-            get { return Bass.GetConfig(Configuration.EncodeQueue); }
-            set { Bass.Configure(Configuration.EncodeQueue, value); }
+            get => Bass.GetConfig(Configuration.EncodeQueue);
+            set => Bass.Configure(Configuration.EncodeQueue, value);
         }
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace ManagedBass.Enc
         /// </remarks>
         public static int CastTimeout
         {
-            get { return Bass.GetConfig(Configuration.EncodeCastTimeout); }
-            set { Bass.Configure(Configuration.EncodeCastTimeout, value); }
+            get => Bass.GetConfig(Configuration.EncodeCastTimeout);
+            set => Bass.Configure(Configuration.EncodeCastTimeout, value);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace ManagedBass.Enc
         /// </remarks>
         public static string CastProxy
         {
-            get { return Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.EncodeCastProxy)); }
+            get => Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.EncodeCastProxy));
             set
             {
                 var castProxy = Marshal.StringToHGlobalAnsi(value);

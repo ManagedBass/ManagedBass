@@ -8,11 +8,7 @@ namespace ManagedBass.ZXTune
     /// </summary>
     public static class BassZXTune
     {
-#if __IOS__
-        const string DllName = "__Internal";
-#else
         const string DllName = "basszxtune";
-#endif
 		        
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_ZXTUNE_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
@@ -57,8 +53,8 @@ namespace ManagedBass.ZXTune
         /// </summary>
         public static int MaxFileSize
         {
-            get { return Bass.GetConfig(Configuration.ZXTuneMaxFileSize); }
-            set { Bass.Configure(Configuration.ZXTuneMaxFileSize, value); }
+            get => Bass.GetConfig(Configuration.ZXTuneMaxFileSize);
+            set => Bass.Configure(Configuration.ZXTuneMaxFileSize, value);
         }
     }
 }

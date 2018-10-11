@@ -15,7 +15,7 @@
         /// </summary>
         public bool Reverse
         {
-            get { return _rev; }
+            get => _rev;
             set
             {
                 if (!Bass.ChannelSetAttribute(Handle, ChannelAttribute.ReverseDirection, value ? -1 : 1))
@@ -35,7 +35,7 @@
         /// </summary>
         public double Pitch
         {
-            get { return _pitch; }
+            get => _pitch;
             set
             {
                 if (!Bass.ChannelSetAttribute(_tempoHandle, ChannelAttribute.Pitch, value))
@@ -55,7 +55,7 @@
         /// </summary>
         public double Tempo
         {
-            get { return _tempo; }
+            get => _tempo;
             set
             {
                 if (!Bass.ChannelSetAttribute(_tempoHandle, ChannelAttribute.Tempo, value))
@@ -88,7 +88,7 @@
         }
 
         /// <summary>
-        /// Initializes Properties on every call to <see cref="MediaPlayer.Load"/>.
+        /// Initializes Properties on every call to MediaPlayer.Load.
         /// </summary>
         protected override void InitProperties()
         {

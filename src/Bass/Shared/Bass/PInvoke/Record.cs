@@ -167,7 +167,7 @@ namespace ManagedBass
         /// <seealso cref="RecordInit"/>
         public static int CurrentRecordingDevice
         {
-            get { return BASS_RecordGetDevice(); }
+            get => BASS_RecordGetDevice();
             set
             {
                 if (!BASS_RecordSetDevice(value))
@@ -265,8 +265,8 @@ namespace ManagedBass
         /// </remarks>
         public static int RecordingBufferLength
         {
-            get { return GetConfig(Configuration.RecordingBufferLength); }
-            set { Configure(Configuration.RecordingBufferLength, value); }
+            get => GetConfig(Configuration.RecordingBufferLength);
+            set => Configure(Configuration.RecordingBufferLength, value);
         }
 
         /// <summary>

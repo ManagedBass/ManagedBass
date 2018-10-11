@@ -42,7 +42,7 @@ namespace ManagedBass
         /// </summary>
         public int Priority
         {
-            get { return _priority; }
+            get => _priority;
             set
             {
                 if (IsActive && Bass.FXSetPriority(_effectHandle, value))
@@ -94,7 +94,7 @@ namespace ManagedBass
 
                 OnPropertyChanged();
             }
-            get { return _channel != 0 && _effectHandle != 0; }
+            get => _channel != 0 && _effectHandle != 0;
         }
         
         /// <summary>

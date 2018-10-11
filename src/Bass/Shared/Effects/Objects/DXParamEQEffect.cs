@@ -13,7 +13,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Center
         {
-            get { return Parameters.fCenter; }
+            get => Parameters.fCenter;
             set
             {
                 Parameters.fCenter = (float) value;
@@ -27,7 +27,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Bandwidth
         {
-            get { return Parameters.fBandwidth; }
+            get => Parameters.fBandwidth;
             set
             {
                 Parameters.fBandwidth = (float) value;
@@ -41,7 +41,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Gain
         {
-            get { return Parameters.fGain; }
+            get => Parameters.fGain;
             set
             {
                 Parameters.fGain = (float) value;
