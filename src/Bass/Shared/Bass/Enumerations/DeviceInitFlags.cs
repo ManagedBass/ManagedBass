@@ -31,6 +31,11 @@ namespace ManagedBass
         Device3D = 0x4,
 
         /// <summary>
+        /// Limit output to 16 bit.
+        /// </summary>
+        Bits16 = 0x8,
+
+        /// <summary>
         /// Calculate device latency (<see cref="BassInfo"/> struct).
         /// </summary>
         Latency = 0x100,
@@ -63,6 +68,26 @@ namespace ManagedBass
         /// <summary>
         /// Set the device's output rate to freq, otherwise leave it as it is.
         /// </summary>
-        Frequency = 0x4000
+        Frequency = 0x4000,
+
+        /// <summary>
+        /// Limit output to stereo.
+        /// </summary>
+        Stereo = 0x8000,
+
+        /// <summary>
+        /// Hog/Exclusive mode.
+        /// </summary>
+        Hog = 0x10000,
+
+        /// <summary>
+        /// Use AudioTrack output.
+        /// </summary>
+        AudioTrack = 0x20000,
+
+        /// <summary>
+        /// Use DirectSound output.
+        /// </summary>
+        DirectSound = 0x40000
     }
 }
