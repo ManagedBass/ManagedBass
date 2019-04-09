@@ -11,11 +11,7 @@ namespace ManagedBass.Ac3
     /// </remarks>
     public static class BassAc3
     {
-#if __IOS__
-        const string DllName = "__Internal";
-#else
         const string DllName = "bass_ac3";
-#endif
         
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_AC3_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);

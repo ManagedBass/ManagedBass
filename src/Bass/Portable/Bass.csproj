@@ -4,7 +4,10 @@
     <TargetFramework>netstandard1.4</TargetFramework>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <AssemblyName>ManagedBass</AssemblyName>
-    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <Version>3.0.0</Version>
+    <Authors>MathewSachin</Authors>
+    <Description>.Net wrapper for un4seen BASS audio library</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <Import Project="..\..\Bass\Shared\Shared.projitems" Label="Shared" />
