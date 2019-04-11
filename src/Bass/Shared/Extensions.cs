@@ -117,7 +117,7 @@ namespace ManagedBass
 
             while (true)
             {
-                var str = Marshal.PtrToStringAnsi(Ptr);
+                var str = Ptr == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(Ptr);
 
                 if (string.IsNullOrEmpty(str))
                     break;

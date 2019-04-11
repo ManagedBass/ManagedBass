@@ -34,7 +34,7 @@ namespace ManagedBass.Midi
         /// <summary>
         /// The name/description of the device.
         /// </summary>
-        public string Name => Marshal.PtrToStringAnsi(name);
+        public string Name => name == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(name);
 
         /// <summary>
         /// Gets whether the device is enabled.

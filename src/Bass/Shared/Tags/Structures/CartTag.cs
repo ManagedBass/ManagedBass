@@ -129,7 +129,7 @@ namespace ManagedBass
         /// <summary>
         /// Free form text for scripts or tags.
         /// </summary>
-        public string TagText => Marshal.PtrToStringAnsi(tagText);
+        public string TagText => tagText == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(tagText);
 
         /// <summary>
         /// Start time.

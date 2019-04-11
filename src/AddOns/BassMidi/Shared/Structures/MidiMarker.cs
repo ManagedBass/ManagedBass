@@ -28,7 +28,7 @@ namespace ManagedBass.Midi
         /// The marker text is in the form of "a/b c d", where a is the numerator, b is the denominator, c is the metronome pulse, and d is the number of 32nd notes per MIDI quarter-note.
         /// </para>
         /// </remarks>
-        public string Text => Marshal.PtrToStringAnsi(text);
+        public string Text => text == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(text);
 
         /// <summary>
         /// The MIDI track (number) containing marker (0=first).

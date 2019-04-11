@@ -46,12 +46,12 @@ namespace ManagedBass.Wasapi
         /// <summary>
         /// The description of the device.
         /// </summary>
-        public string Name => Marshal.PtrToStringAnsi(name);
+        public string Name => name == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(name);
 
         /// <summary>
         /// The ID of the driver being used.
         /// </summary>
-        public string ID => Marshal.PtrToStringAnsi(id);
+        public string ID => id == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(id);
 
         /// <summary>
         /// Gets whether the device is the system default device.
