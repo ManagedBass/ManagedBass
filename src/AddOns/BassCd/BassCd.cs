@@ -491,7 +491,7 @@ namespace ManagedBass.Cd
                     return Extensions.PtrToStringUtf8(ptr);
 
                 default:
-                    return Marshal.PtrToStringAnsi(ptr);
+                    return ptr == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(ptr);
             }
         }
 

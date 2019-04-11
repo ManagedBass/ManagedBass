@@ -82,7 +82,7 @@ namespace ManagedBass
         /// <summary>
         /// Coding history.
         /// </summary>
-        public string CodingHistory => Marshal.PtrToStringAnsi(codinghistory);
+        public string CodingHistory => codinghistory == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(codinghistory);
 
         /// <summary>
         /// Reads the tag from a channel.

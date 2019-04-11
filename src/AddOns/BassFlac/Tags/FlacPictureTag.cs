@@ -16,7 +16,7 @@ namespace ManagedBass.Flac
         /// <summary>
         /// The MIME type. This may be "--&gt;" to signify that data contains a URL of the picture rather than the picture data itself.
         /// </summary>
-        public string Mime => Marshal.PtrToStringAnsi(mime);
+        public string Mime => mime == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(mime);
 
         IntPtr description;
 

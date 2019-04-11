@@ -24,17 +24,17 @@ namespace ManagedBass.Cd
         /// <summary>
         /// The drive product/model name.
         /// </summary>
-        public string Name => Marshal.PtrToStringAnsi(product);
+        public string Name => product == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(product);
 
         /// <summary>
         /// The drive manufacturer name.
         /// </summary>
-        public string Manufacturer => Marshal.PtrToStringAnsi(vendor);
+        public string Manufacturer => vendor == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(vendor);
 
         /// <summary>
         /// The revision number as a string.
         /// </summary>
-        public string Revision => Marshal.PtrToStringAnsi(rev);
+        public string Revision => rev == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(rev);
 
         /// <summary>
         /// Gets the real-time Speed Multiplier = <see cref="MaxSpeed"/> / 176.4.
