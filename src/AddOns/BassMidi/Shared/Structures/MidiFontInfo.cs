@@ -40,16 +40,16 @@ namespace ManagedBass.Midi
         /// <summary>
         /// Name of the soundfont.
         /// </summary>
-        public string Name => Marshal.PtrToStringAnsi(name);
+        public string Name => name == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(name);
 
         /// <summary>
         /// Copyright notice.
         /// </summary>
-        public string Copyright => Marshal.PtrToStringAnsi(copyright);
+        public string Copyright => copyright == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(copyright);
 
         /// <summary>
         /// Any comments.
         /// </summary>
-        public string Comment => Marshal.PtrToStringAnsi(comment);
+        public string Comment => comment == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(comment);
     }
 }

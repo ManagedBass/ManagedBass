@@ -236,152 +236,152 @@
         Float = 54,
 
         /// <summary>
-        /// See <see cref="BassAc3.DRC"/>.
+        /// See BassAc3.DRC.
         /// </summary>
         AC3DynamicRangeCompression = 65537,
 
         /// <summary>
-        /// See <see cref="Wma.BassWma.PrebufferInternetStreams"/>.
+        /// See BassWma.PrebufferInternetStreams.
         /// </summary>
         WmaNetPreBuffer = 65793,
 
         /// <summary>
-        /// See <see cref="Wma.BassWma.UseBassFileHandling"/>.
+        /// See BassWma.UseBassFileHandling.
         /// </summary>
         WmaBassFileHandling = 65795,
 
         /// <summary>
-        /// See <see cref="Wma.BassWma.CanSeekNetworkStreams"/>.
+        /// See BassWma.CanSeekNetworkStreams.
         /// </summary>
         WmaNetSeek = 65796,
 
         /// <summary>
-        /// See <see cref="Wma.BassWma.PlayWMVAudio"/>.
+        /// See BassWma.PlayWMVAudio.
         /// </summary>
         WmaVideo = 65797,
 
         /// <summary>
-        /// See <see cref="Wma.BassWma.AsyncDecoding"/>.
+        /// See BassWma.AsyncDecoding.
         /// </summary>
         WmaAsync = 65807,
 
         /// <summary>
-        /// See <see cref="Cd.BassCd.FreeOld"/>.
+        /// See BassCd.FreeOld.
         /// </summary>
         CDFreeOld = 66048,
 
         /// <summary>
-        /// See <see cref="Cd.BassCd.RetryCount"/>.
+        /// See BassCd.RetryCount.
         /// </summary>
         CDRetry = 66049,
 
         /// <summary>
-        /// See <see cref="Cd.BassCd.AutoSpeedReduction"/>.
+        /// See BassCd.AutoSpeedReduction.
         /// </summary>
         CDAutoSpeed = 66050,
 
         /// <summary>
-        /// See <see cref="Cd.BassCd.SkipError"/>.
+        /// See BassCd.SkipError.
         /// </summary>
         CDSkipError = 66051,
 
         /// <summary>
-        /// See <see cref="Cd.BassCd.CDDBServer"/>.
+        /// See BassCd.CDDBServer.
         /// </summary>
         CDDBServer = 66052,
 
         /// <summary>
-        /// See <see cref="Enc.BassEnc.DSPPriority"/>.
+        /// See BassEnc.DSPPriority.
         /// </summary>
         EncodePriority = 66304,
 
         /// <summary>
-        /// See <see cref="Enc.BassEnc.Queue"/>.
+        /// See BassEnc.Queue.
         /// </summary>
         EncodeQueue = 66305,
 
         /// <summary>
-        /// See <see cref="Enc.BassEnc.ACMLoad"/>.
+        /// See BassEnc.ACMLoad.
         /// </summary>
         EncodeACMLoad = 66306,
 
         /// <summary>
-        /// See <see cref="Enc.BassEnc.CastTimeout"/>.
+        /// See BassEnc.CastTimeout.
         /// </summary>
         EncodeCastTimeout = 66320,
 
         /// <summary>
-        /// See <see cref="Enc.BassEnc.CastProxy"/>.
+        /// See BassEnc.CastProxy.
         /// </summary>
         EncodeCastProxy = 66321,
 
         /// <summary>
-        /// See <see cref="Midi.BassMidi.Compact"/>.
+        /// See BassMidi.Compact.
         /// </summary>
         MidiCompact = 66560,
 
         /// <summary>
-        /// See <see cref="Midi.BassMidi.Voices"/>.
+        /// See BassMidi.Voices.
         /// </summary>
         MidiVoices = 66561,
 
         /// <summary>
-        /// See <see cref="Midi.BassMidi.AutoFont"/>.
+        /// See BassMidi.AutoFont.
         /// </summary>
         MidiAutoFont = 66562,
 
         /// <summary>
-        /// See <see cref="Midi.BassMidi.DefaultFont"/>.
+        /// See BassMidi.DefaultFont.
         /// </summary>
         MidiDefaultFont = 66563,
 
         /// <summary>
-        /// See <see cref="Midi.BassMidi.InputPorts"/>.
+        /// See BassMidi.InputPorts.
         /// </summary>
         MidiInputPorts = 66564,
 
         /// <summary>
-        /// See <see cref="Mix.BassMix.MixerBufferLength"/>.
+        /// See MixerBufferLength.
         /// </summary>
         MixerBufferLength = 67073,
 
         /// <summary>
-        /// See <see cref="Mix.BassMix.MixerPositionEx"/>.
+        /// See MixerPositionEx.
         /// </summary>
         MixerPositionEx = 67074,
 
         /// <summary>
-        /// See <see cref="Mix.BassMix.SplitBufferLength"/>.
+        /// See SplitBufferLength.
         /// </summary>
         SplitBufferLength = 67088,
 
         /// <summary>
-        /// See <see cref="BassAac.PlayAudioFromMp4"/>.
+        /// See BassAac.PlayAudioFromMp4.
         /// </summary>
         PlayAudioFromMp4 = 67328,
 
         /// <summary>
-        /// See <see cref="BassAac.AacSupportMp4"/>.
+        /// See BassAac.AacSupportMp4.
         /// </summary>
         AacSupportMp4 = 67329,
 
         /// <summary>
-        /// See <see cref="Dsd.BassDsd.DefaultFrequency"/>.
+        /// See BassDsd.DefaultFrequency.
         /// </summary>
         DSDFrequency = 67584,
 
         /// <summary>
-        /// See <see cref="Winamp.BassWinamp.InputTimeout"/>.
+        /// See BassWinamp.InputTimeout.
         /// </summary>
         WinampInputTimeout = 67584,
 
         /// <summary>
-        /// See <see cref="Dsd.BassDsd.DefaultGain"/>.
+        /// See BassDsd.DefaultGain.
         /// </summary>
         DSDGain = 67585,
 
         /// <summary>
-        /// See <see cref="BassZXTune.MaxFileSize"/>.
+        /// See BassZXTune.MaxFileSize.
         /// </summary>
         ZXTuneMaxFileSize = unchecked((int)0xCF1D0100)
     }

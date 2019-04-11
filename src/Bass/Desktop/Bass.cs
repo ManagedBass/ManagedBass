@@ -192,7 +192,7 @@ namespace ManagedBass
         }
 
         /// <summary>
-        /// Windows-only: Include a "Default" entry in the output device list? (default is false).
+        /// Include a "Default" entry in the output device list? (default is false).
         /// </summary>
         /// <remarks>
         /// BASS does not usually include a "Default" entry in its device list,
@@ -206,10 +206,6 @@ namespace ManagedBass
         /// When the "Default" device is used, the <see cref="Volume"/> functions work a bit differently to usual;
         /// they deal with the "session" volume, which only affects the current process's output on the device, rather than the device's volume.
         /// This option can only be set before <see cref="GetDeviceInfo(int,out DeviceInfo)"/> or <see cref="Init"/> has been called.
-        /// <para>
-        /// <b>Platform-specific</b>: This config option is only available on Windows.
-        /// It is available on all Windows versions (not including CE), but only Windows 7 has the default output switching feature.
-        /// </para>
         /// </remarks>
         public static bool IncludeDefaultDevice
         {
