@@ -24,7 +24,7 @@ namespace ManagedBass.Flac
         /// <summary>
         /// The International Standard Recording Code.
         /// </summary>
-        public string ISRC => Marshal.PtrToStringAnsi(isrc);
+        public string ISRC => isrc == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(isrc);
 
         /// <summary>
         /// The Track type.

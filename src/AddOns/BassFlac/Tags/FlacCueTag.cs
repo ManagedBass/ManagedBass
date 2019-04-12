@@ -14,7 +14,7 @@ namespace ManagedBass.Flac
         /// <summary>
         /// The media catalog number.
         /// </summary>
-        public string Catalog => Marshal.PtrToStringAnsi(catalog);
+        public string Catalog => catalog == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(catalog);
 
         /// <summary>
         /// The number of lead-in samples.
