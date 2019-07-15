@@ -145,7 +145,7 @@ namespace ManagedBass.Asio
 		/// Retrieves the level (peak amplitude) of a channel.
 		/// </summary>
 		/// <param name="Input">Dealing with an input channel? <see langword="false" /> = an output channel.</param>
-		/// <param name="Channel">The input/output channel number... 0 = first.</param>
+		/// <param name="Channel">The input/output channel number... 0 = first. The BassGetChannelLevelFlags.BassAsioLevelRms flag can optionally be used to get the RMS level, otherwise the peak level is given.</param>
 		/// <returns>
         /// If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
 		/// If successful, the level of the channel is returned, ranging from 0 (silent) to 1 (max).
