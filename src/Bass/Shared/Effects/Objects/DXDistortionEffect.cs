@@ -10,7 +10,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Gain
         {
-            get { return Parameters.fGain; }
+            get => Parameters.fGain;
             set
             {
                 Parameters.fGain = (float)value;
@@ -24,7 +24,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Edge
         {
-            get { return Parameters.fEdge; }
+            get => Parameters.fEdge;
             set
             {
                 Parameters.fEdge = (float)value;
@@ -38,7 +38,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double PostEQCenterFrequency
         {
-            get { return Parameters.fPostEQCenterFrequency; }
+            get => Parameters.fPostEQCenterFrequency;
             set
             {
                 Parameters.fPostEQCenterFrequency = (float)value;
@@ -52,7 +52,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double PostEQBandwidth
         {
-            get { return Parameters.fPostEQBandwidth; }
+            get => Parameters.fPostEQBandwidth;
             set
             {
                 Parameters.fPostEQBandwidth = (float)value;
@@ -66,7 +66,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double PreLowpassCutoff
         {
-            get { return Parameters.fPreLowpassCutoff; }
+            get => Parameters.fPreLowpassCutoff;
             set
             {
                 Parameters.fPreLowpassCutoff = (float)value;

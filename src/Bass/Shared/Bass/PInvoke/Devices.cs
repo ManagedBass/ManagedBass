@@ -213,7 +213,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static double Volume
         {
-            get { return BASS_GetVolume(); }
+            get => BASS_GetVolume();
             set
             {
                 if (!BASS_SetVolume((float)value))
@@ -252,7 +252,7 @@ namespace ManagedBass
         /// </remarks>
         public static int CurrentDevice
         {
-            get { return BASS_GetDevice(); }
+            get => BASS_GetDevice();
             set
             {
                 if (!BASS_SetDevice(value))

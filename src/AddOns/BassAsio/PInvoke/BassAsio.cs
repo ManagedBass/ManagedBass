@@ -9,33 +9,7 @@ namespace ManagedBass.Asio
     public static partial class BassAsio
     {
         const string DllName = "bassasio";
-
-        static IntPtr hLib;
-
-        /// <summary>
-        /// Load this library into Memory.
-        /// </summary>
-        /// <param name="Folder">Directory to Load from... <see langword="null"/> (default) = Load from Current Directory.</param>
-        /// <returns><see langword="true" />, if the library loaded successfully, else <see langword="false" />.</returns>
-        /// <remarks>
-        /// <para>
-        /// An external library is loaded into memory when any of its methods are called for the first time.
-        /// This results in the first method call being slower than all subsequent calls.
-        /// </para>
-        /// <para>
-        /// Some BASS libraries and add-ons may introduce new options to the main BASS lib like new parameters.
-        /// But, before using these new options the respective library must be already loaded.
-        /// This method can be used to make sure, that this library has been loaded.
-        /// </para>
-        /// </remarks>
-        public static bool Load(string Folder = null) => (hLib = DynamicLibrary.Load(DllName, Folder)) != IntPtr.Zero;
-
-        /// <summary>
-        /// Unloads this library from Memory.
-        /// </summary>
-        /// <returns><see langword="true" />, if the library unloaded successfully, else <see langword="false" />.</returns>
-        public static bool Unload() => DynamicLibrary.Unload(hLib);
-        
+                        
         #region AddDevice
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_ASIO_AddDevice(Guid clsid, string driver, string name);
@@ -163,7 +137,7 @@ namespace ManagedBass.Asio
         /// <exception cref="Errors.Device">The device number specified is invalid.</exception>
         public static int CurrentDevice
         {
-            get { return BASS_ASIO_GetDevice(); }
+            get => BASS_ASIO_GetDevice();
             set
             {
                 if (!BASS_ASIO_SetDevice(value))
@@ -293,8 +267,8 @@ namespace ManagedBass.Asio
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static double Rate
         {
-            get { return BASS_ASIO_GetRate(); }
-            set 
+            get => BASS_ASIO_GetRate();
+		    set 
             {
                 if (!BASS_ASIO_SetRate(value)) 
                     throw new BassException(LastError);
@@ -430,8 +404,8 @@ namespace ManagedBass.Asio
         /// <exception cref="Errors.NotAvailable">This function is only available before any devices have been enumerated.</exception>
         public static bool Unicode
         {
-            get { return unicode; }
-            set
+            get => unicode;
+		    set
             {
                 if (BASS_ASIO_SetUnicode(value))
                     unicode = value;

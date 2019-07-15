@@ -14,31 +14,15 @@ namespace ManagedBass.Mix
         const string DllName = "bassmix";
 #endif
         
-        static IntPtr hLib;
+        #region Version
+        [DllImport(DllName)]
+        static extern int BASS_Mixer_GetVersion();
 
         /// <summary>
-        /// Load this library into Memory.
+        /// Gets the Version of BassMix that is loaded.
         /// </summary>
-        /// <param name="Folder">Directory to Load from... <see langword="null"/> (default) = Load from Current Directory.</param>
-        /// <returns><see langword="true" />, if the library loaded successfully, else <see langword="false" />.</returns>
-        /// <remarks>
-        /// <para>
-        /// An external library is loaded into memory when any of its methods are called for the first time.
-        /// This results in the first method call being slower than all subsequent calls.
-        /// </para>
-        /// <para>
-        /// Some BASS libraries and add-ons may introduce new options to the main BASS lib like new parameters.
-        /// But, before using these new options the respective library must be already loaded.
-        /// This method can be used to make sure, that this library has been loaded.
-        /// </para>
-        /// </remarks>
-        public static bool Load(string Folder = null) => (hLib = DynamicLibrary.Load(DllName, Folder)) != IntPtr.Zero;
-
-        /// <summary>
-        /// Unloads this library from Memory.
-        /// </summary>
-        /// <returns><see langword="true" />, if the library unloaded successfully, else <see langword="false" />.</returns>
-        public static bool Unload() => DynamicLibrary.Unload(hLib);
+        public static Version Version => Extensions.GetVersion(BASS_Mixer_GetVersion());
+        #endregion
 
         #region Split
         /// <summary>
@@ -301,6 +285,29 @@ namespace ManagedBass.Mix
         [DllImport(DllName, EntryPoint = "BASS_Mixer_ChannelRemove")]
         public static extern bool MixerRemoveChannel(int Handle);
 
+        [DllImport(DllName)]
+        static extern int BASS_Mixer_StreamGetChannels(int Handle, [In, Out] int[] Channels, int Count);
+
+        /// <summary>
+        /// Retrieves a mixer's source channels.
+        /// </summary>
+        /// <param name="Handle">The Mixer Handle.</param>
+        /// <returns>An array containing mixer source channels or null on error. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>To determine whether a particular channel is plugged in a mixer, it is simpler to use <see cref="ChannelGetMixer"/> instead of this function.</remarks>
+        public static int[] MixerGetChannels(int Handle)
+        {
+            var count = BASS_Mixer_StreamGetChannels(Handle, null, 0);
+
+            if (count == -1)
+                return null;
+
+            var result = new int[count];
+
+            BASS_Mixer_StreamGetChannels(Handle, result, count);
+
+            return result;
+        }
+
         #region Configuration
         /// <summary>
         /// The splitter Buffer Length in milliseconds... 100 (min) to 5000 (max).
@@ -320,8 +327,8 @@ namespace ManagedBass.Mix
         /// </remarks>
         public static int SplitBufferLength
         {
-            get { return Bass.GetConfig(Configuration.SplitBufferLength); }
-            set { Bass.Configure(Configuration.SplitBufferLength, value); }
+            get => Bass.GetConfig(Configuration.SplitBufferLength);
+            set => Bass.Configure(Configuration.SplitBufferLength, value);
         }
 
         /// <summary>
@@ -345,8 +352,8 @@ namespace ManagedBass.Mix
         /// </remarks>
         public static int MixerBufferLength
         {
-            get { return Bass.GetConfig(Configuration.MixerBufferLength); }
-            set { Bass.Configure(Configuration.MixerBufferLength, value); }
+            get => Bass.GetConfig(Configuration.MixerBufferLength);
+            set => Bass.Configure(Configuration.MixerBufferLength, value);
         }
 
         /// <summary>
@@ -363,8 +370,8 @@ namespace ManagedBass.Mix
         /// </remarks>
         public static int MixerPositionEx
         {
-            get { return Bass.GetConfig(Configuration.MixerPositionEx); }
-            set { Bass.Configure(Configuration.MixerPositionEx, value); }
+            get => Bass.GetConfig(Configuration.MixerPositionEx);
+            set => Bass.Configure(Configuration.MixerPositionEx, value);
         }
         #endregion
 

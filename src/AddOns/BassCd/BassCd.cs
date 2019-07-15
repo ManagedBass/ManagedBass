@@ -12,44 +12,13 @@ namespace ManagedBass.Cd
     public static class BassCd
     {
         const string DllName = "basscd";
-        
-        static IntPtr hLib;
-        
-        /// <summary>
-        /// Load this library into Memory.
-		/// </summary>
-        /// <param name="Folder">Directory to Load from... <see langword="null"/> (default) = Load from Current Directory.</param>
-		/// <returns><see langword="true" />, if the library loaded successfully, else <see langword="false" />.</returns>
-        /// <remarks>
-		/// <para>
-		/// An external library is loaded into memory when any of its methods are called for the first time.
-		/// This results in the first method call being slower than all subsequent calls.
-		/// </para>
-		/// <para>
-		/// Some BASS libraries and add-ons may introduce new options to the main BASS lib like new parameters.
-		/// But, before using these new options the respective library must be already loaded.
-		/// This method can be used to make sure, that this library has been loaded.
-		/// </para>
-		/// </remarks>
-        public static bool Load(string Folder = null) => (hLib = DynamicLibrary.Load(DllName, Folder)) != IntPtr.Zero;
-		
-		/// <summary>
-		/// Unloads this library from Memory.
-		/// </summary>
-		/// <returns><see langword="true" />, if the library unloaded successfully, else <see langword="false" />.</returns>
-        public static bool Unload() => DynamicLibrary.Unload(hLib);
-
+        		
         /// <summary>
         /// Track Pregap constant
         /// </summary>
         public const int TrackPregap = 0xFFFF;
         static IntPtr _cddbServer;
-
-        /// <summary>
-        /// Gets the <see cref="Plugin"/> instance for <see cref="BassCd"/>.
-        /// </summary>
-        public static readonly Plugin Plugin = new Plugin(DllName);
-
+        
         /// <summary>
         /// Gets the number of CD Drives available.
         /// </summary>
@@ -75,8 +44,8 @@ namespace ManagedBass.Cd
         /// </remarks>
         public static bool FreeOld
         {
-            get { return Bass.GetConfigBool(Configuration.CDFreeOld); }
-            set { Bass.Configure(Configuration.CDFreeOld, value); }
+            get => Bass.GetConfigBool(Configuration.CDFreeOld);
+            set => Bass.Configure(Configuration.CDFreeOld, value);
         }
 
         /// <summary>
@@ -84,8 +53,8 @@ namespace ManagedBass.Cd
         /// </summary>
         public static int RetryCount
         {
-            get { return Bass.GetConfig(Configuration.CDRetry); }
-            set { Bass.Configure(Configuration.CDRetry, value); }
+            get => Bass.GetConfig(Configuration.CDRetry);
+            set => Bass.Configure(Configuration.CDRetry, value);
         }
 
         /// <summary>
@@ -94,8 +63,8 @@ namespace ManagedBass.Cd
         /// </summary>
         public static bool AutoSpeedReduction
         {
-            get { return Bass.GetConfigBool(Configuration.CDAutoSpeed); }
-            set { Bass.Configure(Configuration.CDAutoSpeed, value); }
+            get => Bass.GetConfigBool(Configuration.CDAutoSpeed);
+            set => Bass.Configure(Configuration.CDAutoSpeed, value);
         }
 
         /// <summary>
@@ -106,8 +75,8 @@ namespace ManagedBass.Cd
         /// </summary>
         public static bool SkipError
         {
-            get { return Bass.GetConfigBool(Configuration.CDSkipError); }
-            set { Bass.Configure(Configuration.CDSkipError, value); }
+            get => Bass.GetConfigBool(Configuration.CDSkipError);
+            set => Bass.Configure(Configuration.CDSkipError, value);
         }
 
         /// <summary>
@@ -120,7 +89,7 @@ namespace ManagedBass.Cd
         /// </remarks>
         public static string CDDBServer
         {
-            get { return Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.CDDBServer)); }
+            get => Marshal.PtrToStringAnsi(Bass.GetConfigPtr(Configuration.CDDBServer));
             set
             {
                 if (_cddbServer != IntPtr.Zero)

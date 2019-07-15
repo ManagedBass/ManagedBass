@@ -10,32 +10,32 @@ namespace ManagedBass
         /// <summary>
         /// The return value is the high-order double word of the specified value.
         /// </summary>
-        public static int HiDword(this long DWord) => (int)((DWord >> 32) & 0xFFFFFFFF);
+        public static long HiDword(this long DWord) => (long)((ulong)DWord >> 32);
 
         /// <summary>
         /// The return value is the low-order word of the specified value.
         /// </summary>
-        public static int LoDword(this long DWord) => (int)DWord;
+        public static long LoDword(this long DWord) => DWord & 0xFFFF_FFFF;
 
         /// <summary>
         /// The return value is the high-order word of the specified value.
         /// </summary>
-        public static short HiWord(this int DWord) => (short)((DWord >> 16) & 0xFFFF);
+        public static int HiWord(this int DWord) => (int)((uint)DWord >> 16);
 
         /// <summary>
         /// The return value is the low-order word of the specified value.
         /// </summary>
-        public static short LoWord(this int DWord) => (short)DWord;
+        public static int LoWord(this int DWord) => DWord & 0xFFFF;
 
         /// <summary>
         /// The return value is the high-order byte of the specified value.
         /// </summary>
-        public static byte HiByte(this short Word) => (byte)((Word >> 8) & 0xFF);
+        public static byte HiByte(this short Word) => (byte)(Word >> 8);
 
         /// <summary>
         /// The return value is the low-order byte of the specified value.
         /// </summary>
-        public static byte LoByte(this short Word) => (byte)Word;
+        public static byte LoByte(this short Word) => (byte)(Word & 0xFF);
 
         /// <summary>
         /// Make an short from 2-bytes.

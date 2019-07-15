@@ -36,8 +36,8 @@ namespace ManagedBass
         /// </summary>
         public static IOSMixAudioFlags IOSMixAudio
         {
-            get { return (IOSMixAudioFlags)GetConfig(Configuration.IOSMixAudio); }
-            set { Configure(Configuration.IOSMixAudio, (int)value); }
+            get => (IOSMixAudioFlags)GetConfig(Configuration.IOSMixAudio);
+            set => Configure(Configuration.IOSMixAudio, (int)value);
         }
 
         /// <summary>
@@ -46,8 +46,8 @@ namespace ManagedBass
         /// </summary>
         public static bool IOSNoCategory
         {
-            get { return GetConfigBool(Configuration.IOSNoCategory); }
-            set { Configure(Configuration.IOSNoCategory, value); }
+            get => GetConfigBool(Configuration.IOSNoCategory);
+            set => Configure(Configuration.IOSNoCategory, value);
         }
 
         /// <summary>
@@ -57,8 +57,8 @@ namespace ManagedBass
         /// </summary>
         public static bool IOSSpeaker
         {
-            get { return GetConfigBool(Configuration.IOSSpeaker); }
-            set { Configure(Configuration.IOSSpeaker, value); }
+            get => GetConfigBool(Configuration.IOSSpeaker);
+            set => Configure(Configuration.IOSSpeaker, value);
         }
     }
 }

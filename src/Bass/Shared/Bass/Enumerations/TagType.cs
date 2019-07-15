@@ -208,6 +208,16 @@
         /// <summary>
         /// Segment's EXTINF tag: UTF-8 string.
         /// </summary>
-        HlsExtInf = 0x14000
+        HlsExtInf = 0x14000,
+        
+        /// <summary>
+        /// Segment's EXT-X-STREAM-INF tag: UTF-8 string.
+        /// </summary>
+        HlsStreamInf = 0x14001,
+
+        /// <summary>
+        /// EXT-X-PROGRAM-DATE-TIME tag: UTF-8 string.
+        /// </summary>
+        HlsDate = 0x14002
     }
 }

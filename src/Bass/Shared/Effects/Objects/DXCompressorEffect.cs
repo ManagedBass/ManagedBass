@@ -10,7 +10,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Gain
         {
-            get { return Parameters.fGain; }
+            get => Parameters.fGain;
             set
             {
                 Parameters.fGain = (float)value;
@@ -24,7 +24,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Attack
         {
-            get { return Parameters.fAttack; }
+            get => Parameters.fAttack;
             set
             {
                 Parameters.fAttack = (float)value;
@@ -38,7 +38,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Release
         {
-            get { return Parameters.fRelease; }
+            get => Parameters.fRelease;
             set
             {
                 Parameters.fRelease = (float)value;
@@ -52,7 +52,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Threshold
         {
-            get { return Parameters.fThreshold; }
+            get => Parameters.fThreshold;
             set
             {
                 Parameters.fThreshold = (float)value;
@@ -66,7 +66,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Ratio
         {
-            get { return Parameters.fRatio; }
+            get => Parameters.fRatio;
             set
             {
                 Parameters.fRatio = (float)value;
@@ -80,7 +80,7 @@ namespace ManagedBass.DirectX8
         /// </summary>
         public double Predelay
         {
-            get { return Parameters.fPredelay; }
+            get => Parameters.fPredelay;
             set
             {
                 Parameters.fPredelay = (float)value;

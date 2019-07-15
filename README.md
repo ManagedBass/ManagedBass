@@ -23,8 +23,14 @@ Install-Package ManagedBass
 
 See https://github.com/ManagedBass/Home for more info.
 
-## Changes from Previous Version
+## Changelog
+
+### v2.0
+- Moved from PCL to .Net Standard 1.4.
+- Removed Load and Unload methods in support of being cross-platform.
+- Removed DynamicLibrary class.
+
+### v1.0
 - Split NuGet packages per AddOn.
-- Changed `#if` directives of Mac, Windows and Linux to `__DESKTOP__`.
 - No dependency on `ManagedBass.PInvoke`.
 - Using C# 7 on Visual Studio 2017.

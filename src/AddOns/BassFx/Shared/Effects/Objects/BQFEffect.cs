@@ -13,7 +13,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Gain
         {
-            get { return Parameters.fGain; }
+            get => Parameters.fGain;
             set
             {
                 Parameters.fGain = (float)value;
@@ -27,7 +27,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public BQFType EffectType
         {
-            get { return Parameters.lFilter; }
+            get => Parameters.lFilter;
             set
             {
                 Parameters.lFilter = value;
@@ -42,7 +42,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Bandwidth
         {
-            get { return Parameters.fBandwidth; }
+            get => Parameters.fBandwidth;
             set
             {
                 Parameters.fBandwidth = (float)value;
@@ -56,7 +56,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Center
         {
-            get { return Parameters.fCenter; }
+            get => Parameters.fCenter;
             set
             {
                 Parameters.fCenter = (float)value;
@@ -70,7 +70,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Q
         {
-            get { return Parameters.fQ; }
+            get => Parameters.fQ;
             set
             {
                 Parameters.fQ = (float)value;
@@ -85,7 +85,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double S
         {
-            get { return Parameters.fS; }
+            get => Parameters.fS;
             set
             {
                 Parameters.fS = (float)value;
@@ -99,7 +99,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public FXChannelFlags Channels
         {
-            get { return Parameters.lChannel; }
+            get => Parameters.lChannel;
             set
             {
                 Parameters.lChannel = value;

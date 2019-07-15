@@ -68,7 +68,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Drive
         {
-            get { return Parameters.fDrive; }
+            get => Parameters.fDrive;
             set
             {
                 Parameters.fDrive = (float)value;
@@ -82,7 +82,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double DryMix
         {
-            get { return Parameters.fDryMix; }
+            get => Parameters.fDryMix;
             set
             {
                 Parameters.fDryMix = (float)value;
@@ -96,7 +96,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Feedback
         {
-            get { return Parameters.fFeedback; }
+            get => Parameters.fFeedback;
             set
             {
                 Parameters.fFeedback = (float)value;
@@ -110,7 +110,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Volume
         {
-            get { return Parameters.fVolume; }
+            get => Parameters.fVolume;
             set
             {
                 Parameters.fVolume = (float)value;
@@ -124,7 +124,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double WetMix
         {
-            get { return Parameters.fWetMix; }
+            get => Parameters.fWetMix;
             set
             {
                 Parameters.fWetMix = (float)value;
@@ -138,7 +138,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public FXChannelFlags Channels
         {
-            get { return Parameters.lChannel; }
+            get => Parameters.lChannel;
             set
             {
                 Parameters.lChannel = value;

@@ -188,6 +188,21 @@ namespace ManagedBass
         /// </summary>
         ScannedInfo = 0xa,
 
+        /// <summary>
+        /// Disable playback ramping? 
+        /// </summary>
+        NoRamp = 0xB,
+
+        /// <summary>
+        /// The average bitrate of a file stream. 
+        /// </summary>
+        Bitrate = 0xC,
+
+        /// <summary>
+        /// Playback buffering length.
+        /// </summary>
+        Buffer = 0xD,
+        
         #region MOD Music
         /// <summary>
         /// The amplification level of a MOD music... 0 (min) to 100 (max).
@@ -490,13 +505,15 @@ namespace ManagedBass
         MixerLatency = 0x15000,
 
         /// <summary>
-        /// The average bitrate of a file stream. 
+        /// Amount of data to asynchronously buffer from a splitter's source.
+        /// 0 = disable asynchronous buffering. The asynchronous buffering will be limited to the splitter's buffer length.
         /// </summary>
-        Bitrate = 0xc,
+        SplitAsyncBuffer = 0x15010,
 
         /// <summary>
-        /// Disable playback ramping? 
+        /// Maximum amount of data to asynchronously buffer at a time from a splitter's source.
+        /// 0 = as much as possible.
         /// </summary>
-        NoRamp = 0xb
+        SplitAsyncPeriod = 0x15011
     }
 }

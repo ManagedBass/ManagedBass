@@ -362,6 +362,11 @@ namespace ManagedBass
         /// BASSmix add-on: only read buffered data.
         /// </summary>
         SplitSlave = 0x1000,
+        
+        /// <summary>
+        /// BASSmix add-on: The splitter's length and position is based on the splitter's (rather than the source's) channel count.
+        /// </summary>
+        SplitPosition = 0x2000,
 
         /// <summary>
         /// BASSmix add-on: resume a stalled mixer immediately upon new/unpaused source

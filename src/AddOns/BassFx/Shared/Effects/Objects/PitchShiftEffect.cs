@@ -13,7 +13,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double PitchShift
         {
-            get { return Parameters.fPitchShift; }
+            get => Parameters.fPitchShift;
             set
             {
                 Parameters.fPitchShift = (float)value;
@@ -27,7 +27,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public double Semitones
         {
-            get { return Parameters.fSemitones; }
+            get => Parameters.fSemitones;
             set
             {
                 Parameters.fSemitones = (float)value;
@@ -42,7 +42,7 @@ namespace ManagedBass.Fx
         /// <remarks>It may be any value up to 8192 but it MUST be a power of 2.</remarks>
         public long FFTFrameSize
         {
-            get { return Parameters.lFFTsize; }
+            get => Parameters.lFFTsize;
             set
             {
                 Parameters.lFFTsize = value;
@@ -57,7 +57,7 @@ namespace ManagedBass.Fx
         /// <remarks>It should at least be 4 for moderate scaling ratios. A value of 32 is recommended for best quality (better quality = higher CPU usage).</remarks>
         public long OversamplingFactor
         {
-            get { return Parameters.lOsamp; }
+            get => Parameters.lOsamp;
             set
             {
                 Parameters.lOsamp = value;
@@ -71,7 +71,7 @@ namespace ManagedBass.Fx
         /// </summary>
         public FXChannelFlags Channels
         {
-            get { return Parameters.lChannel; }
+            get => Parameters.lChannel;
             set
             {
                 Parameters.lChannel = value;

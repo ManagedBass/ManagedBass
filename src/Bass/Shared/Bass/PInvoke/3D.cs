@@ -135,8 +135,8 @@ namespace ManagedBass
         /// </remarks>
         public static Algorithm3D Algorithm3D
         {
-            get { return (Algorithm3D)GetConfig(Configuration.Algorithm3D); }
-            set { Configure(Configuration.Algorithm3D, (int)value); }
+            get => (Algorithm3D)GetConfig(Configuration.Algorithm3D);
+            set => Configure(Configuration.Algorithm3D, (int)value);
         }
 
         /// <summary>

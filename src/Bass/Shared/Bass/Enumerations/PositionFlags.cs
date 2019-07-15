@@ -52,6 +52,11 @@ namespace ManagedBass
         MIDIDecaySeek = 0x4000,
 
         /// <summary>
+        /// Mixer playback buffering when seeking.
+        /// </summary>
+        MixerReset = 0x10000,
+
+        /// <summary>
         /// MOD Music Flag: Stop all notes when moving position.
         /// </summary>
         MusicPositionReset = 0x8000,
@@ -87,6 +92,11 @@ namespace ManagedBass
         /// Scanning will continue from where it left off previously rather than restarting from the beginning of the file each time.
         /// This flag only applies to MP3/MP2/MP1 files and will be ignored with other file formats.
         /// </summary>
-        Scan = 0x40000000
+        Scan = 0x40000000,
+
+        /// <summary>
+        /// HLS Segment sequence number.
+        /// </summary>
+        HlsSegment = 0x10000
     }
 }

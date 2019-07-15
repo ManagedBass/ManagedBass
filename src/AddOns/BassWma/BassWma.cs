@@ -14,38 +14,7 @@ namespace ManagedBass.Wma
     public static class BassWma
     {
         const string DllName = "basswma";
-
-        static IntPtr hLib;
-
-        /// <summary>
-        /// Load this library into Memory.
-        /// </summary>
-        /// <param name="Folder">Directory to Load from... <see langword="null"/> (default) = Load from Current Directory.</param>
-        /// <returns><see langword="true" />, if the library loaded successfully, else <see langword="false" />.</returns>
-        /// <remarks>
-        /// <para>
-        /// An external library is loaded into memory when any of its methods are called for the first time.
-        /// This results in the first method call being slower than all subsequent calls.
-        /// </para>
-        /// <para>
-        /// Some BASS libraries and add-ons may introduce new options to the main BASS lib like new parameters.
-        /// But, before using these new options the respective library must be already loaded.
-        /// This method can be used to make sure, that this library has been loaded.
-        /// </para>
-        /// </remarks>
-        public static bool Load(string Folder = null) => (hLib = DynamicLibrary.Load(DllName, Folder)) != IntPtr.Zero;
-
-        /// <summary>
-        /// Unloads this library from Memory.
-        /// </summary>
-        /// <returns><see langword="true" />, if the library unloaded successfully, else <see langword="false" />.</returns>
-        public static bool Unload() => DynamicLibrary.Unload(hLib);
-
-        /// <summary>
-        /// Use this library as a Plugin.
-        /// </summary>
-        public static readonly Plugin Plugin = new Plugin(DllName);
-
+        
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_WMA_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
 
@@ -633,8 +602,8 @@ namespace ManagedBass.Wma
         /// </summary>
         public static bool CanSeekNetworkStreams
         {
-            get { return Bass.GetConfigBool(Configuration.WmaNetSeek); }
-            set { Bass.Configure(Configuration.WmaNetSeek, value); }
+            get => Bass.GetConfigBool(Configuration.WmaNetSeek);
+            set => Bass.Configure(Configuration.WmaNetSeek, value);
         }
 
         /// <summary>
@@ -644,8 +613,8 @@ namespace ManagedBass.Wma
         /// </summary>
         public static bool PlayWMVAudio
         {
-            get { return Bass.GetConfigBool(Configuration.WmaVideo); }
-            set { Bass.Configure(Configuration.WmaVideo, value); }
+            get => Bass.GetConfigBool(Configuration.WmaVideo);
+            set => Bass.Configure(Configuration.WmaVideo, value);
         }
 
         /// <summary>
@@ -662,8 +631,8 @@ namespace ManagedBass.Wma
         /// </summary>
         public static bool PrebufferInternetStreams
         {
-            get { return Bass.GetConfigBool(Configuration.WmaNetPreBuffer); }
-            set { Bass.Configure(Configuration.WmaNetPreBuffer, value); }
+            get => Bass.GetConfigBool(Configuration.WmaNetPreBuffer);
+            set => Bass.Configure(Configuration.WmaNetPreBuffer, value);
         }
 
         /// <summary>
@@ -676,8 +645,8 @@ namespace ManagedBass.Wma
         /// </summary>
         public static bool UseBassFileHandling
         {
-            get { return Bass.GetConfigBool(Configuration.WmaBassFileHandling); }
-            set { Bass.Configure(Configuration.WmaBassFileHandling, value); }
+            get => Bass.GetConfigBool(Configuration.WmaBassFileHandling);
+            set => Bass.Configure(Configuration.WmaBassFileHandling, value);
         }
 
         /// <summary>
@@ -692,8 +661,8 @@ namespace ManagedBass.Wma
         /// </summary>
         public static bool AsyncDecoding
         {
-            get { return Bass.GetConfigBool(Configuration.WmaAsync); }
-            set { Bass.Configure(Configuration.WmaAsync, value); }
+            get => Bass.GetConfigBool(Configuration.WmaAsync);
+            set => Bass.Configure(Configuration.WmaAsync, value);
         }
         #endregion
 
