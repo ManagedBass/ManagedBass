@@ -9,7 +9,7 @@ namespace ManagedBass.Asio
     public static partial class BassAsio
     {
         const string DllName = "bassasio";
-                        
+
         #region AddDevice
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_ASIO_AddDevice(Guid clsid, string driver, string name);
@@ -449,5 +449,20 @@ namespace ManagedBass.Asio
         /// <exception cref="Errors.Start">The device hasn't been started.</exception>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_Stop")]
         public static extern bool Stop();
+
+        /// <summary>
+        /// Locks the device to the current thread.
+        /// </summary>
+        /// <remarks>
+        /// Locking a device prevents other threads from performing most functions on it, including the channel processing.
+        /// Other threads wanting to access a locked device will block until it is unlocked, so it should only be locked very briefly.
+        /// A device must be unlocked in the same thread that it was locked.
+        /// </remarks>
+        /// <param name="lock">If FALSE, unlock the device, else lock it.</param>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <returns>If successful, TRUE is returned, else FALSE is returned. Use BASS_ASIO_ErrorGetCode to get the error code.</returns>
+        [DllImport(DllName, EntryPoint = "BASS_ASIO_Lock")]
+        public static extern bool Lock(bool @lock);
+
     }
 }
