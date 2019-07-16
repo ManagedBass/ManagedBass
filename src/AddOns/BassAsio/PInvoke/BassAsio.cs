@@ -458,11 +458,11 @@ namespace ManagedBass.Asio
         /// Other threads wanting to access a locked device will block until it is unlocked, so it should only be locked very briefly.
         /// A device must be unlocked in the same thread that it was locked.
         /// </remarks>
-        /// <param name="lock">If FALSE, unlock the device, else lock it.</param>
+        /// <param name="Lock">If <see langword="false"/>, unlock the device, else lock it.</param>
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
-        /// <returns>If successful, TRUE is returned, else FALSE is returned. Use BASS_ASIO_ErrorGetCode to get the error code.</returns>
+        /// <returns>If successful, <see langword="true"/> is returned, else <see langword="false"/> is returned. Use <see cref="LastError"/>.</returns>
         [DllImport(DllName, EntryPoint = "BASS_ASIO_Lock")]
-        public static extern bool Lock(bool @lock);
+        public static extern bool Lock(bool Lock);
 
     }
 }
