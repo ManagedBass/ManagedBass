@@ -5,6 +5,6 @@ namespace ManagedBass.Asio
         /// <summary>
         /// Applied to the channel handle when requesting ChannelGetLevel() to obtain RMS values instead of peak values.
         /// </summary>
-        BassAsioLevelRms = 0x1000000
+        Rms = 0x1000000
     }
 }
