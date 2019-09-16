@@ -397,11 +397,7 @@ namespace ManagedBass
         /// </summary>
         protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null)
         {
-            var propertyChanged = PropertyChanged;
-            if (propertyChanged == null)
-                return;
-
-            Action f = () => propertyChanged.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+            Action f = () => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
             if (_syncContext == null)
                 f();
