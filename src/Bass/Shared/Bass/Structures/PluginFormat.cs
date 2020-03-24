@@ -28,7 +28,7 @@ namespace ManagedBass
         /// <summary>
         /// The Format description or name.
         /// </summary>
-        public string Name => Marshal.PtrToStringAnsi(name);
+        public string Name => name == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(name);
 
         /// <summary>
         /// File extension filter, in the form of "*.ext1;*.ext2;etc...".
@@ -37,6 +37,6 @@ namespace ManagedBass
         /// The extension filter is for information only.
         /// A plugin will check the file contents rather than file extension, to verify that it is a supported format.
         /// </remarks>
-        public string FileExtensions => Marshal.PtrToStringAnsi(exts);
+        public string FileExtensions => exts == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(exts);
     }
 }

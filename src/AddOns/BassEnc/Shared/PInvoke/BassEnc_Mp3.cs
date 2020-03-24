@@ -27,7 +27,6 @@ namespace ManagedBass.Enc
 
         /// <summary>
         /// Start Mp3 Encoding to <see cref="EncodeProcedureEx"/>.
-
         /// For best documentation on functionality see http://www.un4seen.com/doc/
         /// </summary>
         /// <param name="Handle">The channel handle... a HSTREAM, HMUSIC, or HRECORD.</param>

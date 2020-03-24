@@ -92,7 +92,7 @@ namespace ManagedBass
         /// <summary>
         /// The filename associated with the channel. (HSTREAM only)
         /// </summary>
-        public string FileName => Marshal.PtrToStringAnsi(filename);
+        public string FileName => filename == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(filename);
 
         /// <summary>
         /// Is the channel a decoding channel?

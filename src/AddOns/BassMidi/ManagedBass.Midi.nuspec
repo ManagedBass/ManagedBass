@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>ManagedBass.Midi</id>
-        <version>1.0.0</version>
+        <version>3.0.0</version>
         <title>ManagedBass.Midi</title>
         <authors>MathewSachin</authors>
         <licenseUrl>https://raw.githubusercontent.com/ManagedBass/Home/master/LICENSE.md</licenseUrl>
@@ -16,7 +16,7 @@
         <copyright>(c) 2016 Mathew Sachin</copyright>
         <tags>Bass Wasapi Asio Record Audio Music</tags>
         <dependencies>
-            <dependency id="ManagedBass" version="1.0.0" />
+            <dependency id="ManagedBass" version="3.0.0" />
         </dependencies>
     </metadata>
     <files>

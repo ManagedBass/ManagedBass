@@ -19,12 +19,12 @@ namespace ManagedBass.DShow
 		/// <summary>
 		/// The format name.
 		/// </summary>
-		public string Name => Marshal.PtrToStringAnsi(name);
+		public string Name => name == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(name);
 
-		/// <summary>
-		/// The stream index. Use this index to enable or disable it.
-		/// </summary>
-		public int Index;
+        /// <summary>
+        /// The stream index. Use this index to enable or disable it.
+        /// </summary>
+        public int Index;
 
 		/// <summary>
 		/// Is this stream enabled?
