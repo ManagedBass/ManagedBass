@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bass", "Bass", "{2F77A940-A236-4FCB-950C-03600F1F4EDC}"
 EndProject
@@ -96,6 +96,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{B5C0D018-8F6C-48E1-9372-110313AF4A59}"
 	ProjectSection(SolutionItems) = preProject
 		app.config = app.config
+		AddOns\BassEnc\ManagedBass.Enc.nuspec = AddOns\BassEnc\ManagedBass.Enc.nuspec
+		AddOns\BassMidi\ManagedBass.Midi.nuspec = AddOns\BassMidi\ManagedBass.Midi.nuspec
 		Bass\ManagedBass.nuspec = Bass\ManagedBass.nuspec
 		..\README.md = ..\README.md
 	EndProjectSection
