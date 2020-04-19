@@ -32,6 +32,11 @@ namespace ManagedBass.Mix
         /// <summary>
         /// Loop the envelope (flag).
         /// </summary>
-        Loop = 0x10000
+        Loop = 0x10000,
+
+        /// <summary>
+        /// Remove the source from the mixer at the end of the envelope. This is a flag and can be used in combination with any of the above.
+        /// </summary>
+        Remove = 0x20000
     }
 }
