@@ -24,7 +24,7 @@ namespace ManagedBass
 		/// <summary>
 		/// The description of the audio file format.
 		/// </summary>
-        public string Name => Marshal.PtrToStringAnsi(name);
+        public string Name => name == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(name);
 
         /// <summary>
         /// Read the tag from a Channel.

@@ -8,8 +8,6 @@ Download the versions you need.
 
 See the [Sample Repositories](https://github.com/ManagedBass) for examples.
 
-> ~~ManagedBass depends on `ManagedBass.PInvoke` for PInvoke declarations which is quite stable package.~~
-
 > ManagedBass is now provided as a set of packages split per AddOn.
 
 Getting Started
@@ -24,6 +22,9 @@ Install-Package ManagedBass
 See https://github.com/ManagedBass/Home for more info.
 
 ## Changelog
+
+### v3.0
+- No separate library for iOS. The main library can be used on iOS with DllMap (see app.config file).
 
 ### v2.0
 - Moved from PCL to .Net Standard 1.4.

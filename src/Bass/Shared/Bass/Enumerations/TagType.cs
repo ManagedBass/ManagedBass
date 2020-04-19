@@ -78,7 +78,7 @@
         WmaMeta = 11,
 
         /// <summary>
-        /// Apple CoreAudio codec info (see <see cref="Tags.CACodecTag"/>).
+        /// Apple CoreAudio codec info (see CACodecTag).
         /// </summary>
         CoreAudioCodec = 11,
 
@@ -135,7 +135,7 @@
         #endregion
 
         /// <summary>
-        /// + index# : <see cref="Ape.ApeBinaryTag"/> structure.
+        /// + index# : ApeBinaryTag structure.
         /// </summary>
         ApeBinary = 0x1000,
 

@@ -141,21 +141,21 @@ namespace ManagedBass
         /// <summary>
         /// MIDI add-on: Sync when a marker is encountered.
         /// param : not used
-        /// data : the marker index, which can be used in a <see cref="Midi.BassMidi.StreamGetMark(int,Midi.MidiMarkerType,int,out Midi.MidiMarker)"/> call.
+        /// data : the marker index, which can be used in a BassMidi.StreamGetMark(int,Midi.MidiMarkerType,int,out Midi.MidiMarker) call.
         /// </summary>
         MidiMarker = 0x10000,
 
         /// <summary>
         /// MIDI add-on: Sync when a cue is encountered.
         /// param : not used
-        /// data : the marker index, which can be used in a <see cref="Midi.BassMidi.StreamGetMark(int,Midi.MidiMarkerType,int,out Midi.MidiMarker)"/> call.
+        /// data : the marker index, which can be used in a BassMidi.StreamGetMark(int,Midi.MidiMarkerType,int,out Midi.MidiMarker) call.
         /// </summary>
         MidiCue = 0x10001,
 
         /// <summary>
         /// MIDI add-on: Sync when a lyric event is encountered.
         /// param : not used
-        /// data : the marker index, which can be used in a <see cref="Midi.BassMidi.StreamGetMark(int,Midi.MidiMarkerType,int,out Midi.MidiMarker)"/> call.
+        /// data : the marker index, which can be used in a BassMidi.StreamGetMark(int,Midi.MidiMarkerType,int,out Midi.MidiMarker) call.
         /// If the text begins with a '/' (slash) character, a new line should be started.
         /// If it begins with a '\' (backslash) character, the display should be cleared.
         /// </summary>
@@ -164,16 +164,16 @@ namespace ManagedBass
         /// <summary>
         /// MIDI add-on: Sync when a text event is encountered.
         /// param : not used
-        /// data : the marker index, which can be used in a <see cref="Midi.BassMidi.StreamGetMark(int,Midi.MidiMarkerType,int,out Midi.MidiMarker)"/> call.
-        /// Lyrics can sometimes be found in <see cref="Midi.MidiMarkerType.Text"/> instead of <see cref="Midi.MidiMarkerType.Lyric"/> markers.
+        /// data : the marker index, which can be used in a BassMidi.StreamGetMark(int,Midi.MidiMarkerType,int,out Midi.MidiMarker) call.
+        /// Lyrics can sometimes be found in MidiMarkerType.Text instead of MidiMarkerType.Lyric markers.
         /// </summary>
         MidiText = 0x10003,
 
         /// <summary>
-        /// MIDI add-on: Sync when a Type of event is processed, in either a MIDI file or <see cref="Midi.BassMidi.StreamEvent(int,int,Midi.MidiEventType,int)"/>.
+        /// MIDI add-on: Sync when a Type of event is processed, in either a MIDI file or BassMidi.StreamEvent(int,int,Midi.MidiEventType,int).
         /// param : event Type (0 = all types).
         /// data : LOWORD = event parameter, HIWORD = channel (high 8 bits contain the event Type when syncing on all types).
-        /// See <see cref="Midi.BassMidi.StreamEvent(int,int,Midi.MidiEventType,int)"/> for a list of event types and their parameters.
+        /// See BassMidi.StreamEvent(int,int,Midi.MidiEventType,int) for a list of event types and their parameters.
         /// </summary>
         MidiEvent = 0x10004,
 
@@ -187,7 +187,7 @@ namespace ManagedBass
         /// <summary>
         /// MIDI add-on: Sync when a time signature event is processed.
         /// param : event Type.
-        /// data : The time signature events are given (by <see cref="Midi.BassMidi.StreamGetMark(int,Midi.MidiMarkerType,int,out Midi.MidiMarker)"/>)
+        /// data : The time signature events are given (by BassMidi.StreamGetMark(int,Midi.MidiMarkerType,int,out Midi.MidiMarker))
         /// in the form of "numerator/denominator metronome-pulse 32nd-notes-per-MIDI-quarter-note", eg. "4/4 24 8".
         /// </summary>
         MidiTimeSignature = 0x10006,
@@ -195,7 +195,7 @@ namespace ManagedBass
         /// <summary>
         /// MIDI add-on: Sync when a key signature event is processed.
         /// param : event Type.
-        /// data : The key signature events are given (by <see cref="Midi.BassMidi.StreamGetMark(int,Midi.MidiMarkerType,int,out Midi.MidiMarker)"/>) in the form of "a b",
+        /// data : The key signature events are given (by Midi.BassMidi.StreamGetMark(int,Midi.MidiMarkerType,int,out Midi.MidiMarker)) in the form of "a b",
         /// where a is the number of sharps (if positive) or flats (if negative),
         /// and b signifies major (if 0) or minor (if 1).
         /// </summary>

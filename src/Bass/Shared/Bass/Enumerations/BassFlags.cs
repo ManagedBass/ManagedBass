@@ -124,17 +124,17 @@ namespace ManagedBass
         FXBpmMult2 = 0x2,
 
         /// <summary>
-        /// BassFx add-on (<see cref="Fx.BassFx.TempoCreate"/>): Uses a linear interpolation mode (simple).
+        /// BassFx add-on (BassFx.TempoCreate): Uses a linear interpolation mode (simple).
         /// </summary>
         FxTempoAlgorithmLinear = 0x200,
 
         /// <summary>
-        /// BassFx add-on (<see cref="Fx.BassFx.TempoCreate"/>): Uses a cubic interpolation mode (recommended, default).
+        /// BassFx add-on (BassFx.TempoCreate): Uses a cubic interpolation mode (recommended, default).
         /// </summary>
         FxTempoAlgorithmCubic = 0x400,
 
         /// <summary>
-        /// BassFx add-on (<see cref="Fx.BassFx.TempoCreate"/>):
+        /// BassFx add-on (BassFx.TempoCreate):
         /// Uses a 8-tap band-limited Shannon interpolation (complex, but not much better than cubic).
         /// </summary>
         FxTempoAlgorithmShannon = 0x800,
@@ -159,7 +159,7 @@ namespace ManagedBass
         Midi16Bit = 0x2,
 
         /// <summary>
-        /// BASSMIDI add-on: Ignore system reset events (<see cref="Midi.MidiEventType.System"/>) when the system mode is unchanged.
+        /// BASSMIDI add-on: Ignore system reset events (MidiEventType.System) when the system mode is unchanged.
         /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
         /// </summary>
         MidiNoSystemReset = 0x800,
@@ -189,7 +189,7 @@ namespace ManagedBass
         MidiNoCrop = 0x8000,
 
         /// <summary>
-        /// BASSMIDI add-on: Only release the oldest instance upon a note off event (<see cref="Midi.MidiEventType.Note"/> with velocity=0)
+        /// BASSMIDI add-on: Only release the oldest instance upon a note off event (MidiEventType.Note with velocity=0)
         /// when there are overlapping instances of the note.
         /// Otherwise all instances are released.
         /// This flag can be toggled at any time using <see cref="Bass.ChannelFlags"/>.
@@ -358,6 +358,12 @@ namespace ManagedBass
         #endregion
 
         #region BassMix
+
+        /// <summary>
+        /// Only relevant for StreamAddChannelEx(): Start is an absolute position in the mixer output rather than relative to the mixer's current position. If the position has already passed then the source will start immediately.
+        /// </summary>
+        MixerChanAbsolute = 0x1000,
+
         /// <summary>
         /// BASSmix add-on: only read buffered data.
         /// </summary>
@@ -374,19 +380,31 @@ namespace ManagedBass
         MixerResume = 0x1000,
 
         /// <summary>
-        /// BASSmix add-on: enable <see cref="Mix.BassMix.ChannelGetPosition(int,PositionFlags,int)"/> support.
+        /// BASSmix add-on: enable BassMix.ChannelGetPosition(int,PositionFlags,int) support.
         /// </summary>
         MixerPositionEx = 0x2000,
 
         /// <summary>
-        /// BASSmix add-on: Buffer source data for <see cref="Mix.BassMix.ChannelGetData(int,IntPtr,int)"/> and <see cref="Mix.BassMix.ChannelGetLevel(int)"/>.
+        /// BASSmix add-on: Buffer source data for BassMix.ChannelGetData(int,IntPtr,int) and BassMix.ChannelGetLevel(int).
         /// </summary>
-        MixerBuffer = 0x2000,
+        MixerChanBuffer = 0x2000,
+
+        /// <summary>
+        /// BASSmix add-on: Buffer source data for BassMix.ChannelGetData(int,IntPtr,int) and BassMix.ChannelGetLevel(int).
+        /// </summary>
+        [Obsolete("Renamed to MixerChanBuffer for clarity.")]
+        MixerBuffer = MixerChanBuffer,
 
         /// <summary>
         /// BASSmix add-on: Limit mixer processing to the amount available from this source.
         /// </summary>
-        MixerLimit = 0x4000,
+        MixerChanLimit = 0x4000,
+
+        /// <summary>
+        /// BASSmix add-on: Limit mixer processing to the amount available from this source.
+        /// </summary>
+        [Obsolete("Renamed to MixerChanLimit for clarity.")]
+        MixerLimit = MixerChanLimit,
 
         /// <summary>
         /// BASSmix add-on: end the stream when there are no sources
@@ -396,7 +414,13 @@ namespace ManagedBass
         /// <summary>
         /// BASSmix add-on: Matrix mixing
         /// </summary>
-        MixerMatrix = 0x10000,
+        MixerChanMatrix = 0x10000,
+
+        /// <summary>
+        /// BASSmix add-on: Matrix mixing
+        /// </summary>
+        [Obsolete("Renamed to MixerChanMatrix for clarity.")]
+        MixerMatrix = MixerChanMatrix,
 
         /// <summary>
         /// BASSmix add-on: don't stall when there are no sources
@@ -406,17 +430,35 @@ namespace ManagedBass
         /// <summary>
         /// BASSmix add-on: don't process the source
         /// </summary>
-        MixerPause = 0x20000,
+        MixerChanPause = 0x20000,
+
+        /// <summary>
+        /// BASSmix add-on: don't process the source
+        /// </summary>
+        [Obsolete("Renamed to MixerChanPause for clarity.")]
+        MixerPause = MixerChanPause,
 
         /// <summary>
         /// BASSmix add-on: downmix to stereo (or mono if mixer is mono)
         /// </summary>
-        MixerDownMix = 0x400000,
+        MixerChanDownMix = 0x400000,
+
+        /// <summary>
+        /// BASSmix add-on: downmix to stereo (or mono if mixer is mono)
+        /// </summary>
+        [Obsolete("Renamed to MixerChanDownMix for clarity.")]
+        MixerDownMix = MixerChanDownMix,
 
         /// <summary>
         /// BASSmix add-on: don't ramp-in the start
         /// </summary>
-        MixerNoRampin = 0x800000,
+        MixerChanNoRampin = 0x800000,
+
+        /// <summary>
+        /// BASSmix add-on: don't ramp-in the start
+        /// </summary>
+        [Obsolete("Renamed to MixerChanNoRampin for clarity.")]
+        MixerNoRampin = MixerChanNoRampin,
         #endregion
 
         #region Recording

@@ -361,11 +361,11 @@ namespace ManagedBass.Vst
 		/// </summary>
 		/// <param name="VstHandle">The VSTi channel to send a MIDI message to (as created by <see cref="ChannelCreate" />).</param>
 		/// <param name="MidiChannel">The Midi channel number to use (0 to 15).</param>
-		/// <param name="EventType">The Midi event/status value to use (see <see cref="MidiEventType" /> for details).</param>
+		/// <param name="EventType">The Midi event/status value to use (see MidiEventType for details).</param>
 		/// <param name="Param">The data bytes to send with the message to compose a data byte 1 and 2.</param>
 		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
 		/// <remarks>
-		/// Use one of the <see cref="MidiEventType" /> commands similar to <see cref="BassMidi.StreamEvent(int,int,MidiEventType,int)" />.
+		/// Use one of the MidiEventType commands similar to BassMidi.StreamEvent(int,int,MidiEventType,int).
 		/// <para>
 		/// Set <paramref name="MidiChannel" /> to 0xFFFF and <paramref name="EventType" /> to the raw command to send. 
 		/// The raw command must be encoded as 0x00xxyyzz with xx=MIDI command, yy=MIDI databyte #1, zz=MIDI databyte #2.
@@ -373,7 +373,7 @@ namespace ManagedBass.Vst
 		/// </para>
 		/// <para>
 		/// Send SysEx commands by setting <paramref name="MidiChannel" /> to 0xEEEE. 
-		/// <paramref name="EventType" /> will denote the type of event to send (see <see cref="MidiEventType" /> about possible values for <paramref name="Param" /> in such case).
+		/// <paramref name="EventType" /> will denote the type of event to send (see MidiEventType about possible values for <paramref name="Param" /> in such case).
 		/// </para>
 		/// </remarks>
 		[DllImport(DllName, EntryPoint = "BASS_VST_ProcessEvent")]

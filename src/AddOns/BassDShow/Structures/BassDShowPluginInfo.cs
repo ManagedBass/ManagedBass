@@ -24,7 +24,7 @@ namespace ManagedBass.DShow
 		/// <summary>
 		/// The plugin description.
 		/// </summary>
-		public string Description => Marshal.PtrToStringAnsi(description);
+		public string Description => description == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(description);
 
 		/// <summary>
 		/// Returns if the plugin is an audio plugin.

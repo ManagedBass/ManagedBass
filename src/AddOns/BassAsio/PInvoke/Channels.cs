@@ -30,6 +30,38 @@ namespace ManagedBass.Asio
         [DllImport(DllName, EntryPoint = "BASS_ASIO_ChannelEnable")]
         public static extern bool ChannelEnable(bool Input, int Channel, AsioProcedure Procedure, IntPtr User = default(IntPtr));
 
+        /// <summary>
+        /// Enables a channel, and sets it to use a BASS channel.
+        /// </summary>
+        /// <param name="Input">Dealing with an input channel? <see langword="false" /> = an output channel.</param>
+        /// <param name="Channel">The input/output channel number... 0 = first.</param>
+        /// <param name="Handle">The BASS channel handle.</param>
+        /// <param name="Join">Join the next ASIO channels according to the number of audio channels in the BASS channel?</param>
+        /// <returns>If succesful, then <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// This function allows BASS channels to be used directly, without needing an <see cref="AsioProcedure"/> callback function. The ASIO channel's format and rate are set accordingly.
+        /// If the BASS channel is not mono then multiple ASIO channels should also be joined accordingly. That can be done automatically via the join parameter, or manually
+        /// with <see cref="ChannelJoin"/>. If the device does not have enough channels, the BASSmix add-on can be used to downmix the BASS channel.
+        /// </para>
+        /// <para>
+        /// In the case of output channels, the BASS channel must have the <see cref="BassFlags.Decode"/> flag set. In the case of input channels, the BASS channel must be a "push" stream,
+        /// created with <see cref="Bass.CreateStream(int,int,BassFlags,StreamProcedureType)"/> and <see cref="StreamProcedureType.Push"/>, which will receive the data from the input channel(s).
+        /// </para>
+        /// <para>
+        /// Raw DSD streams are supported (with the BASSDSD add-on) but the device needs to have been successfully set to DSD mode first with <see cref="SetDSD"/>.
+        /// The device's sample rate should also be set to the DSD stream's rate (its BASS_ATTRIB_DSD_RATE attribute) via <see cref="Rate"/>.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
+        /// <exception cref="Errors.Start">The device has been started - it needs to be stopped before (dis)enabling channels.</exception>
+        /// <exception cref="Errors.Parameter">The <paramref name="Input" /> and <paramref name="Channel" /> combination is invalid.</exception>
+        /// <exception cref="Errors.Handle">Handle is invalid</exception>
+        /// <exception cref="Errors.SampleFormat">8-bit BASS channels are not supported; the <see cref="BassFlags.Float"/> flag can be used to avoid them.</exception>
+        /// <exception cref="Errors.NoChannel">The device does not have enough channels to accommodate the BASS channel.</exception>
+        [DllImport(DllName, EntryPoint = "BASS_ASIO_ChannelEnableBASS")]
+        public static extern bool ChannelEnableBass(bool Input, int Channel, int Handle, bool Join);
+
 		/// <summary>
 		/// Enables an output channel, and makes it mirror another channel.
 		/// </summary>
@@ -114,7 +146,7 @@ namespace ManagedBass.Asio
 		/// Retrieves the level (peak amplitude) of a channel.
 		/// </summary>
 		/// <param name="Input">Dealing with an input channel? <see langword="false" /> = an output channel.</param>
-		/// <param name="Channel">The input/output channel number... 0 = first.</param>
+		/// <param name="Channel">The input/output channel number... 0 = first. The <see cref="AsioChannelGetLevelFlags.Rms"/> flag can optionally be used to get the RMS level, otherwise the peak level is given.</param>
 		/// <returns>
         /// If an error occurs, -1 is returned, use <see cref="LastError" /> to get the error code. 
 		/// If successful, the level of the channel is returned, ranging from 0 (silent) to 1 (max).
@@ -291,14 +323,6 @@ namespace ManagedBass.Asio
         /// </para>
 		/// <para>When a channel's sample rate is the same as the device rate, resampling is bypassed, so there's no unnecessary performance hit.</para>
 		/// <para>Resampling is not supported when the sample format is DSD.</para>
-		/// <para>
-		/// <list type="table">
-		/// <listheader><term><see cref="T:Un4seen.Bass.BASSError">ERROR CODE</see></term><description>Description</description></listheader>
-		/// <item><term>BASS_ERROR_INIT</term><description></description></item>
-		/// <item><term>BASS_ERROR_ILLPARAM</term><description></description></item>
-		/// <item><term>BASS_ERROR_FORMAT</term><description></description></item>
-		/// </list>
-		/// </para>
 		/// </remarks>
         /// <exception cref="Errors.Init"><see cref="Init" /> has not been successfully called.</exception>
         /// <exception cref="Errors.Parameter">The <paramref name="Input" /> and <paramref name="Channel" /> combination is invalid, or <paramref name="Rate" /> is below 0.</exception>

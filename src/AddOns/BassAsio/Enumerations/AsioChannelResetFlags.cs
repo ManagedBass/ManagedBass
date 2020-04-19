@@ -36,6 +36,11 @@ namespace ManagedBass.Asio
         /// <summary>
         /// Reset Volume to 1.0
         /// </summary>
-        Volume = 0x20
+        Volume = 0x20,
+
+        /// <summary>
+        /// Apply to joined channels too
+        /// </summary>
+        Joined = 0x10000
     }
 }
