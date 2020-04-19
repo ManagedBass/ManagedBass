@@ -26,6 +26,11 @@ namespace ManagedBass
         /// <summary>
         /// Optional Flag: If set it returns RMS levels instead of peak leavels
         /// </summary>
-        RMS = 0x4
+        RMS = 0x4,
+
+        /// <summary>
+        /// Apply the current <see cref="ChannelAttribute.Volume"/> and <see cref="ChannelAttribute.Pan"/> values to the level reading. 
+        /// </summary>
+        VolPan = 0x8
     }
 }

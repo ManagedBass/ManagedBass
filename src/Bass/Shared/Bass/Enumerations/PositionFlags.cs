@@ -78,6 +78,12 @@ namespace ManagedBass
         Inexact = 0x8000000,
 
         /// <summary>
+        /// Flag: The requested position is relative to the current position. pos is treated as signed in this case and can be negative.
+        /// Unless the <see cref="PositionFlags.MixerReset"/> flag is also used, this is relative to the current decoding/processing position, which will be ahead of the currently heard position if the mixer output is buffered. 
+        /// </summary>
+        Relative = 0x4000000,
+
+        /// <summary>
         /// Get the decoding (not playing) position.
         /// </summary>
         Decode = 0x10000000,

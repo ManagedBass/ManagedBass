@@ -358,6 +358,12 @@ namespace ManagedBass
         #endregion
 
         #region BassMix
+
+        /// <summary>
+        /// Only relevant for StreamAddChannelEx(): Start is an absolute position in the mixer output rather than relative to the mixer's current position. If the position has already passed then the source will start immediately.
+        /// </summary>
+        MixerChanAbsolute = 0x1000,
+
         /// <summary>
         /// BASSmix add-on: only read buffered data.
         /// </summary>
@@ -381,12 +387,24 @@ namespace ManagedBass
         /// <summary>
         /// BASSmix add-on: Buffer source data for BassMix.ChannelGetData(int,IntPtr,int) and BassMix.ChannelGetLevel(int).
         /// </summary>
-        MixerBuffer = 0x2000,
+        MixerChanBuffer = 0x2000,
+
+        /// <summary>
+        /// BASSmix add-on: Buffer source data for BassMix.ChannelGetData(int,IntPtr,int) and BassMix.ChannelGetLevel(int).
+        /// </summary>
+        [Obsolete("Renamed to MixerChanBuffer for clarity.")]
+        MixerBuffer = MixerChanBuffer,
 
         /// <summary>
         /// BASSmix add-on: Limit mixer processing to the amount available from this source.
         /// </summary>
-        MixerLimit = 0x4000,
+        MixerChanLimit = 0x4000,
+
+        /// <summary>
+        /// BASSmix add-on: Limit mixer processing to the amount available from this source.
+        /// </summary>
+        [Obsolete("Renamed to MixerChanLimit for clarity.")]
+        MixerLimit = MixerChanLimit,
 
         /// <summary>
         /// BASSmix add-on: end the stream when there are no sources
@@ -396,7 +414,13 @@ namespace ManagedBass
         /// <summary>
         /// BASSmix add-on: Matrix mixing
         /// </summary>
-        MixerMatrix = 0x10000,
+        MixerChanMatrix = 0x10000,
+
+        /// <summary>
+        /// BASSmix add-on: Matrix mixing
+        /// </summary>
+        [Obsolete("Renamed to MixerChanMatrix for clarity.")]
+        MixerMatrix = MixerChanMatrix,
 
         /// <summary>
         /// BASSmix add-on: don't stall when there are no sources
@@ -406,17 +430,35 @@ namespace ManagedBass
         /// <summary>
         /// BASSmix add-on: don't process the source
         /// </summary>
-        MixerPause = 0x20000,
+        MixerChanPause = 0x20000,
+
+        /// <summary>
+        /// BASSmix add-on: don't process the source
+        /// </summary>
+        [Obsolete("Renamed to MixerChanPause for clarity.")]
+        MixerPause = MixerChanPause,
 
         /// <summary>
         /// BASSmix add-on: downmix to stereo (or mono if mixer is mono)
         /// </summary>
-        MixerDownMix = 0x400000,
+        MixerChanDownMix = 0x400000,
+
+        /// <summary>
+        /// BASSmix add-on: downmix to stereo (or mono if mixer is mono)
+        /// </summary>
+        [Obsolete("Renamed to MixerChanDownMix for clarity.")]
+        MixerDownMix = MixerChanDownMix,
 
         /// <summary>
         /// BASSmix add-on: don't ramp-in the start
         /// </summary>
-        MixerNoRampin = 0x800000,
+        MixerChanNoRampin = 0x800000,
+
+        /// <summary>
+        /// BASSmix add-on: don't ramp-in the start
+        /// </summary>
+        [Obsolete("Renamed to MixerChanNoRampin for clarity.")]
+        MixerNoRampin = MixerChanNoRampin,
         #endregion
 
         #region Recording
