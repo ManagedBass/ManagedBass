@@ -136,6 +136,11 @@
         IOSMixAudio = 34,
 
         /// <summary>
+        /// Audio session configuration on iOS
+        /// </summary>
+        IOSSession = 34,
+
+        /// <summary>
         /// See <see cref="Bass.SuppressMP3ErrorCorruptionSilence"/>.
         /// </summary>
         SuppressMP3ErrorCorruptionSilence = 35,
@@ -234,6 +239,16 @@
         /// See <see cref="Bass.Float"/>.
         /// </summary>
         Float = 54,
+
+        /// <summary>
+        /// Gets the Android AAudio session ID
+        /// </summary>
+        AndroidSessionId = 62,
+
+        /// <summary>
+        /// Enable AAudio output
+        /// </summary>
+        AndroidAAudio =	67,
 
         /// <summary>
         /// See BassAc3.DRC.

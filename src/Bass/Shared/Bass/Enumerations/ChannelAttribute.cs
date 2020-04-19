@@ -202,6 +202,11 @@ namespace ManagedBass
         /// Playback buffering length.
         /// </summary>
         Buffer = 0xD,
+
+        /// <summary>
+        /// Processing granularity. (HMUSIC/HSTREAM/HRECORD)
+        /// </summary>
+        Granule = 0xE,
         
         #region MOD Music
         /// <summary>
