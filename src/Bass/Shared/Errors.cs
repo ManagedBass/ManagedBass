@@ -223,6 +223,12 @@ namespace ManagedBass
         /// </summary>
         Busy = 46,
 
+        /// <summary>
+        /// The file cannot be streamed using the buffered file system.
+        /// This could be because an MP4 file's "mdat" atom comes before its "moov" atom. 
+        /// </summary>
+        Unstreamable = 47,
+ 
         #region BassWma
         /// <summary>
         /// BassWma: The file is protected

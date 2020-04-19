@@ -19,6 +19,12 @@ namespace ManagedBass
         Mixtime = 1073741824,
 
         /// <summary>
+        /// Call the sync asynchronously in the dedicated sync thread. This only affects mixtime syncs (except <see cref="SyncFlags.Free"/> syncs)
+        /// and allows the callback function to safely call <see cref="Bass.StreamFree"/> or <see cref="Bass.MusicFree"/> on the same channel handle. 
+        /// </summary>
+        Thread = 0x20000000,
+
+        /// <summary>
         /// Sync when a channel reaches a position.
         /// param : position in bytes
         /// data : not used
