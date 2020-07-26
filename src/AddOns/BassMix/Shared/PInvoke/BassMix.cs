@@ -11,7 +11,7 @@ namespace ManagedBass.Mix
 #if __IOS__
         const string DllName = "__Internal";
 #else
-        const string DllName = "bassmidi";
+        const string DllName = "bassmix";
 #endif
 
         #region Version

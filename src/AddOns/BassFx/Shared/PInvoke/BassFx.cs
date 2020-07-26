@@ -11,7 +11,7 @@ namespace ManagedBass.Fx
 #if __IOS__
         const string DllName = "__Internal";
 #else
-        const string DllName = "bassmidi";
+        const string DllName = "bassfx";
 #endif
 
         #region Version
