@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>f0fc2f2c-d971-46e3-8c6c-6c8a0f3b70cd</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>BassEnc</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Delegates\SyncProcedureEx.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enumerations\MixEnvelope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PInvoke\BassMix.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Structs\MixerNode.cs" />
+  </ItemGroup>
+</Project>

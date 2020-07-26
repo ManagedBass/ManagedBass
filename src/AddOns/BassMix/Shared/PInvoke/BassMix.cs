@@ -8,8 +8,12 @@ namespace ManagedBass.Mix
     /// </summary>
     public static class BassMix
     {
-        const string DllName = "bassmix";
-        
+#if __IOS__
+        const string DllName = "__Internal";
+#else
+        const string DllName = "bassmidi";
+#endif
+
         #region Version
         [DllImport(DllName)]
         static extern int BASS_Mixer_GetVersion();
