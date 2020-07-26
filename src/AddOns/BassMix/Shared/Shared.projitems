@@ -3,7 +3,7 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>f0fc2f2c-d971-46e3-8c6c-6c8a0f3b70cd</SharedGUID>
+    <SharedGUID>09138eda-c4cd-40b1-89df-335bd20acc93</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>BassEnc</Import_RootNamespace>

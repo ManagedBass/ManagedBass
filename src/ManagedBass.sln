@@ -104,13 +104,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{B5C0D018
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BassMix", "BassMix", "{2777C7F3-5110-4A5F-818F-4CD23F904A50}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "AddOns\BassMix\Shared\Shared.shproj", "{ED123907-6C0A-4CC4-8104-F6049A372FDA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iOS", "AddOns\BassMix\iOS\iOS.csproj", "{5F67F880-8EE7-4CCD-8881-8014D9D656CE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Desktop", "AddOns\BassMix\Desktop\Desktop.csproj", "{C4A6F7C4-5CF8-461C-BC63-688F75AB38B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BassMix", "AddOns\BassMix\Portable\BassMix.csproj", "{29FA6C92-7D67-41EB-8BFA-9828A13ED514}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "AddOns\BassMix\Shared\Shared.shproj", "{ED413C13-1EC8-420B-8543-1416DA085188}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -129,7 +129,7 @@ Global
 		Bass\Shared\Shared.projitems*{cd4e203e-c152-4914-93f8-59010befcb52}*SharedItemsImports = 13
 		AddOns\BassEnc\Shared\Shared.projitems*{d7a05b65-f427-4d11-a156-5f5459044b22}*SharedItemsImports = 5
 		Bass\Shared\Shared.projitems*{e29cfa86-e31d-4694-9cc0-7337502c7746}*SharedItemsImports = 5
-		AddOns\BassMix\Shared\Shared.projitems*{ed123907-6c0a-4cc4-8104-f6049a372fda}*SharedItemsImports = 13
+		AddOns\BassMix\Shared\Shared.projitems*{ed413c13-1ec8-420b-8543-1416da085188}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -346,10 +346,10 @@ Global
 		{AA72E426-627B-497C-8219-F344577D4DE0} = {27976565-211B-4A18-8501-89D534534BF4}
 		{8E11E61B-F8DB-44A1-B30E-140A46B9D6D4} = {32C0B6FE-4187-44E4-8F10-453FB1BB6287}
 		{B74875B2-2AE0-4665-BC80-33EDC955C381} = {46E48BCB-C105-4049-A64B-DFC1621B5A2D}
-		{ED123907-6C0A-4CC4-8104-F6049A372FDA} = {2777C7F3-5110-4A5F-818F-4CD23F904A50}
 		{5F67F880-8EE7-4CCD-8881-8014D9D656CE} = {2777C7F3-5110-4A5F-818F-4CD23F904A50}
 		{C4A6F7C4-5CF8-461C-BC63-688F75AB38B8} = {2777C7F3-5110-4A5F-818F-4CD23F904A50}
 		{29FA6C92-7D67-41EB-8BFA-9828A13ED514} = {2777C7F3-5110-4A5F-818F-4CD23F904A50}
+		{ED413C13-1EC8-420B-8543-1416DA085188} = {2777C7F3-5110-4A5F-818F-4CD23F904A50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2963EB56-09D6-4AFD-863A-6DAF38D4955A}
