@@ -74,6 +74,11 @@ namespace ManagedBass
                 if (frameIdLen == 4)
                     ReadUInt(2);
 
+                //Issue 78 Fix: Dbond (2020-07-16)
+                //add saftey check to make sure we can't read past the overall header length
+                //protecting against an invalid frame value.
+                frameLength = Math.Min(frameLength, Length - 10);  //header space left is length - header size.. (10 bytes)
+
                 var added = AddFrame(frameId, frameLength);
 
                 // if don't read this frame, we must go forward to read next frame
