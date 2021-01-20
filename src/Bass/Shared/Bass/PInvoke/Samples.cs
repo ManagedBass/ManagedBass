@@ -238,7 +238,7 @@ namespace ManagedBass
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleGetInfo")]
-        public static extern bool SampleGetInfo(int Handle, ref SampleInfo Info);
+        public static extern bool SampleGetInfo(int Handle, [In, Out] SampleInfo Info);
 
         /// <summary>
         /// Retrieves a sample's default attributes and other information.
@@ -249,7 +249,7 @@ namespace ManagedBass
         public static SampleInfo SampleGetInfo(int Handle)
         {
             var temp = new SampleInfo();
-            if (!SampleGetInfo(Handle, ref temp))
+            if (!SampleGetInfo(Handle, temp))
                 throw new BassException();
             return temp;
         }
