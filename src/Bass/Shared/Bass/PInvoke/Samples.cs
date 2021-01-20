@@ -13,7 +13,7 @@ namespace ManagedBass
         /// <returns>If successful, the handle of the new channel is returned, else 0 is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <remarks>
         /// <para>
-        /// Use <see cref="SampleGetInfo(int, ref SampleInfo)" /> and <see cref="SampleSetInfo(int, SampleInfo)" /> to set a sample's default attributes, which are used when creating a channel.
+        /// Use <see cref="SampleGetInfo(int, SampleInfo)" /> and <see cref="SampleSetInfo(int, SampleInfo)" /> to set a sample's default attributes, which are used when creating a channel.
         /// After creation, a channel's attributes can be changed via <see cref="ChannelSetAttribute(int, ChannelAttribute, float)" />, <see cref="ChannelSet3DAttributes" /> and <see cref="ChannelSet3DPosition" />.
         /// <see cref="Apply3D" /> should be called before starting playback of a 3D sample, even if you just want to use the default settings.
         /// </para>
@@ -56,7 +56,7 @@ namespace ManagedBass
         /// <param name="Buffer">Pointer to the data to set.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <remarks>
-        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, SampleInfo)" />.
         /// <para>A sample's data can be set at any time, including during playback.</para>
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
@@ -71,7 +71,7 @@ namespace ManagedBass
         /// <param name="Buffer">byte[] containing the data to set.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <remarks>
-        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, SampleInfo)" />.
         /// <para>A sample's data can be set at any time, including during playback.</para>
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
@@ -86,7 +86,7 @@ namespace ManagedBass
         /// <param name="Buffer">int[] containing the data to set.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <remarks>
-        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, SampleInfo)" />.
         /// <para>A sample's data can be set at any time, including during playback.</para>
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
@@ -101,7 +101,7 @@ namespace ManagedBass
         /// <param name="Buffer">short[] containing the data to set.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <remarks>
-        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, SampleInfo)" />.
         /// <para>A sample's data can be set at any time, including during playback.</para>
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
@@ -116,7 +116,7 @@ namespace ManagedBass
         /// <param name="Buffer">float[] containing the data to set.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <remarks>
-        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// The required length and format of the data can be retrieved via <see cref="SampleGetInfo(int, SampleInfo)" />.
         /// <para>A sample's data can be set at any time, including during playback.</para>
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
@@ -169,7 +169,7 @@ namespace ManagedBass
         /// <param name="Handle">The sample handle.</param>
         /// <param name="Buffer">Pointer to a buffer to receive the data.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, SampleInfo)" />.
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
@@ -182,7 +182,7 @@ namespace ManagedBass
         /// <param name="Handle">The sample handle.</param>
         /// <param name="Buffer">byte[] to receive the data.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, SampleInfo)" />.
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
@@ -195,7 +195,7 @@ namespace ManagedBass
         /// <param name="Handle">The sample handle.</param>
         /// <param name="Buffer">short[] to receive the data.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, SampleInfo)" />.
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
@@ -208,7 +208,7 @@ namespace ManagedBass
         /// <param name="Handle">The sample handle.</param>
         /// <param name="Buffer">int[] to receive the data.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, SampleInfo)" />.
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
@@ -221,7 +221,7 @@ namespace ManagedBass
         /// <param name="Handle">The sample handle.</param>
         /// <param name="Buffer">float[] to receive the data.</param>
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
-        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, ref SampleInfo)" />.
+        /// <remarks>The buffer must be big enough to receive the sample's data, the size of which can be retrieved via <see cref="SampleGetInfo(int, SampleInfo)" />.
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
@@ -263,7 +263,7 @@ namespace ManagedBass
         /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="LastError" /> to get the error code.</returns>
         /// <remarks>
         /// <para>
-        /// Use this function and <see cref="SampleGetInfo(int, ref SampleInfo)" /> to edit a sample's default attributes.
+        /// Use this function and <see cref="SampleGetInfo(int, SampleInfo)" /> to edit a sample's default attributes.
         /// Changing a sample's default attributes does not affect any existing channels, it only affects channels subsequently created via <see cref="SampleGetChannel" />.
         /// The exception is the VAM settings, changes to that apply to all the sample's channels at their next playback (<see cref="ChannelPlay" />).
         /// Use <see cref="ChannelSetAttribute(int, ChannelAttribute, float)" /> and <see cref="ChannelSet3DAttributes" /> to change the attributes of an existing sample channel.
