@@ -68,11 +68,25 @@ namespace ManagedBass
 
             var dir = Path.GetDirectoryName(FilePath);
             var fileName = Path.GetFileName(FilePath);
-            
+
             // Try for Windows, Linux/Android and OSX Libraries respectively.
-            return new[] { $"{dir}{fileName}.dll", $"{dir}lib{fileName}.so", $"{dir}lib{fileName}.dylib" }
-                           .Select(PluginLoad)
-                           .FirstOrDefault(HLib => HLib != 0);
+            string[] paths = new[] {
+                Path.Combine(dir, $"{fileName}.dll"),
+                Path.Combine(dir, $"lib{fileName}.so"),
+                Path.Combine(dir, $"lib{fileName}.dylib")
+            };
+
+            foreach (string path in paths)
+            {
+                // Check if the file exists before trying to load plugin otherwise Bass.LastError can be overwritten by multiple calls.
+                if (File.Exists(path))
+                {
+                    return BASS_PluginLoad(path);
+                }
+            }
+
+            // Fall back to just returning the result of BASS_PluginLoad so Bass.LastError is set correctly
+            return BASS_PluginLoad(FilePath);
 #endif
         }
         #endregion
