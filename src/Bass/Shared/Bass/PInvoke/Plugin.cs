@@ -81,7 +81,14 @@ namespace ManagedBass
                 // Check if the file exists before trying to load plugin otherwise Bass.LastError can be overwritten by multiple calls.
                 if (File.Exists(path))
                 {
-                    return BASS_PluginLoad(path);
+                    // Only return if we have a valid handle. If we don't keep trying the other files.
+                    var rtnVal = BASS_PluginLoad(path);
+
+                    // Errors.Already means the plugin is already loaded and we have found the proper plugin, we should return in this case
+                    if (rtnVal != 0 || Bass.LastError == Errors.Already)
+                    {
+                        return rtnVal;
+                    }
                 }
             }
 
