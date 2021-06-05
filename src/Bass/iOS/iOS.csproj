@@ -6,6 +6,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <DefineConstants>__IOS__</DefineConstants>
+    <Version>3.0.0</Version>
   </PropertyGroup>
 
   <Import Project="..\Shared\Shared.projitems" Label="Shared" />
