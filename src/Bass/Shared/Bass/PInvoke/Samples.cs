@@ -36,8 +36,41 @@ namespace ManagedBass
         /// <exception cref="Errors.Handle"><paramref name="Sample" /> is not a valid sample handle.</exception>
         /// <exception cref="Errors.NoChannel">The sample has no free channels... the maximum number of simultaneous playbacks has been reached, and no override flag was specified for the sample or onlynew = <see langword="true" />.</exception>
         /// <exception cref="Errors.Timeout">The sample's minimum time gap (<see cref="SampleInfo" />) has not yet passed since the last channel was created.</exception>
+        public static int SampleGetChannel(int Sample, bool OnlyNew = false) => SampleGetChannel(Sample, OnlyNew ? BassFlags.SampleChannelNew : BassFlags.Default);
+
+        /// <summary>
+        /// Creates/initializes a playback channel for a sample.
+        /// </summary>
+        /// <param name="Sample">Handle of the sample to play.</param>
+        /// <param name="Flags">A combination of <see cref="BassFlags"/>.</param>
+        /// <returns>If successful, the handle of the new channel is returned, else 0 is returned. Use <see cref="LastError" /> to get the error code.</returns>
+        /// <remarks>
+        /// <para>
+        /// Use <see cref="SampleGetInfo(int, SampleInfo)" /> and <see cref="SampleSetInfo(int, SampleInfo)" /> to set a sample's default attributes, which are used when creating a channel.
+        /// After creation, a channel's attributes can be changed via <see cref="ChannelSetAttribute(int, ChannelAttribute, float)" />, <see cref="ChannelSet3DAttributes" /> and <see cref="ChannelSet3DPosition" />.
+        /// <see cref="Apply3D" /> should be called before starting playback of a 3D sample, even if you just want to use the default settings.
+        /// </para>
+        /// <para>
+        /// If a sample has a maximum number of simultaneous playbacks of 1 (the max parameter was 1 when calling <see cref="SampleLoad(string, long, int, int, BassFlags)" /> or <see cref="CreateSample" />), then the HCHANNEL handle returned will be identical to the HSAMPLE handle.
+        /// That means you can use the HSAMPLE handle with functions that usually require a HCHANNEL handle, but you must still call this function first to initialize the channel.
+        /// </para>
+        /// <para>
+        /// A sample channel is automatically freed when it's overridden by a new channel, or when stopped manually via <see cref="ChannelStop" />, <see cref="SampleStop" /> or <see cref="Stop" />.
+        /// If you wish to stop a channel and re-use it, it should be paused (<see cref="ChannelPause" />) instead of stopped.
+        /// Determining whether a channel still exists can be done by trying to use the handle in a function call, eg. <see cref="ChannelGetAttribute(int, ChannelAttribute, out float)" />.
+        /// </para>
+        /// <para>When channel overriding has been enabled via an override flag and there are multiple candidates for overriding (eg. with identical volume), the oldest of them will be chosen to make way for the new channel.</para>
+        /// <para>
+        /// The new channel will have an initial state of being paused (<see cref="PlaybackState.Paused"/>).
+        /// This prevents the channel being claimed by another call of this function before it has been played, unless it gets overridden due to a lack of free channels.
+        /// </para>
+        /// <para>All of a sample's channels share the same sample data, and just have their own individual playback state information (volume/position/etc).</para>
+        /// </remarks>
+        /// <exception cref="Errors.Handle"><paramref name="Sample" /> is not a valid sample handle.</exception>
+        /// <exception cref="Errors.NoChannel">The sample has no free channels... the maximum number of simultaneous playbacks has been reached, and no override flag or <see cref="BassFlags.SampleChannelNew"/> was specified for the sample.</exception>
+        /// <exception cref="Errors.Timeout">The sample's minimum time gap (<see cref="SampleInfo" />) has not yet passed since the last channel was created.</exception>
         [DllImport(DllName, EntryPoint = "BASS_SampleGetChannel")]
-        public static extern int SampleGetChannel(int Sample, bool OnlyNew = false);
+        public static extern int SampleGetChannel(int Sample, BassFlags Flags);
 
         /// <summary>
         /// Frees a sample's resources.
