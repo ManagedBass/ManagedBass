@@ -326,6 +326,19 @@ namespace ManagedBass
         /// Sample: override furthest from listener (3D only)
         /// </summary>
         SampleOverrideDistance = 0x30000,
+
+        /// <summary>
+        /// Sample: Do not recycle/override one of the sample's existing channels.
+        /// This should be used as an argument to <see cref="Bass.SampleGetChannel"/>.
+        /// </summary>
+        SampleChannelNew = 0x1,
+
+        /// <summary>
+        /// Sample: Create a stream rather than a sample channel.
+        /// This should be used as an argument to <see cref="Bass.SampleGetChannel"/>.
+        /// </summary>
+        SampleChannelStream = 0x2,
+
         #endregion
 
         #region BassCd
