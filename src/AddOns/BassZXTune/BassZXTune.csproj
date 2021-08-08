@@ -6,6 +6,8 @@
     <Version>3.0.0</Version>
     <Authors>MathewSachin</Authors>
     <Description>ManagedBass ZXTune AddOn</Description>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/ManagedBass/ManagedBass</RepositoryUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 

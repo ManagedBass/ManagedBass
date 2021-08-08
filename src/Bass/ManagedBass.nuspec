@@ -11,6 +11,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>.Net Wrapper for un4seen Audio Library.</description>
         <summary>ManagedBass Library for un4seen BASS.</summary>
+        <repository type="git" url="https://github.com/ManagedBass/ManagedBass"/>
         <releaseNotes>
         </releaseNotes>
         <copyright>(c) 2016 Mathew Sachin</copyright>

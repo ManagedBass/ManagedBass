@@ -11,6 +11,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>ManagedBass Encoding AddOn</description>
         <summary>ManagedBass Encoding AddOn</summary>
+        <repository type="git" url="https://github.com/ManagedBass/ManagedBass"/>
         <releaseNotes>
         </releaseNotes>
         <copyright>(c) 2016 Mathew Sachin</copyright>

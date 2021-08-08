@@ -7,6 +7,8 @@
     <Authors>MathewSachin</Authors>
     <Description>ManagedBass Adx AddOn</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/ManagedBass/ManagedBass</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
