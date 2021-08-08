@@ -50,7 +50,7 @@ jobs:
         run: dotnet restore
         working-directory: ${{ github.workspace }}/src
       - name: Build
-        run: dotnet build -c Release --no-restore
+        run: dotnet build -c Release --no-restore -p:Version=$VERSION
         working-directory: ${{ github.workspace }}/src
       - name: Create Release NuGet package
         working-directory: ${{ github.workspace }}\src
@@ -63,7 +63,7 @@ jobs:
           echo Clean Version: $VERSION
           
           # Pack all the projects. This works for all but the multi-target projects.
-          dotnet pack -v normal -c Release --no-build -p:Version=$VERSION -p:PackageVersion=$VERSION -o nupkg
+          dotnet pack -v normal -c Release --no-build -p:PackageVersion=$VERSION -o nupkg
           
           # Now pack the nuspec files - These are handled differently as they target multiple platforms.
           # The resulting nupkg file overwrites the ones created in the above dotnet pack stage.
