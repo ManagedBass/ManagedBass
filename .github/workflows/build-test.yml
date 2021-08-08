@@ -3,6 +3,7 @@ on:
   push:
    branches:
      - master
+     - automation/github-action-for-package-publishing
   pull_request:
 env:
   # Stop wasting time caching packages
