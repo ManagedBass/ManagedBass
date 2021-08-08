@@ -24,8 +24,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
-      - name: Git Ref
-        run: echo $GITHUB_REF - ${GITHUB_REF}
       - name: Restore
         run: dotnet restore
         working-directory: ${{ github.workspace }}/src
