@@ -1,6 +1,6 @@
 name: Build and Package for Release
 on:
-push:
+  push:
    branches:
      - automation/github-action-for-package-publishing
   release:
