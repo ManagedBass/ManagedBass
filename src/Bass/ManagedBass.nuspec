@@ -16,6 +16,11 @@
         </releaseNotes>
         <copyright>(c) 2016 Mathew Sachin</copyright>
         <tags>Bass Wasapi Asio Record Audio Music</tags>
+        <dependencies>
+            <group targetFramework=".NETFramework4.5" />
+            <group targetFramework=".NETStandard1.4" />
+            <group targetFramework="Xamarin.iOS0.0" />
+        </dependencies>
     </metadata>
     <files>
         <file src="../../icon.png" target="" />
