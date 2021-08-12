@@ -17,10 +17,15 @@
         <copyright>(c) 2016 Mathew Sachin</copyright>
         <tags>Bass Wasapi Asio Record Audio Music</tags>
         <dependencies>
-            <dependency id="ManagedBass" version="3.0.0" />
-            <group targetFramework=".NETFramework4.5" />
-            <group targetFramework=".NETStandard1.4" />
-            <group targetFramework="Xamarin.iOS0.0" />
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="ManagedBass" version="3.0.0" />
+            </group>
+            <group targetFramework=".NETStandard1.4">
+                <dependency id="ManagedBass" version="3.0.0" />
+            </group>
+            <group targetFramework="Xamarin.iOS0.0">
+                <dependency id="ManagedBass" version="3.0.0" />
+            </group>
         </dependencies>
     </metadata>
     <files>
