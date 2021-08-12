@@ -79,5 +79,4 @@ jobs:
                  
       - name: Push to NuGet Feed
         working-directory: ${{ github.workspace }}\src
-        run: ls nupkg # Just list out for now
-        # run: dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
+        run: dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
