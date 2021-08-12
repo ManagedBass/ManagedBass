@@ -5,9 +5,9 @@
         <version>3.0.0</version>
         <title>ManagedBass.Midi</title>
         <authors>MathewSachin</authors>
-        <licenseUrl>https://raw.githubusercontent.com/ManagedBass/Home/master/LICENSE.md</licenseUrl>
+        <license type="file">LICENSE.md</license>
         <projectUrl>https://github.com/ManagedBass/ManagedBass/</projectUrl>
-        <iconUrl>https://github.com/ManagedBass.png</iconUrl>
+        <icon>icon.png</icon>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>ManagedBass Midi AddOn</description>
         <summary>ManagedBass Midi AddOn</summary>
@@ -21,6 +21,9 @@
         </dependencies>
     </metadata>
     <files>
+        <file src="../../icon.png" target="" />
+        <file src="../../LICENSE.md" target="" />
+
         <file src="Desktop\bin\Release\netstandard1.4\ManagedBass.Midi.dll" target="lib\net45"/>
         <file src="Desktop\bin\Release\netstandard1.4\ManagedBass.Midi.xml" target="lib\net45"/>
 

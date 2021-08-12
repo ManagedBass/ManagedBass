@@ -6,10 +6,18 @@
     <Version>3.0.0</Version>
     <Authors>MathewSachin</Authors>
     <Description>ManagedBass Hls AddOn</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/ManagedBass/ManagedBass</RepositoryUrl>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageProjectUrl>https://github.com/ManagedBass/ManagedBass</PackageProjectUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>
+
+ <ItemGroup>
+    <None Include="../../../icon.png" Pack="true" PackagePath="" />
+    <None Include="../../../LICENSE.md" Pack="true" PackagePath="" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Bass\Portable\Bass.csproj" />
