@@ -76,5 +76,5 @@ jobs:
           retention-days: 5
                  
       - name: Push to NuGet Feed
-        working-directory: ${{ github.workspace }}\src
-        run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key ${{ secrets.NUGET_KEY }}
+        working-directory: ${{ github.workspace }}\src\nupkg
+        run: dotnet nuget push "*.nupkg" --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key ${{ secrets.NUGET_KEY }}
