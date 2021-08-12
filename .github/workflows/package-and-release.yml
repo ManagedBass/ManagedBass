@@ -69,7 +69,14 @@ jobs:
           nuget pack Bass/ManagedBass.nuspec -Version $VERSION -OutputDirectory nupkg
           nuget pack AddOns/BassEnc/ManagedBass.Enc.nuspec -Version $VERSION -OutputDirectory nupkg
           nuget pack AddOns/BassMidi/ManagedBass.Midi.nuspec -Version $VERSION -OutputDirectory nupkg
-                   
+          
+      - name: Upload Packages as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: nuget-packages
+          path: ${{ github.workspace }}\src\nupkg\*.*
+          retention-days: 5
+                 
       - name: Push to NuGet Feed
         working-directory: ${{ github.workspace }}\src
         run: ls nupkg # Just list out for now
