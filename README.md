@@ -23,15 +23,20 @@ See https://github.com/ManagedBass/Home for more info.
 
 ## Changelog
 
-### v3.0
+### v3.1+ (August 2021)
+- Incorporated all changes and contributions since March 2020.
+- Automated build and deployment of Nuget packages for future releases.
+- Switched to using GitHub Releases. Checkout the [latest releases here](https://github.com/ManagedBass/ManagedBass/releases) for more information.
+
+### v3.0 (March 2020)
 - No separate library for iOS. The main library can be used on iOS with DllMap (see app.config file).
 
-### v2.0
+### v2.0 (November 2017)
 - Moved from PCL to .Net Standard 1.4.
 - Removed Load and Unload methods in support of being cross-platform.
 - Removed DynamicLibrary class.
 
-### v1.0
+### v1.0 (January 2017)
 - Split NuGet packages per AddOn.
 - No dependency on `ManagedBass.PInvoke`.
 - Using C# 7 on Visual Studio 2017.
