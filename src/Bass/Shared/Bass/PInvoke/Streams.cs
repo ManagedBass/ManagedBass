@@ -77,7 +77,7 @@ namespace ManagedBass
 
         #region Dummy/Push
         [DllImport(DllName)]
-        static extern int BASS_StreamCreate(int Frequency, int Channels, BassFlags Flags, StreamProcedureType ProcedureType, IntPtr User = default(IntPtr));
+        static extern int BASS_StreamCreate(int Frequency, int Channels, BassFlags Flags, IntPtr ProcedureType, IntPtr User = default(IntPtr));
 
         /// <summary>
         /// Creates a Dummy or Push stream.
@@ -101,7 +101,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int CreateStream(int Frequency, int Channels, BassFlags Flags, StreamProcedureType ProcedureType)
         {
-            return BASS_StreamCreate(Frequency, Channels, Flags, ProcedureType);
+            return BASS_StreamCreate(Frequency, Channels, Flags, new IntPtr((int)ProcedureType));
         }
         #endregion
 
