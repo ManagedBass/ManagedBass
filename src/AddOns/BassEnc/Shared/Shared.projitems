@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Enumerations\EncodeServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enumerations\EncodeStats.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PInvoke\BassEnc.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PInvoke\BassEnc_Aac.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PInvoke\BassEnc_Mp3.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PInvoke\BassEnc_Ogg.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PInvoke\BassEnc_Flac.cs" />
