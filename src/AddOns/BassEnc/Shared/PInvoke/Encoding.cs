@@ -293,7 +293,7 @@ namespace ManagedBass.Enc
         /// <returns>The encoder handle is returned if the encoder is successfully started, else 0 is returned. Use <see cref="Bass.LastError"/> to get the error code.</returns>
         /// <remarks>
         /// This function allows CoreAudio codecs to be used for encoding.
-        /// The available file and audio data identifiers, as well as other information, can be retreived via the Audio File Services and Audio Format Services APIs, eg. the kAudioFileGlobalInfo_WritableTypes and kAudioFormatProperty_EncodeFormatIDs properties.
+        /// The available file and audio data identifiers, as well as other information, can be retrieved via the Audio File Services and Audio Format Services APIs, eg. the kAudioFileGlobalInfo_WritableTypes and kAudioFormatProperty_EncodeFormatIDs properties.
         /// <para>
         /// Internally, the sending of sample data to the encoder is implemented via a DSP callback on the channel.
         /// That means when you play the channel (or call <see cref="Bass.ChannelGetData(int,IntPtr,int)" /> if it's a decoding channel), the sample data will be sent to the encoder at the same time. 
@@ -468,7 +468,9 @@ namespace ManagedBass.Enc
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int EncodeStart(int Handle, string Filename, EncodeFlags Flags, EncoderProcedure Procedure, IntPtr User = default(IntPtr))
         {
-            return BASS_Encode_StartUser(Handle, Filename, Flags | EncodeFlags.Unicode, Procedure, User);
+	        return Procedure != null ? 
+		        BASS_Encode_StartUser(Handle, Filename, Flags | EncodeFlags.Unicode, Procedure, User) :
+		        BASS_Encode_Start(Handle, Filename, Flags | EncodeFlags.Unicode, null, User);
         }
         
 		/// <summary>

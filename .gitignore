@@ -22,8 +22,11 @@ packages/
 *.user
 *.DotSettings
 
-# User-Specific files (MonoDevelop/Xamarin Studio)
+# User-Specific files
+#(MonoDevelop/Xamarin Studio)
 *.userprefs
+#JetBrains Rider
+src/.idea/
 
 # MSTest test Results
 [Tt]est[Rr]esults.xml
