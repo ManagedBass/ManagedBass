@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 namespace ManagedBass
 {
@@ -11,23 +10,19 @@ namespace ManagedBass
     /// </summary>
     public static class ChannelReferences
     {
+#if !__IOS__
         static readonly ConcurrentDictionary<Tuple<int, int>, object> Procedures = new ConcurrentDictionary<Tuple<int, int>, object>();
         static readonly SyncProcedure Freeproc = Callback;
-
-        private static bool JITSupported;
-
-        static ChannelReferences()
-        {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Select(Asm => Asm.ToString());
-            JITSupported = !assemblies.Any(Asm => Asm.Contains("Xamarin.iOS") || Asm.Contains("Microsoft.iOS"));
-        }
+#endif
 
         /// <summary>
         /// Adds a Reference.
         /// </summary>
         public static void Add(int Handle, int SpecificHandle, object proc)
         {
-            if (!JITSupported)
+#if !__IOS__
+            // in .NET iOS, the __IOS__ constant cannot be seen, so rely on RuntimeFeature instead.
+            if (!RuntimeFeature.IsDynamicCodeSupported)
                 return;
 
             if (proc == null)
@@ -46,6 +41,7 @@ namespace ManagedBass
             if (contains)
                 Procedures[key] = proc;
             else Procedures.TryAdd(key, proc);
+#endif
         }
 
         /// <summary>
@@ -53,13 +49,17 @@ namespace ManagedBass
         /// </summary>
         public static void Remove(int Handle, int SpecialHandle)
         {
-            if (!JITSupported)
+#if !__IOS__
+            // in .NET iOS, the __IOS__ constant cannot be seen, so rely on RuntimeFeature instead.
+            if (!RuntimeFeature.IsDynamicCodeSupported)
                 return;
 
             var key = Tuple.Create(Handle, SpecialHandle);
             Procedures.TryRemove(key, out object unused);
+#endif
         }
 
+#if !__IOS__
         static void Callback(int Handle, int Channel, int Data, IntPtr User)
         {
             // ToArray is necessary because the object iterated on should not be modified.
@@ -68,5 +68,6 @@ namespace ManagedBass
             foreach (var key in toRemove)
                 Procedures.TryRemove(key, out object unused);
         }
+#endif
     }
 }
