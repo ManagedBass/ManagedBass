@@ -22,7 +22,7 @@ namespace ManagedBass
         {
 #if !__IOS__
             // in .NET iOS, the __IOS__ constant cannot be seen, so rely on RuntimeFeature instead.
-            if (!RuntimeFeature.IsDynamicCodeSupported)
+            if (!RuntimeFeature.IsDynamicCodeCompiled)
                 return;
 
             if (proc == null)
@@ -51,7 +51,7 @@ namespace ManagedBass
         {
 #if !__IOS__
             // in .NET iOS, the __IOS__ constant cannot be seen, so rely on RuntimeFeature instead.
-            if (!RuntimeFeature.IsDynamicCodeSupported)
+            if (!RuntimeFeature.IsDynamicCodeCompiled)
                 return;
 
             var key = Tuple.Create(Handle, SpecialHandle);
