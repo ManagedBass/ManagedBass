@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace ManagedBass
 {
@@ -20,6 +21,10 @@ namespace ManagedBass
         public static void Add(int Handle, int SpecificHandle, object proc)
         {
 #if !__IOS__
+            // in .NET iOS, the __IOS__ constant cannot be seen, so rely on RuntimeFeature instead.
+            if (!RuntimeFeature.IsDynamicCodeSupported)
+                return;
+
             if (proc == null)
                 return;
 
@@ -45,6 +50,10 @@ namespace ManagedBass
         public static void Remove(int Handle, int SpecialHandle)
         {
 #if !__IOS__
+            // in .NET iOS, the __IOS__ constant cannot be seen, so rely on RuntimeFeature instead.
+            if (!RuntimeFeature.IsDynamicCodeSupported)
+                return;
+
             var key = Tuple.Create(Handle, SpecialHandle);
             Procedures.TryRemove(key, out object unused);
 #endif
