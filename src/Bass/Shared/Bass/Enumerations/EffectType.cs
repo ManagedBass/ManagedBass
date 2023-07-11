@@ -52,6 +52,13 @@
         DXReverb,
         #endregion
 
+        #region Bass
+        /// <summary>
+        /// Bass: Volume control (built into Bass itself).
+        /// </summary>
+        Volume,
+        #endregion
+
         #region BassFx
         /// <summary>
         /// BassFx: Channel Volume Ping-Pong (multi channel).
@@ -61,7 +68,7 @@
         /// <summary>
         /// BassFx: Volume control (multi channel).
         /// </summary>
-        Volume = 0x10003,
+        VolumeBfx = 0x10003,
 
         /// <summary>
         /// BassFx: Peaking Equalizer (multi channel).
