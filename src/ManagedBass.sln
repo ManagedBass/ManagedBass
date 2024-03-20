@@ -102,7 +102,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{B5C0D018
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bassloud", "AddOns\Bassloud\Bassloud.csproj", "{390A135A-A966-4F3A-B420-3FF4CCD86098}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BassLoud", "AddOns\BassLoud\BassLoud.csproj", "{390A135A-A966-4F3A-B420-3FF4CCD86098}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
