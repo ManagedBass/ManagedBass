@@ -37,7 +37,7 @@ namespace ManagedBass.Loud
         /// <exception cref="Errors.Parameter"><paramref name="Mode"/> is not valid. If requesting a duration with BASS_LOUDNESS_CURRENT then it exceeds what has been enabled.</exception>
         /// <exception cref="Errors.NotAvailable">The requested measurement has not been enabled.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Loudness_GetLevel")]
-        public static extern bool BASS_Loudness_GetLevel(int Handle, BassFlags Mode, float Level);
+        public static extern bool BASS_Loudness_GetLevel(int Handle, BassFlags Mode, out float Level);
 
         /// <summary>
         /// Starts loudness measurement on a channel.
@@ -48,7 +48,7 @@ namespace ManagedBass.Loud
         /// <returns>The loudness measurement handle is returned if it is successfully started, else 0 is returned. Use <see cref="Bass.LastError"/> to get the error code.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle"/> is not valid.</exception>
         /// <exception cref="Errors.Memory">There is insufficient memory.</exception>
-        [DllImport(DllName, EntryPoint = "BASS_Loudness_Start")]
+        [DllImport(DllName, EntryPoint = "BASS_Loudness_Start", CharSet = CharSet.Unicode)]
         public static extern int BASS_Loudness_Start(int Handle, BassFlags Flags, int Priority);
 
         /// <summary>
