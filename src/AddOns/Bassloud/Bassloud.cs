@@ -37,7 +37,7 @@ namespace ManagedBass.Loud
         /// <exception cref="Errors.Parameter"><paramref name="Mode"/> is not valid. If requesting a duration with BASS_LOUDNESS_CURRENT then it exceeds what has been enabled.</exception>
         /// <exception cref="Errors.NotAvailable">The requested measurement has not been enabled.</exception>
         [DllImport(DllName, EntryPoint = "BASS_Loudness_GetLevel")]
-        public static extern bool BASS_Loudness_GetLevel(int Handle, BassFlags Mode, out float Level);
+        public static extern bool BASS_Loudness_GetLevel(int Handle, BassFlags Mode, ref float Level);
 
         /// <summary>
         /// Starts loudness measurement on a channel.
