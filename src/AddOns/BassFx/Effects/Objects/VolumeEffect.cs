@@ -55,7 +55,7 @@ namespace ManagedBass.Fx
             get => Convert.ToBoolean(Parameters.lCurve);
             set
             {
-                Parameters.lCurve = (uint)(value == true ? 1 : 0);
+                Parameters.lCurve = (uint)(value ? 1 : 0);
                 OnPropertyChanged();
             }
         }
