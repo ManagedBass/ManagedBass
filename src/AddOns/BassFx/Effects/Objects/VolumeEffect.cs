@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ManagedBass.Fx
 {
-    public class Volume : Effect<VolumeParameters>
+    public sealed class Volume : Effect<VolumeParameters>
     {
         /// <summary>
         /// The new volume level... 0 = silent, 1.0 = normal, above 1.0 = amplification. The default value is 1.
