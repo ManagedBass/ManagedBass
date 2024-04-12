@@ -3,7 +3,7 @@
 namespace ManagedBass.Fx
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal class VolumeParameters : IEffectParameter
+    public class VolumeParameters : IEffectParameter
     {
         /// <summary>
         /// The new volume level... 0 = silent, 1.0 = normal, above 1.0 = amplification. The default value is 1. 

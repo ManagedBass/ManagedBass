@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ManagedBass.Fx
 {
-    internal class Volume : Effect<VolumeParameters>
+    public sealed class Volume : Effect<VolumeParameters>
     {
         /// <summary>
         /// The new volume level... 0 = silent, 1.0 = normal, above 1.0 = amplification. The default value is 1.
@@ -55,7 +55,7 @@ namespace ManagedBass.Fx
             get => Convert.ToBoolean(Parameters.lCurve);
             set
             {
-                Parameters.lCurve = (uint)(value == true ? 1 : 0);
+                Parameters.lCurve = (uint)(value ? 1 : 0);
                 OnPropertyChanged();
             }
         }
