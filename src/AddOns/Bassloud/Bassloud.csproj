@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BassEnc\Desktop\Desktop.csproj" />
+        <ProjectReference Include="..\..\Bass\Portable\Bass.csproj" />
     </ItemGroup>
 
     <ItemGroup>
