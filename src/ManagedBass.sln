@@ -102,6 +102,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{B5C0D018
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BassLoud", "AddOns\BassLoud\BassLoud.csproj", "{390A135A-A966-4F3A-B420-3FF4CCD86098}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -260,6 +262,10 @@ Global
 		{B74875B2-2AE0-4665-BC80-33EDC955C381}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B74875B2-2AE0-4665-BC80-33EDC955C381}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B74875B2-2AE0-4665-BC80-33EDC955C381}.Release|Any CPU.Build.0 = Release|Any CPU
+		{390A135A-A966-4F3A-B420-3FF4CCD86098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{390A135A-A966-4F3A-B420-3FF4CCD86098}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{390A135A-A966-4F3A-B420-3FF4CCD86098}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{390A135A-A966-4F3A-B420-3FF4CCD86098}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -306,6 +312,7 @@ Global
 		{AA72E426-627B-497C-8219-F344577D4DE0} = {27976565-211B-4A18-8501-89D534534BF4}
 		{8E11E61B-F8DB-44A1-B30E-140A46B9D6D4} = {32C0B6FE-4187-44E4-8F10-453FB1BB6287}
 		{B74875B2-2AE0-4665-BC80-33EDC955C381} = {46E48BCB-C105-4049-A64B-DFC1621B5A2D}
+		{390A135A-A966-4F3A-B420-3FF4CCD86098} = {27976565-211B-4A18-8501-89D534534BF4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2963EB56-09D6-4AFD-863A-6DAF38D4955A}
