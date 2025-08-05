@@ -2,7 +2,7 @@ name: Build and Package for Release
 on:
   push:
    branches:
-     - automation/github-action-for-package-publishing
+     - automation/github-action-test
   release:
     types:
       - published
