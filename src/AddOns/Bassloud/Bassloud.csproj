@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>8</LangVersion>
+        <AssemblyName>ManagedBass.Loud</AssemblyName>
+        <PackageId>ManagedBass.Loud</PackageId>
+        <Authors />
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Bass\Portable\Bass.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\..\..\icon.png">
+        <Pack>true</Pack>
+        <PackagePath></PackagePath>
+        <Link>icon.png</Link>
+      </None>
+      <None Include="..\..\..\LICENSE.md">
+        <Pack>true</Pack>
+        <PackagePath></PackagePath>
+        <Link>LICENSE.md</Link>
+      </None>
+    </ItemGroup>
+
+</Project>
