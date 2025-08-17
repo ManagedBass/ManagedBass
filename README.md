@@ -1,3 +1,5 @@
+<img width="128" height="128" alt="mb-logo-rounded-128" src="https://github.com/user-attachments/assets/834c571c-6fba-4d6c-a203-9774a456424e" />
+
 # ManagedBass
 [![NuGet](https://img.shields.io/nuget/v/ManagedBass.svg)](https://www.nuget.org/packages/ManagedBass/) [![NuGet Downloads](https://img.shields.io/nuget/dt/ManagedBass.svg)](https://www.nuget.org/packages/ManagedBass/) [![Build](https://github.com/ManagedBass/ManagedBass/actions/workflows/build-test.yml/badge.svg)](https://github.com/ManagedBass/ManagedBass/actions/workflows/build-test.yml)
 
