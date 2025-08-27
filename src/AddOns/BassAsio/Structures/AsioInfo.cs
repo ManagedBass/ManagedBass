@@ -53,7 +53,7 @@ namespace ManagedBass.Asio
         /// <summary>
         /// The maximum Buffer Length, in samples.
         /// </summary>
-        public int MaxBufferLength => bufmin;
+        public int MaxBufferLength => bufmax;
 
         /// <summary>
         /// The preferred/default Buffer Length, in samples.
