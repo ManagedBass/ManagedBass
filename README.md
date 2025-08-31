@@ -10,11 +10,11 @@ Summary from Un4Seen Bass website:
 > BASS is an audio library for use in software on several platforms. Its purpose is to provide developers with powerful and efficient sample, stream (MP3, MP2, MP1, OGG, WAV, AIFF, custom generated, and more via OS codecs and add-ons), MOD music (XM, IT, S3M, MOD, MTM, UMX), MO3 music (MP3/OGG compressed MODs), and recording functions. All in a compact DLL that won't bloat your distribution.
 > C/C++, Delphi, and Visual Basic APIs are provided, with several examples to get you started. .NET and other APIs are also available.
 
-## ManagedBass Wrapper
-Bass and its Add-Ons can be downloaded at http://un4seen.com/    
+
+**IMPORTANT**: Bass and its Add-Ons can be downloaded at http://un4seen.com/. This project provides a wrapper for the C-based library.    
 
 ManagedBass is targeted for **Any CPU**, but bass Libraries(.dll/.so/.dylib/.a) are separate for x86, x64, ARM, etc.  
-Download the versions you need.
+Download the versions you need directly from Un4Seen's website.
 
 See the [Sample Repositories](https://github.com/ManagedBass) for examples.
 
@@ -37,6 +37,24 @@ Install-Package ManagedBass
 ```
 
 * Download the BASS libraries from http://un4seen.com and place them in Build Output Directory.
+
+## Supported Frameworks and Platforms
+Our goal is to support all platforms and frameworks that Un4seen Bass supports.  
+The nuget package contains support for the following targets:
+- .NET Framework 4.5+
+- .NET 8.0+
+- .NET Standard 2.0+
+- Xamarin.iOS**
+
+with the following platforms:
+- Windows
+- Linux
+- MacOS
+- Android
+- iOS**
+
+** NOTE that we create a specific iOS version, as iOS requires that you statically link the native Bass libraries.  
+  Other platforms (Linux, Android, Mac, etc) should be able to use the .NET Standard 2.0 or .NET 8 versions of our wrapper.
 
 ## Changelog
 See our [releases page](https://github.com/ManagedBass/ManagedBass/releases)
