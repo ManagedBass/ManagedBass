@@ -52,7 +52,7 @@ namespace ManagedBass.Dsd
         /// </summary>
 		public static DSDComment Read(int Channel, int Index)
 		{
-            return Marshal.PtrToStructure<DSDComment>(Bass.ChannelGetTags(Channel, TagType.DSDComment + Index));
+            return BassMarshal.PtrToStructure<DSDComment>(Bass.ChannelGetTags(Channel, TagType.DSDComment + Index));
 		}
 	}
 }

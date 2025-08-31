@@ -38,7 +38,7 @@ namespace ManagedBass.Adx
         /// </summary>
         public static ADXLoopTag Read(int Channel)
         {
-            return Marshal.PtrToStructure<ADXLoopTag>(Bass.ChannelGetTags(Channel, TagType.AdxLoop));
+            return BassMarshal.PtrToStructure<ADXLoopTag>(Bass.ChannelGetTags(Channel, TagType.AdxLoop));
         }
 	}
 }

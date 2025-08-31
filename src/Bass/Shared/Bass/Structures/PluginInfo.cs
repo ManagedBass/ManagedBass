@@ -29,10 +29,10 @@ namespace ManagedBass
             get
             {
                 var arr = new PluginFormat[formatc];
-                var sizeOfPluginFormat = Marshal.SizeOf<PluginFormat>();
+                var sizeOfPluginFormat = BassMarshal.SizeOf<PluginFormat>();
 
                 for (var i = 0; i < formatc; ++i, formats += sizeOfPluginFormat)
-                    arr[i] = Marshal.PtrToStructure<PluginFormat>(formats);
+                    arr[i] = BassMarshal.PtrToStructure<PluginFormat>(formats);
                 
                 return arr;
             }

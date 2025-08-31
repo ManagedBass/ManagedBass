@@ -35,7 +35,7 @@ namespace ManagedBass.Cd
         {
             get
             {
-                var n = size / Marshal.SizeOf<TOC>();
+                var n = size / BassMarshal.SizeOf<TOC>();
 
                 var list = new List<TOCTrack>(n);
                 
