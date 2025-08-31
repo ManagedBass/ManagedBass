@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Bass\Enumerations\DSInterface.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bass\Enumerations\EAXEnvironment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CrossPlatformHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DXChorusEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DXCompressorEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Effects\Objects\DXDistortionEffect.cs" />

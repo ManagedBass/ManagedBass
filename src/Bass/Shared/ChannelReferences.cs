@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace ManagedBass
 {
@@ -20,9 +19,9 @@ namespace ManagedBass
         /// </summary>
         public static void Add(int Handle, int SpecificHandle, object proc)
         {
-#if !__IOS__
+#if !__IOS__ 
             // in .NET iOS, the __IOS__ constant cannot be seen, so rely on RuntimeFeature instead.
-            if (!RuntimeFeature.IsDynamicCodeSupported)
+            if (!CrossPlatformHelper.IsDynamicCodeSupported)
                 return;
 
             if (proc == null)
@@ -51,7 +50,7 @@ namespace ManagedBass
         {
 #if !__IOS__
             // in .NET iOS, the __IOS__ constant cannot be seen, so rely on RuntimeFeature instead.
-            if (!RuntimeFeature.IsDynamicCodeSupported)
+            if (!CrossPlatformHelper.IsDynamicCodeSupported)
                 return;
 
             var key = Tuple.Create(Handle, SpecialHandle);
