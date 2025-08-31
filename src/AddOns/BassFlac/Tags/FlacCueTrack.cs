@@ -53,8 +53,8 @@ namespace ManagedBass.Flac
 
 				for (var i = 0; i < IndexesCount; i++)
 				{
-					arr[i] = Marshal.PtrToStructure<FlacCueTrackIndex>(ptr);
-					ptr += Marshal.SizeOf(arr[i]);
+					arr[i] = BassMarshal.PtrToStructure<FlacCueTrackIndex>(ptr);
+					ptr += BassMarshal.SizeOf(arr[i]);
 				}
 
 				return arr;

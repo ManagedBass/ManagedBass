@@ -48,8 +48,8 @@ namespace ManagedBass.Flac
 
 				for (var i = 0; i < TrackCount; i++)
 				{
-					arr[i] = Marshal.PtrToStructure<FlacCueTrack>(ptr);
-					ptr += Marshal.SizeOf(arr[i]);
+					arr[i] = BassMarshal.PtrToStructure<FlacCueTrack>(ptr);
+					ptr += BassMarshal.SizeOf(arr[i]);
 				}
 
 				return arr;
@@ -61,7 +61,7 @@ namespace ManagedBass.Flac
         /// </summary>
         public static FlacCueTag Read(int Channel)
         {
-            return Marshal.PtrToStructure<FlacCueTag>(Bass.ChannelGetTags(Channel, TagType.FlacCue));
+            return BassMarshal.PtrToStructure<FlacCueTag>(Bass.ChannelGetTags(Channel, TagType.FlacCue));
         }
     }
 }

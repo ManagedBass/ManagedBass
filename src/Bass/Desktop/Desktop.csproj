@@ -5,7 +5,6 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
         <DefineConstants>__DESKTOP__</DefineConstants>
-        <Version>3.0.0</Version>
         
     </PropertyGroup>
 

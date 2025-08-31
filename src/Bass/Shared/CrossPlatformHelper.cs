@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace ManagedBass
 {
@@ -15,5 +16,6 @@ namespace ManagedBass
 #else
             true;
 #endif
+        
     }
 }

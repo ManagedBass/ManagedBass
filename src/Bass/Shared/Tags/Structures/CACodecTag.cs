@@ -32,7 +32,7 @@ namespace ManagedBass
         /// <param name="Channel">The Channel to read the tag from.</param>
         public static CACodecTag Read(int Channel)
         {
-            return Marshal.PtrToStructure<CACodecTag>(Bass.ChannelGetTags(Channel, TagType.CoreAudioCodec));
+            return BassMarshal.PtrToStructure<CACodecTag>(Bass.ChannelGetTags(Channel, TagType.CoreAudioCodec));
         }
     }
 }
