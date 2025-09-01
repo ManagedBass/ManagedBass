@@ -18,9 +18,13 @@ public static class BassMarshal
     /// <exception cref="T:System.ArgumentNullException">
     /// <paramref name="structureType" /> is <see langword="null" />.</exception>
     /// <exception cref="T:System.MissingMethodException">The class specified by <paramref name="structureType" /> does not have an accessible default constructor.</exception>
-    public static T PtrToStructure<T>(IntPtr ptr) 
+    public static T PtrToStructure<T>(IntPtr ptr)
     {
+#if NETFRAMEWORK
         return (T)Marshal.PtrToStructure(ptr, typeof(T));
+#else
+        return Marshal.PtrToStructure<T>(ptr);
+#endif
     }
 
     /// <summary>Returns the size of an unmanaged type in bytes.</summary>
@@ -28,12 +32,22 @@ public static class BassMarshal
     /// <returns>The size of the specified type in unmanaged code.</returns>
     /// <exception cref="T:System.ArgumentException">The <paramref name="t" /> parameter is a generic type definition.</exception>
     /// <exception cref="T:System.ArgumentNullException">The <paramref name="t" /> parameter is <see langword="null" />.</exception>
-    public static int SizeOf<T>()  => Marshal.SizeOf(typeof(T));
-    
+    public static int SizeOf<T>() =>
+#if NETFRAMEWORK
+        Marshal.SizeOf(typeof(T));
+#else
+        Marshal.SizeOf<T>();
+#endif
+
     /// <summary>Returns the size of an unmanaged type in bytes.</summary>
     /// <param name="obj">The type whose size is to be returned.</param>
     /// <returns>The size of the specified type in unmanaged code.</returns>
     /// <exception cref="T:System.ArgumentException">The <paramref name="t" /> parameter is a generic type definition.</exception>
     /// <exception cref="T:System.ArgumentNullException">The <paramref name="t" /> parameter is <see langword="null" />.</exception>
-    public static int SizeOf<T>(T obj)  => Marshal.SizeOf(obj);
+    public static int SizeOf<T>(T obj) =>
+#if NETFRAMEWORK
+        Marshal.SizeOf(obj);
+#else
+        Marshal.SizeOf<T>();
+#endif
 }
