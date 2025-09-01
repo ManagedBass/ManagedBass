@@ -180,7 +180,6 @@ namespace ManagedBass.Midi
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontLoad")]
         public static extern bool FontLoad(int Handle, int Preset, int Bank);
 
-#if __IOS__ || __DESKTOP__
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern bool BASS_MIDI_FontPack(int handle, string outfile, string encoder, BassFlags flags);
 
@@ -225,7 +224,6 @@ namespace ManagedBass.Midi
         {
             return BASS_MIDI_FontPack(Handle, OutFile, Encoder, Flags | BassFlags.Unicode);
         }
-#endif
 
         /// <summary>
         /// Sets a soundfont's volume level.

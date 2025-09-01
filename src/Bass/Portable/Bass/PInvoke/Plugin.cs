@@ -60,7 +60,7 @@ namespace ManagedBass
         /// <exception cref="Errors.Already">The <paramref name="FilePath" /> is already plugged in.</exception>
         public static int PluginLoad(string FilePath)
         {
-#if __IOS__
+#if __STATIC_LINKING__
             return BASS_PluginLoad(FilePath);
 #else
             if (Path.HasExtension(FilePath))

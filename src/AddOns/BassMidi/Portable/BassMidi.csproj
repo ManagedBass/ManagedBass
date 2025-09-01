@@ -2,6 +2,12 @@
 
     <PropertyGroup>
         <AssemblyName>ManagedBass.Midi</AssemblyName>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/ManagedBass/ManagedBass</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/ManagedBass/ManagedBass</PackageProjectUrl>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <Description>.Net wrapper for un4seen BASS audio library</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Configurations>Debug;Release</Configurations>
         <Platforms>AnyCPU;iOS</Platforms>
@@ -14,4 +20,9 @@
     <PropertyGroup Condition=" '$(Platform)' == 'iOS' ">
         <DefineConstants>TRACE;__IOS__</DefineConstants>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../../../../icon.png" Pack="true" PackagePath="" />
+        <None Include="../../../../LICENSE.md" Pack="true" PackagePath="" />
+    </ItemGroup>
 </Project>

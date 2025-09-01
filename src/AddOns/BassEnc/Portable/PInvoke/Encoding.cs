@@ -224,7 +224,6 @@ namespace ManagedBass.Enc
             return BASS_Encode_Start(Handle, CommandLine, Flags | EncodeFlags.Unicode, Procedure, User);
         }
 
-#if __IOS__ || __DESKTOP__
         /// <summary>
         /// Sets up an encoder on a channel, using a CoreAudio codec and sending the output to a user defined function (iOS and Mac).
         /// </summary>
@@ -335,7 +334,6 @@ namespace ManagedBass.Enc
         {
             return BASS_Encode_StartCAFile(Handle, ftype, atype, Flags | EncodeFlags.Unicode, Bitrate, Filename);
         }
-#endif
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_Encode_StartLimit(int handle, string cmdline, EncodeFlags flags, EncodeProcedure proc, IntPtr user, int limit);

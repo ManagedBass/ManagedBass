@@ -9,18 +9,14 @@ namespace ManagedBass
     /// </summary>
     public static class ChannelReferences
     {
-#if !__IOS__
         static readonly ConcurrentDictionary<Tuple<int, int>, object> Procedures = new ConcurrentDictionary<Tuple<int, int>, object>();
         static readonly SyncProcedure Freeproc = Callback;
-#endif
 
         /// <summary>
         /// Adds a Reference.
         /// </summary>
         public static void Add(int Handle, int SpecificHandle, object proc)
         {
-#if !__IOS__ 
-            // in .NET iOS, the __IOS__ constant cannot be seen, so rely on RuntimeFeature instead.
             if (!CrossPlatformHelper.IsDynamicCodeSupported)
                 return;
 
@@ -40,7 +36,6 @@ namespace ManagedBass
             if (contains)
                 Procedures[key] = proc;
             else Procedures.TryAdd(key, proc);
-#endif
         }
 
         /// <summary>
@@ -48,17 +43,13 @@ namespace ManagedBass
         /// </summary>
         public static void Remove(int Handle, int SpecialHandle)
         {
-#if !__IOS__
-            // in .NET iOS, the __IOS__ constant cannot be seen, so rely on RuntimeFeature instead.
             if (!CrossPlatformHelper.IsDynamicCodeSupported)
                 return;
 
             var key = Tuple.Create(Handle, SpecialHandle);
             Procedures.TryRemove(key, out object unused);
-#endif
         }
 
-#if !__IOS__
         static void Callback(int Handle, int Channel, int Data, IntPtr User)
         {
             // ToArray is necessary because the object iterated on should not be modified.
@@ -67,6 +58,5 @@ namespace ManagedBass
             foreach (var key in toRemove)
                 Procedures.TryRemove(key, out object unused);
         }
-#endif
     }
 }
