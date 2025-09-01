@@ -2,7 +2,7 @@ name: Build and Package for Release
 on:
   push:
    branches:
-     - automation/github-action-test
+     - multitarget-fixes
   release:
     types:
       - published
@@ -34,8 +34,7 @@ jobs:
         working-directory: ${{ github.workspace }}/src
   build-and-deploy:
     needs: build-test
-    if: github.event_name == 'release'
-    runs-on: windows-latest #NOTE We're running the package build on windows, as we need to use nuget pack and push
+    runs-on: ubuntu-latest 
     steps:
       - uses: actions/checkout@v2
       - name: Setup .NET Core
@@ -48,33 +47,38 @@ jobs:
         run: dotnet restore
         working-directory: ${{ github.workspace }}/src
       - name: Create Release NuGet package
-        working-directory: ${{ github.workspace }}\src
+        working-directory: ${{ github.workspace }}/src
         run: |
-          # Extract the version number from the tag reference
-          $arrTag="${{ github.ref }}".Split('/')
-          $VERSION=$arrTag[2]
-          echo Version: $VERSION
-          $VERSION=$VERSION.TrimStart('v')
-          echo Clean Version: $VERSION
+          # Extract the version number from the tag reference with fallback
+          REF="${{ github.ref }}"
+          echo "Raw GitHub ref: $REF"
+          
+          # Check if this is a tag reference (refs/tags/...)
+          if [[ $REF == refs/tags/* ]]; then
+            # Extract version from tag (refs/tags/v1.0.0 -> 1.0.0)
+            VERSION=$(echo $REF | sed 's|refs/tags/||' | sed 's|^v||')
+            echo "Found tag reference, version: $VERSION"
+          else
+            # Not a tag, use fallback
+            echo "Not a tag reference, using fallback version"
+            VERSION="1.0.0"
+          fi
+          
+          echo "Using version: $VERSION"
           
           dotnet build -c Release --no-restore -p:Version=$VERSION
-
+        
           # Pack all the projects. This works for all but the multi-target projects.
           dotnet pack -v normal -c Release --no-build -p:PackageVersion=$VERSION -o nupkg
-          
-          # Now pack the nuspec files - These are handled differently as they target multiple platforms.
-          # The resulting nupkg file overwrites the ones created in the above dotnet pack stage.
-          nuget pack Bass/ManagedBass.nuspec -Version $VERSION -OutputDirectory nupkg
-          nuget pack AddOns/BassEnc/ManagedBass.Enc.nuspec -Version $VERSION -OutputDirectory nupkg
-          nuget pack AddOns/BassMidi/ManagedBass.Midi.nuspec -Version $VERSION -OutputDirectory nupkg
           
       - name: Upload Packages as artifact
         uses: actions/upload-artifact@v4
         with:
           name: nuget-packages
-          path: ${{ github.workspace }}\src\nupkg\*.*
+          path: ${{ github.workspace }}/src/nupkg/*.*
           retention-days: 5
                  
       - name: Push to NuGet Feed
-        working-directory: ${{ github.workspace }}\src\nupkg
+        working-directory: ${{ github.workspace }}/src/nupkg
+        if: github.event_name == 'release'
         run: dotnet nuget push "*.nupkg" --source https://api.nuget.org/v3/index.json --skip-duplicate --api-key ${{ secrets.NUGET_KEY }}
