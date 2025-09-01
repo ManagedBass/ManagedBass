@@ -44,10 +44,5 @@ public static class BassMarshal
     /// <returns>The size of the specified type in unmanaged code.</returns>
     /// <exception cref="T:System.ArgumentException">The <paramref name="t" /> parameter is a generic type definition.</exception>
     /// <exception cref="T:System.ArgumentNullException">The <paramref name="t" /> parameter is <see langword="null" />.</exception>
-    public static int SizeOf<T>(T obj) =>
-#if NETFRAMEWORK
-        Marshal.SizeOf(obj);
-#else
-        Marshal.SizeOf<T>();
-#endif
+    public static int SizeOf(object obj) => Marshal.SizeOf(obj);
 }
