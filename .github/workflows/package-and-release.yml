@@ -49,15 +49,29 @@ jobs:
       - name: Create Release NuGet package
         working-directory: ${{ github.workspace }}/src
         run: |
-          # Extract the version number from the tag reference
-          $arrTag="${{ github.ref }}".Split('/')
-          $VERSION=$arrTag[2]
-          echo Version: $VERSION
-          $VERSION=$VERSION.TrimStart('v')
-          echo Clean Version: $VERSION
+          # Extract the version number from the tag reference with fallback
+          if [ -z "${{ github.ref }}" ]; then
+            echo "GitHub ref is empty, using fallback version"
+            VERSION="1.0.0"
+          else
+            # Split the ref by '/' and get the 3rd element (index 2 in 0-based)
+            IFS='/' read -ra REF_ARRAY <<< "${{ github.ref }}"
+            
+            if [ ${#REF_ARRAY[@]} -lt 3 ]; then
+              echo "GitHub ref doesn't have expected format, using fallback version"
+              VERSION="1.0.0"
+            else
+              VERSION="${REF_ARRAY[2]}"
+              echo "Version from ref: $VERSION"
+              # Remove leading 'v' if present
+              VERSION="${VERSION#v}"
+            fi
+          fi
+          
+          echo "Using version: $VERSION"
           
           dotnet build -c Release --no-restore -p:Version=$VERSION
-
+        
           # Pack all the projects. This works for all but the multi-target projects.
           dotnet pack -v normal -c Release --no-build -p:PackageVersion=$VERSION -o nupkg
           
