@@ -11,7 +11,7 @@ namespace ManagedBass.Midi
     /// </remarks>
     public static partial class BassMidi
     {
-#if __IOS__
+#if __STATIC_LINKING__
         const string DllName = "__Internal";
 #else
         const string DllName = "bassmidi";

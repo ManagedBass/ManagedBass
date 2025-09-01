@@ -5,6 +5,7 @@ namespace ManagedBass
 {
     public static partial class Bass
     {
+#if __IOS__
         static readonly IOSNotifyProcedure iosnproc = status => _iosnotify?.Invoke(status);
 
         static event IOSNotifyProcedure _iosnotify;
@@ -60,5 +61,7 @@ namespace ManagedBass
             get => GetConfigBool(Configuration.IOSSpeaker);
             set => Configure(Configuration.IOSSpeaker, value);
         }
+
+#endif
     }
 }

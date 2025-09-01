@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>ManagedBass.Enc</AssemblyName>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU;iOS</Platforms>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    
-    <AssemblyName>ManagedBass.Enc</AssemblyName>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Bass\Portable\Bass.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Bass\Portable\Bass.csproj" />
-  </ItemGroup>
-
-  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
-
+    <PropertyGroup Condition=" '$(Platform)' == 'iOS' ">
+        <DefineConstants>TRACE;__IOS__</DefineConstants>
+    </PropertyGroup>
 </Project>

@@ -9,7 +9,7 @@ namespace ManagedBass.Enc
     /// </summary>
     public static partial class BassEnc
     {
-#if __IOS__
+#if __STATIC_LINKING__
         const string DllName = "__Internal";
 #else
         const string DllName = "bassenc";

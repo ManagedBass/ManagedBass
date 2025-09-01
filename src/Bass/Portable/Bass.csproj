@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AssemblyName>ManagedBass</AssemblyName>
-    <Authors>MathewSachin</Authors>
-    <Description>.Net wrapper for un4seen BASS audio library</Description>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
-
-  <Import Project="..\..\Bass\Shared\Shared.projitems" Label="Shared" />
-
+    <PropertyGroup>
+        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+        <AssemblyName>ManagedBass</AssemblyName>
+        <Authors>MathewSachin</Authors>
+        <Description>.Net wrapper for un4seen BASS audio library</Description>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU;iOS</Platforms>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Platform)' == 'iOS' ">
+        <DefineConstants>TRACE;__IOS__</DefineConstants>
+    </PropertyGroup>
 </Project>

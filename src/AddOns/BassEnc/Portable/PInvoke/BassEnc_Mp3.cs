@@ -8,7 +8,7 @@ namespace ManagedBass.Enc
     /// </summary>
     public static class BassEnc_Mp3
     {
-#if __IOS__
+#if __STATIC_LINKING__
         const string DllName = "__Internal";
 #else
         const string DllName = "bassenc_mp3";
