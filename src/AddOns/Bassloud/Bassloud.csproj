@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AssemblyName>ManagedBass.Loud</AssemblyName>
+        <PackageId>ManagedBass.Loud</PackageId>
+        <Version>3.0.0</Version>
+        <Authors>MathewSachin</Authors>
+        <Description>ManagedBass Hls AddOn</Description>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/ManagedBass/ManagedBass</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/ManagedBass/ManagedBass</PackageProjectUrl>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU;iOS</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Bass\Portable\Bass.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="../../../icon.png" Pack="true" PackagePath="" />
+        <None Include="../../../LICENSE.md" Pack="true" PackagePath="" />
+    </ItemGroup>
+
+</Project>
