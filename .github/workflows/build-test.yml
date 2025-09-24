@@ -3,7 +3,7 @@ on:
   push:
    branches:
      - master
-     - automation/github-action-for-package-publishing
+     - automation/github-action-test
   pull_request:
 env:
   # Stop wasting time caching packages
@@ -23,7 +23,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: 9.0.x
       - name: Restore
         run: dotnet restore
         working-directory: ${{ github.workspace }}/src
