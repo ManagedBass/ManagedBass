@@ -1,12 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
-        <Nullable>enable</Nullable>
-        <LangVersion>8</LangVersion>
         <AssemblyName>ManagedBass.Loud</AssemblyName>
         <PackageId>ManagedBass.Loud</PackageId>
-        <Authors />
+        <Version>3.0.0</Version>
+        <Authors>MathewSachin</Authors>
+        <Description>ManagedBass Hls AddOn</Description>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/ManagedBass/ManagedBass</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/ManagedBass/ManagedBass</PackageProjectUrl>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>AnyCPU;iOS</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,16 +21,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="..\..\..\icon.png">
-        <Pack>true</Pack>
-        <PackagePath></PackagePath>
-        <Link>icon.png</Link>
-      </None>
-      <None Include="..\..\..\LICENSE.md">
-        <Pack>true</Pack>
-        <PackagePath></PackagePath>
-        <Link>LICENSE.md</Link>
-      </None>
+        <None Include="../../../icon.png" Pack="true" PackagePath="" />
+        <None Include="../../../LICENSE.md" Pack="true" PackagePath="" />
     </ItemGroup>
 
 </Project>
