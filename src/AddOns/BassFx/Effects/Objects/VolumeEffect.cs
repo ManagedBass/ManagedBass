@@ -1,11 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ManagedBass.Fx
 {
+    /// <summary>
+    /// BassFx add-on: An effect that controls the volume level of a channel with optional transition time and curve.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The volume effect allows smooth transitions between volume levels over a specified time period.
+    /// It can be applied to specific channels and supports both linear and logarithmic transition curves.
+    /// </para>
+    /// <para>
+    /// The volume level ranges from 0 (silent) to 1.0 (normal), with values above 1.0 providing amplification.
+    /// </para>
+    /// </remarks>
     public sealed class Volume : Effect<VolumeParameters>
     {
         /// <summary>

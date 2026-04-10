@@ -3,6 +3,24 @@ using System.Runtime.InteropServices;
 
 namespace ManagedBass.Loud
 {
+    /// <summary>
+    /// BassLoud add-on: Wrapper for the BassLoud addon which provides loudness measurement functionality for BASS channels.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// BassLoud provides ITU-R BS.1770 compliant loudness measurement for audio channels.
+    /// It can measure various loudness metrics including integrated loudness (LUFS), loudness range (LU),
+    /// peak levels, and true peak levels.
+    /// </para>
+    /// <para>
+    /// Loudness measurements are performed in real-time on playing channels and can be retrieved at any time.
+    /// Multiple measurements can be combined to get aggregate loudness values across multiple channels.
+    /// </para>
+    /// <para>
+    /// Before using this add-on, the BassLoud library (bassloud.dll/.so/.dylib) must be present
+    /// in the application's directory or system library path.
+    /// </para>
+    /// </remarks>
     public static class BassLoud
     {
         const string DllName = "bassloud";
@@ -68,7 +86,7 @@ namespace ManagedBass.Loud
         /// Starts loudness measurement on a channel.
         /// </summary>
         /// <param name="Handle">The channel handle</param>
-        /// <param name="Flags">The measurement mode & flags</param>
+        /// <param name="Flags">The measurement mode and flags</param>
         /// <param name="Priority">The DSP priority of the measurements.</param>
         /// <returns>The loudness measurement handle is returned if it is successfully started, else 0 is returned. Use <see cref="Bass.LastError"/> to get the error code.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle"/> is not valid.</exception>

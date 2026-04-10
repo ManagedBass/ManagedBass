@@ -44,6 +44,8 @@ The nuget package contains support for the following targets:
 - .NET Framework 4.5+
 - .NET Standard 2.0+
 - .NET 8.0+
+- .NET 9.0+
+- .NET 10.0+
 
 with the following platforms:
 - Windows
