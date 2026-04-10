@@ -1,8 +1,8 @@
 name: Build and Package for Release
 on:
   push:
-   branches:
-     - multitarget-fixes
+    branches:
+      - multitarget-fixes
   release:
     types:
       - published
@@ -22,7 +22,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 10.0.x
       - name: Restore
         run: dotnet restore
         working-directory: ${{ github.workspace }}/src
@@ -34,13 +34,13 @@ jobs:
         working-directory: ${{ github.workspace }}/src
   build-and-deploy:
     needs: build-test
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 10.0.x
       - name: Setup Nuget
         uses: NuGet/setup-nuget@v1.0.5
       - name: Restore
@@ -52,7 +52,7 @@ jobs:
           # Extract the version number from the tag reference with fallback
           REF="${{ github.ref }}"
           echo "Raw GitHub ref: $REF"
-          
+
           # Check if this is a tag reference (refs/tags/...)
           if [[ $REF == refs/tags/* ]]; then
             # Extract version from tag (refs/tags/v1.0.0 -> 1.0.0)
@@ -63,21 +63,21 @@ jobs:
             echo "Not a tag reference, using fallback version"
             VERSION="1.0.0"
           fi
-          
+
           echo "Using version: $VERSION"
-          
+
           dotnet build -c Release --no-restore -p:Version=$VERSION
-        
+
           # Pack all the projects. This works for all but the multi-target projects.
           dotnet pack -v normal -c Release --no-build -p:PackageVersion=$VERSION -o nupkg
-          
+
       - name: Upload Packages as artifact
         uses: actions/upload-artifact@v4
         with:
           name: nuget-packages
           path: ${{ github.workspace }}/src/nupkg/*.*
           retention-days: 5
-                 
+
       - name: Push to NuGet Feed
         working-directory: ${{ github.workspace }}/src/nupkg
         if: github.event_name == 'release'
