@@ -5,25 +5,25 @@ namespace ManagedBass.Midi
 {
     public static partial class BassMidi
     {
-		/// <summary>
-		/// Compact a soundfont's memory usage.
-		/// </summary>
-		/// <param name="Handle">The soundfont to get info on (e.g. as returned by <see cref="FontInit(string,FontInitFlags)" />)... 0 = all soundfonts.</param>
-		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
-		/// <remarks>
+        /// <summary>
+        /// Compact a soundfont's memory usage.
+        /// </summary>
+        /// <param name="Handle">The soundfont to get info on (e.g. as returned by <see cref="FontInit(string,FontInitFlags)" />)... 0 = all soundfonts.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
         /// Compacting involves freeing any samples that are currently loaded but unused.
         /// The amount of sample data currently loaded can be retrieved using <see cref="FontGetInfo(int, out MidiFontInfo)" />.
         /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontCompact")]
         public static extern bool FontCompact(int Handle);
-        
-		/// <summary>
-		/// Frees a soundfont.
-		/// </summary>
-		/// <param name="Handle">The soundfont handle to free (e.g. as returned by <see cref="FontInit(string,FontInitFlags)" />).</param>
-		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
-		/// <remarks>When a soundfont is freed, it is automatically removed from any MIDI streams that are using it.</remarks>
+
+        /// <summary>
+        /// Frees a soundfont.
+        /// </summary>
+        /// <param name="Handle">The soundfont handle to free (e.g. as returned by <see cref="FontInit(string,FontInitFlags)" />).</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>When a soundfont is freed, it is automatically removed from any MIDI streams that are using it.</remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontFree")]
         public static extern bool FontFree(int Handle);
@@ -54,37 +54,37 @@ namespace ManagedBass.Midi
         [DllImport(DllName)]
         static extern IntPtr BASS_MIDI_FontGetPreset(int handle, int preset, int bank);
 
-		/// <summary>
+        /// <summary>
         /// Retrieves the name of a preset in a soundfont.
-		/// </summary>
-		/// <param name="Handle">The soundfont handle to get the preset name from.</param>
-		/// <param name="Preset">Preset number to load... -1 = all presets (the first encountered).</param>
-		/// <param name="Bank">Bank number to load... -1 = all banks (the first encountered).</param>
-		/// <returns>If successful, the requested preset name is returned, else <see langword="null" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// </summary>
+        /// <param name="Handle">The soundfont handle to get the preset name from.</param>
+        /// <param name="Preset">Preset number to load... -1 = all presets (the first encountered).</param>
+        /// <param name="Bank">Bank number to load... -1 = all banks (the first encountered).</param>
+        /// <returns>If successful, the requested preset name is returned, else <see langword="null" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         /// <exception cref="Errors.NotAvailable">The soundfont does not contain the requested preset.</exception>
         public static string FontGetPreset(int Handle, int Preset, int Bank)
         {
             return Marshal.PtrToStringAnsi(BASS_MIDI_FontGetPreset(Handle, Preset, Bank));
         }
-        
-		/// <summary>
-		/// Retrieves the presets in a soundfont.
-		/// </summary>
-		/// <param name="Handle">The soundfont handle to get the preset name from.</param>
+
+        /// <summary>
+        /// Retrieves the presets in a soundfont.
+        /// </summary>
+        /// <param name="Handle">The soundfont handle to get the preset name from.</param>
         /// <param name="Presets">The array to receive the presets.</param>
-		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
-		/// <remarks>The presets are delivered with the preset number in the LOWORD and the bank number in the HIWORD, and in numerically ascending order.</remarks>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>The presets are delivered with the preset number in the LOWORD and the bank number in the HIWORD, and in numerically ascending order.</remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetPresets")]
         public static extern bool FontGetPresets(int Handle, [In, Out] int[] Presets);
-                
-		/// <summary>
-		/// Retrieves the presets in a soundfont.
-		/// </summary>
-		/// <param name="Handle">The soundfont handle to get the preset name from.</param>
-		/// <returns>If successful, an array of presets is returned, else <see langword="null" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
-		/// <remarks>The presets are delivered with the preset number in the LOWORD and the bank number in the HIWORD, and in numerically ascending order.</remarks>
+
+        /// <summary>
+        /// Retrieves the presets in a soundfont.
+        /// </summary>
+        /// <param name="Handle">The soundfont handle to get the preset name from.</param>
+        /// <returns>If successful, an array of presets is returned, else <see langword="null" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>The presets are delivered with the preset number in the LOWORD and the bank number in the HIWORD, and in numerically ascending order.</remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         public static int[] FontGetPresets(int Handle)
         {
@@ -92,22 +92,23 @@ namespace ManagedBass.Midi
                 return null;
 
             var ret = new int[info.Presets];
-            
+
             return FontGetPresets(Handle, ret) ? ret : null;
         }
-        
-		/// <summary>
-		/// Retrieves a soundfont's volume level.
-		/// </summary>
-		/// <param name="Handle">The soundfont to get the volume of.</param>
-		/// <returns>If successful, the soundfont's volume level is returned, else -1 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+
+        /// <summary>
+        /// Retrieves a soundfont's volume level.
+        /// </summary>
+        /// <param name="Handle">The soundfont to get the volume of.</param>
+        /// <returns>If successful, the soundfont's volume level is returned, else -1 is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontGetVolume")]
         public static extern float FontGetVolume(int Handle);
 
+
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_MIDI_FontInit(string File, FontInitFlags flags);
-        
+
         /// <summary>
         /// Initializes a soundfont from a file (unicode).
         /// </summary>
@@ -239,18 +240,18 @@ namespace ManagedBass.Midi
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontSetVolume")]
         public static extern bool FontSetVolume(int Handle, float Volume);
-        
-		/// <summary>
-		/// Unloads presets from a soundfont.
-		/// </summary>
-		/// <param name="Handle">The soundfont handle.</param>
-		/// <param name="Preset">Preset number to load... -1 = all presets.</param>
-		/// <param name="Bank">Bank number to load... -1 = all banks.</param>
-		/// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
-		/// <remarks>
+
+        /// <summary>
+        /// Unloads presets from a soundfont.
+        /// </summary>
+        /// <param name="Handle">The soundfont handle.</param>
+        /// <param name="Preset">Preset number to load... -1 = all presets.</param>
+        /// <param name="Bank">Bank number to load... -1 = all banks.</param>
+        /// <returns>If successful, <see langword="true" /> is returned, else <see langword="false" /> is returned. Use <see cref="Bass.LastError" /> to get the error code.</returns>
+        /// <remarks>
         /// An unloaded preset will be loaded again when needed by a MIDI stream.
         /// Any samples that are currently being used by a MIDI stream will not be unloaded.
-		/// </remarks>
+        /// </remarks>
         /// <exception cref="Errors.Handle"><paramref name="Handle" /> is not valid.</exception>
         /// <exception cref="Errors.NotAvailable">The soundfont does not contain the specified preset, or the soundfont is memory mapped.</exception>
         [DllImport(DllName, EntryPoint = "BASS_MIDI_FontUnload")]
@@ -258,7 +259,7 @@ namespace ManagedBass.Midi
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern bool BASS_MIDI_FontUnpack(int handle, string outfile, BassFlags flags = BassFlags.Unicode);
-        
+
         /// <summary>
         /// Produces a decompressed version of a packed soundfont.
         /// </summary>

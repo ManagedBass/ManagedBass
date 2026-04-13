@@ -2,6 +2,19 @@
 
 namespace ManagedBass.Fx
 {
+    /// <summary>
+    /// BassFx add-on: Parameters for the volume effect.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This structure defines the parameters for controlling volume level transitions on a channel.
+    /// It allows for smooth volume changes over a specified time period using either linear or logarithmic curves.
+    /// </para>
+    /// <para>
+    /// The effect can be applied to specific channels using the <see cref="lChannel"/> field,
+    /// and the transition characteristics are controlled by <see cref="fTime"/> and <see cref="lCurve"/>.
+    /// </para>
+    /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     public class VolumeParameters : IEffectParameter
     {

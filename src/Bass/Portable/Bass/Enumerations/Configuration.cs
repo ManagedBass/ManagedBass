@@ -248,7 +248,7 @@
         /// <summary>
         /// Enable AAudio output
         /// </summary>
-        AndroidAAudio =	67,
+        AndroidAAudio = 67,
 
         /// <summary>
         /// See BassAc3.DRC.

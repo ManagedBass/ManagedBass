@@ -207,7 +207,7 @@ namespace ManagedBass
         /// Processing granularity. (HMUSIC/HSTREAM/HRECORD)
         /// </summary>
         Granule = 0xE,
-        
+
         #region MOD Music
         /// <summary>
         /// The amplification level of a MOD music... 0 (min) to 100 (max).
@@ -457,6 +457,22 @@ namespace ManagedBass
         /// </summary>
         MidiSRC = 0x12006,
 
+        /// <summary>
+        /// BASSMIDI: Kill/remove events from a MIDI stream... event (LOWORD) + channel (HIWORD).
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This attribute is used via <see cref="Bass.ChannelSetAttribute(int,ChannelAttribute,float)"/> to kill/remove MIDI events of a particular type.
+        /// The event type is specified in the LOWORD and the channel in the HIWORD, or -1 for all channels.
+        /// </para>
+        /// <para>
+        /// Event types include: notes, pitchbend, program changes, channel pressure, etc.
+        /// Setting this attribute will immediately kill all matching events that are currently playing.
+        /// </para>
+        /// <para>
+        /// This attribute is write-only and has no effect when used with <see cref="Bass.ChannelGetAttribute(int,ChannelAttribute,out float)"/>.
+        /// </para>
+        /// </remarks>
         MidiKill = 0x12007,
 
         /// <summary>
