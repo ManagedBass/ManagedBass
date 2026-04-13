@@ -11,7 +11,11 @@ namespace ManagedBass.Ape
     /// </remarks>
     public static class BassApe
     {
+#if __STATIC_LINKING__
+        const string DllName = "__Internal";
+#else
         const string DllName = "bass_ape";
+#endif
                 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_APE_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);

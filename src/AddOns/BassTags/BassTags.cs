@@ -10,7 +10,11 @@ namespace ManagedBass.Tags
     /// </summary>
     public static class BassTags
     {
+#if __STATIC_LINKING__
+        const string DllName = "__Internal";
+#else
         const string DllName = "tags";
+#endif
         
         [DllImport(DllName)]
         static extern int TAGS_GetVersion();

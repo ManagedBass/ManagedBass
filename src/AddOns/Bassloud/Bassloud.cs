@@ -23,7 +23,11 @@ namespace ManagedBass.Loud
     /// </remarks>
     public static class BassLoud
     {
-        const string DllName = "bassloud";
+#if __STATIC_LINKING__
+        const string DllName = "__Internal";
+#else
+        const string DllName = "bassloud"; 
+#endif
 
         #region Version
         [DllImport(DllName, EntryPoint = "BASS_Loudness_GetVersion")]

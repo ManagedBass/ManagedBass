@@ -8,7 +8,11 @@ namespace ManagedBass.Fx
     /// </summary>
     public static class BassFx
     {
+#if __STATIC_LINKING__
+        const string DllName = "__Internal";
+#else
         const string DllName = "bass_fx";
+#endif
         
         #region Version
         [DllImport(DllName)]
