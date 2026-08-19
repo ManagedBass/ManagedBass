@@ -7,9 +7,9 @@ namespace ManagedBass.Enc
 {
 
     /// <summary>
-    /// BassEnc_Acc is an extension to the BassEnc add-on that allows BASS channels to be Acc encoded, with support for AACENC options.
+    /// BassEnc_Aac is an extension to the BassEnc add-on that allows BASS channels to be Aac encoded, with support for AACENC options.
     /// </summary>
-    public static class BassEnc_Acc
+    public static class BassEnc_Aac
     {
 #if __STATIC_LINKING__
         const string DllName = "__Internal";
