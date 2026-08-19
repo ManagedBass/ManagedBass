@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -25,6 +24,24 @@ namespace ManagedBass.Enc
         /// </summary>
         public static Version Version => Extensions.GetVersion(BASS_Encode_AAC_GetVersion());
 
+#if __IOS__ || __MACOS__ || __MACCATALYST__
+        /// <summary>
+        /// Start AAC Encoding to a callback (Apple / Core Audio).
+        /// </summary>
+        public static int Start(int Handle, string Options, EncodeFlags Flags, EncodeProcedureEx Procedure, IntPtr User)
+        {
+            var ftype = CharsToInt("adts");
+            var atypeInt = GetArgValueInt(Options, "--object-type");
+            var atype = CharsToInt(
+                atypeInt == 5  ? "aach" :
+                atypeInt == 23 ? "aacl" :
+                atypeInt == 29 ? "aacp" :
+                atypeInt == 39 ? "aace" : "aac ");
+            var bitrate = GetArgValueInt(Options, "--bitrate") ?? 0;
+
+            return BassEnc.EncodeStartCA(Handle, ftype, atype, Flags, bitrate, Procedure, User);
+        }
+#else
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_Encode_AAC_Start(int Handle, string Options, EncodeFlags Flags, EncodeProcedure Procedure, IntPtr User);
 
@@ -54,6 +71,7 @@ namespace ManagedBass.Enc
         {
             return BASS_Encode_AAC_Start(Handle, Options, Flags | EncodeFlags.Unicode, Procedure, User);
         }
+#endif
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_Encode_AAC_StartFile(int Handle, string Options, EncodeFlags Flags, string FileName);
@@ -82,7 +100,7 @@ namespace ManagedBass.Enc
         /// <exception cref="Errors.Unknown">Some other mystery problem! </exception>
         public static int Start(int Handle, string Options, EncodeFlags Flags, string FileName)
         {
-#if __IOS__
+#if __IOS__ || __MACOS__ || __MACCATALYST__
             var ftype = CharsToInt("adts");
             var atypeInt = GetArgValueInt(Options, "--object-type");
             var atype = CharsToInt(
@@ -105,27 +123,33 @@ namespace ManagedBass.Enc
         /// <returns>The int value that follows the argument string, or null if not found or invalid.</returns>
         private static int? GetArgValueInt(string Cmd, string Arg)
         {
+            if (string.IsNullOrEmpty(Cmd) || string.IsNullOrEmpty(Arg))
+                return null;
             Arg += " ";
             var posStart = Cmd.IndexOf(Arg, StringComparison.Ordinal);
-            if (posStart > -1)
-            {
-                posStart += Arg.Length;
-                var posEnd = Cmd.IndexOf(' ', posStart);
-                if (posEnd == -1)
-                {
-                    posEnd = Cmd.Length - 1;
-                }
-                var value = Cmd.Substring(posStart, posEnd - posStart + 1);
-                return int.TryParse(value, out var valueInt) ? (int?)valueInt : null;
-            }
-            return null;
+            if (posStart < 0)
+                return null;
+            posStart += Arg.Length;
+            var posEnd = Cmd.IndexOf(' ', posStart);
+            if (posEnd < 0)
+                posEnd = Cmd.Length;
+            var value = Cmd.Substring(posStart, posEnd - posStart).Trim();
+            return int.TryParse(value, out var valueInt) ? valueInt : null;
         }
 
         /// <summary>
         /// Converts 4 chars into an Int32 value.
         /// </summary>
-        /// <param name="chars">The 4 chars to convert.</param>
+        /// <param name="Chars">The 4 chars to convert.</param>
         /// <returns>An Int32 value.</returns>
-        private static int CharsToInt(string chars) => BitConverter.ToInt32(Encoding.ASCII.GetBytes(chars), 0);
+        private static int CharsToInt(string Chars)
+        {
+            var bytes = Encoding.ASCII.GetBytes(Chars);
+            if (BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(bytes);
+            }
+            return BitConverter.ToInt32(bytes, 0);
+        }
     }
 }

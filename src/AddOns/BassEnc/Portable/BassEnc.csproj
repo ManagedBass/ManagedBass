@@ -9,7 +9,7 @@
         <Description>.Net wrapper for un4seen BASS audio library</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Configurations>Debug;Release</Configurations>
-        <Platforms>AnyCPU;iOS</Platforms>
+        <Platforms>AnyCPU;iOS;macOS;macCatalyst</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,6 +18,12 @@
 
     <PropertyGroup Condition=" '$(Platform)' == 'iOS' ">
         <DefineConstants>TRACE;__IOS__</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Platform)' == 'macOS'">
+        <DefineConstants>TRACE;__MACOS__</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Platform)' == 'MacCatalyst'">
+        <DefineConstants>TRACE;__MACCATALYST__</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
