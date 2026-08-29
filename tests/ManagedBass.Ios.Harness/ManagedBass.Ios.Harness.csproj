@@ -20,8 +20,9 @@
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <RuntimeIdentifier>iossimulator-arm64</RuntimeIdentifier>
-    <!-- NOTE: a trimmed-away P/Invoke looks identical to a resolution failure. The iOS SDK rejects PublishTrimmed=false. -->
-    <MtouchLink>None</MtouchLink>
+    <!-- NOTE: a trimmed-away P/Invoke looks identical to a resolution failure, so ManagedBass must not be linked.
+         SdkOnly leaves it alone; None would also keep (and AOT-compile) every BCL assembly, which took 25+ minutes on a runner. -->
+    <MtouchLink>SdkOnly</MtouchLink>
     <BassXcFrameworkPath>$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '..', '..', 'artifacts', 'natives', 'ios', 'bass.xcframework'))</BassXcFrameworkPath>
   </PropertyGroup>
 
