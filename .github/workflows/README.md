@@ -9,4 +9,4 @@
 
 In `metadata`, the internal-DllImport build and the pack step run **before** the metadata tests. That ordering is what makes their "output absent, skip" branches safe; reordering turns the skip into a silent pass. `CiWorkflowTests` in Tier 0 checks the internal-DllImport ordering.
 
-Branch-protection configuration is in `docs/required-status-checks.md`. Validate YAML locally with `ruby -ryaml -e 'YAML.load_file(ARGV[0])' <file>`; PyYAML is not installed on a typical Mac.
+Make `metadata` and the three `functional (<os>)` checks required on master; `ios-simulator` stays advisory until it has run green for a while. Validate YAML locally with `ruby -ryaml -e 'YAML.load_file(ARGV[0])' <file>`; PyYAML is not installed on a typical Mac.

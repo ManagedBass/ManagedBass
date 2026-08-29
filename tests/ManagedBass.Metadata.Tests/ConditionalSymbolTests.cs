@@ -17,7 +17,7 @@ public class ConditionalSymbolTests
         var occurrences = files.SelectMany(f => ConditionalSymbolScanner.Scan(f, RepoLayout.ReadText(f), ConditionalSymbolScanner.AllSymbols));
         var violations = ConditionalSymbolScanner.ApplyAllowlist(occurrences, ConditionalSymbolScanner.Allowlist);
 
-        violations.Should().BeEmpty("comments count too - put history in CONTRIBUTING.md, not under src/");
+        violations.Should().BeEmpty("comments count too - keep history out of src/");
     }
 
     [Fact]

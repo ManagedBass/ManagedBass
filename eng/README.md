@@ -24,8 +24,8 @@ un4seen's URLs are unversioned (`bass24.zip` is always the latest build), so the
 eng/pack-release-artefacts.sh <version> [output-dir]
 ```
 
-Collects the standard build and the internal-DllImport build (both must already exist; see `CONTRIBUTING.md`) into `ManagedBass-<version>-dotnet.zip` and `ManagedBass-<version>-unity-ios.zip` under `artifacts/release/` by default. Run by `package-and-release.yml` on each published release.
+Collects the standard build and the internal-DllImport build (both must already exist) into `ManagedBass-<version>-dotnet.zip` and `ManagedBass-<version>-unity-ios.zip` under `artifacts/release/` by default. Run by `package-and-release.yml` on each published release.
 
 ## `mutation-test.sh`
 
-Applies each defect from the mutation table in `CONTRIBUTING.md` to the tree in turn, expects the guard that claims to catch it to go red, and restores the tree. Run it after touching any Tier 0 or Tier 1 guard.
+Applies each defect in its built-in table (`--list` prints it) to the tree in turn, expects the guard that claims to catch it to go red, and restores the tree. Run it after touching any Tier 0 or Tier 1 guard.
