@@ -86,8 +86,10 @@ jobs:
         run: bash eng/fetch-natives.sh ios
 
       - name: Build the harness
-        timeout-minutes: 25
-        run: dotnet build "$HARNESS_PROJECT" -c Release
+        timeout-minutes: 15
+        run: |
+          mkdir -p "$LOG_DIR"
+          dotnet build "$HARNESS_PROJECT" -c Release -v:n -bl:"$LOG_DIR/harness-build.binlog"
 
       # A missing framework is a packaging failure; check it before any dllnotfound can be misread.
       - name: Check bass.framework is in the bundle
