@@ -1,0 +1,46 @@
+{
+  "$comment": "un4seen URLs are unversioned (bass24.zip is always 'latest'), so these hashes describe the build verified on verifiedOn. fetch-natives.sh warns on mismatch and continues; refresh this file after checking the new upstream build.",
+  "bassVersion": "2.4.18.3",
+  "verifiedOn": "2026-08-29",
+  "baseUrl": "https://www.un4seen.com/files",
+  "platforms": {
+    "windows": [
+      { "zip": "bass24.zip",     "libs": ["bass"],     "sha256": "3a03ec9a33d0f4f9d167660da51c8bb1432e8977496995455ab137277d69636e" },
+      { "zip": "bassmix24.zip",  "libs": ["bassmix"],  "sha256": "c22d3d6135b5d14af23ae1d54100be6c30fe500d9b0f253b5ebc7e9130dbad85" },
+      { "zip": "bassflac24.zip", "libs": ["bassflac"], "sha256": "147280210f62a80e52094e1822e73a16fd3b1a8c9c857c24dcca7dcfcb4ffa14" },
+      { "zip": "bassenc24.zip",  "libs": ["bassenc"],  "sha256": "7a4ec4a92a03d74479192fa3d9c22b69ca8effbdc46d8f6ca045d18e8c3566a7" }
+    ],
+    "linux": [
+      { "zip": "bass24-linux.zip",     "libs": ["bass"],     "sha256": "9bf723dbf750d665c14cfc099f96a056483dc35de6850d2df76af8b640435ca9" },
+      { "zip": "bassmix24-linux.zip",  "libs": ["bassmix"],  "sha256": "04ac99d2d686caa5a665070ad48535d540205acde7725ff2013972e1115dd202" },
+      { "zip": "bassflac24-linux.zip", "libs": ["bassflac"], "sha256": "3b42ca51bc5376576314f3cae6d7ea419610d56e254591bf988987a7eafb2861" },
+      { "zip": "bassenc24-linux.zip",  "libs": ["bassenc"],  "sha256": "56eebae53367b67d1ca284db8ce238050185ad928555cf753757be491d862047" }
+    ],
+    "osx": [
+      { "zip": "bass24-osx.zip",     "libs": ["bass"],     "sha256": "dfadd6238896b02b144b2870655fb9ee2445fc84d5c00f7e1c56faf9343ce59c" },
+      { "zip": "bassmix24-osx.zip",  "libs": ["bassmix"],  "sha256": "1d2bbf47b2663ea25faf88efe8cb61b1d4feee890a9b71187bbf8a751f734b3d" },
+      { "zip": "bassflac24-osx.zip", "libs": ["bassflac"], "sha256": "866f03fa23dfce1036930a8dbec9a3c51028d36f53a1b891689346e2b46275ad" },
+      { "zip": "bassenc24-osx.zip",  "libs": ["bassenc"],  "sha256": "8efdc5d05e45b9a98ee5b09c4aebd4e6f7f508a290149e566e35fdb1f1eae24a" }
+    ],
+    "ios": [
+      { "zip": "bass24-ios.zip",     "libs": ["bass"],     "sha256": "087bdb8aec6735a8b8de21253e07270f647cfb7bb3e1f276efa7ba979d46836e" },
+      { "zip": "bassmix24-ios.zip",  "libs": ["bassmix"],  "sha256": "20c1157ebda75ad9ee84aa94d1821fd6eb3f715b4b254f1ec0be73bfadc1560b" },
+      { "zip": "bassflac24-ios.zip", "libs": ["bassflac"], "sha256": "57dd543278b63e75e6ecd236ee0b9afaf5d79e8ad0880a81d565d5d2ed4aed50" },
+      { "zip": "bassenc24-ios.zip",  "libs": ["bassenc"],  "sha256": "08a06a753c0f6c919e86cfe9df11eb50a89450df0e732a6e96ac996722a98b90" }
+    ],
+    "catalyst": [
+      {
+        "$comment": "No per-add-on catalyst zips exist upstream (404); the core zip carries every framework.",
+        "zip": "bass24-catalyst.zip",
+        "libs": ["bass", "bassmix", "bassflac", "bassenc"],
+        "sha256": "9664e054f759d74ffc0f79e1ba35d6a8a7de98ab14b55e1e51a167febefa13b9"
+      }
+    ],
+    "android": [
+      { "zip": "bass24-android.zip",     "libs": ["bass"],     "sha256": "236c9017728a910dfe74e79d36d98ad6784f3558c21e8812cfcbafe9bd0fef41" },
+      { "zip": "bassmix24-android.zip",  "libs": ["bassmix"],  "sha256": "fa36d58ad4b9383a284db935a93aa82007837d8bc3d4e11af1560841d63bdec2" },
+      { "zip": "bassflac24-android.zip", "libs": ["bassflac"], "sha256": "59c62fd60185450e157e727910be2460a0f66dedd2d6ea1bb3f1c80657dd0da8" },
+      { "zip": "bassenc24-android.zip",  "libs": ["bassenc"],  "sha256": "422b64f21bcfb03412144b87b15162cc38f9f25a24b97eb2b3d2c9e146a5af32" }
+    ]
+  }
+}

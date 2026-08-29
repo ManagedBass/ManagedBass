@@ -10,7 +10,7 @@ namespace ManagedBass.Tags
     /// </summary>
     public static class BassTags
     {
-#if __STATIC_LINKING__
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
         const string DllName = "__Internal";
 #else
         const string DllName = "tags";

@@ -11,7 +11,11 @@ namespace ManagedBass.Aac
     /// </remarks>
     public static class BassAac
     {
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
+        const string DllName = "__Internal";
+#else
         const string DllName = "bass_aac";
+#endif
         		
         /// <summary>
         /// Play audio from Mp4... default = true.

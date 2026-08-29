@@ -1,0 +1,94 @@
+name: Natives Drift
+
+# un4seen publish at unversioned URLs, so upstream can change under the pinned hashes at any time.
+# Re-hash weekly and turn a silent change into a reviewable PR.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  MANIFEST: eng/bass-manifest.json
+
+jobs:
+  drift:
+    name: drift
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Re-download and re-hash every pinned archive
+        id: check
+        run: |
+          set -euo pipefail
+          jq -e . "$MANIFEST" > /dev/null
+          base="$(jq -r '.baseUrl // empty' "$MANIFEST")"
+          [ -n "$base" ] || { echo "::error::$MANIFEST has no baseUrl"; exit 1; }
+          entries="$(jq -r '.platforms[][] | "\(.zip)\t\(.sha256)"' "$MANIFEST" | sort -u)"
+          [ -n "$entries" ] || { echo "::error::No zip/sha256 pairs in $MANIFEST"; exit 1; }
+
+          work="$(mktemp -d)"
+          table="$RUNNER_TEMP/drift-table.md"
+          printf '| File | Status | Upstream Last-Modified |\n| --- | --- | --- |\n' > "$table"
+          drifted=0; checked=0
+          while IFS=$'\t' read -r zip expected; do
+            [ -n "$zip" ] || continue
+            checked=$((checked + 1))
+            curl --fail --silent --show-error --location --retry 3 --retry-delay 5 \
+                 --dump-header "$work/headers.txt" --output "$work/download.bin" "$base/$zip"
+            actual="$(sha256sum "$work/download.bin" | cut -d' ' -f1)"
+            modified="$( { grep -i '^last-modified:' "$work/headers.txt" || true; } | tail -n 1 | cut -d' ' -f2- | tr -d '\r')"
+            if [ "$actual" = "$expected" ]; then
+              echo "| \`$zip\` | unchanged | ${modified:-unknown} |" >> "$table"
+            else
+              drifted=$((drifted + 1))
+              echo "::warning::$zip drifted: expected $expected, upstream is now $actual"
+              echo "| \`$zip\` | **drifted** \`$expected\` -> \`$actual\` | ${modified:-unknown} |" >> "$table"
+              # NOTE: sed rather than jq so the manifest's hand formatting and $comment fields survive.
+              grep -q "$expected" "$MANIFEST" || { echo "::error::$expected not found verbatim in $MANIFEST"; exit 1; }
+              sed -i "s/$expected/$actual/g" "$MANIFEST"
+            fi
+          done <<< "$entries"
+
+          jq -e . "$MANIFEST" > /dev/null
+          echo "Checked $checked, drifted $drifted."
+          echo "checked=$checked" >> "$GITHUB_OUTPUT"
+          echo "drifted=$drifted" >> "$GITHUB_OUTPUT"
+          {
+            echo "The weekly natives-drift check found upstream BASS archives that no longer match the SHA-256 hashes pinned in \`$MANIFEST\`."
+            echo
+            cat "$table"
+            echo
+            echo "### Before merging"
+            echo
+            echo "- [ ] Check the un4seen changelog and update \`bassVersion\` and \`verifiedOn\`; this workflow updates hashes only."
+            echo "- [ ] Re-run Build Test on this branch (PRs opened with GITHUB_TOKEN do not trigger workflows: push an empty commit or close and reopen)."
+          } > "$RUNNER_TEMP/pr-body.md"
+
+      - name: Summarise
+        if: always()
+        run: |
+          {
+            echo "## BASS natives drift"
+            echo
+            echo "Checked ${{ steps.check.outputs.checked }} archive(s); ${{ steps.check.outputs.drifted }} drifted."
+            echo
+            cat "$RUNNER_TEMP/drift-table.md" 2>/dev/null || true
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Open or update the drift pull request
+        if: steps.check.outputs.drifted != '0'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/bass-natives-drift
+          commit-message: 'chore: update BASS natives manifest to upstream hashes'
+          title: 'chore: BASS natives drifted upstream'
+          body-path: ${{ runner.temp }}/pr-body.md
+          add-paths: eng/bass-manifest.json
+          delete-branch: true

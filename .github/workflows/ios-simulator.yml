@@ -1,0 +1,179 @@
+name: iOS Simulator
+
+# Tier 2: runs the ManagedBass.Ios.Harness app on a simulator and requires 'outcome=PASS'.
+# The harness contains no resolver registration of its own, so a pass proves the buildTransitive
+# module initialiser in src/Bass/Portable/build/ registered ManagedBass.NativeLibraryResolver.
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'src/**'
+      - 'tests/ManagedBass.Ios.Harness/**'
+      - 'eng/**'
+      - '.github/workflows/ios-simulator.yml'
+      - 'tests/Directory.Build.props'
+      - 'global.json'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/ManagedBass.Ios.Harness/**'
+      - 'eng/**'
+      - '.github/workflows/ios-simulator.yml'
+      - 'tests/Directory.Build.props'
+      - 'global.json'
+  workflow_dispatch:
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NOLOGO: true
+  HARNESS_PROJECT: tests/ManagedBass.Ios.Harness
+  APP_BUNDLE: tests/ManagedBass.Ios.Harness/bin/Release/net10.0-ios/iossimulator-arm64/ManagedBassIosHarness.app
+  BUNDLE_ID: com.managedbass.harness.ios
+  RESULT_MARKER: 'MANAGEDBASS_RESULT:'
+  RESULT_TIMEOUT_SECONDS: 180
+  LOG_DIR: artifacts/ios-harness
+
+jobs:
+  ios-simulator:
+    name: ios-simulator
+    runs-on: macos-latest
+    timeout-minutes: 60
+    # Advisory until it has run green on real runners for a while; then drop this and make it required.
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Pin Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '26.6'
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install the iOS workload
+        timeout-minutes: 20
+        run: dotnet workload install ios
+
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          xcrun simctl list runtimes
+          dotnet --version
+
+      # The point of the tier is the automatic path; a hand-registered resolver would make a pass meaningless.
+      - name: Assert the harness registers nothing itself
+        run: |
+          if grep -rn 'NativeLibraryResolver' "$HARNESS_PROJECT" --include='*.cs' --include='*.csproj'; then
+            echo "::error::$HARNESS_PROJECT references NativeLibraryResolver; Tier 2 must rely on the injected initialiser only."
+            exit 1
+          fi
+          echo "No NativeLibraryResolver reference in the harness."
+
+      - name: Cache BASS downloads
+        uses: actions/cache@v4
+        with:
+          path: artifacts/downloads
+          key: bass-downloads-ios-${{ hashFiles('eng/bass-manifest.json') }}
+
+      - name: Fetch natives
+        run: bash eng/fetch-natives.sh ios
+
+      - name: Build the harness
+        timeout-minutes: 25
+        run: dotnet build "$HARNESS_PROJECT" -c Release
+
+      # A missing framework is a packaging failure; check it before any dllnotfound can be misread.
+      - name: Check bass.framework is in the bundle
+        run: |
+          [ -d "$APP_BUNDLE" ] || { echo "::error::$APP_BUNDLE was not produced"; find "$HARNESS_PROJECT/bin" -maxdepth 4 -type d; exit 1; }
+          ls -l "$APP_BUNDLE/Frameworks" || true
+          if [ ! -d "$APP_BUNDLE/Frameworks/bass.framework" ]; then
+            echo "::error::bass.framework is not embedded in the bundle. Packaging failure, not a resolver regression."
+            exit 1
+          fi
+
+      - name: Boot a simulator
+        run: |
+          selected=$(xcrun simctl list devices available --json | jq -r '
+            [ .devices | to_entries[] | select(.key | test("SimRuntime\\.iOS-")) | .key as $rt
+              | .value[] | select(.name | startswith("iPhone")) | { rt: $rt, udid: .udid, name: .name } ]
+            | sort_by(.rt) | last | if . == null then empty else "\(.udid)\t\(.name)\t\(.rt)" end')
+          [ -n "$selected" ] || { echo "::error::No available iPhone simulator"; xcrun simctl list devices available; exit 1; }
+          echo "Selected: $selected"
+          udid=${selected%%$'\t'*}
+          echo "SIM_UDID=$udid" >> "$GITHUB_ENV"
+          xcrun simctl boot "$udid" || true
+          xcrun simctl bootstatus "$udid" -b
+
+      - name: Install the app
+        run: xcrun simctl install "$SIM_UDID" "$APP_BUNDLE"
+
+      - name: Run the harness
+        run: |
+          mkdir -p "$LOG_DIR"
+          xcrun simctl spawn "$SIM_UDID" log stream --style compact \
+            --predicate 'processImagePath CONTAINS "ManagedBassIosHarness"' > "$LOG_DIR/log-stream.txt" 2>&1 &
+          log_pid=$!
+          xcrun simctl launch --console-pty "$SIM_UDID" "$BUNDLE_ID" > "$LOG_DIR/console.txt" 2>&1 &
+          launch_pid=$!
+          deadline=$((SECONDS + RESULT_TIMEOUT_SECONDS))
+          while [ "$SECONDS" -lt "$deadline" ]; do
+            grep -qs "$RESULT_MARKER outcome=" "$LOG_DIR"/*.txt && break
+            kill -0 "$launch_pid" 2>/dev/null || break
+            sleep 2
+          done
+          kill "$log_pid" "$launch_pid" 2>/dev/null || true
+          wait "$log_pid" "$launch_pid" 2>/dev/null || true
+          echo "--- console.txt ---"; cat "$LOG_DIR/console.txt" || true
+          echo "--- log-stream.txt ---"; cat "$LOG_DIR/log-stream.txt" || true
+
+      # Lines arrive twice (stdout + NSLog) and CRLF-terminated (--console-pty is a terminal): strip CR,
+      # de-duplicate, and never anchor with $.
+      - name: Evaluate the result
+        run: |
+          results=$( { grep -ahos "$RESULT_MARKER.*" "$LOG_DIR"/*.txt || true; } \
+            | sed "s/^.*$RESULT_MARKER *//" | tr -d '\r' | sed 's/[[:space:]]*$//' | awk 'NF && !seen[$0]++' )
+          { echo "### iOS simulator harness"; echo; echo '```'; echo "${results:-<no result lines>}"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          echo "$results"
+          if [ -z "$results" ]; then
+            echo "::error::No $RESULT_MARKER lines within ${RESULT_TIMEOUT_SECONDS}s; the app most likely failed to launch. No evidence is a failure."
+            exit 1
+          fi
+          if echo "$results" | grep -q '^outcome=PASS'; then
+            echo "iOS simulator harness passed."
+            exit 0
+          fi
+          reason=$(echo "$results" | sed -n 's/^outcome=FAIL reason=//p' | head -n 1)
+          case "$reason" in
+            dllnotfound)
+              echo "::error::DllNotFoundException with bass.framework embedded: the automatic resolver registration has regressed. Check probe.resolverslotfree and that ManagedBass.targets still contributes ManagedBassNativeResolverInitialiser.cs." ;;
+            predicates)
+              echo "::error::A CrossPlatformHelper predicate is wrong on iOS; see failedpredicates=." ;;
+            "")
+              echo "::error::Result lines were emitted but no outcome=PASS; the run did not complete." ;;
+            *)
+              echo "::error::iOS simulator harness failed: $reason" ;;
+          esac
+          exit 1
+
+      - name: Upload harness logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-harness-logs
+          path: artifacts/ios-harness
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Shut the simulator down
+        if: always()
+        run: |
+          [ -n "${SIM_UDID:-}" ] && xcrun simctl terminate "$SIM_UDID" "$BUNDLE_ID" 2>/dev/null || true
+          xcrun simctl shutdown all 2>/dev/null || true

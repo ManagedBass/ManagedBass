@@ -12,7 +12,11 @@ namespace ManagedBass.Winamp
     /// </remarks>
     public static class BassWinamp
     {
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
+        const string DllName = "__Internal";
+#else
         const string DllName = "bass_winamp";
+#endif
         
         /// <summary>
         /// Winamp input timeout (in milliseconds) to wait until timing out, because the plugin is not using the output system.

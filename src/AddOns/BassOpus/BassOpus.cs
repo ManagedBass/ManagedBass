@@ -11,7 +11,7 @@ namespace ManagedBass.Opus
     /// </remarks>
     public static class BassOpus
     {
-#if __STATIC_LINKING__
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
         const string DllName = "__Internal";
 #else
         const string DllName = "bassopus";

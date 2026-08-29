@@ -8,7 +8,11 @@ namespace ManagedBass.WA
     /// </summary>
     public static class BassWA
     {
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
+        const string DllName = "__Internal";
+#else
         const string DllName = "bass_wa";
+#endif
                 
         /// <summary>
         /// Starts the visualization plugin and the selected module within the plugin you provide.

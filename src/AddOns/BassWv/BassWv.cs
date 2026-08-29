@@ -11,7 +11,7 @@ namespace ManagedBass.Wv
     /// </remarks>
     public static class BassWv
     {
-#if __STATIC_LINKING__
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
         const string DllName = "__Internal";
 #else
         const string DllName = "basswv";

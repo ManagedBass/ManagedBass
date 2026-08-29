@@ -1,35 +1,107 @@
 name: Build Test
+
 on:
   push:
-   branches:
-     - master
-     - automation/github-action-test
+    branches:
+      - master
   pull_request:
+  workflow_dispatch:
+
 env:
-  # Stop wasting time caching packages
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  # Disable sending usage data to Microsoft
   DOTNET_CLI_TELEMETRY_OPTOUT: true
-  # Official NuGet Feed settings
-  NUGET_FEED: https://api.nuget.org/v3/index.json
-  NUGET_KEY: ${{ secrets.NUGET_KEY }}
-  SOLUTION_FILE: ManagedBass.sln
+  DOTNET_NOLOGO: true
+
 jobs:
-  build-test:
+  metadata:
+    name: metadata
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
+
       - name: Restore
-        run: dotnet restore
-        working-directory: ${{ github.workspace }}/src
-      - name: Build
-        run: dotnet build -c Release --no-restore
-        working-directory: ${{ github.workspace }}/src
-      - name: Test
-        run: dotnet test -c Release
-        working-directory: ${{ github.workspace }}/src
+        run: dotnet restore src/ManagedBass.sln
+
+      - name: Build (standard)
+        run: dotnet build src/ManagedBass.sln -c Release --no-restore
+
+      # Must precede the metadata tests: they skip the internal-DllImport group when no internal-DllImport output exists,
+      # and that skip is only safe because this step guarantees the output is present in CI.
+      - name: Build (internal DllImport, Unity/iOS variant)
+        run: dotnet build src/ManagedBass.Shipping.slnf -c Release -p:BassInternalDllImport=true
+
+      # Tier 0's package-shape tests read artifacts/packages; this path is part of their contract.
+      - name: Pack
+        run: dotnet pack src/ManagedBass.sln -c Release --no-build -o artifacts/packages
+
+      - name: Test (metadata and package shape)
+        run: >-
+          dotnet test tests/ManagedBass.Metadata.Tests
+          -c Release
+          --report-xunit-trx
+          --results-directory artifacts/test-results/metadata
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-metadata
+          path: artifacts/test-results/metadata
+          retention-days: 14
+          if-no-files-found: warn
+
+  functional:
+    name: functional (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+          - os: windows-latest
+            platform: windows
+          - os: macos-latest
+            platform: osx
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      # Keyed on the manifest, never the URL: un4seen's URLs are unversioned, so only the pinned hashes
+      # change when upstream does.
+      - name: Cache BASS downloads
+        uses: actions/cache@v4
+        with:
+          path: artifacts/downloads
+          key: bass-downloads-${{ matrix.platform }}-${{ hashFiles('eng/bass-manifest.json') }}
+
+      - name: Fetch natives
+        shell: bash
+        run: bash eng/fetch-natives.sh ${{ matrix.platform }}
+
+      - name: Test (native interop)
+        run: >-
+          dotnet test tests/ManagedBass.Tests
+          -c Release
+          --report-xunit-trx
+          --results-directory artifacts/test-results/functional-${{ matrix.platform }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-functional-${{ matrix.platform }}
+          path: artifacts/test-results/functional-${{ matrix.platform }}
+          retention-days: 14
+          if-no-files-found: warn

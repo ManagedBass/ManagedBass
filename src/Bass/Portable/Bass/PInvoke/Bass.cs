@@ -21,7 +21,7 @@ namespace ManagedBass
     /// </remarks>
     public static partial class Bass
     {
-#if __STATIC_LINKING__
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
         const string DllName = "__Internal";
 #else
         const string DllName = "bass";

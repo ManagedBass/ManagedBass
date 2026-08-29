@@ -8,7 +8,11 @@ namespace ManagedBass.Aix
     /// </summary>
     public static class BassAix
     {
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
+        const string DllName = "__Internal";
+#else
         const string DllName = "bass_aix";
+#endif
                         
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_AIX_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);

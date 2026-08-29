@@ -1,0 +1,30 @@
+<Project>
+
+  <!--
+    Adds a module initialiser that registers ManagedBass.NativeLibraryResolver to consuming projects on
+    Apple platforms with embedded frameworks. The library cannot do this itself: .NET for iOS runs neither
+    a class library's module initialiser nor a P/Invoke class's static constructor.
+    Opt out with <ManagedBassRegisterNativeResolver>false</ManagedBassRegisterNativeResolver>.
+
+    NOTE: the decision lives inside a target. $(TargetPlatformIdentifier) is set by SDK targets, so at
+    import time it is empty for a project importing this file directly.
+  -->
+
+  <Target Name="ManagedBassAddNativeResolverInitialiser" BeforeTargets="BeforeCompile;CoreCompile">
+
+    <PropertyGroup>
+      <_ManagedBassApplePlatform>false</_ManagedBassApplePlatform>
+      <_ManagedBassApplePlatform Condition="'$(TargetPlatformIdentifier)' == 'ios' Or '$(TargetPlatformIdentifier)' == 'tvos' Or '$(TargetPlatformIdentifier)' == 'maccatalyst'">true</_ManagedBassApplePlatform>
+      <ManagedBassRegisterNativeResolver Condition="'$(ManagedBassRegisterNativeResolver)' == ''">$(_ManagedBassApplePlatform)</ManagedBassRegisterNativeResolver>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(ManagedBassRegisterNativeResolver)' == 'true' And '$(Language)' == 'C#'">
+      <Compile Include="$(MSBuildThisFileDirectory)ManagedBassNativeResolverInitialiser.cs"
+               Link="Properties\ManagedBassNativeResolverInitialiser.cs" />
+    </ItemGroup>
+
+    <Message Importance="low" Text="ManagedBass: native resolver registration = $(ManagedBassRegisterNativeResolver) (TargetPlatformIdentifier=$(TargetPlatformIdentifier))" />
+
+  </Target>
+
+</Project>

@@ -8,7 +8,11 @@ namespace ManagedBass.Vst
 	/// </summary>
 	public static class BassVst
 	{
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
+		const string DllName = "__Internal";
+#else
 		const string DllName = "bass_vst";
+#endif
                 
         /// <summary>
         /// Creates a new BASS stream based on any VST instrument plugin (VSTi).

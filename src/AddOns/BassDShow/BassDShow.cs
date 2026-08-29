@@ -8,7 +8,11 @@ namespace ManagedBass.DShow
 	/// </summary>
 	public static class BassDShow
 	{
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
+		const string DllName = "__Internal";
+#else
 		const string DllName = "xVideo";
+#endif
                 
         /// <summary>
         /// This method is an alternative way to get item names on methods that require callbacks.

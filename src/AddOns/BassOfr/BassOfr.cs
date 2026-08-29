@@ -11,7 +11,11 @@ namespace ManagedBass.Ofr
     /// </remarks>
     public static class BassOfr
     {
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
+        const string DllName = "__Internal";
+#else
         const string DllName = "bass_ofr";
+#endif
                         
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_OFR_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);
