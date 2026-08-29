@@ -46,8 +46,8 @@ command -v curl >/dev/null 2>&1 || die "curl is required"
 
 # --- manifest: jq preferred, python3 fallback (one of them exists on every GitHub runner) ---
 if command -v jq >/dev/null 2>&1; then
-    manifest_rows()   { jq -r --arg p "$Platform" '.platforms[$p] // [] | .[] | [.zip, .sha256, (.libs | join(","))] | @tsv' "$Manifest"; }
-    manifest_scalar() { jq -r --arg k "$1" '.[$k] // ""' "$Manifest"; }
+    manifest_rows()   { jq -r --arg p "$Platform" '.platforms[$p] // [] | .[] | [.zip, .sha256, (.libs | join(","))] | @tsv' "$Manifest" | tr -d '\r'; }
+    manifest_scalar() { jq -r --arg k "$1" '.[$k] // ""' "$Manifest" | tr -d '\r'; }
 elif command -v python3 >/dev/null 2>&1; then
     manifest_rows() {
         BASS_MANIFEST="$Manifest" BASS_PLATFORM="$Platform" python3 -c '
