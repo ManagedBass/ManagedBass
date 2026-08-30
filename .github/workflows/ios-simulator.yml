@@ -82,9 +82,7 @@ jobs:
           path: artifacts/downloads
           key: bass-downloads-ios-${{ hashFiles('eng/bass-manifest.json') }}
 
-      - name: Fetch natives
-        run: bash eng/fetch-natives.sh ios
-
+      # No fetch step: building the harness fetches artifacts/natives/ios itself.
       - name: Build the harness
         timeout-minutes: 15
         run: |

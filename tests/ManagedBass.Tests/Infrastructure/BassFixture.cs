@@ -21,7 +21,7 @@ public class BassFixture : IDisposable
             throw new InvalidOperationException(
                 $"'{NativeLibraries.PathFor("bass")}' exists but could not be loaded ({ex.GetType().Name}); " +
                 $"probably an architecture mismatch with the {System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture} test host. " +
-                $"Re-run eng/fetch-natives.sh {NativeLibraries.HostPlatform}.", ex);
+                $"Re-run {NativeLibraries.FetchCommand} --refresh.", ex);
         }
 
         if (!Initialised)

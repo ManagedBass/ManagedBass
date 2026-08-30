@@ -13,7 +13,7 @@ internal static class NativeLibraries
 {
     public static string ProbeDirectory => AppContext.BaseDirectory;
 
-    /// <summary>The <c>eng/fetch-natives.sh</c> platform name for the OS running the tests.</summary>
+    /// <summary>The <c>eng/FetchNatives</c> platform name for the OS running the tests.</summary>
     public static string HostPlatform =>
         RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows"
         : RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "osx"
@@ -30,6 +30,9 @@ internal static class NativeLibraries
 
     public static string PathFor(string name) => Path.Combine(ProbeDirectory, FileNameFor(name));
 
+    /// <summary>The one place the fetch command is spelled out, so a rename of the tool moves every message at once.</summary>
+    public static string FetchCommand => $"dotnet run --project eng/FetchNatives -- {HostPlatform}";
+
     public static void Require(string name)
     {
         if (!File.Exists(PathFor(name)))
@@ -39,10 +42,11 @@ internal static class NativeLibraries
     static string MissingMessage(string name) =>
         $"""
          BASS native '{FileNameFor(name)}' not found in '{ProbeDirectory}'.
-         Natives are never committed; fetch them and rebuild so MSBuild copies them into the output:
+         Natives are never committed. A build normally fetches them; force it and rebuild so MSBuild
+         copies them into the output:
 
-             eng/fetch-natives.sh {HostPlatform}
-             dotnet build tests/ManagedBass.Tests -c Release
+             {FetchCommand} --refresh
+             dotnet build tests/ManagedBass.Tests
 
          BASS files present: {DescribePresent()}
          """;

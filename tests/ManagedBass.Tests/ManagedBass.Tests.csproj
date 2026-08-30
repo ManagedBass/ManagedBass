@@ -5,21 +5,15 @@
         <RootNamespace>ManagedBass.Tests</RootNamespace>
     </PropertyGroup>
 
-    <!--
-      Natives for the HOST platform only, from eng/fetch-natives.sh output. Override with -p:NativesPlatform=<name>.
-      NOTE: never glob artifacts/natives/** - android and linux both produce libbass.so and glob order would pick the winner.
-    -->
+    <!-- Natives for the HOST platform only; fetched on demand by the import below. Override with -p:BassNativesPlatform=<name>. -->
     <PropertyGroup>
-        <NativesPlatform Condition="'$(NativesPlatform)' == '' And $([MSBuild]::IsOSPlatform('Windows'))">windows</NativesPlatform>
-        <NativesPlatform Condition="'$(NativesPlatform)' == '' And $([MSBuild]::IsOSPlatform('OSX'))">osx</NativesPlatform>
-        <NativesPlatform Condition="'$(NativesPlatform)' == ''">linux</NativesPlatform>
-        <NativesDirectory>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', '..', 'artifacts', 'natives', '$(NativesPlatform)'))</NativesDirectory>
+        <BassNativesPlatform Condition="'$(BassNativesPlatform)' == '' And $([MSBuild]::IsOSPlatform('Windows'))">windows</BassNativesPlatform>
+        <BassNativesPlatform Condition="'$(BassNativesPlatform)' == '' And $([MSBuild]::IsOSPlatform('OSX'))">osx</BassNativesPlatform>
+        <BassNativesPlatform Condition="'$(BassNativesPlatform)' == ''">linux</BassNativesPlatform>
+        <BassNativesCopyToOutput>true</BassNativesCopyToOutput>
     </PropertyGroup>
 
-    <ItemGroup Condition="Exists('$(NativesDirectory)')">
-        <!-- Non-recursive: only the loose shared libraries, so ios/catalyst bundle contents can never be flattened in. -->
-        <None Include="$(NativesDirectory)*" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
-    </ItemGroup>
+    <Import Project="../../eng/FetchNatives/FetchNatives.targets" />
 
     <ItemGroup>
         <None Update="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />

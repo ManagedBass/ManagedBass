@@ -18,7 +18,7 @@ public class VersionTests
         // un4seen's URLs are unversioned, so the exact build only ever shows up in this log line.
         _output.WriteLine($"BASS native version: {version} (from {NativeLibraries.PathFor("bass")})");
 
-        version.Should().BeGreaterThanOrEqualTo(MinimumSupported, $"re-run eng/fetch-natives.sh {NativeLibraries.HostPlatform} for a current build");
+        version.Should().BeGreaterThanOrEqualTo(MinimumSupported, $"re-run {NativeLibraries.FetchCommand} --refresh for a current build");
     }
 
     [Theory]

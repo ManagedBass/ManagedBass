@@ -16,6 +16,9 @@ jobs:
   metadata:
     name: metadata
     runs-on: ubuntu-latest
+    # Tier 0 reads assemblies, sources and packages; nothing here loads a native, so skip the download.
+    env:
+      FetchBassNatives: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -78,18 +81,16 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      # Keyed on the manifest, never the URL: un4seen's URLs are unversioned, so only the pinned hashes
-      # change when upstream does.
+      # Keyed on the manifest: un4seen's URLs are unversioned, so nothing else changes when the set of
+      # archives we want does. The build below populates this on a miss.
       - name: Cache BASS downloads
         uses: actions/cache@v4
         with:
           path: artifacts/downloads
           key: bass-downloads-${{ matrix.platform }}-${{ hashFiles('eng/bass-manifest.json') }}
 
-      - name: Fetch natives
-        shell: bash
-        run: bash eng/fetch-natives.sh ${{ matrix.platform }}
-
+      # No fetch step: building the test project fetches the natives itself, which is exactly what a
+      # contributor's first `dotnet test` does. Keep it that way, so CI exercises that path.
       - name: Test (native interop)
         run: >-
           dotnet test tests/ManagedBass.Tests

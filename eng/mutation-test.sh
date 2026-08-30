@@ -14,7 +14,7 @@
 #
 # Prerequisites: dotnet build src/ManagedBass.sln -c Release, the internal-DllImport build
 # (dotnet build src/ManagedBass.Shipping.slnf -c Release -p:BassInternalDllImport=true) and, for the Tier 1
-# mutations, natives fetched (eng/fetch-natives.sh <platform>) and tests/ManagedBass.Tests built.
+# mutations, tests/ManagedBass.Tests built (which fetches the natives on its own).
 set -uo pipefail
 
 ScriptDir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"

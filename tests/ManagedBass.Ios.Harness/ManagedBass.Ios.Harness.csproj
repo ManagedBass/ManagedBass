@@ -23,8 +23,12 @@
     <!-- NOTE: a trimmed-away P/Invoke looks identical to a resolution failure, so ManagedBass must not be linked.
          SdkOnly leaves it alone; None would also keep (and AOT-compile) every BCL assembly, which took 25+ minutes on a runner. -->
     <MtouchLink>SdkOnly</MtouchLink>
+    <BassNativesPlatform>ios</BassNativesPlatform>
     <BassXcFrameworkPath>$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '..', '..', 'artifacts', 'natives', 'ios', 'bass.xcframework'))</BassXcFrameworkPath>
   </PropertyGroup>
+
+  <!-- Fetches artifacts/natives/ios on demand, so the harness builds from a fresh clone. -->
+  <Import Project="../../eng/FetchNatives/FetchNatives.targets" />
 
   <ItemGroup>
     <!-- tests/Directory.Build.props adds the xunit stack unconditionally; this app is not a test project. -->
@@ -39,9 +43,10 @@
     <NativeReference Include="$(BassXcFrameworkPath)" Kind="Framework" />
   </ItemGroup>
 
-  <Target Name="EnsureBassXcFrameworkFetched" BeforeTargets="CoreBuild">
+  <!-- DependsOnTargets, not BeforeTargets: CoreBuild starts before PrepareForBuild, so the fetch has to be pulled in explicitly. -->
+  <Target Name="EnsureBassXcFrameworkFetched" BeforeTargets="CoreBuild" DependsOnTargets="FetchBassNatives">
     <Error Condition="!Exists('$(BassXcFrameworkPath)')"
-           Text="bass.xcframework not found at '$(BassXcFrameworkPath)'. Run 'eng/fetch-natives.sh ios' first." />
+           Text="bass.xcframework not found at '$(BassXcFrameworkPath)'. Run 'dotnet run --project eng/FetchNatives -- ios', or drop -p:FetchBassNatives=false." />
   </Target>
 
 </Project>
