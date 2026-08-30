@@ -2,7 +2,7 @@
   "$comment": "un4seen publish at unversioned URLs (bass24.zip is always 'latest'), so bassVersion records the build whose layout was verified on verifiedOn, not what a fetch today will return.",
   "bassVersion": "2.4.18.3",
   "verifiedOn": "2026-08-29",
-  "baseUrl": "https://www.un4seen.com/filesss",
+  "baseUrl": "https://www.un4seen.com/files",
   "platforms": {
     "windows": [
       { "zip": "bass24.zip",     "libs": ["bass"] },
