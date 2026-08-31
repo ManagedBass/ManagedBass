@@ -12,6 +12,19 @@
         <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     </PropertyGroup>
 
+    <!--
+      Mirrors src/Directory.Build.props: the internal-DllImport build gets its own bin/ and obj/, so a standard
+      and an internal-DllImport build of the same project coexist in one working tree. It has to live here and
+      not in the csproj, because BaseIntermediateOutputPath is read before the project body runs.
+      NOTE: the SDK only excludes the current output paths; without DefaultItemExcludes the other build's
+      AssemblyInfo.cs is compiled in (CS0579).
+    -->
+    <PropertyGroup Condition="'$(BassInternalDllImport)' == 'true'">
+        <BaseOutputPath>$(MSBuildProjectDirectory)/bin/internaldllimport/</BaseOutputPath>
+        <BaseIntermediateOutputPath>$(MSBuildProjectDirectory)/obj/internaldllimport/</BaseIntermediateOutputPath>
+        <DefaultItemExcludes>$(DefaultItemExcludes);bin/**;obj/**</DefaultItemExcludes>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
         <PackageReference Include="xunit.v3" Version="4.0.0" />

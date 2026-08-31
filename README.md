@@ -93,6 +93,13 @@ Put `bass.xcframework` from `bass24-ios.zip` under `Assets/Plugins/iOS` and conf
 
 Alternatively, vendor `src/` into `Assets/` and add `MANAGEDBASS_INTERNAL_DLLIMPORT` to Player Settings → iOS → Other Settings → Scripting Define Symbols. Define symbols are per build target, so Unity compiles the right variant for each platform and there are no filters to get wrong.
 
+Two consequences of `__Internal` worth knowing before you build:
+
+- **Leave managed stripping on.** `__Internal` is resolved by the linker, so every P/Invoke that survives stripping has to exist in the framework — and three core entry points do not exist on iOS at all: `BASS_GetDSoundObject`, `BASS_GetEAXParameters` and `BASS_SetEAXParameters` are Windows-only. A build that keeps unreferenced code fails with `Undefined symbols for architecture arm64`. Stripping (Unity's default for IL2CPP) removes what you never call, so only the entry points you actually use have to resolve.
+- **`CrossPlatformHelper` cannot see iOS in this build.** These assemblies are `netstandard2.0`, where `IsIOS`, `IsTvOS`, `IsMacCatalyst`, `IsApple` and `IsAndroid` are compile-time `false` and `RuntimeInformation` matches none of Windows, Linux or macOS on iOS — so *every* predicate is `false`. Branch on Unity's own `Application.platform` instead.
+
+Both are covered by CI: `.github/workflows/ios-simulator.yml` builds `tests/ManagedBass.Ios.Harness` twice, once normally and once with `-p:BassInternalDllImport=true`, and requires both to initialise BASS and round-trip audio on a simulator. The second leg is .NET for iOS rather than Unity, but it binds and resolves `__Internal` the same way, so an unguarded `DllName` or a missing export shows up before a release ships.
+
 # AddOns
 AddOns add more functionality to BASS.
 

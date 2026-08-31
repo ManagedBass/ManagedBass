@@ -151,6 +151,16 @@ public class WorkflowAnalyserSelfTests
         WorkflowAnalyser.DescribeOutcomeHandling("  - name: Evaluate\n    # looks for outcome=PASS\n    run: exit 1\n").ChecksForPass.Should().BeFalse();
 
     [Fact]
+    public void DllImportModesAsserted_OnMatrix_ReturnsBothModes_WhenEachLegPinsOne() =>
+        WorkflowAnalyser.DllImportModesAsserted("          - expected_mode: 'dllimportmode=standard'\n          - expected_mode: 'dllimportmode=internal'\n")
+            .Should().Equal("internal", "standard");
+
+    [Fact]
+    public void DllImportModesAsserted_OnMatrix_IgnoresComments_WhenModeOnlyMentionedInProse() =>
+        WorkflowAnalyser.DllImportModesAsserted("# dllimportmode=internal is the point of Tier 2b\n          - expected_mode: 'dllimportmode=standard'\n")
+            .Should().Equal("standard");
+
+    [Fact]
     public void StripCommentLines_OnYaml_KeepsHashInsideValues_WhenNotLineStart() =>
         WorkflowAnalyser.StripCommentLines("  # gone\n  run: echo 'a # b'").Should().Be("  run: echo 'a # b'");
 }

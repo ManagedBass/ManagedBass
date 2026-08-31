@@ -1,8 +1,14 @@
 name: iOS Simulator
 
-# Tier 2: runs the ManagedBass.Ios.Harness app on a simulator and requires 'outcome=PASS'.
-# The harness contains no resolver registration of its own, so a pass proves the buildTransitive
-# module initialiser in src/Bass/Portable/build/ registered ManagedBass.NativeLibraryResolver.
+# Tier 2: runs the ManagedBass.Ios.Harness app on a simulator and requires 'outcome=PASS', in two variants.
+#
+# standard           - the harness contains no resolver registration of its own, so a pass proves the
+#                      buildTransitive module initialiser in src/Bass/Portable/build/ registered
+#                      ManagedBass.NativeLibraryResolver.
+# internal-dllimport - Tier 2b, built with -p:BassInternalDllImport=true, so every DllName is "__Internal"
+#                      and no resolver is registered at all. A pass proves the linker bound the symbols to
+#                      the embedded bass.framework, the only lookup Unity/IL2CPP on iOS can do. It is the
+#                      one run of the assemblies ManagedBass-<version>-unity-ios.zip ships.
 
 on:
   push:
@@ -30,19 +36,39 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_NOLOGO: true
   HARNESS_PROJECT: tests/ManagedBass.Ios.Harness
-  APP_BUNDLE: tests/ManagedBass.Ios.Harness/bin/Release/net10.0-ios/iossimulator-arm64/ManagedBassIosHarness.app
-  BUNDLE_ID: com.managedbass.harness.ios
   RESULT_MARKER: 'MANAGEDBASS_RESULT:'
   RESULT_TIMEOUT_SECONDS: 180
-  LOG_DIR: artifacts/ios-harness
 
 jobs:
   ios-simulator:
-    name: ios-simulator
+    name: ios-simulator (${{ matrix.variant }})
     runs-on: macos-latest
     timeout-minutes: 60
     # Advisory until it has run green on real runners for a while; then drop this and make it required.
     continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: standard
+            build_args: ''
+            app_bundle: tests/ManagedBass.Ios.Harness/bin/Release/net10.0-ios/iossimulator-arm64/ManagedBassIosHarness.app
+            bundle_id: com.managedbass.harness.ios
+            process: ManagedBassIosHarness
+            expected_mode: 'dllimportmode=standard'
+          - variant: internal-dllimport
+            build_args: '-p:BassInternalDllImport=true'
+            app_bundle: tests/ManagedBass.Ios.Harness/bin/internaldllimport/Release/net10.0-ios/iossimulator-arm64/ManagedBassIosHarnessInternal.app
+            bundle_id: com.managedbass.harness.ios.internaldllimport
+            process: ManagedBassIosHarnessInternal
+            expected_mode: 'dllimportmode=internal'
+    env:
+      BUILD_ARGS: ${{ matrix.build_args }}
+      APP_BUNDLE: ${{ matrix.app_bundle }}
+      BUNDLE_ID: ${{ matrix.bundle_id }}
+      PROCESS_NAME: ${{ matrix.process }}
+      EXPECTED_MODE: ${{ matrix.expected_mode }}
+      LOG_DIR: artifacts/ios-harness/${{ matrix.variant }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -68,6 +94,8 @@ jobs:
           dotnet --version
 
       # The point of the tier is the automatic path; a hand-registered resolver would make a pass meaningless.
+      # The internal-dllimport variant goes further and turns the injected registration off in the csproj, so
+      # its pass rests on __Internal symbol lookup alone; the harness asserts the slot really was left free.
       - name: Assert the harness registers nothing itself
         run: |
           if grep -rn 'NativeLibraryResolver' "$HARNESS_PROJECT" --include='*.cs' --include='*.csproj'; then
@@ -87,12 +115,13 @@ jobs:
         timeout-minutes: 15
         run: |
           mkdir -p "$LOG_DIR"
-          dotnet build "$HARNESS_PROJECT" -c Release -v:n -bl:"$LOG_DIR/harness-build.binlog"
+          # Unquoted on purpose: BUILD_ARGS is empty for the standard variant.
+          dotnet build "$HARNESS_PROJECT" -c Release $BUILD_ARGS -v:n -bl:"$LOG_DIR/harness-build.binlog"
 
       # A missing framework is a packaging failure; check it before any dllnotfound can be misread.
       - name: Check bass.framework is in the bundle
         run: |
-          [ -d "$APP_BUNDLE" ] || { echo "::error::$APP_BUNDLE was not produced"; find "$HARNESS_PROJECT/bin" -maxdepth 4 -type d; exit 1; }
+          [ -d "$APP_BUNDLE" ] || { echo "::error::$APP_BUNDLE was not produced"; find "$HARNESS_PROJECT/bin" -maxdepth 5 -type d; exit 1; }
           ls -l "$APP_BUNDLE/Frameworks" || true
           if [ ! -d "$APP_BUNDLE/Frameworks/bass.framework" ]; then
             echo "::error::bass.framework is not embedded in the bundle. Packaging failure, not a resolver regression."
@@ -119,7 +148,7 @@ jobs:
         run: |
           mkdir -p "$LOG_DIR"
           xcrun simctl spawn "$SIM_UDID" log stream --style compact \
-            --predicate 'processImagePath CONTAINS "ManagedBassIosHarness"' > "$LOG_DIR/log-stream.txt" 2>&1 &
+            --predicate "processImagePath CONTAINS \"$PROCESS_NAME\"" > "$LOG_DIR/log-stream.txt" 2>&1 &
           log_pid=$!
           xcrun simctl launch --console-pty "$SIM_UDID" "$BUNDLE_ID" > "$LOG_DIR/console.txt" 2>&1 &
           launch_pid=$!
@@ -140,10 +169,15 @@ jobs:
         run: |
           results=$( { grep -ahos "$RESULT_MARKER.*" "$LOG_DIR"/*.txt || true; } \
             | sed "s/^.*$RESULT_MARKER *//" | tr -d '\r' | sed 's/[[:space:]]*$//' | awk 'NF && !seen[$0]++' )
-          { echo "### iOS simulator harness"; echo; echo '```'; echo "${results:-<no result lines>}"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          { echo "### iOS simulator harness (${{ matrix.variant }})"; echo; echo '```'; echo "${results:-<no result lines>}"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           echo "$results"
           if [ -z "$results" ]; then
             echo "::error::No $RESULT_MARKER lines within ${RESULT_TIMEOUT_SECONDS}s; the app most likely failed to launch. No evidence is a failure."
+            exit 1
+          fi
+          # Both variants pass on the same markers, so check the app that ran is the one this leg built.
+          if ! echo "$results" | grep -qx "$EXPECTED_MODE"; then
+            echo "::error::Expected '$EXPECTED_MODE' in the results; the wrong bundle ran, so this leg proves nothing about ${{ matrix.variant }}."
             exit 1
           fi
           if echo "$results" | grep -q '^outcome=PASS'; then
@@ -153,9 +187,15 @@ jobs:
           reason=$(echo "$results" | sed -n 's/^outcome=FAIL reason=//p' | head -n 1)
           case "$reason" in
             dllnotfound)
-              echo "::error::DllNotFoundException with bass.framework embedded: the automatic resolver registration has regressed. Check probe.resolverslotfree and that ManagedBass.targets still contributes ManagedBassNativeResolverInitialiser.cs." ;;
+              if [ "$EXPECTED_MODE" = 'dllimportmode=internal' ]; then
+                echo "::error::DllNotFoundException with bass.framework embedded and DllName=__Internal: symbol lookup in the app executable has regressed, which is what Unity on iOS depends on."
+              else
+                echo "::error::DllNotFoundException with bass.framework embedded: the automatic resolver registration has regressed. Check probe.resolverslotfree and that ManagedBass.targets still contributes ManagedBassNativeResolverInitialiser.cs."
+              fi ;;
+            resolverregistered)
+              echo "::error::A DllImportResolver was registered in the internal-DllImport variant, so the pass would not have been evidence about __Internal lookup. Check ManagedBassRegisterNativeResolver in the harness csproj." ;;
             predicates)
-              echo "::error::A CrossPlatformHelper predicate is wrong on iOS; see failedpredicates=." ;;
+              echo "::error::A CrossPlatformHelper predicate is wrong on iOS; see failedpredicates=. The internal-DllImport variant is netstandard2.0, where every predicate is expected to be false." ;;
             "")
               echo "::error::Result lines were emitted but no outcome=PASS; the run did not complete." ;;
             *)
@@ -167,8 +207,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ios-harness-logs
-          path: artifacts/ios-harness
+          name: ios-harness-logs-${{ matrix.variant }}
+          path: ${{ env.LOG_DIR }}
           retention-days: 14
           if-no-files-found: warn
 

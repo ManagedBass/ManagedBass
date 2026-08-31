@@ -22,6 +22,17 @@ public class CiWorkflowTests
         handling.FailsExplicitly.Should().BeTrue("a crashed app produces no marker; silence must exit non-zero");
     }
 
+    [Fact]
+    public void IosSimulatorWorkflow_OnRead_RunsBothDllImportVariants_WhenMatrixed()
+    {
+        var content = WorkflowAnalyser.StripCommentLines(ReadWorkflow(WorkflowAnalyser.IosSimulatorWorkflow));
+
+        content.Should().Contain(WorkflowAnalyser.InternalDllImportFlag,
+            "Tier 2b is the only run of the assemblies the Unity/iOS zip ships, and the only proof that __Internal symbol lookup works on a device");
+        WorkflowAnalyser.DllImportModesAsserted(content).Should().Equal(new[] { "internal", "standard" },
+            "both variants emit the same markers, so each leg has to pin the mode it expects or a wrong bundle passes twice");
+    }
+
     private static void AssertPipeline(string fileName)
     {
         var pipeline = WorkflowAnalyser.DescribeMetadataPipeline(ReadWorkflow(fileName));

@@ -34,6 +34,7 @@ public static partial class WorkflowAnalyser
     public const string PackCommand = "dotnet pack";
     public const string PackOutputOption = "-o artifacts/packages";
     public const string PassMarker = "outcome=PASS";
+    public const string InternalDllImportFlag = "-p:BassInternalDllImport=true";
 
     public static string StripCommentLines(string content) =>
         string.Join('\n', content.Replace("\r\n", "\n").Split('\n').Where(l => !l.TrimStart().StartsWith('#')));
@@ -88,6 +89,17 @@ public static partial class WorkflowAnalyser
         return new(true, ExitNonZeroPattern().IsMatch(afterLastCheck));
     }
 
+    /// <summary>
+    /// The <c>dllimportmode=</c> values the workflow pins a run to, sorted. Both harness variants emit the same
+    /// markers, so each matrix leg names the mode it expects; a leg that is dropped drops its mode from here.
+    /// </summary>
+    public static IReadOnlyList<string> DllImportModesAsserted(string content) =>
+        DllImportModePattern().Matches(StripCommentLines(content))
+            .Select(m => m.Groups[1].Value)
+            .Distinct(StringComparer.Ordinal)
+            .Order(StringComparer.Ordinal)
+            .ToArray();
+
     private static WorkflowStep? Prefer(IEnumerable<WorkflowStep> candidates, WorkflowStep? anchor)
     {
         var all = candidates.ToArray();
@@ -114,4 +126,7 @@ public static partial class WorkflowAnalyser
 
     [GeneratedRegex(@"\bexit\s+[1-9]\d*\b")]
     private static partial Regex ExitNonZeroPattern();
+
+    [GeneratedRegex(@"dllimportmode=([a-z]+)")]
+    private static partial Regex DllImportModePattern();
 }
