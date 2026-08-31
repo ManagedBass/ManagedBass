@@ -31,7 +31,7 @@ Targets="src/Bass/Portable/build/ManagedBass.targets"
 Initialiser="src/Bass/Portable/build/ManagedBassNativeResolverInitialiser.cs"
 Helper="src/Bass/Portable/CrossPlatformHelper.cs"
 Resolver="src/Bass/Portable/NativeLibraryResolver.cs"
-AacSource="src/AddOns/BassEnc/Portable/PInvoke/BassEnc_Aac.cs"
+Scanner="tests/ManagedBass.Metadata.Tests/Analysis/ConditionalSymbolScanner.cs"
 BuildTestWorkflow=".github/workflows/build-test.yml"
 IosWorkflow=".github/workflows/ios-simulator.yml"
 MixInternalDllImportDll="src/AddOns/BassMix/bin/internaldllimport/Release/netstandard2.0/ManagedBass.Mix.dll"
@@ -43,8 +43,8 @@ OldSymbol="__STATIC_""LINKING__"
 # Mutation registry: "<name>@@<function>". Order is the dossier's table, then the extras.
 Mutations=(
     "old two-underscore STATIC symbol written into a src .cs file -> conditional-symbol scan@@mutation01"
-    "__IOS__ in a non-allowlisted .cs -> conditional-symbol scan@@mutation02"
-    "BassEnc_Aac.cs loses its __IOS__ -> allowlist self-expiry test@@mutation03"
+    "__IOS__ in a src .cs file -> conditional-symbol scan@@mutation02"
+    "__IOS__ quietly dropped from the scanner's ban list (rebuilt) -> ban-list coverage test@@mutation03"
     "<Platforms>AnyCPU;iOS</Platforms> back in a csproj -> platform-scaffolding scan@@mutation04"
     "a |iOS line back in src/ManagedBass.sln -> platform-scaffolding scan@@mutation05"
     "DllImport named __Internal in the normal build (BassMix #else arm, rebuilt) -> no-static-linking test@@mutation06"
@@ -184,19 +184,24 @@ firstFailure() {
 mutation01() {
     backup "$MixSource" || return 2
     printf '\n#if %s\n#endif\n' "$OldSymbol" >>"$RepoRoot/$MixSource"
-    runGuard "$MetadataTests" --filter-method ManagedBass.Metadata.Tests.ConditionalSymbolTests.SourceTree_OnScan_HasNoBannedSymbols_WhenAllowlistApplied
+    runGuard "$MetadataTests" --filter-method ManagedBass.Metadata.Tests.ConditionalSymbolTests.SourceTree_OnScan_HasNoBannedSymbols_WhenScanned
 }
 
 mutation02() {
     backup "$MixSource" || return 2
     printf '\n#if __IOS__\n#endif\n' >>"$RepoRoot/$MixSource"
-    runGuard "$MetadataTests" --filter-method ManagedBass.Metadata.Tests.ConditionalSymbolTests.SourceTree_OnScan_HasNoBannedSymbols_WhenAllowlistApplied
+    runGuard "$MetadataTests" --filter-method ManagedBass.Metadata.Tests.ConditionalSymbolTests.SourceTree_OnScan_HasNoBannedSymbols_WhenScanned
 }
 
+# NOTE: the ban list is the guard's own input, so shrinking it is the one mutation the source scan
+# cannot see. BassEnc_Aac.cs used to hold the last __IOS__ exemption; this replaces that self-expiry check.
 mutation03() {
-    backup "$AacSource" || return 2
-    perl -pi -e 's/^#if __IOS__\s*$/#if false/' "$RepoRoot/$AacSource"
-    runGuard "$MetadataTests" --filter-method ManagedBass.Metadata.Tests.ConditionalSymbolTests.AllowlistedFile_OnScan_StillContainsIosSymbol_WhenExemptionIsLive
+    backup "$Scanner" || return 2
+    RestoreBuild+=("dotnet build $MetadataTests -c Release")
+    perl -pi -e 's/"__IOS__", //' "$RepoRoot/$Scanner"
+    grep -q '"__IOS__"' "$RepoRoot/$Scanner" && return 2
+    build "$MetadataTests" || return 2
+    runGuard "$MetadataTests" --filter-method ManagedBass.Metadata.Tests.SelfTests.ConditionalSymbolScannerSelfTests.BannedSymbols_OnList_CoverXamarinFamily_WhenChecked
 }
 
 mutation04() {

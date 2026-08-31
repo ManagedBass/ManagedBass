@@ -21,16 +21,8 @@ public static partial class ConditionalSymbolScanner
     public static readonly IReadOnlyList<string> BannedSymbols =
     [
         "__STATIC_" + "LINKING__",
-        "__MACOS__", "__MACCATALYST__", "__TVOS__", "__ANDROID__", "__UNIFIED__", "__MOBILE__", "__WATCHOS__"
+        "__IOS__", "__MACOS__", "__MACCATALYST__", "__TVOS__", "__ANDROID__", "__UNIFIED__", "__MOBILE__", "__WATCHOS__"
     ];
-
-    // NOTE: BassEnc_Aac.cs is PR #140's territory; the companion self-expiry test keeps this honest.
-    public static readonly IReadOnlyDictionary<string, string> Allowlist = new Dictionary<string, string>(StringComparer.Ordinal)
-    {
-        ["__IOS__"] = "src/AddOns/BassEnc/Portable/PInvoke/BassEnc_Aac.cs"
-    };
-
-    public static IReadOnlyList<string> AllSymbols => BannedSymbols.Concat(Allowlist.Keys).ToArray();
 
     public static IReadOnlyList<SymbolOccurrence> Scan(string relativePath, string content, IEnumerable<string> symbols)
     {
@@ -45,12 +37,6 @@ public static partial class ConditionalSymbolScanner
             .OrderBy(o => o.LineNumber)
             .ToArray();
     }
-
-    public static IReadOnlyList<SymbolOccurrence> ApplyAllowlist(IEnumerable<SymbolOccurrence> occurrences, IReadOnlyDictionary<string, string> allowlist) =>
-        occurrences
-            .Where(o => !(allowlist.TryGetValue(o.Symbol, out var path) && o.RelativePath == path))
-            .OrderBy(o => o.RelativePath, StringComparer.Ordinal).ThenBy(o => o.LineNumber)
-            .ToArray();
 
     /// <summary>A DefineConstants that does not include <c>$(DefineConstants)</c> wipes every symbol set before it.</summary>
     public static IReadOnlyList<DefineConstantsOffence> FindClobbers(string relativePath, string content) =>

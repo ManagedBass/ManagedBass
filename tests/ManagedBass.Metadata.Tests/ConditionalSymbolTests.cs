@@ -9,26 +9,17 @@ public class ConditionalSymbolTests
     private static readonly string[] _buildFileExtensions = [".csproj", ".props", ".targets"];
 
     [Fact]
-    public void SourceTree_OnScan_HasNoBannedSymbols_WhenAllowlistApplied()
+    public void SourceTree_OnScan_HasNoBannedSymbols_WhenScanned()
     {
         var files = RepoLayout.SourceFiles(_scannedExtensions);
         files.Should().NotBeEmpty();
 
-        var occurrences = files.SelectMany(f => ConditionalSymbolScanner.Scan(f, RepoLayout.ReadText(f), ConditionalSymbolScanner.AllSymbols));
-        var violations = ConditionalSymbolScanner.ApplyAllowlist(occurrences, ConditionalSymbolScanner.Allowlist);
+        var violations = files
+            .SelectMany(f => ConditionalSymbolScanner.Scan(f, RepoLayout.ReadText(f), ConditionalSymbolScanner.BannedSymbols))
+            .OrderBy(o => o.RelativePath, StringComparer.Ordinal).ThenBy(o => o.LineNumber)
+            .ToArray();
 
         violations.Should().BeEmpty("comments count too - keep history out of src/");
-    }
-
-    [Fact]
-    public void AllowlistedFile_OnScan_StillContainsIosSymbol_WhenExemptionIsLive()
-    {
-        var path = ConditionalSymbolScanner.Allowlist["__IOS__"];
-
-        File.Exists(RepoLayout.Absolute(path)).Should().BeTrue($"{path} was deleted, so the __IOS__ exemption is stale - remove it from the allowlist");
-
-        ConditionalSymbolScanner.Scan(path, RepoLayout.ReadText(path), ["__IOS__"])
-            .Should().NotBeEmpty($"{path} no longer uses __IOS__, so the exemption is stale - remove it from the allowlist");
     }
 
     [Fact]
