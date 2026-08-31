@@ -1,0 +1,78 @@
+<Project>
+
+    <!--
+      Fetches the BASS natives on demand, so a fresh clone builds and tests with no manual step and no
+      shell (a Windows contributor does not necessarily have bash).
+
+      Importers set:
+        BassNativesPlatform      windows|linux|osx|ios|catalyst|android - required, nothing runs without it
+        BassNativesCopyToOutput  true to copy the loose libraries next to the built assembly
+
+      Opt out with -p:FetchBassNatives=false, or the FetchBassNatives environment variable, when building
+      offline or in a job that has no use for natives.
+    -->
+
+    <PropertyGroup>
+        <FetchBassNatives Condition="'$(FetchBassNatives)' == ''">true</FetchBassNatives>
+        <FetchNativesProject>$(MSBuildThisFileDirectory)FetchNatives.csproj</FetchNativesProject>
+        <BassManifestPath>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'bass-manifest.json'))</BassManifestPath>
+        <BassNativesRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', '..', 'artifacts', 'natives'))</BassNativesRoot>
+        <BassNativesDirectory Condition="'$(BassNativesPlatform)' != ''">$([MSBuild]::NormalizeDirectory('$(BassNativesRoot)', '$(BassNativesPlatform)'))</BassNativesDirectory>
+        <!-- Kept outside the natives directory so it can never be mistaken for something to copy. -->
+        <BassNativesStamp>$(BassNativesRoot)$(BassNativesPlatform).fetched</BassNativesStamp>
+    </PropertyGroup>
+
+    <!--
+      Inputs/Outputs make this a once-per-manifest cost: it runs on a fresh clone and again when
+      bass-manifest.json changes, and is skipped on every other build. Delete artifacts/ to force it.
+    -->
+    <Target Name="FetchBassNatives"
+            BeforeTargets="PrepareForBuild"
+            Condition="'$(FetchBassNatives)' == 'true' And '$(BassNativesPlatform)' != '' And '$(DesignTimeBuild)' != 'true'"
+            Inputs="$(BassManifestPath)"
+            Outputs="$(BassNativesStamp)">
+
+        <Message Importance="high" Text="Fetching the BASS natives for '$(BassNativesPlatform)'; this runs once." />
+
+        <!--
+          NOTE: a download failure must NOT fail the build. un4seen is a third party, and ManagedBass.Tests is
+          in ManagedBass.sln, so hard-failing here would stop anyone compiling the library whenever that site
+          is unreachable. Whatever actually needs a native says so itself: the Tier 1 fixture fails with the
+          command to run, and the iOS harness errors on the missing xcframework.
+
+          IgnoreStandardErrorWarningFormat, because Exec logs any "tool: error: ..." line the process prints
+          as a build error whatever its exit code was, which would undo all of the above.
+
+          The tool defaults its output to artifacts/natives/<platform>, which is BassNativesDirectory.
+        -->
+        <Exec Command="dotnet run --project &quot;$(FetchNativesProject)&quot; -- $(BassNativesPlatform)"
+              WorkingDirectory="$(MSBuildThisFileDirectory)"
+              IgnoreExitCode="true"
+              IgnoreStandardErrorWarningFormat="true">
+            <Output TaskParameter="ExitCode" PropertyName="_BassFetchExitCode" />
+        </Exec>
+
+        <!-- Only stamp a success, so the next build retries rather than treating a failed fetch as done. -->
+        <Touch Condition="'$(_BassFetchExitCode)' == '0'" Files="$(BassNativesStamp)" AlwaysCreate="true" />
+
+        <Warning Condition="'$(_BassFetchExitCode)' != '0'"
+                 Code="BASS0001"
+                 Text="Could not fetch the BASS natives for '$(BassNativesPlatform)' (see the output above). This does not stop the build; anything that loads a native will fail until the fetch succeeds. Retry with: dotnet run --project eng/FetchNatives -- $(BassNativesPlatform)" />
+    </Target>
+
+    <!--
+      A file glob, so the ios/catalyst bundle directories are never flattened into the output, and never
+      recursive - android and linux both produce libbass.so and glob order would pick the winner.
+    -->
+    <Target Name="CopyBassNativesToOutput"
+            AfterTargets="Build"
+            Condition="'$(BassNativesCopyToOutput)' == 'true' And '$(BassNativesPlatform)' != ''">
+
+        <ItemGroup>
+            <_BassNativeLibrary Include="$(BassNativesDirectory)*" />
+        </ItemGroup>
+
+        <Copy SourceFiles="@(_BassNativeLibrary)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+    </Target>
+
+</Project>

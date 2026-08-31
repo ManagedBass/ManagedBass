@@ -8,7 +8,11 @@ namespace ManagedBass.Sfx
 	/// </summary>
 	public static class BassSfx
 	{
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
+		const string DllName = "__Internal";
+#else
 		const string DllName = "bass_sfx";
+#endif
                 
         [DllImport(DllName)]
 		static extern BassSfxError BASS_SFX_ErrorGetCode();

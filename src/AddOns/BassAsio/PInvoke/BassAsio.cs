@@ -8,7 +8,11 @@ namespace ManagedBass.Asio
     /// </summary>
     public static partial class BassAsio
     {
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
+        const string DllName = "__Internal";
+#else
         const string DllName = "bassasio";
+#endif
 
         #region AddDevice
         [DllImport(DllName, CharSet = CharSet.Unicode)]

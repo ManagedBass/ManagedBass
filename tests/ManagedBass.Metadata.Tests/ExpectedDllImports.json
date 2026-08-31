@@ -1,0 +1,106 @@
+{
+  "ManagedBass": [
+    "bass"
+  ],
+  "ManagedBass.Aac": [
+    "bass_aac"
+  ],
+  "ManagedBass.Ac3": [
+    "bass_ac3"
+  ],
+  "ManagedBass.Adx": [
+    "bass_adx"
+  ],
+  "ManagedBass.Aix": [
+    "bass_aix"
+  ],
+  "ManagedBass.Alac": [
+    "bassalac"
+  ],
+  "ManagedBass.Ape": [
+    "bass_ape"
+  ],
+  "ManagedBass.Asio": [
+    "bassasio"
+  ],
+  "ManagedBass.Cd": [
+    "basscd"
+  ],
+  "ManagedBass.DShow": [
+    "xVideo"
+  ],
+  "ManagedBass.Dsd": [
+    "bassdsd"
+  ],
+  "ManagedBass.Enc": [
+    "bassenc",
+    "bassenc_aac",
+    "bassenc_flac",
+    "bassenc_mp3",
+    "bassenc_ogg",
+    "bassenc_opus"
+  ],
+  "ManagedBass.Flac": [
+    "bassflac"
+  ],
+  "ManagedBass.Fx": [
+    "bass_fx"
+  ],
+  "ManagedBass.Hls": [
+    "basshls"
+  ],
+  "ManagedBass.Loud": [
+    "bassloud"
+  ],
+  "ManagedBass.Midi": [
+    "bassmidi"
+  ],
+  "ManagedBass.Mix": [
+    "bassmix"
+  ],
+  "ManagedBass.Mpc": [
+    "bass_mpc"
+  ],
+  "ManagedBass.Ofr": [
+    "bass_ofr"
+  ],
+  "ManagedBass.Opus": [
+    "bassopus"
+  ],
+  "ManagedBass.Sfx": [
+    "bass_sfx"
+  ],
+  "ManagedBass.Spx": [
+    "bass_spx"
+  ],
+  "ManagedBass.Tags": [
+    "tags"
+  ],
+  "ManagedBass.Tta": [
+    "bass_tta"
+  ],
+  "ManagedBass.Vst": [
+    "bass_vst"
+  ],
+  "ManagedBass.WA": [
+    "bass_wa"
+  ],
+  "ManagedBass.WaDsp": [
+    "bass_wadsp"
+  ],
+  "ManagedBass.Wasapi": [
+    "basswasapi"
+  ],
+  "ManagedBass.Winamp": [
+    "bass_winamp"
+  ],
+  "ManagedBass.Wma": [
+    "basswma"
+  ],
+  "ManagedBass.Wv": [
+    "basswv"
+  ],
+  "ManagedBass.ZXTune": [
+    "basszxtune"
+  ]
+}

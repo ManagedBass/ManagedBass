@@ -13,7 +13,11 @@ namespace ManagedBass.Wma
     /// </remarks>
     public static class BassWma
     {
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
+        const string DllName = "__Internal";
+#else
         const string DllName = "basswma";
+#endif
         
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_WMA_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);

@@ -11,7 +11,11 @@ namespace ManagedBass.Adx
     /// </remarks>
     public static class BassAdx
     {
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
+        const string DllName = "__Internal";
+#else
         const string DllName = "bass_adx";
+#endif
         
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_ADX_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);

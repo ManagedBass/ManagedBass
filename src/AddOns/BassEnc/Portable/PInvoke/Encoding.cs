@@ -277,7 +277,10 @@ namespace ManagedBass.Enc
         [DllImport(DllName, EntryPoint = "BASS_Encode_StartCA")]
         public static extern int EncodeStartCA(int Handle, int ftype, int atype, EncodeFlags Flags, int Bitrate, EncodeProcedureEx Procedure, IntPtr User);
 
-        [DllImport(DllName, CharSet = CharSet.Unicode)]
+        // NOTE: alone among the BASS entry points that take a filename, this one rejects BASS_UNICODE with
+        // BASS_ERROR_ILLPARAM, so it is the one place we must not add the flag. It exists only on Apple, where
+        // .NET marshals CharSet.Ansi as UTF-8 - which is the encoding BASS wants there.
+        [DllImport(DllName, CharSet = CharSet.Ansi)]
         static extern int BASS_Encode_StartCAFile(int Handle, int ftype, int atype, EncodeFlags flags, int bitrate, string filename);
 
         /// <summary>
@@ -332,7 +335,7 @@ namespace ManagedBass.Enc
         /// <exception cref="Errors.Unknown">Some other mystery problem!</exception>
         public static int EncodeStartCA(int Handle, int ftype, int atype, EncodeFlags Flags, int Bitrate, string Filename)
         {
-            return BASS_Encode_StartCAFile(Handle, ftype, atype, Flags | EncodeFlags.Unicode, Bitrate, Filename);
+            return BASS_Encode_StartCAFile(Handle, ftype, atype, Flags, Bitrate, Filename);
         }
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]

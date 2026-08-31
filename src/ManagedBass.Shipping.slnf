@@ -1,0 +1,40 @@
+{
+  "solution": {
+    "path": "ManagedBass.sln",
+    "projects": [
+      "AddOns\\BassAac\\BassAac.csproj",
+      "AddOns\\BassAc3\\BassAc3.csproj",
+      "AddOns\\BassAdx\\BassAdx.csproj",
+      "AddOns\\BassAix\\BassAix.csproj",
+      "AddOns\\BassAlac\\BassAlac.csproj",
+      "AddOns\\BassApe\\BassApe.csproj",
+      "AddOns\\BassAsio\\BassAsio.csproj",
+      "AddOns\\BassCd\\BassCd.csproj",
+      "AddOns\\BassDsd\\BassDsd.csproj",
+      "AddOns\\BassDShow\\BassDShow.csproj",
+      "AddOns\\BassEnc\\Portable\\BassEnc.csproj",
+      "AddOns\\BassFlac\\BassFlac.csproj",
+      "AddOns\\BassFx\\BassFx.csproj",
+      "AddOns\\BassHls\\BassHls.csproj",
+      "AddOns\\Bassloud\\Bassloud.csproj",
+      "AddOns\\BassMidi\\Portable\\BassMidi.csproj",
+      "AddOns\\BassMix\\BassMix.csproj",
+      "AddOns\\BassMpc\\BassMpc.csproj",
+      "AddOns\\BassOfr\\BassOfr.csproj",
+      "AddOns\\BassOpus\\BassOpus.csproj",
+      "AddOns\\BassSfx\\BassSfx.csproj",
+      "AddOns\\BassSpx\\BassSpx.csproj",
+      "AddOns\\BassTags\\BassTags.csproj",
+      "AddOns\\BassTta\\BassTta.csproj",
+      "AddOns\\BassVst\\BassVst.csproj",
+      "AddOns\\BassWA\\BassWA.csproj",
+      "AddOns\\BassWaDsp\\BassWaDsp.csproj",
+      "AddOns\\BassWasapi\\BassWasapi.csproj",
+      "AddOns\\BassWinamp\\BassWinamp.csproj",
+      "AddOns\\BassWma\\BassWma.csproj",
+      "AddOns\\BassWv\\BassWv.csproj",
+      "AddOns\\BassZXTune\\BassZXTune.csproj",
+      "Bass\\Portable\\Bass.csproj"
+    ]
+  }
+}

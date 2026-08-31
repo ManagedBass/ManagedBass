@@ -13,7 +13,7 @@ Summary from Un4Seen Bass website:
 
 **IMPORTANT**: Bass and its Add-Ons can be downloaded at http://un4seen.com/. This project provides a wrapper for the C-based library.    
 
-ManagedBass is targeted for **Any CPU**, but bass Libraries(.dll/.so/.dylib/.a) are separate for x86, x64, ARM, etc.  
+ManagedBass is targeted for **Any CPU**, but bass libraries (.dll/.so/.dylib/.framework) are separate for x86, x64, ARM, etc.  
 Download the versions you need directly from Un4Seen's website.
 
 See the [Sample Repositories](https://github.com/ManagedBass) for examples.
@@ -38,23 +38,67 @@ Install-Package ManagedBass
 
 * Download the BASS libraries from http://un4seen.com and place them in Build Output Directory.
 
-## Supported Frameworks and Platforms
-Our goal is to support all platforms that Un4seen Bass supports.  
-The nuget package contains support for the following targets:
-- .NET Framework 4.5+
-- .NET Standard 2.0+
-- .NET 8.0+
-- .NET 9.0+
-- .NET 10.0+
+## Supported Frameworks
+The NuGet packages ship `net45`, `netstandard2.0`, `net8.0`, `net9.0` and `net10.0`. 
 
-with the following platforms:
-- Windows
-- Linux
-- MacOS
-- Android
-- iOS**
+There are no platform-specific target frameworks (no `net10.0-ios` and so on) and none are needed: a .NET for iOS or Mac Catalyst app picks up the plain `net9.0`/`net10.0` asset through NuGet's normal compatibility rules, and the assembly contains no compile-time platform branches that would need a separate build.
 
-** NOTE: This library no longer support iOS prior to version 8, where it was necessary for the native Bass libraries to be statically linked. iOS 8 and later support dynamic linking, so you no longer need a dedicated version of our library to support iOS.
+## Platform support
+
+**Minimum native BASS version: 2.4.17** (12 October 2022). That is the release where un4seen stopped shipping static iOS libraries and moved to a dynamic `bass.xcframework`, so everything ManagedBass loads is a dynamic library on every platform.
+
+| Platform | How to consume | What you need to do |
+|---|---|---|
+| Windows, Linux, macOS, Android | NuGet | Nothing beyond putting the native `bass` library where the loader finds it (usually the build output directory). |
+| iOS, tvOS, Mac Catalyst (.NET) | NuGet | Embed the native frameworks in the app bundle (`<NativeReference Include="path/to/bass.xcframework" Kind="Framework" />`). The package registers a `DllImportResolver` for you via a `buildTransitive` target, so no code is required. tvOS uses the same path as iOS but has not been tested. |
+| Unity on iOS | Internal-DllImport build from the release zip | See [Unity / iOS](#unity--ios). IL2CPP binds P/Invoke at link time, so the runtime resolver cannot help and a differently built set of assemblies is needed. |
+
+Why iOS-family platforms need a resolver: a plain `[DllImport("bass")]` does not find a framework embedded in an app bundle. Default probing looks for `bass.dylib`, `libbass.dylib`, `bass` and `libbass` as files, none of which exist inside `bass.framework`. `ManagedBass.NativeLibraryResolver` probes the plain name first, then `bass.framework/bass`, then the app executable itself (which sees every framework linked into it), so an app that ships BASS as a bare dylib keeps resolving exactly as before. On Windows, Linux, Android and desktop macOS it returns immediately and changes nothing.
+
+The automatic registration lives in the consuming **application** because .NET for iOS does not run a class library's module initialiser. It applies to C# projects targeting `ios`, `tvos` or `maccatalyst`; F# and VB apps, or anyone building from source, should call `ManagedBass.NativeLibraryResolver.RegisterAll()` before the first BASS call.
+
+Opting out:
+
+| Opt-out | Where | Effect |
+|---|---|---|
+| `<ManagedBassRegisterNativeResolver>false</ManagedBassRegisterNativeResolver>` | Your app's csproj | The target stops injecting the automatic registration. |
+| `ManagedBass.DisableNativeLibraryResolver` | `AppContext` switch, set before the first BASS call | `RegisterAll()` returns without registering anything. |
+
+Platform questions at runtime go through `ManagedBass.CrossPlatformHelper` (`IsWindows`, `IsLinux`, `IsMacOS`, `IsIOS`, `IsTvOS`, `IsMacCatalyst`, `IsAndroid`, `IsApple`). `IsIOS` is deliberately `false` on Mac Catalyst, unlike `OperatingSystem.IsIOS()`, so the four Apple predicates are mutually exclusive. On `netstandard2.0` only Windows, Linux and macOS can be told apart (Android reports as Linux); on `net45` everything but Windows is `false`.
+
+### Native downloads
+
+The natives are not redistributed. Download them from un4seen: `bass24.zip` (Windows), `bass24-linux.zip`, `bass24-osx.zip`, `bass24-ios.zip`, `bass24-catalyst.zip`, `bass24-android.zip`; add-ons follow the same scheme (`bassmix24-ios.zip` and so on), except Mac Catalyst, where `bass24-catalyst.zip` carries every framework. macOS, iOS and Mac Catalyst are three distinct Mach-O platforms and need three different downloads; dyld will not load the wrong one.
+
+### Unity / iOS
+
+Unity on desktop and Android needs nothing special: use the standard assemblies. iOS is different because IL2CPP resolves every `DllImport` at link time, so the only workable native name is `"__Internal"` (internal-DllImport symbol lookup, exactly as Unity's own iOS plugin documentation requires). This is not static linking: the embedded `bass.framework` is still the ordinary dynamic one.
+
+Each [GitHub release](https://github.com/ManagedBass/ManagedBass/releases) attaches two zips:
+
+| Asset | Contents | Use it for |
+|---|---|---|
+| `ManagedBass-<version>-dotnet.zip` | Standard assemblies, one folder per target framework, with XML docs | Unity Editor, standalone players, Android, or anyone wanting plain DLLs |
+| `ManagedBass-<version>-unity-ios.zip` | The same 33 assemblies as `netstandard2.0`, built for internal-DllImport lookup, plus a `README.txt` | Unity iOS only |
+
+To install both:
+
+1. Put each set in its own folder under `Assets/Plugins/`. From the dotnet zip take the `netstandard2.0/` folder only.
+2. Select the internal-DllImport DLLs and, in the Plugin Inspector, tick **iOS** only.
+3. Select the standard DLLs and tick Editor, the standalone platforms and Android, with **iOS unticked**.
+
+The two filters **must be mutually exclusive**. Both sets share an assembly identity, so any target with both enabled (the Editor included) is a duplicate-assembly error. If Unity reports the same assembly twice, one of the filters is wrong.
+
+Put `bass.xcframework` from `bass24-ios.zip` under `Assets/Plugins/iOS` and confirm in the generated Xcode project that it is embedded and signed, not merely copied.
+
+Alternatively, vendor `src/` into `Assets/` and add `MANAGEDBASS_INTERNAL_DLLIMPORT` to Player Settings → iOS → Other Settings → Scripting Define Symbols. Define symbols are per build target, so Unity compiles the right variant for each platform and there are no filters to get wrong.
+
+Two consequences of `__Internal` worth knowing before you build:
+
+- **Leave managed stripping on.** `__Internal` is resolved by the linker, so every P/Invoke that survives stripping has to exist in the framework — and three core entry points do not exist on iOS at all: `BASS_GetDSoundObject`, `BASS_GetEAXParameters` and `BASS_SetEAXParameters` are Windows-only. A build that keeps unreferenced code fails with `Undefined symbols for architecture arm64`. Stripping (Unity's default for IL2CPP) removes what you never call, so only the entry points you actually use have to resolve.
+- **`CrossPlatformHelper` cannot see iOS in this build.** These assemblies are `netstandard2.0`, where `IsIOS`, `IsTvOS`, `IsMacCatalyst`, `IsApple` and `IsAndroid` are compile-time `false` and `RuntimeInformation` matches none of Windows, Linux or macOS on iOS — so *every* predicate is `false`. Branch on Unity's own `Application.platform` instead.
+
+Both are covered by CI: `.github/workflows/ios-simulator.yml` builds `tests/ManagedBass.Ios.Harness` twice, once normally and once with `-p:BassInternalDllImport=true`, and requires both to initialise BASS and round-trip audio on a simulator. The second leg is .NET for iOS rather than Unity, but it binds and resolves `__Internal` the same way, so an unguarded `DllName` or a missing export shows up before a release ships.
 
 # AddOns
 AddOns add more functionality to BASS.

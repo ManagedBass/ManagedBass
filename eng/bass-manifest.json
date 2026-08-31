@@ -1,0 +1,45 @@
+{
+  "$comment": "un4seen publish at unversioned URLs (bass24.zip is always 'latest'), so bassVersion records the build whose layout was verified on verifiedOn, not what a fetch today will return.",
+  "bassVersion": "2.4.18.3",
+  "verifiedOn": "2026-08-29",
+  "baseUrl": "https://www.un4seen.com/files",
+  "platforms": {
+    "windows": [
+      { "zip": "bass24.zip",     "libs": ["bass"] },
+      { "zip": "bassmix24.zip",  "libs": ["bassmix"] },
+      { "zip": "bassflac24.zip", "libs": ["bassflac"] },
+      { "zip": "bassenc24.zip",  "libs": ["bassenc"] }
+    ],
+    "linux": [
+      { "zip": "bass24-linux.zip",     "libs": ["bass"] },
+      { "zip": "bassmix24-linux.zip",  "libs": ["bassmix"] },
+      { "zip": "bassflac24-linux.zip", "libs": ["bassflac"] },
+      { "zip": "bassenc24-linux.zip",  "libs": ["bassenc"] }
+    ],
+    "osx": [
+      { "zip": "bass24-osx.zip",     "libs": ["bass"] },
+      { "zip": "bassmix24-osx.zip",  "libs": ["bassmix"] },
+      { "zip": "bassflac24-osx.zip", "libs": ["bassflac"] },
+      { "zip": "bassenc24-osx.zip",  "libs": ["bassenc"] }
+    ],
+    "ios": [
+      { "zip": "bass24-ios.zip",     "libs": ["bass"] },
+      { "zip": "bassmix24-ios.zip",  "libs": ["bassmix"] },
+      { "zip": "bassflac24-ios.zip", "libs": ["bassflac"] },
+      { "zip": "bassenc24-ios.zip",  "libs": ["bassenc"] }
+    ],
+    "catalyst": [
+      {
+        "$comment": "No per-add-on catalyst zips exist upstream (404); the core zip carries every framework.",
+        "zip": "bass24-catalyst.zip",
+        "libs": ["bass", "bassmix", "bassflac", "bassenc"]
+      }
+    ],
+    "android": [
+      { "zip": "bass24-android.zip",     "libs": ["bass"] },
+      { "zip": "bassmix24-android.zip",  "libs": ["bassmix"] },
+      { "zip": "bassflac24-android.zip", "libs": ["bassflac"] },
+      { "zip": "bassenc24-android.zip",  "libs": ["bassenc"] }
+    ]
+  }
+}

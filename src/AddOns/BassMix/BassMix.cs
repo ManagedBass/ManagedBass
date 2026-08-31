@@ -8,7 +8,7 @@ namespace ManagedBass.Mix
     /// </summary>
     public static class BassMix
     {
-#if __STATIC_LINKING__
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
         const string DllName = "__Internal";
 #else
         const string DllName = "bassmix";

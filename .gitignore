@@ -35,3 +35,9 @@ src/.idea/
 # Xml Documentation files
 ManagedBass.xml
 ManagedBass.*.xml
+
+# MemSearch local index/memory state
+.memsearch/
+
+# Downloaded natives, release zips and other build artefacts
+artifacts/

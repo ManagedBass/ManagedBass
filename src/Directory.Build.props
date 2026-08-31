@@ -7,4 +7,19 @@
         <Version>1.0.0</Version>
         <NoWarn>CS1734;CS0419</NoWarn>
     </PropertyGroup>
+
+    <!--
+      Internal-DllImport opt-in: every DllName becomes "__Internal", so P/Invoke looks the symbol up in the app executable
+      (and whatever is linked into it) instead of loading a library at run time. Lookup scope, not static linking.
+      Only consumer is Unity/IL2CPP on iOS, which binds P/Invoke at link time and cannot use the resolver.
+      Build: dotnet build src/ManagedBass.Shipping.slnf -c Release -p:BassInternalDllImport=true
+    -->
+    <PropertyGroup Condition="'$(BassInternalDllImport)' == 'true'">
+        <DefineConstants>$(DefineConstants);MANAGEDBASS_INTERNAL_DLLIMPORT</DefineConstants>
+        <BaseOutputPath>$(MSBuildProjectDirectory)/bin/internaldllimport/</BaseOutputPath>
+        <BaseIntermediateOutputPath>$(MSBuildProjectDirectory)/obj/internaldllimport/</BaseIntermediateOutputPath>
+        <!-- NOTE: the SDK only excludes the current output paths; without this the normal build's AssemblyInfo.cs is compiled in (CS0579). -->
+        <DefaultItemExcludes>$(DefaultItemExcludes);bin/**;obj/**</DefaultItemExcludes>
+        <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    </PropertyGroup>
 </Project>

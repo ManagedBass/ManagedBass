@@ -12,14 +12,17 @@
         <Description>.Net wrapper for un4seen BASS audio library</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Configurations>Debug;Release</Configurations>
-        <Platforms>AnyCPU;iOS</Platforms>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Platform)' == 'iOS' ">
-        <DefineConstants>TRACE;__IOS__</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
         <None Include="../../../icon.png" Pack="true" PackagePath="" />
         <None Include="../../../LICENSE.md" Pack="true" PackagePath="" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Shipped to consumers, not compiled here: the initialiser must live in the application assembly. -->
+        <Compile Remove="build/**" />
+        <None Include="build/ManagedBass.targets" Pack="true" PackagePath="buildTransitive/" />
+        <None Include="build/ManagedBassNativeResolverInitialiser.cs" Pack="true" PackagePath="buildTransitive/" />
     </ItemGroup>
 </Project>

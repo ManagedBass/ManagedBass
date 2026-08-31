@@ -11,7 +11,11 @@ namespace ManagedBass.Alac
     /// </remarks>
     public static class BassAlac
     {
+#if MANAGEDBASS_INTERNAL_DLLIMPORT
+        const string DllName = "__Internal";
+#else
         const string DllName = "bassalac";
+#endif
                 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
         static extern int BASS_ALAC_StreamCreateFile(bool mem, string file, long offset, long length, BassFlags flags);

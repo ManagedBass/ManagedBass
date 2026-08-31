@@ -1,0 +1,73 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Tier 2 iOS simulator harness. Not a test project and not in ManagedBass.sln: net10.0-ios cannot restore
+    without the ios workload. Built by .github/workflows/ios-simulator.yml.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-ios</TargetFramework>
+    <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>false</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>ManagedBass.Ios.Harness</RootNamespace>
+    <AssemblyName>ManagedBassIosHarness</AssemblyName>
+    <ApplicationId>com.managedbass.harness.ios</ApplicationId>
+    <ApplicationTitle>ManagedBass iOS Harness</ApplicationTitle>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <RuntimeIdentifier>iossimulator-arm64</RuntimeIdentifier>
+    <!-- NOTE: a trimmed-away P/Invoke looks identical to a resolution failure, so ManagedBass must not be linked.
+         SdkOnly leaves it alone; None would also keep (and AOT-compile) every BCL assembly, which took 25+ minutes on a runner. -->
+    <MtouchLink>SdkOnly</MtouchLink>
+    <BassNativesPlatform>ios</BassNativesPlatform>
+    <BassXcFrameworkPath>$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '..', '..', 'artifacts', 'natives', 'ios', 'bass.xcframework'))</BassXcFrameworkPath>
+  </PropertyGroup>
+
+  <!--
+    Tier 2b, the internal-DllImport variant: build with -p:BassInternalDllImport=true and the same switch flows
+    into the Bass.csproj reference as a global property, so every DllName becomes "__Internal". The symbol then
+    has to come from the bass.framework linked into the app executable, which is the only lookup Unity/IL2CPP
+    on iOS can do. The resolver is switched off so nothing else can make the P/Invoke succeed: a pass is
+    evidence about symbol lookup alone. Distinct name and id so both variants can sit on one simulator.
+  -->
+  <PropertyGroup Condition="'$(BassInternalDllImport)' == 'true'">
+    <AssemblyName>ManagedBassIosHarnessInternal</AssemblyName>
+    <ApplicationId>com.managedbass.harness.ios.internaldllimport</ApplicationId>
+    <ApplicationTitle>ManagedBass iOS Harness (internal DllImport)</ApplicationTitle>
+    <ManagedBassRegisterNativeResolver>false</ManagedBassRegisterNativeResolver>
+    <!-- NOTE: Full, not the SdkOnly above. "__Internal" is resolved by the linker, so every P/Invoke that
+         survives linking has to exist in bass.framework, and three do not: BASS_GetDSoundObject and the two
+         EAX ones are Windows-only. Linking away what is never called is also what Unity does (managed
+         stripping is on by default for IL2CPP), so the variant proves what a Unity app proves: the symbols
+         it actually calls resolve. -->
+    <MtouchLink>Full</MtouchLink>
+    <DefineConstants>$(DefineConstants);HARNESS_INTERNAL_DLLIMPORT</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Fetches artifacts/natives/ios on demand, so the harness builds from a fresh clone. -->
+  <Import Project="../../eng/FetchNatives/FetchNatives.targets" />
+
+  <ItemGroup>
+    <!-- tests/Directory.Build.props adds the xunit stack unconditionally; this app is not a test project. -->
+    <PackageReference Remove="Microsoft.NET.Test.Sdk;xunit.v3;xunit.runner.visualstudio;FluentAssertions" />
+    <ProjectReference Include="../../src/Bass/Portable/Bass.csproj" />
+  </ItemGroup>
+
+  <!-- A ProjectReference does not flow buildTransitive; import the packaged targets so this exercises the real file. -->
+  <Import Project="../../src/Bass/Portable/build/ManagedBass.targets" />
+
+  <ItemGroup>
+    <NativeReference Include="$(BassXcFrameworkPath)" Kind="Framework" />
+  </ItemGroup>
+
+  <!-- DependsOnTargets, not BeforeTargets: CoreBuild starts before PrepareForBuild, so the fetch has to be pulled in explicitly. -->
+  <Target Name="EnsureBassXcFrameworkFetched" BeforeTargets="CoreBuild" DependsOnTargets="FetchBassNatives">
+    <Error Condition="!Exists('$(BassXcFrameworkPath)')"
+           Text="bass.xcframework not found at '$(BassXcFrameworkPath)'. Run 'dotnet run --project eng/FetchNatives -- ios', or drop -p:FetchBassNatives=false." />
+  </Target>
+
+</Project>

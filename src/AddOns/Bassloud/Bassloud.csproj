@@ -13,7 +13,6 @@
         <PackageIcon>icon.png</PackageIcon>
         <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
         <Configurations>Debug;Release</Configurations>
-        <Platforms>AnyCPU;iOS</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!-- Tier 0: reads the built assemblies, the source tree and the packages. No natives, any OS. -->
+    <PropertyGroup>
+        <RootNamespace>ManagedBass.Metadata.Tests</RootNamespace>
+    </PropertyGroup>
+
+    <!-- NOTE: ExpectedDllImports.json is read from the source tree, not copied, so the file a failure names is the file to edit. -->
+</Project>

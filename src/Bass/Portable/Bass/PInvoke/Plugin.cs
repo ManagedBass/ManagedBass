@@ -51,8 +51,8 @@ namespace ManagedBass
         /// <para>Note: Only stream/music add-ons are loaded (e.g. BassFx or BassMix are NOT loaded).</para>
         /// <para><b>Platform-specific:</b></para>
         /// <para>
-        /// Dynamic libraries are not permitted on iOS, so add-ons are provided as static libraries instead, which means this function has to work a little differently.
-        /// The add-on needs to be linked into the executable, and a "plugin" symbol declared and passed to this function (instead of a filename).
+        /// On iOS, tvOS and Mac Catalyst (BASS 2.4.17 and later) add-ons are dynamic frameworks embedded in the app bundle.
+        /// Pass the add-on's framework-relative path (e.g. "bassflac.framework/bassflac") or a full path to the binary rather than a bare name.
         /// </para>
         /// </remarks>
         /// <exception cref="Errors.FileOpen">The <paramref name="FilePath" /> could not be opened.</exception>
@@ -60,9 +60,6 @@ namespace ManagedBass
         /// <exception cref="Errors.Already">The <paramref name="FilePath" /> is already plugged in.</exception>
         public static int PluginLoad(string FilePath)
         {
-#if __STATIC_LINKING__
-            return BASS_PluginLoad(FilePath);
-#else
             if (Path.HasExtension(FilePath))
                 return BASS_PluginLoad(FilePath);
 
@@ -94,7 +91,6 @@ namespace ManagedBass
 
             // Fall back to just returning the result of BASS_PluginLoad so Bass.LastError is set correctly
             return BASS_PluginLoad(FilePath);
-#endif
         }
         #endregion
 
