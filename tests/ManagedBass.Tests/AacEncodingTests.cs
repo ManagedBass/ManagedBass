@@ -117,6 +117,23 @@ public class AacEncodingTests : IDisposable
             version.Should().Throw<DllNotFoundException>();
     }
 
+    [Fact]
+    public void BassEnc_Acc_OnDeprecatedMembers_BehaveLikeBassEnc_Aac_WhenCalled()
+    {
+        var handle = Tone(0.1);
+
+        // Comparing thrown types, not asserting one: both members throw on every host, but which exception it is
+        // depends on the host. Same shape from both spellings is what the forwarding class has to guarantee.
+#pragma warning disable CS0618 // the point of the test is to call the obsolete spelling
+        Thrown(() => BassEnc_Acc.Version).Should().Be(Thrown(() => BassEnc_Aac.Version));
+
+        Thrown(() => BassEnc_Acc.Start(handle, Options, EncodeFlags.Default, (EncodeProcedure)((_, _, _, _, _) => { }), IntPtr.Zero))
+            .Should().Be(Thrown(() => BassEnc_Aac.Start(handle, Options, EncodeFlags.Default, (EncodeProcedure)((_, _, _, _, _) => { }), IntPtr.Zero)));
+#pragma warning restore CS0618
+    }
+
+    static Type? Thrown(Func<object?> call) => Record.Exception(() => call())?.GetType();
+
     /// <summary>Encodes a whole wave and returns the file's bytes.</summary>
     byte[] Encode(WaveFile wave, string options, string path)
     {
