@@ -32,6 +32,8 @@ Initialiser="src/Bass/Portable/build/ManagedBassNativeResolverInitialiser.cs"
 Helper="src/Bass/Portable/CrossPlatformHelper.cs"
 Resolver="src/Bass/Portable/NativeLibraryResolver.cs"
 Scanner="tests/ManagedBass.Metadata.Tests/Analysis/ConditionalSymbolScanner.cs"
+AacSource="src/AddOns/BassEnc/Portable/PInvoke/BassEnc_Aac.cs"
+EncSource="src/AddOns/BassEnc/Portable/PInvoke/Encoding.cs"
 BuildTestWorkflow=".github/workflows/build-test.yml"
 IosWorkflow=".github/workflows/ios-simulator.yml"
 MixInternalDllImportDll="src/AddOns/BassMix/bin/internaldllimport/Release/netstandard2.0/ManagedBass.Mix.dll"
@@ -66,6 +68,8 @@ Mutations=(
     "targets: BeforeTargets=\"AfterCompile\" -> ordering guard@@mutation22"
     "build-test.yml Pack step deleted (package-shape tests would skip) -> CiWorkflowTests@@mutation23"
     "build-test.yml 'if: false' on the internal-DllImport step -> CiWorkflowTests@@mutation24"
+    "byte-swapped Core Audio FourCC in BassEnc_Aac (rebuilt) -> Tier 1 AAC encoding@@mutation25"
+    "BASS_UNICODE back on the EncodeStartCA filename (rebuilt) -> Tier 1 AAC encoding@@mutation26"
 )
 
 BackupDir=""
@@ -166,6 +170,13 @@ runGuard() {
     # A filter that matches nothing is not a green guard; it is a broken mutation test.
     { [ -n "$total" ] && [ "$total" -gt 0 ]; } || return 3
     [ -n "$failed" ] && [ "$failed" -gt 0 ]
+}
+
+# Gate for a mutation whose guard can only go red on one OS. Returns 4, which the driver reports as N/A.
+requireHost() {
+    [ "$(uname -s)" = "$1" ] && return 0
+    log "host is $(uname -s), not $1"
+    return 4
 }
 
 firstFailure() {
@@ -357,6 +368,28 @@ mutation24() {
     runGuard "$MetadataTests" --filter-method ManagedBass.Metadata.Tests.CiWorkflowTests.BuildTestWorkflow_OnRead_BuildsInternalDllImportBeforeMetadataTests_WhenStepsNamed
 }
 
+# The Core Audio encoder only exists on Apple, so off macOS these two mutate code that never runs and
+# the guard would stay green for a reason that is not a hole. Reported N/A rather than counted as a miss.
+mutation25() {
+    requireHost Darwin || return 4
+    backup "$AacSource" || return 2
+    RestoreBuild+=("dotnet build $FunctionalTests -c Release")
+    perl -0pi -e 's/\n[ \t]*if \(BitConverter\.IsLittleEndian\)\n[ \t]*\{\n[ \t]*Array\.Reverse\(bytes\);\n[ \t]*\}\n//' "$RepoRoot/$AacSource"
+    grep -q 'Array.Reverse' "$RepoRoot/$AacSource" && return 2
+    build "$FunctionalTests" || return 2
+    runGuard "$FunctionalTests" --filter-class ManagedBass.Tests.AacEncodingTests
+}
+
+mutation26() {
+    requireHost Darwin || return 4
+    backup "$EncSource" || return 2
+    RestoreBuild+=("dotnet build $FunctionalTests -c Release")
+    perl -pi -e 's/BASS_Encode_StartCAFile\(Handle, ftype, atype, Flags,/BASS_Encode_StartCAFile(Handle, ftype, atype, Flags | EncodeFlags.Unicode,/' "$RepoRoot/$EncSource"
+    grep -qF 'Flags | EncodeFlags.Unicode, Bitrate, Filename' "$RepoRoot/$EncSource" || return 2
+    build "$FunctionalTests" || return 2
+    runGuard "$FunctionalTests" --filter-class ManagedBass.Tests.AacEncodingTests
+}
+
 # ---- driver ---------------------------------------------------------------------------------
 
 runMutation() {
@@ -372,6 +405,7 @@ runMutation() {
         0) detail="PASS: guard went red - $(firstFailure)";;
         2) detail="ERROR: mutation could not be applied or built";;
         3) detail="ERROR: the filter matched zero tests - $LastCommand";;
+        4) detail="N/A: this mutation's guard cannot run on $(uname -s)";;
         *) detail="FAIL: guard stayed green (failed=0) - $LastCommand";;
     esac
 
@@ -380,7 +414,7 @@ runMutation() {
 
     log "$detail"
     ResultNumbers+=("$n"); ResultVerdicts+=("${detail%%:*}"); ResultNames+=("$name")
-    [ "$verdict" -eq 0 ]
+    [ "$verdict" -eq 0 ] || [ "$verdict" -eq 4 ]
 }
 
 main() {

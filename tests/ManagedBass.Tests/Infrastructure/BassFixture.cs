@@ -10,6 +10,7 @@ public class BassFixture : IDisposable
         // Fail with the fetch command, not a bare DllNotFoundException deep inside a test.
         NativeLibraries.Require("bass");
         NativeLibraries.Require("bassflac");
+        NativeLibraries.Require("bassenc");
 
         try
         {

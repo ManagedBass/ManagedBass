@@ -22,6 +22,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\Bass\Portable\Bass.csproj" />
         <ProjectReference Include="..\..\src\AddOns\BassFlac\BassFlac.csproj" />
+        <ProjectReference Include="..\..\src\AddOns\BassEnc\Portable\BassEnc.csproj" />
     </ItemGroup>
 
 </Project>
