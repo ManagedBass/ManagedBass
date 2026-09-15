@@ -57,7 +57,7 @@ namespace ManagedBass
         /// can be used to set custom loop start and end points in bytes.
         /// </para>
         /// <para>
-        /// Non-byte position (eg. <see cref="MusicOrders"/>) custom looping is also possible
+        /// Non-byte position (e.g. <see cref="MusicOrders"/>) custom looping is also possible
         /// by setting a "mixtime" sync at the loop end position via <see cref="Bass.ChannelSetSync"/>
         /// and then seeking to the loop start position in the <see cref="SyncProcedure"/> callback.
         /// </para>
