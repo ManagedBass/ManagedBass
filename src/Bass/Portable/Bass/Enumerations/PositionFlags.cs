@@ -36,6 +36,60 @@ namespace ManagedBass
         CDTrack,
 
         /// <summary>
+        /// <para>
+        /// Trimmed end position to be used with e.g. <see cref="Bass.ChannelSetPosition"/>.
+        /// </para>
+        /// <para>
+        /// The position is in bytes and is where the channel will end.
+        /// Rounded up to the nearest sample boundary.
+        /// </para>
+        /// <para>
+        /// If the channel is already at/beyond the position then it will end at its current position.
+        /// This will have no effect if it is beyond the channel's normal end position.
+        /// </para>
+        /// <para>
+        /// <c>0</c> = normal end position.
+        /// </para>
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// When looping is enabled, the <see cref="Loop"/> and <see cref="End"/> modes
+        /// can be used to set custom loop start and end points in bytes.
+        /// </para>
+        /// <para>
+        /// Non-byte position (eg. <see cref="MusicOrders"/>) custom looping is also possible
+        /// by setting a "mixtime" sync at the loop end position via <see cref="Bass.ChannelSetSync"/>
+        /// and then seeking to the loop start position in the <see cref="SyncProcedure"/> callback.
+        /// </para>
+        /// </remarks>
+        End = 0x10,
+
+        /// <summary>
+        /// <para>
+        /// Loop start position to be used with e.g. <see cref="Bass.ChannelSetPosition"/>.
+        /// </para>
+        /// <para>
+        /// The position is in bytes and is where looping will start from (when looping is enabled).
+        /// Rounded down to the nearest sample boundary.
+        /// </para>
+        /// <para>
+        /// If this is at/beyond the end then the default loop position of <c>0</c> will be used instead.
+        /// </para>
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// When looping is enabled, the <see cref="Loop"/> and <see cref="End"/> modes
+        /// can be used to set custom loop start and end points in bytes.
+        /// </para>
+        /// <para>
+        /// Non-byte position (eg. <see cref="MusicOrders"/>) custom looping is also possible
+        /// by setting a "mixtime" sync at the loop end position via <see cref="Bass.ChannelSetSync"/>
+        /// and then seeking to the loop start position in the <see cref="SyncProcedure"/> callback.
+        /// </para>
+        /// </remarks>
+        Loop = 0x11,
+
+        /// <summary>
         /// ZXTune Sub Count.
         /// </summary>
         ZXTuneSubCount = 0x00F10000,
